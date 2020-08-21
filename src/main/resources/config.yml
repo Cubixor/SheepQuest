@@ -1,0 +1,100 @@
+# SheepQuest plugin configuration file (config.yml)
+#
+# Read all comments carefully to do not break plugin
+#
+# You can use /sq reload command to reload modified files without restarting server.
+
+
+# Countdown time.
+# Countdown will start when the arena minimum players count will be reached. [seconds]
+waiting-time: 30
+
+# Game time [seconds]
+game-time: 480
+
+# Every this amount of time the sheep will appear [seconds]
+sheep-time: 10
+
+# Time that will game ending take [seconds]
+ending-time: 10
+
+# Player will respawn after this amount of time [seconds]
+respawn-time: 7
+
+# Should game use private game chat?
+# PLayer messages will be send only to players in the same arena if true. [true/false]
+game-chat: true
+
+# If true, when the arena ends players will be teleported to main lobby location.
+# If false player will be teleported to the place where he was before he joined the arena. [true/false]
+use-main-lobby: true
+
+# If true, player will be teleported to the next arena after the previous ends.
+# If false, player will be teleported to main lobby or previous location, depending on "use-main-lobby" is set to true or false. [true/false]
+auto-join-on-end: true
+
+# Item types.
+# Full item list on https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html [item name]
+items:
+  team-choose-item:
+    type: CHEST
+    slot: 0
+  leave-item:
+    type: RED_BED
+    slot: 8
+  weapon-item:
+    type: IRON_SWORD
+    slot: 0
+  sheep-item:
+    type: SADDLE
+    slot: 1
+
+
+# If true, blocks behind signs will be changed depending on game state.
+color-signs: true
+# Full item list on https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html [item name]
+sign-colors:
+  inactive: BLACK_STAINED_GLASS
+  waiting: LIME_STAINED_GLASS
+  starting: CYAN_STAINED_GLASS
+  ingame: RED_STAINED_GLASS
+  ending: PURPLE_STAINED_GLASS
+
+# Configure which commands will be available in game and put them in the command-blocker-list section below.
+# Set to WHITELIST to allow players to use only commands from command-blocker-list section.
+# Set to BLACKLIST to allow players to use all commands except these from command-blocker-list section. [BLACKLIST/WHITELIST]
+command-blocker: BLACKLIST
+
+# List of all commands allowed/blocked in game (without "/").
+# You can leave this list empty to block or allow to use all commands. [command name]
+command-blocker-list:
+  - me
+  - spawn
+
+# List of vip-arenas.
+# Only players with permission "sheepquest.vip" can join them!
+# If you don't want to use this feature just leave it empty. (arena name)
+vip-arenas:
+  - test
+
+# If true, when the game ends for each player (depends on which place player took) will be executed right command. [true/false]
+win-rewards: true
+
+# Rewards list.
+# If you don't want to execute commands for some place leave it blank.
+# You can use "%player%" placeholder - it will be changed to player name.
+# Section 1 is for first place, 2 for second etc. [command]
+rewards:
+  1:
+    - eco give %player% 100
+  2:
+    - eco give %player% 50
+  3:
+    - eco give %player% 25
+  4:
+    - eco give %player% 0
+
+
+
+# Config version - DO NOT CHANGE IT!
+config-version: 1.0
