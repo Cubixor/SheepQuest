@@ -104,6 +104,7 @@ permissions:
       sheepquest.play.stats: true
       sheepquest.play.list: true
       sheepquest.play.signs: true
+      sheepquest.play.menu: true
 
   sheepquest.play.help:
     default: true
