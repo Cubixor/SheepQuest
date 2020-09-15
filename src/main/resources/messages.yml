@@ -224,7 +224,7 @@ arena-setup:
   create-usage: '%prefix% &cWrong use! &7Type: /sheepquest create &e<arena>'
   create-already-exists: '%prefix% &cArena named &e%arena% &calready exists!'
   delete-success: '%prefix% &aArena &e%arena% &awas deleted succesfully!'
-  delete-confirm: '%prefix% &cAre you sure you want to delete &e%arena% arena? To confirm type /sq confirm in the next 20 seconds. &c&lTHIS CANNOT BE UNDONE!'
+  delete-confirm: '%prefix% &cAre you sure you want to delete &e%arena% &carena? &7To confirm type &e/sq confirm &7in the next 20 seconds. &c&lTHIS CANNOT BE UNDONE!'
   delete-confirm-none: '%prefix% &cThere is nothing you can confirm!'
   delete-usage: '%prefix% &cWrong use! &7Type: /sheepquest delete &e<arena>'
   delete-not-exists: '%prefix% &cArena named &e%arena% &cdoes not exists!'

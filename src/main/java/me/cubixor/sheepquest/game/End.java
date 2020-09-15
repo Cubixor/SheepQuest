@@ -48,7 +48,8 @@ public class End {
         for (Player p : arena.playerTeam.keySet()) {
             utils.removeSheep(p);
 
-            p.sendTitle(plugin.getMessage("game." + winnerTeamString + "-win-title"), plugin.getMessage("game." + winnerTeamString + "-win-subtitle"), 1, stay, 1);
+            p.sendTitle(plugin.getMessage("game." + winnerTeamString + "-win-title"), plugin.getMessage("game." + winnerTeamString + "-win-subtitle"));
+
 
             plugin.getStats().set("Players." + p.getName() + ".games-played", plugin.getStats().getInt("Players." + p.getName() + ".games-played") + 1);
             if (arena.playerTeam.get(p).equals(winnerTeam)) {

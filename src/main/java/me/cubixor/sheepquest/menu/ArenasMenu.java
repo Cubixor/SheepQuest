@@ -1,7 +1,6 @@
 package me.cubixor.sheepquest.menu;
 
 import me.cubixor.sheepquest.Arena;
-import me.cubixor.sheepquest.GameState;
 import me.cubixor.sheepquest.SheepQuest;
 import me.cubixor.sheepquest.Utils;
 import me.cubixor.sheepquest.commands.PlayCommands;
@@ -49,20 +48,13 @@ public class ArenasMenu implements Listener {
         int slot = 0;
         for (String arena : plugin.arenas.keySet()) {
             Arena arenaObject = plugin.arenas.get(arena);
-            Material material = null;
+            ItemStack material = null;
             if (plugin.getConfig().getBoolean("color-signs")) {
-                if (!plugin.getArenasConfig().getBoolean("Arenas." + arena + ".active")) {
-                    material = Material.matchMaterial(plugin.getConfig().getString("sign-colors.inactive"));
-                } else if (arenaObject.state.equals(GameState.WAITING)) {
-                    material = Material.matchMaterial(plugin.getConfig().getString("sign-colors.waiting"));
-                } else if (arenaObject.state.equals(GameState.STARTING)) {
-                    material = Material.matchMaterial(plugin.getConfig().getString("sign-colors.starting"));
-                } else if (arenaObject.state.equals(GameState.GAME)) {
-                    material = Material.matchMaterial(plugin.getConfig().getString("sign-colors.ingame"));
-                } else if (arenaObject.state.equals(GameState.ENDING)) {
-                    material = Material.matchMaterial(plugin.getConfig().getString("sign-colors.ending"));
-                }
+                material = utils.setGlassColor(arenaObject);
+            } else {
+                material = new ItemStack(Material.NETHER_STAR);
             }
+
 
             ItemStack arenaItem = arenaItemStack(material, arena, "arenas-menu.arena-item-name", "arenas-menu.arena-item-lore");
 
@@ -86,9 +78,9 @@ public class ArenasMenu implements Listener {
 
         Inventory optionsInventory = Bukkit.createInventory(null, 27, plugin.getMessage("arenas-menu.name"));
 
-        optionsInventory.setItem(2, arenaItemStack(Material.NETHER_STAR, arena, "arenas-menu.play-item-name", "arenas-menu.play-item-lore"));
+        optionsInventory.setItem(2, arenaItemStack(new ItemStack(Material.NETHER_STAR), arena, "arenas-menu.play-item-name", "arenas-menu.play-item-lore"));
         optionsInventory.setItem(4, utils.setItemStack(Material.ENDER_PEARL, "arenas-menu.staff-item-name", "arenas-menu.staff-item-lore"));
-        optionsInventory.setItem(6, utils.setItemStack(Material.ENDER_EYE, "arenas-menu.setup-item-name", "arenas-menu.setup-item-lore"));
+        optionsInventory.setItem(6, utils.setItemStack(Material.EYE_OF_ENDER, "arenas-menu.setup-item-name", "arenas-menu.setup-item-lore"));
 
         optionsInventory.setItem(22, utils.setItemStack(Material.ARROW, "arenas-menu.options-menu-back-item-name", "arenas-menu.options-menu-back-item-lore"));
 
@@ -101,7 +93,7 @@ public class ArenasMenu implements Listener {
         if (!plugin.inventories.containsKey(player)) {
             return;
         }
-        if(evt.getCurrentItem() == null){
+        if (evt.getCurrentItem() == null) {
             return;
         }
         if (plugin.inventories.get(player).arenasInventory != null && evt.getClickedInventory().equals(plugin.inventories.get(player).arenasInventory)) {
@@ -155,11 +147,10 @@ public class ArenasMenu implements Listener {
         }
     }
 
-    private ItemStack arenaItemStack(Material material, String arena, String namePath, String lorePath) {
+    private ItemStack arenaItemStack(ItemStack arenaItem, String arena, String namePath, String lorePath) {
         Utils utils = new Utils(plugin);
         Arena arenaObject = plugin.arenas.get(arena);
 
-        ItemStack arenaItem = new ItemStack(material, 1);
         ItemMeta arenaItemItemMeta = arenaItem.getItemMeta();
         String vip = plugin.getConfig().getStringList("vip-arenas").contains(arena) ? plugin.getMessage("general.vip-prefix") : "";
         arenaItemItemMeta.setDisplayName(plugin.getMessage(namePath).replace("%arena%", arena).replace("%?vip?%", vip));

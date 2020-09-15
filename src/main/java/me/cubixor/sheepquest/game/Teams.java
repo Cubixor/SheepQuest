@@ -6,6 +6,7 @@ import me.cubixor.sheepquest.Team;
 import me.cubixor.sheepquest.Utils;
 import me.cubixor.sheepquest.commands.PlayCommands;
 import org.bukkit.Bukkit;
+import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.entity.Player;
@@ -15,6 +16,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BannerMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
@@ -60,7 +62,7 @@ public class Teams implements Listener {
             evt.setCancelled(true);
 
             Player player = (Player) evt.getWhoClicked();
-            Team team = utils.getWoolTeam(evt.getCurrentItem().getType());
+            Team team = utils.getWoolTeam(evt.getCurrentItem());
 
             if (team.equals(Team.NONE)) {
                 arena.playerTeam.replace(player, Team.NONE);
@@ -81,7 +83,7 @@ public class Teams implements Listener {
                         arena.playerTeam.replace(player, team);
                         utils.removeBossBars(player, arena);
                         arena.teamBossBars.get(team).addPlayer(player);
-                        player.getInventory().setHelmet(new ItemStack(getTeamBanner(team)));
+                        player.getInventory().setHelmet(getTeamBanner(team));
                         player.sendMessage(plugin.getMessage("game.team-join-success").replace("%team%", teamMessage));
                     } else {
                         player.sendMessage(plugin.getMessage("game.already-in-this-team").replace("%team%", teamMessage));
@@ -97,22 +99,24 @@ public class Teams implements Listener {
         }
     }
 
-    private Material getTeamBanner(Team team) {
-        Material banner = Material.WHITE_BANNER;
+    private ItemStack getTeamBanner(Team team) {
+        ItemStack banner = new ItemStack(Material.BANNER);
+        BannerMeta bannerMeta = (BannerMeta) banner.getItemMeta();
         switch (team) {
             case RED:
-                banner = Material.RED_BANNER;
+                bannerMeta.setBaseColor(DyeColor.RED);
                 break;
             case GREEN:
-                banner = Material.GREEN_BANNER;
+                bannerMeta.setBaseColor(DyeColor.LIME);
                 break;
             case BLUE:
-                banner = Material.BLUE_BANNER;
+                bannerMeta.setBaseColor(DyeColor.BLUE);
                 break;
             case YELLOW:
-                banner = Material.YELLOW_BANNER;
+                bannerMeta.setBaseColor(DyeColor.YELLOW);
                 break;
         }
+        banner.setItemMeta(bannerMeta);
         return banner;
     }
 

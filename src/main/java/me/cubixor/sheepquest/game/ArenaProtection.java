@@ -8,11 +8,11 @@ import me.cubixor.sheepquest.commands.PlayCommands;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Sheep;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
@@ -33,7 +33,7 @@ public class ArenaProtection implements Listener {
         }
         if (evt.getEntityType().equals(EntityType.SHEEP)) {
             for (String arena : plugin.arenas.keySet()) {
-                if (plugin.arenas.get(arena).sheep.containsKey((Sheep) evt.getEntity())) {
+                if (plugin.arenas.get(arena).sheep.containsKey(evt.getEntity())) {
                     evt.setDamage(0.0F);
                     evt.setCancelled(true);
                     return;
@@ -42,7 +42,7 @@ public class ArenaProtection implements Listener {
         }
         if (evt.getEntityType().equals(EntityType.PLAYER)) {
             if (new Utils(plugin).getArena((Player) evt.getEntity()) != null) {
-                if (!evt.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK) && !evt.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK)) {
+                if (!evt.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK)) {
                     evt.setDamage(0.0F);
                     evt.setCancelled(true);
                 }
@@ -58,7 +58,6 @@ public class ArenaProtection implements Listener {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @EventHandler
     public void onPickup(PlayerPickupItemEvent evt) {
         Utils utils = new Utils(plugin);
@@ -105,4 +104,12 @@ public class ArenaProtection implements Listener {
         }
     }
 
+    @EventHandler
+    public void onClick(InventoryClickEvent evt) {
+        Utils utils = new Utils(plugin);
+        Arena arena = utils.getArena((Player) evt.getWhoClicked());
+        if (arena != null) {
+            evt.setCancelled(true);
+        }
+    }
 }

@@ -1,4 +1,4 @@
-# SheepQuest plugin configuration file (config.yml)
+# SheepQuest plugin configuration file (config.yml) For settings explanation check this page: https://github.com/Cubixor/SheepQuest/wiki/Config-explanation
 #
 # Read all comments carefully to do not break plugin
 #
@@ -25,6 +25,11 @@ respawn-time: 7
 # PLayer messages will be send only to players in the same arena if true. [true/false]
 game-chat: true
 
+# Should players be able to choose teams?
+# If true, players will be able to choose their team by menu.
+# If false, players' team will be chosen randomly.
+allow-team-choosing: true
+
 # If true, when the arena ends players will be teleported to main lobby location.
 # If false player will be teleported to the place where he was before he joined the arena. [true/false]
 use-main-lobby: true
@@ -40,7 +45,7 @@ items:
     type: CHEST
     slot: 0
   leave-item:
-    type: RED_BED
+    type: BED
     slot: 8
   weapon-item:
     type: IRON_SWORD
@@ -53,6 +58,8 @@ items:
 # If true, blocks behind signs will be changed depending on game state.
 color-signs: true
 # Full item list on https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html [item name]
+# WARNING! Sign color customization is available only on versions above 1.13!
+# If you are using 1.9-1.12 sign colors will be set to defaults.
 sign-colors:
   inactive: BLACK_STAINED_GLASS
   waiting: LIME_STAINED_GLASS
@@ -93,8 +100,6 @@ rewards:
     - eco give %player% 25
   4:
     - eco give %player% 0
-
-
 
 # Config version - DO NOT CHANGE IT!
 config-version: 1.0

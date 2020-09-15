@@ -8,7 +8,6 @@ import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +22,9 @@ public class WaitingTips {
     }
 
     public void playerTips(Player player) {
-        if(plugin.playerInfo.get(player).tipTask != null && !plugin.playerInfo.get(player).tipTask.isCancelled()){
+        if (plugin.playerInfo.get(player).tipTask != null) {
             plugin.playerInfo.get(player).tipTask.cancel();
+            plugin.playerInfo.get(player).tipTask = null;
         }
         plugin.playerInfo.get(player).tipTask= new BukkitRunnable() {
             @Override

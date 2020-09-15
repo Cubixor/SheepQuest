@@ -1,7 +1,10 @@
 package me.cubixor.sheepquest.game;
 
 import me.cubixor.sheepquest.*;
-import org.bukkit.*;
+import org.bukkit.Color;
+import org.bukkit.DyeColor;
+import org.bukkit.FireworkEffect;
+import org.bukkit.Location;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -33,41 +36,64 @@ public class SheepCarrying implements Listener {
             return;
         }
 
-        if(!(arena.playerStats.get(player).sheepCooldown == null || arena.playerStats.get(player).sheepCooldown.isCancelled())){
+        if (arena.playerStats.get(player).sheepCooldown != null) {
             return;
         }
 
         Team team = arena.playerTeam.get(player);
 
         for (Entity e : evt.getPlayer().getNearbyEntities(1, 1, 1)) {
-            if (e.getType().equals(EntityType.SHEEP) && !evt.getPlayer().getPassengers().contains(e) && evt.getPlayer().getInventory().getItemInMainHand().equals(plugin.items.sheepItem) && !arena.respawnTimer.containsKey(evt.getPlayer())) {
+            boolean pas1Exists = player.getPassenger() != null;
+            boolean pas2Exists;
+            boolean pas3Exists;
+
+            if (pas1Exists) {
+                if (player.getPassenger().equals(e)) {
+                    continue;
+                }
+                pas2Exists = player.getPassenger().getPassenger() != null;
+                if (pas2Exists) {
+                    if (player.getPassenger().getPassenger().equals(e)) {
+                        continue;
+                    }
+                    pas3Exists = player.getPassenger().getPassenger().getPassenger() != null;
+                    if (pas3Exists) {
+                        break;
+                    }
+                }
+            }
+
+
+            if (e.getType().equals(EntityType.SHEEP) & evt.getPlayer().getInventory().getItemInMainHand().equals(plugin.items.sheepItem) && !arena.respawnTimer.containsKey(evt.getPlayer())) {
                 Sheep sheep = (Sheep) e;
                 if (sheep.getColor().equals(DyeColor.WHITE) || !team.equals(getTeamByColor(sheep.getColor()))) {
-                    int pas = evt.getPlayer().getPassengers().size();
-                    if (pas == 0) {
-                        evt.getPlayer().addPassenger(e);
-                    } else if (pas == 1) {
-                        Entity pas1 = evt.getPlayer().getPassengers().get(0);
-                        if (pas1.getPassengers().size() == 0) {
-                            pas1.addPassenger(e);
+                    if (evt.getPlayer().getPassenger() == null) {
+                        player.setPassenger(e);
+                    } else {
+                        Entity pas1 = evt.getPlayer().getPassenger();
+                        if (pas1.getPassenger() == null) {
+                            pas1.setPassenger(e);
                             player.removePotionEffect(PotionEffectType.SLOW);
-                            evt.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 9999999, 1, false, false, false));
+                            evt.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 9999999, 1, false, false));
 
-                        } else if (pas1.getPassengers().size() == 1 && !pas1.getPassengers().contains(e)) {
-                            Entity pas2 = pas1.getPassengers().get(0);
-                            if (pas2.getPassengers().size() == 0) {
-                                pas2.addPassenger(e);
+                        } else if (pas1.getPassenger() != null && !pas1.getPassenger().equals(e)) {
+                            Entity pas2 = pas1.getPassenger();
+                            if (pas2.getPassenger() == null) {
+                                pas2.setPassenger(e);
                                 player.removePotionEffect(PotionEffectType.SLOW);
-                                evt.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 9999999, 2, false, false, false));
+                                evt.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 9999999, 2, false, false));
                             }
                         }
+                    }
+                    if (plugin.passengerFix != null) {
+                        plugin.passengerFix.updatePassengers(player);
                     }
                 }
             }
         }
 
 
-        if (!player.getPassengers().isEmpty()) {
+        if (player.getPassenger() != null) {
             if (utils.isInRegion(player, utils.getArenaString(arena), team)) {
                 regionEnter(player);
             }
@@ -80,25 +106,29 @@ public class SheepCarrying implements Listener {
             public void run() {
                 Utils utils = new Utils(plugin);
                 if (utils.isInRegion(player, utils.getArenaString(utils.getArena(player)), utils.getArena(player).playerTeam.get(player))) {
-                    if (player.getPassengers().size() != 0) {
-                        if (player.getPassengers().get(0).getPassengers().size() != 0) {
-                            if (player.getPassengers().get(0).getPassengers().get(0).getPassengers().size() != 0) {
+                    if (player.getPassenger() != null) {
+                        if (player.getPassenger().getPassenger() != null) {
+                            if (player.getPassenger().getPassenger().getPassenger() != null) {
 
-                                addPoint(player, (Sheep) player.getPassengers().get(0).getPassengers().get(0).getPassengers().get(0));
+                                addPoint(player, (Sheep) player.getPassenger().getPassenger().getPassenger());
 
-                                player.getPassengers().get(0).getPassengers().get(0).removePassenger(player.getPassengers().get(0).getPassengers().get(0).getPassengers().get(0));
+                                player.getPassenger().getPassenger().eject();
 
                             }
-                            addPoint(player, (Sheep) player.getPassengers().get(0).getPassengers().get(0));
+                            addPoint(player, (Sheep) player.getPassenger().getPassenger());
 
-                            player.getPassengers().get(0).removePassenger(player.getPassengers().get(0).getPassengers().get(0));
+                            player.getPassenger().eject();
 
                         }
 
-                        addPoint(player, (Sheep) player.getPassengers().get(0));
+                        addPoint(player, (Sheep) player.getPassenger());
 
-                        player.removePassenger(player.getPassengers().get(0));
+                        player.eject();
                     }
+                    if (plugin.passengerFix != null) {
+                        plugin.passengerFix.updatePassengers(player);
+                    }
+
                 }
 
             }

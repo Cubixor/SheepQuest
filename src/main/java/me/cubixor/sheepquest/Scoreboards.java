@@ -20,7 +20,8 @@ public class Scoreboards {
         int count = arena.playerTeam.keySet().size();
 
         Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
-        Objective objective = scoreboard.registerNewObjective("SheepQuest", "", plugin.getMessage("game.scoreboard-title"));
+        Objective objective = scoreboard.registerNewObjective("SheepQuest", "");
+        objective.setDisplayName(plugin.getMessage("game.scoreboard-title"));
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
 
         Score clear1 = objective.getScore("");
@@ -48,8 +49,9 @@ public class Scoreboards {
         int count = arena.playerTeam.keySet().size();
 
         Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
-        Objective objective = scoreboard.registerNewObjective("SheepQuest", "", plugin.getMessage("game.scoreboard-title"));
+        Objective objective = scoreboard.registerNewObjective("SheepQuest", "");
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+        objective.setDisplayName(plugin.getMessage("game.scoreboard-title"));
 
         Score clear1 = objective.getScore("");
         clear1.setScore(8);
@@ -73,8 +75,9 @@ public class Scoreboards {
 
     public Scoreboard getGameScoreboard(Arena arena) {
         Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
-        Objective objective = scoreboard.registerNewObjective("SheepQuest", "", plugin.getMessage("game.scoreboard-title"));
+        Objective objective = scoreboard.registerNewObjective("SheepQuest", "");
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+        objective.setDisplayName(plugin.getMessage("game.scoreboard-title"));
 
 
         Score clear1 = objective.getScore("");
@@ -134,8 +137,9 @@ public class Scoreboards {
 
     public Scoreboard getEndingScoreboard(Arena arena) {
         Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
-        Objective objective = scoreboard.registerNewObjective("SheepQuest", "", plugin.getMessage("game.scoreboard-title"));
+        Objective objective = scoreboard.registerNewObjective("SheepQuest", "");
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+        objective.setDisplayName(plugin.getMessage("game.scoreboard-title"));
 
 
         Score clear1 = objective.getScore("");

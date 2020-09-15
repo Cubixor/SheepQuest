@@ -69,7 +69,7 @@ public class Start {
         ItemStack armor = new ItemStack(armorType, 1);
         LeatherArmorMeta armorMeta = (LeatherArmorMeta) armor.getItemMeta();
         armorMeta.setColor(color);
-        armorMeta.setUnbreakable(true);
+        armorMeta.spigot().setUnbreakable(true);
         armor.setItemMeta(armorMeta);
         return armor;
     }

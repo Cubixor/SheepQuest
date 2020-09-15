@@ -7,6 +7,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.material.Wool;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.*;
@@ -69,6 +70,13 @@ public class Utils {
         return itemStack;
     }
 
+    public ItemStack setItemStack(ItemStack itemStack, String namePath) {
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        itemMeta.setDisplayName(plugin.getMessage(namePath));
+        itemStack.setItemMeta(itemMeta);
+        return itemStack;
+    }
+
     public Arena getArena(Player player) {
         for (String arena : plugin.arenas.keySet()) {
             if (plugin.arenas.get(arena).playerTeam.containsKey(player)) {
@@ -95,6 +103,19 @@ public class Utils {
         for (String s : lore) {
             Collections.replaceAll(lore, s, s.replace(toReplace, replaceMessage));
         }
+        itemMeta.setLore(lore);
+        itemStack.setItemMeta(itemMeta);
+        return itemStack;
+    }
+
+    public ItemStack setItemStack(ItemStack itemStack, String namePath, String lorePath, String toReplace, String replaceMessage) {
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        itemMeta.setDisplayName(plugin.getMessage(namePath));
+        List<String> lore = plugin.getMessageList(lorePath);
+        for (String s : lore) {
+            Collections.replaceAll(lore, s, s.replace(toReplace, replaceMessage));
+        }
+        itemStack.setAmount(1);
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
         return itemStack;
@@ -145,30 +166,33 @@ public class Utils {
         return teamString;
     }
 
-    public Material getTeamWool(Team team) {
-        Material wool = null;
+    public ItemStack getTeamWool(Team team) {
+        Wool wool = null;
         if (team.equals(Team.RED)) {
-            wool = Material.RED_WOOL;
+            wool = new Wool(DyeColor.RED);
         } else if (team.equals(Team.GREEN)) {
-            wool = Material.LIME_WOOL;
+            wool = new Wool(DyeColor.LIME);
         } else if (team.equals(Team.BLUE)) {
-            wool = Material.BLUE_WOOL;
+            wool = new Wool(DyeColor.BLUE);
         } else if (team.equals(Team.YELLOW)) {
-            wool = Material.YELLOW_WOOL;
+            wool = new Wool(DyeColor.YELLOW);
         }
-        return wool;
+        return wool.toItemStack();
     }
 
-    public Team getWoolTeam(Material material) {
+    public Team getWoolTeam(ItemStack material) {
         Team team = null;
-        if (material.equals(Material.RED_WOOL)) {
-            team = Team.RED;
-        } else if (material.equals(Material.LIME_WOOL)) {
-            team = Team.GREEN;
-        } else if (material.equals(Material.BLUE_WOOL)) {
-            team = Team.BLUE;
-        } else if (material.equals(Material.YELLOW_WOOL)) {
-            team = Team.YELLOW;
+        if (material.getType().equals(Material.WOOL)) {
+            Wool wool = (Wool) material.getData();
+            if (wool.getColor().equals(DyeColor.RED)) {
+                team = Team.RED;
+            } else if (wool.getColor().equals(DyeColor.LIME)) {
+                team = Team.GREEN;
+            } else if (wool.getColor().equals(DyeColor.BLUE)) {
+                team = Team.BLUE;
+            } else if (wool.getColor().equals(DyeColor.YELLOW)) {
+                team = Team.YELLOW;
+            }
         } else {
             team = Team.NONE;
         }
@@ -238,8 +262,8 @@ public class Utils {
         return barColor;
     }
 
-    public void removeBossBars(Player player, Arena arena){
-        for(BossBar bossBar : arena.teamBossBars.values()){
+    public void removeBossBars(Player player, Arena arena) {
+        for (BossBar bossBar : arena.teamBossBars.values()) {
             bossBar.removePlayer(player);
         }
     }
@@ -286,16 +310,20 @@ public class Utils {
     }
 
     public void removeSheep(Player player) {
-        if (player.getPassengers().size() != 0) {
-            if (player.getPassengers().get(0).getPassengers().size() != 0) {
-                if (player.getPassengers().get(0).getPassengers().get(0).getPassengers().size() != 0) {
+        if (player.getPassenger() != null) {
+            if (player.getPassenger().getPassenger() != null) {
+                if (player.getPassenger().getPassenger().getPassenger() != null) {
 
-                    player.getPassengers().get(0).getPassengers().get(0).removePassenger(player.getPassengers().get(0).getPassengers().get(0).getPassengers().get(0));
+                    player.getPassenger().getPassenger().eject();
 
                 }
-                player.getPassengers().get(0).removePassenger(player.getPassengers().get(0).getPassengers().get(0));
+                player.getPassenger().eject();
             }
-            player.removePassenger(player.getPassengers().get(0));
+            player.eject();
+
+            if (plugin.passengerFix != null) {
+                plugin.passengerFix.updatePassengers(player);
+            }
 
             player.removePotionEffect(PotionEffectType.SLOW);
         }
@@ -305,11 +333,7 @@ public class Utils {
         Utils utils = new Utils(plugin);
 
         if (team.equals(Team.NONE)) {
-            if (entity.getLocation().distance((Location) plugin.getArenasConfig().get("Arenas." + arena + ".sheep-spawn")) < 10) {
-                return true;
-            } else {
-                return false;
-            }
+            return entity.getLocation().distance((Location) plugin.getArenasConfig().get("Arenas." + arena + ".sheep-spawn")) < 10;
         }
 
         String teamString = utils.getTeamString(team);
@@ -373,5 +397,40 @@ public class Utils {
         return inRegion;
     }
 
-
+    public ItemStack setGlassColor(Arena arenaObject) {
+        String arena = getArenaString(arenaObject);
+        ItemStack material = null;
+        if (!plugin.getArenasConfig().getBoolean("Arenas." + arena + ".active")) {
+            if (plugin.below1_13) {
+                material = new ItemStack(Material.STAINED_GLASS, 1, (short) 15);
+            } else {
+                material = new ItemStack(Material.matchMaterial(plugin.getConfig().getString("sign-colors.inactive")));
+            }
+        } else if (arenaObject.state.equals(GameState.WAITING)) {
+            if (plugin.below1_13) {
+                material = new ItemStack(Material.STAINED_GLASS, 1, (short) 5);
+            } else {
+                material = new ItemStack(Material.matchMaterial(plugin.getConfig().getString("sign-colors.waiting")));
+            }
+        } else if (arenaObject.state.equals(GameState.STARTING)) {
+            if (plugin.below1_13) {
+                material = new ItemStack(Material.STAINED_GLASS, 1, (short) 9);
+            } else {
+                material = new ItemStack(Material.matchMaterial(plugin.getConfig().getString("sign-colors.starting")));
+            }
+        } else if (arenaObject.state.equals(GameState.GAME)) {
+            if (plugin.below1_13) {
+                material = new ItemStack(Material.STAINED_GLASS, 1, (short) 14);
+            } else {
+                material = new ItemStack(Material.matchMaterial(plugin.getConfig().getString("sign-colors.ingame")));
+            }
+        } else if (arenaObject.state.equals(GameState.ENDING)) {
+            if (plugin.below1_13) {
+                material = new ItemStack(Material.STAINED_GLASS, 1, (short) 10);
+            } else {
+                material = new ItemStack(Material.matchMaterial(plugin.getConfig().getString("sign-colors.ending")));
+            }
+        }
+        return material;
+    }
 }

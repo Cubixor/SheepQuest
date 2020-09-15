@@ -2,6 +2,7 @@ package me.cubixor.sheepquest.menu;
 
 import me.cubixor.sheepquest.PlayerInfo;
 import me.cubixor.sheepquest.SheepQuest;
+import me.cubixor.sheepquest.Team;
 import me.cubixor.sheepquest.Utils;
 import me.cubixor.sheepquest.commands.SetupCommands;
 import org.bukkit.Bukkit;
@@ -14,7 +15,10 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BannerMeta;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 public class SetupMenu implements Listener {
@@ -25,9 +29,9 @@ public class SetupMenu implements Listener {
         plugin = s;
     }
 
-    public void setupMenuCommand(Player player, String[] args){
+    public void setupMenuCommand(Player player, String[] args) {
         Utils utils = new Utils(plugin);
-        if(!utils.checkIfValid(player, args, "sheepquest.setup.menu", "setup-menu.command", 2)){
+        if (!utils.checkIfValid(player, args, "sheepquest.setup.menu", "setup-menu.command", 2)) {
             return;
         }
         updateSetupMenu(args[1], player);
@@ -47,15 +51,15 @@ public class SetupMenu implements Listener {
                 "%set%", checkString(check.get("min-players"))));
         setupInventory.setItem(3, utils.setItemStack(Material.GOLD_INGOT, "setup-menu.max-players-item-name", "setup-menu.max-players-item-lore",
                 "%set%", checkString(check.get("max-players"))));
-        setupInventory.setItem(4, utils.setItemStack(Material.ENDER_EYE, "setup-menu.main-lobby-item-name", "setup-menu.main-lobby-item-lore",
+        setupInventory.setItem(4, utils.setItemStack(Material.EYE_OF_ENDER, "setup-menu.main-lobby-item-name", "setup-menu.main-lobby-item-lore",
                 "%set%", checkString(check.get("main-lobby"))));
-        setupInventory.setItem(5, utils.setItemStack(Material.CLOCK, "setup-menu.waiting-lobby-item-name", "setup-menu.waiting-lobby-item-lore",
+        setupInventory.setItem(5, utils.setItemStack(Material.WATCH, "setup-menu.waiting-lobby-item-name", "setup-menu.waiting-lobby-item-lore",
                 "%set%", checkString(check.get("waiting-lobby"))));
         setupInventory.setItem(6, utils.setItemStack(Material.SHEARS, "setup-menu.sheep-spawn-item-name", "setup-menu.sheep-spawn-item-lore",
                 "%set%", checkString(check.get("sheep-spawn"))));
-        setupInventory.setItem(7, utils.setItemStack(Material.WHITE_BANNER, "setup-menu.team-spawn-item-name", "setup-menu.team-spawn-item-lore",
+        setupInventory.setItem(7, utils.setItemStack(Material.BANNER, "setup-menu.team-spawn-item-name", "setup-menu.team-spawn-item-lore",
                 "%set%", checkString(check.get("red-spawn") && check.get("green-spawn") && check.get("blue-spawn") && check.get("yellow-spawn"))));
-        setupInventory.setItem(8, utils.setItemStack(Material.WHITE_WOOL, "setup-menu.team-area-item-name", "setup-menu.team-area-item-lore",
+        setupInventory.setItem(8, utils.setItemStack(Material.WOOL, "setup-menu.team-area-item-name", "setup-menu.team-area-item-lore",
                 "%set%", checkString(check.get("red-area") && check.get("green-area") && check.get("blue-area") && check.get("yellow-area"))));
         setupInventory.setItem(22, utils.setItemStack(Material.ARROW, "setup-menu.back-item-name", "setup-menu.back-item-lore"));
 
@@ -67,14 +71,25 @@ public class SetupMenu implements Listener {
         Utils utils = new Utils(plugin);
         LinkedHashMap<String, Boolean> check = new LinkedHashMap<>(utils.checkIfReady(arena));
 
+        HashMap<Team, ItemStack> banners = new HashMap<>();
+        for (Team team : Team.values()) {
+            if (!team.equals(Team.NONE)) {
+                ItemStack banner = new ItemStack(Material.BANNER, 1);
+                BannerMeta bannerMeta = (BannerMeta) banner.getItemMeta();
+                bannerMeta.setBaseColor(utils.getDyeColor(team));
+                banner.setItemMeta(bannerMeta);
+                banners.put(team, banner);
+            }
+        }
+
         Inventory spawnSetupInventory = Bukkit.createInventory(null, 27, plugin.getMessage("setup-menu.team-spawn-menu-name").replace("%arena%", arena));
-        spawnSetupInventory.setItem(1, utils.setItemStack(Material.RED_BANNER, "setup-menu.red-team-spawn-item-name", "setup-menu.red-team-spawn-item-lore",
+        spawnSetupInventory.setItem(1, utils.setItemStack(banners.get(Team.RED), "setup-menu.red-team-spawn-item-name", "setup-menu.red-team-spawn-item-lore",
                 "%set%", checkString(check.get("red-spawn"))));
-        spawnSetupInventory.setItem(3, utils.setItemStack(Material.LIME_BANNER, "setup-menu.green-team-spawn-item-name", "setup-menu.green-team-spawn-item-lore",
+        spawnSetupInventory.setItem(3, utils.setItemStack(banners.get(Team.GREEN), "setup-menu.green-team-spawn-item-name", "setup-menu.green-team-spawn-item-lore",
                 "%set%", checkString(check.get("green-spawn"))));
-        spawnSetupInventory.setItem(5, utils.setItemStack(Material.BLUE_BANNER, "setup-menu.blue-team-spawn-item-name", "setup-menu.blue-team-spawn-item-lore",
+        spawnSetupInventory.setItem(5, utils.setItemStack(banners.get(Team.BLUE), "setup-menu.blue-team-spawn-item-name", "setup-menu.blue-team-spawn-item-lore",
                 "%set%", checkString(check.get("blue-spawn"))));
-        spawnSetupInventory.setItem(7, utils.setItemStack(Material.YELLOW_BANNER, "setup-menu.yellow-team-spawn-item-name", "setup-menu.yellow-team-spawn-item-lore",
+        spawnSetupInventory.setItem(7, utils.setItemStack(banners.get(Team.YELLOW), "setup-menu.yellow-team-spawn-item-name", "setup-menu.yellow-team-spawn-item-lore",
                 "%set%", checkString(check.get("yellow-spawn"))));
         spawnSetupInventory.setItem(22, utils.setItemStack(Material.ARROW, "setup-menu.team-spawn-menu-back-item-name", "setup-menu.team-spawn-menu-back-item-lore"));
 
@@ -89,13 +104,13 @@ public class SetupMenu implements Listener {
         LinkedHashMap<String, Boolean> check = new LinkedHashMap<>(utils.checkIfReady(arena));
 
         Inventory areaSetupInventory = Bukkit.createInventory(null, 27, plugin.getMessage("setup-menu.team-area-menu-name").replace("%arena%", arena));
-        areaSetupInventory.setItem(1, utils.setItemStack(Material.RED_WOOL, "setup-menu.red-team-area-item-name", "setup-menu.red-team-area-item-lore",
+        areaSetupInventory.setItem(1, utils.setItemStack(utils.getTeamWool(Team.RED), "setup-menu.red-team-area-item-name", "setup-menu.red-team-area-item-lore",
                 "%set%", checkString(check.get("red-area"))));
-        areaSetupInventory.setItem(3, utils.setItemStack(Material.LIME_WOOL, "setup-menu.green-team-area-item-name", "setup-menu.green-team-area-item-lore",
+        areaSetupInventory.setItem(3, utils.setItemStack(utils.getTeamWool(Team.GREEN), "setup-menu.green-team-area-item-name", "setup-menu.green-team-area-item-lore",
                 "%set%", checkString(check.get("green-area"))));
-        areaSetupInventory.setItem(5, utils.setItemStack(Material.BLUE_WOOL, "setup-menu.blue-team-area-item-name", "setup-menu.blue-team-area-item-lore",
+        areaSetupInventory.setItem(5, utils.setItemStack(utils.getTeamWool(Team.BLUE), "setup-menu.blue-team-area-item-name", "setup-menu.blue-team-area-item-lore",
                 "%set%", checkString(check.get("blue-area"))));
-        areaSetupInventory.setItem(7, utils.setItemStack(Material.YELLOW_WOOL, "setup-menu.yellow-team-area-item-name", "setup-menu.yellow-team-area-item-lore",
+        areaSetupInventory.setItem(7, utils.setItemStack(utils.getTeamWool(Team.YELLOW), "setup-menu.yellow-team-area-item-name", "setup-menu.yellow-team-area-item-lore",
                 "%set%", checkString(check.get("yellow-area"))));
         areaSetupInventory.setItem(22, utils.setItemStack(Material.ARROW, "setup-menu.team-area-menu-back-item-name", "setup-menu.team-area-menu-back-item-lore"));
 
@@ -116,6 +131,8 @@ public class SetupMenu implements Listener {
         if (plugin.playerInfo.get(evt.getPlayer()).minPlayersChat != null) {
             if (!evt.getMessage().equalsIgnoreCase("cancel")) {
                 setupCommands.setMinPlayers(evt.getPlayer(), new String[]{"setminplayers", plugin.playerInfo.get(evt.getPlayer()).minPlayersChat, evt.getMessage()});
+            } else {
+                evt.getPlayer().sendMessage(plugin.getMessage("setup-menu.cancelled"));
             }
             plugin.playerInfo.get(evt.getPlayer()).minPlayersChat = null;
             evt.setCancelled(true);
@@ -123,7 +140,7 @@ public class SetupMenu implements Listener {
             if (!evt.getMessage().equalsIgnoreCase("cancel")) {
                 setupCommands.setMaxPlayers(evt.getPlayer(), new String[]{"setmaxplayers", plugin.playerInfo.get(evt.getPlayer()).maxPlayersChat, evt.getMessage()});
             } else {
-                evt.getPlayer().sendMessage("setup-menu.cancelled");
+                evt.getPlayer().sendMessage(plugin.getMessage("setup-menu.cancelled"));
             }
             plugin.playerInfo.get(evt.getPlayer()).maxPlayersChat = null;
             evt.setCancelled(true);
@@ -147,7 +164,7 @@ public class SetupMenu implements Listener {
         if (!plugin.inventories.containsKey(player)) {
             return;
         }
-        if(evt.getCurrentItem() == null){
+        if (evt.getCurrentItem() == null) {
             return;
         }
         SetupCommands setupCommands = new SetupCommands(plugin);

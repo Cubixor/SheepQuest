@@ -122,7 +122,7 @@ public class StaffCommands {
         boolean active = plugin.getArenasConfig().getBoolean("Arenas." + args[1] + ".active");
 
         if (utils.checkIfReady(args[1]).containsValue(false)) {
-            player.sendMessage(plugin.getMessage("arena-moderate.active-not-ready"));
+            player.sendMessage(plugin.getMessage("arena-moderate.active-not-ready").replace("%arena%", args[1]));
             return;
         }
 

@@ -63,9 +63,9 @@ public class Kill implements Listener {
             String killerColor = plugin.getMessage("general."+utils.getTeamString(arena.playerTeam.get(attacker)) + "-color");
             String playerColor = plugin.getMessage("general."+utils.getTeamString(arena.playerTeam.get(player)) + "-color");
             for (Player p : arena.playerTeam.keySet()) {
-                p.hidePlayer(plugin, player);
+                p.hidePlayer(player);
                 p.sendMessage(plugin.getMessage("game.kill").replace("%killer%", attacker.getName()).replace("%player%", player.getName())
-                .replace("%killerTeam%", killerColor).replace("%playerTeam%", playerColor));
+                        .replace("%killerTeam%", killerColor).replace("%playerTeam%", playerColor));
             }
 
             player.getInventory().setItem(0, new ItemStack(Material.AIR));
@@ -74,8 +74,8 @@ public class Kill implements Listener {
             Location killLoc = player.getLocation();
             killLoc.setY(killLoc.getY() + 3);
             player.teleport(killLoc);
-            player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 60, 2, false, false, false));
-            player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 40, 3, false, false, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 60, 2, false, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 40, 3, false, false));
 
 
             arena.playerStats.get(player).deaths++;
@@ -95,7 +95,7 @@ public class Kill implements Listener {
                 Arena arena = utils.getArena(player);
                 if (arena.respawnTimer.get(player) > 0 && arena.state.equals(GameState.GAME)) {
                     arena.respawnTimer.replace(player, arena.respawnTimer.get(player) - 1);
-                    player.sendTitle(plugin.getMessage("game.respawn-in-title"), plugin.getMessage("game.respawn-in-subtitle").replace("%time%", Integer.toString(arena.respawnTimer.get(player))), 0, 20, 0);
+                    player.sendTitle(plugin.getMessage("game.respawn-in-title"), plugin.getMessage("game.respawn-in-subtitle").replace("%time%", Integer.toString(arena.respawnTimer.get(player))));
                 } else {
                     player.setAllowFlight(false);
                     player.setFlying(false);
@@ -108,7 +108,7 @@ public class Kill implements Listener {
                     player.teleport((Location) plugin.getArenasConfig().get("Arenas." + utils.getArenaString(arena) + ".teams." + utils.getTeamString(arena.playerTeam.get(player)) + "-spawn"));
 
                     for (Player p : arena.playerTeam.keySet()) {
-                        p.showPlayer(plugin, player);
+                        p.showPlayer(player);
                     }
 
                     arena.respawnTimer.remove(player);
@@ -122,8 +122,9 @@ public class Kill implements Listener {
 
     private void sheepCooldown(Player player) {
         Arena arena = new Utils(plugin).getArena(player);
-        if(arena.playerStats.get(player).sheepCooldown != null && !arena.playerStats.get(player).sheepCooldown.isCancelled()){
+        if (arena.playerStats.get(player).sheepCooldown != null) {
             arena.playerStats.get(player).sheepCooldown.cancel();
+            arena.playerStats.get(player).sheepCooldown = null;
         }
         arena.playerStats.get(player).sheepCooldown = new BukkitRunnable() {
             int cooldown = 1;
@@ -134,6 +135,7 @@ public class Kill implements Listener {
                     cooldown--;
                 } else {
                     this.cancel();
+                    arena.playerStats.get(player).sheepCooldown = null;
                 }
             }
         }.runTaskTimerAsynchronously(plugin, 0, 20);

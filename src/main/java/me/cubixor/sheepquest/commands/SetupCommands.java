@@ -1,6 +1,7 @@
 package me.cubixor.sheepquest.commands;
 
 import me.cubixor.sheepquest.*;
+import me.cubixor.sheepquest.game.Signs;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -50,9 +51,19 @@ public class SetupCommands {
     public void deleteConfirm(Player player) {
         if (plugin.playerInfo.get(player).delete != null) {
             String arena = plugin.playerInfo.get(player).delete;
-            if (plugin.arenas.get(arena).state.equals(GameState.GAME) || plugin.arenas.get(arena).state.equals(GameState.ENDING)) {
+            Arena arenaObj = plugin.arenas.get(arena);
+
+            if (arenaObj.state.equals(GameState.GAME) || arenaObj.state.equals(GameState.ENDING)) {
                 new StaffCommands(plugin).stop(player, arena);
+            } else {
+                for (Player p : plugin.arenas.get(arena).playerTeam.keySet()) {
+                    new PlayCommands(plugin).kickPlayer(p, arena);
+                    p.sendMessage(plugin.getMessage("arena-moderate.force-stop-success").replace("%player%", player.getName()));
+                }
             }
+
+            plugin.arenas.remove(arena);
+            new Signs(plugin).removeSigns(arenaObj);
 
             plugin.getArenasConfig().set("Arenas." + arena, null);
             plugin.saveArenas();
@@ -96,7 +107,7 @@ public class SetupCommands {
                 player.sendMessage(plugin.getMessage("arena-setup.set-max-players-divisible-by-4"));
             }
         } catch (NumberFormatException ex) {
-            player.sendMessage(plugin.getMessage("arena-setup.set-max-players-invalid-number"));
+            player.sendMessage(plugin.getMessage("arena-setup.set-max-players-invalid-count"));
         }
     }
 
@@ -116,7 +127,7 @@ public class SetupCommands {
                 player.sendMessage(plugin.getMessage("arena-setup.set-min-players-too-small"));
             }
         } catch (NumberFormatException ex) {
-            player.sendMessage(plugin.getMessage("arena-setup.set-min-players-invalid-number"));
+            player.sendMessage(plugin.getMessage("arena-setup.set-min-players-invalid-count"));
         }
     }
 
@@ -178,11 +189,12 @@ public class SetupCommands {
         for (String arena : plugin.arenas.keySet()) {
             for (Player p : plugin.arenas.get(arena).playerTeam.keySet()) {
                 new PlayCommands(plugin).kickPlayer(p, arena);
-                p.sendMessage(plugin.getMessage("arena-leave-reload"));
+                p.sendMessage(plugin.getMessage("game.arena-leave-reload"));
             }
         }
 
         plugin.loadConfigs();
+        new Signs(plugin).loadSigns();
 
         player.sendMessage(plugin.getMessage("general.reload-success"));
 
@@ -229,17 +241,17 @@ public class SetupCommands {
     }
 
 
-    int timer = 20;
 
     public void confirmScheduler(Player player) {
         new BukkitRunnable() {
             @Override
             public void run() {
-                if (timer == 0) {
+                if (plugin.playerInfo.get(player).confirmTimer == 0) {
                     plugin.playerInfo.get(player).delete = null;
+                    plugin.playerInfo.get(player).confirmTimer = 20;
                     this.cancel();
                 } else {
-                    timer--;
+                    plugin.playerInfo.get(player).confirmTimer--;
                 }
             }
         }.runTaskTimer(plugin, 0, 20);

@@ -84,7 +84,9 @@ public class PlayCommands {
             player.removePotionEffect(potionEffect.getType());
         }
         player.teleport((Location) plugin.getArenasConfig().get("Arenas." + arenaString + ".waiting-lobby"));
-        player.getInventory().setItem(plugin.items.teamItemSlot, plugin.items.teamItem);
+        if (plugin.getConfig().getBoolean("allow-team-choosing")) {
+            player.getInventory().setItem(plugin.items.teamItemSlot, plugin.items.teamItem);
+        }
         player.getInventory().setItem(plugin.items.leaveItemSlot, plugin.items.leaveItem);
         new WaitingTips(plugin).playerTips(player);
 
@@ -214,11 +216,7 @@ public class PlayCommands {
         player.setExp(playerData.getExp());
         player.setLevel(playerData.getLevel());
         player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
-        if (plugin.getConfig().getBoolean("use-main-lobby")) {
-            player.teleport((Location) plugin.getArenasConfig().get("Arenas." + arenaString + ".main-lobby"));
-        } else {
-            player.teleport(playerData.getLocation());
-        }
+        Location playerJoinLoc = playerData.getLocation();
         plugin.removePlayerData(player);
 
         if (arena.playerTeam.containsKey(player)) {
@@ -245,9 +243,15 @@ public class PlayCommands {
                 }
 
             } else if (arena.state.equals(GameState.GAME) && count == 0) {
-                new End(plugin).resetArena(arena);
                 utils.removeSheep(player);
+                new End(plugin).resetArena(arena);
             }
+        }
+
+        if (plugin.getConfig().getBoolean("use-main-lobby")) {
+            player.teleport((Location) plugin.getArenasConfig().get("Arenas." + arenaString + ".main-lobby"));
+        } else {
+            player.teleport(playerData.getLocation());
         }
 
         new Teams(plugin).menuUpdate(arena);
@@ -281,7 +285,7 @@ public class PlayCommands {
 
             TextComponent message = new TextComponent(plugin.getMessage("other.list-arena").replace("%arena%", arenaString).replace("%count%", count).replace("%max%", max).replace("%state%", gameState).replace("%?vip?%", vip));
             TextComponent hover = new TextComponent(plugin.getMessage("other.list-hover"));
-            message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(hover).create()));
+            message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(String.valueOf(hover)).create()));
             message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/sq join " + arenaString));
             player.spigot().sendMessage(message);
         }

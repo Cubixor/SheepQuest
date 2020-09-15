@@ -11,5 +11,7 @@ public class PlayerInfo {
     public String maxPlayersChat;
     public String delete;
 
+    public int confirmTimer = 20;
+
     public BukkitTask tipTask;
 }

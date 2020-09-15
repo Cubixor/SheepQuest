@@ -1,5 +1,8 @@
 package me.cubixor.sheepquest;
 
+import me.cubixor.sheepquest.SheepFix.PassengerFix;
+import me.cubixor.sheepquest.SheepFix.PassengerFix_1_10_R1;
+import me.cubixor.sheepquest.SheepFix.PassengerFix_1_9_R2;
 import me.cubixor.sheepquest.commands.Command;
 import me.cubixor.sheepquest.commands.PlayCommands;
 import me.cubixor.sheepquest.commands.SetupWand;
@@ -33,18 +36,31 @@ public final class SheepQuest extends JavaPlugin {
 
 
     public HashMap<String, Arena> arenas = new HashMap<>();
-    private HashMap<Player, PlayerData> playerData = new HashMap<>();
+    private final HashMap<Player, PlayerData> playerData = new HashMap<>();
     public HashMap<Player, PlayerInfo> playerInfo = new HashMap<>();
-
 
     public HashMap<Player, ArenaInventories> inventories = new HashMap<>();
     public Items items;
 
+    public PassengerFix passengerFix;
+    public boolean below1_13;
+
     @Override
     public void onEnable() {
         getConfig().options().copyDefaults(true);
-        saveDefaultConfig();
+        saveConfig();
         loadConfigs();
+        getConfig().set("config-version", 1.1);
+        saveConfig();
+
+        new Updater(this, 83005).getVersion(version -> {
+            if (!this.getDescription().getVersion().equalsIgnoreCase(version)) {
+                getLogger().warning("There is a new update of SheepQuest available!");
+                getLogger().warning("Your version: " + this.getDescription().getVersion());
+                getLogger().warning("New version: " + version);
+                getLogger().warning("Go to spigotmc.org and download it!");
+            }
+        });
 
         getCommand("sheepquest").setExecutor(new Command(this));
         getCommand("t").setExecutor(new Command(this));
@@ -60,8 +76,9 @@ public final class SheepQuest extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new StaffMenu(this), this);
         getServer().getPluginManager().registerEvents(new ArenasMenu(this), this);
 
-        new Signs(this).loadSigns();
+        setupPassengerFix();
 
+        new Signs(this).loadSigns();
 
     }
 
@@ -114,7 +131,6 @@ public final class SheepQuest extends JavaPlugin {
                 new Signs(this).loadArenaSigns(arena);
             }
         }
-
         items = new Items(this);
     }
 
@@ -135,7 +151,7 @@ public final class SheepQuest extends JavaPlugin {
         if (!inventories.containsKey(player)) {
             inventories.put(player, new ArenaInventories(arena));
         } else {
-            if(inventories.get(player).arena == null){
+            if (inventories.get(player).arena == null) {
                 inventories.get(player).arena = arena;
             }
             if (inventories.get(player).arena != null && !inventories.get(player).arena.equals(arena)) {
@@ -159,6 +175,34 @@ public final class SheepQuest extends JavaPlugin {
         return finalMessage;
     }
 
+    private void setupPassengerFix() {
+
+        String version;
+
+        try {
+            version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
+
+        } catch (ArrayIndexOutOfBoundsException whatVersionAreYouUsingException) {
+            return;
+        }
+
+        if (version.equals("v1_9_R2")) {
+            passengerFix = new PassengerFix_1_9_R2();
+        } else if (version.equals("v1_10_R1")) {
+            passengerFix = new PassengerFix_1_10_R1();
+        }
+
+        String ver = Character.toString(version.charAt(3)) + version.charAt(4);
+        try {
+            int verInt = Integer.parseInt(ver);
+            if (verInt < 13) {
+                below1_13 = true;
+            }
+        } catch (NumberFormatException e) {
+            below1_13 = true;
+        }
+
+    }
 
     @Override
     public void onDisable() {

@@ -1,7 +1,4 @@
-# SheepQuest plugin arenas file (arenas.yml)
-#
-# WARNING!!! It's better to don't touch anything in this file. It's used only to store all created arenas information. There are no things to configure!
-# WARNING!!! DO NOT create or setup arenas in file! Do it by commands - it doesn't cause errors!
+# SheepQuest plugin arenas file (arenas.yml) WARNING!!! It's better to don't touch anything in this file. It's used only to store all created arenas information. There are no things to configure!
 
 Arenas:
 

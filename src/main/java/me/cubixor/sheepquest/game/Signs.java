@@ -1,7 +1,6 @@
 package me.cubixor.sheepquest.game;
 
 import me.cubixor.sheepquest.Arena;
-import me.cubixor.sheepquest.GameState;
 import me.cubixor.sheepquest.SheepQuest;
 import me.cubixor.sheepquest.Utils;
 import me.cubixor.sheepquest.commands.PlayCommands;
@@ -9,14 +8,14 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
-import org.bukkit.block.data.BlockData;
-import org.bukkit.block.data.Directional;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
+
+import java.util.ArrayList;
 
 public class Signs implements Listener {
 
@@ -53,7 +52,7 @@ public class Signs implements Listener {
         plugin.arenas.get(arena).signs.add(sign);
 
         evt.setCancelled(true);
-        updateSigns(plugin.arenas.get(arena));
+        updateSign(sign, plugin.arenas.get(arena));
 
     }
 
@@ -81,6 +80,14 @@ public class Signs implements Listener {
 
         removeSign(arena, sign);
 
+    }
+
+    public void removeSigns(Arena arena) {
+        Utils utils = new Utils(plugin);
+        String arenaString = utils.getArenaString(arena);
+        arena.signs = new ArrayList<>();
+        plugin.getArenasConfig().set("Signs." + arenaString, null);
+        plugin.saveArenas();
     }
 
     private void removeSign(Arena arena, Sign sign) {
@@ -130,59 +137,55 @@ public class Signs implements Listener {
     }
 
     public void updateSigns(Arena arena) {
-        Utils utils = new Utils(plugin);
         for (Sign sign : arena.signs) {
-            String arenaString = utils.getArenaString(arena);
-
-            Block block;
-            try {
-                block = sign.getBlock();
-            } catch (Exception e) {
-                removeSign(arena, sign);
-                return;
-            }
-            BlockData data = block.getBlockData();
-            Block attachedBlock;
-            if (data instanceof Directional) {
-                Directional directional = (Directional) data;
-                attachedBlock = block.getRelative(directional.getFacing().getOppositeFace());
-            } else {
-                attachedBlock = block.getRelative(0, -1, 0);
-            }
-
-            String count = Integer.toString(arena.playerTeam.keySet().size());
-            String max = Integer.toString(plugin.getArenasConfig().getInt("Arenas." + arenaString + ".max-players"));
-
-            String gameState = utils.getStringState(arena);
-            if (plugin.getConfig().getBoolean("color-signs")) {
-                if (!plugin.getArenasConfig().getBoolean("Arenas." + arenaString + ".active")) {
-                    attachedBlock.setType(Material.matchMaterial(plugin.getConfig().getString("sign-colors.inactive")));
-                } else if (arena.state.equals(GameState.WAITING)) {
-                    attachedBlock.setType(Material.matchMaterial(plugin.getConfig().getString("sign-colors.waiting")));
-                } else if (arena.state.equals(GameState.STARTING)) {
-                    attachedBlock.setType(Material.matchMaterial(plugin.getConfig().getString("sign-colors.starting")));
-                } else if (arena.state.equals(GameState.GAME)) {
-                    attachedBlock.setType(Material.matchMaterial(plugin.getConfig().getString("sign-colors.ingame")));
-                } else if (arena.state.equals(GameState.ENDING)) {
-                    attachedBlock.setType(Material.matchMaterial(plugin.getConfig().getString("sign-colors.ending")));
-                }
-            }
-
-            String vip = plugin.getConfig().getStringList("vip-arenas").contains(arenaString) ? plugin.getMessage("general.vip-prefix") : "";
-            sign.setLine(0, plugin.getMessage("other.sign-first-line").replace("%arena%", arenaString).replace("%count%", count).replace("%max%", max).replace("%state%", gameState).replace("%?vip?%", vip));
-            sign.setLine(1, plugin.getMessage("other.sign-second-line").replace("%arena%", arenaString).replace("%count%", count).replace("%max%", max).replace("%state%", gameState).replace("%?vip?%", vip));
-            sign.setLine(2, plugin.getMessage("other.sign-third-line").replace("%arena%", arenaString).replace("%count%", count).replace("%max%", max).replace("%state%", gameState).replace("%?vip?%", vip));
-            sign.setLine(3, plugin.getMessage("other.sign-fourth-line").replace("%arena%", arenaString).replace("%count%", count).replace("%max%", max).replace("%state%", gameState).replace("%?vip?%", vip));
-            sign.update(true);
+            updateSign(sign, arena);
         }
+    }
+
+    public void updateSign(Sign sign, Arena arena) {
+        Utils utils = new Utils(plugin);
+        String arenaString = utils.getArenaString(arena);
+        Block block;
+        try {
+            block = sign.getBlock();
+        } catch (Exception e) {
+            removeSign(arena, sign);
+            return;
+        }
+        Block attachedBlock;
+        if (block.getType().equals(Material.WALL_SIGN)) {
+            attachedBlock = block.getRelative(((org.bukkit.material.Sign) sign.getBlock().getState().getData()).getAttachedFace());
+        } else {
+            attachedBlock = block.getRelative(0, -1, 0);
+        }
+
+        String count = Integer.toString(arena.playerTeam.keySet().size());
+        String max = Integer.toString(plugin.getArenasConfig().getInt("Arenas." + arenaString + ".max-players"));
+
+        String gameState = utils.getStringState(arena);
+        if (plugin.getConfig().getBoolean("color-signs")) {
+            attachedBlock.setType(utils.setGlassColor(arena).getType());
+            attachedBlock.setData(utils.setGlassColor(arena).getData().getData());
+        }
+
+        String vip = plugin.getConfig().getStringList("vip-arenas").contains(arenaString) ? plugin.getMessage("general.vip-prefix") : "";
+        sign.setLine(0, plugin.getMessage("other.sign-first-line").replace("%arena%", arenaString).replace("%count%", count).replace("%max%", max).replace("%state%", gameState).replace("%?vip?%", vip));
+        sign.setLine(1, plugin.getMessage("other.sign-second-line").replace("%arena%", arenaString).replace("%count%", count).replace("%max%", max).replace("%state%", gameState).replace("%?vip?%", vip));
+        sign.setLine(2, plugin.getMessage("other.sign-third-line").replace("%arena%", arenaString).replace("%count%", count).replace("%max%", max).replace("%state%", gameState).replace("%?vip?%", vip));
+        sign.setLine(3, plugin.getMessage("other.sign-fourth-line").replace("%arena%", arenaString).replace("%count%", count).replace("%max%", max).replace("%state%", gameState).replace("%?vip?%", vip));
+
+
+        sign.update(true);
+
     }
 
     public void loadSigns() {
         if (plugin.getArenasConfig().getConfigurationSection("Signs") == null) {
             return;
         }
-        for (String arena : plugin.getArenasConfig().getConfigurationSection("Signs").getKeys(false)) {
+        for (String arena : plugin.getArenasConfig().getConfigurationSection("Arenas").getKeys(false)) {
             loadArenaSigns(arena);
+            updateSigns(plugin.arenas.get(arena));
         }
     }
 

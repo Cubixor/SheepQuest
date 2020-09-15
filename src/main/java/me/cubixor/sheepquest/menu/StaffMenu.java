@@ -4,7 +4,6 @@ import me.cubixor.sheepquest.Arena;
 import me.cubixor.sheepquest.PlayerGameStats;
 import me.cubixor.sheepquest.SheepQuest;
 import me.cubixor.sheepquest.Utils;
-import me.cubixor.sheepquest.commands.PlayCommands;
 import me.cubixor.sheepquest.commands.StaffCommands;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -55,7 +54,7 @@ public class StaffMenu implements Listener {
                 "%state%", gameState));
         staffInventory.setItem(2, utils.setItemStack(Material.MAGMA_CREAM, "staff-menu.stop-item-name", "staff-menu.stop-item-lore",
                 "%state%", gameState));
-        staffInventory.setItem(3, utils.setItemStack(Material.PLAYER_HEAD, "staff-menu.players-item-name", "staff-menu.players-item-lore",
+        staffInventory.setItem(3, utils.setItemStack(Material.SKULL_ITEM, "staff-menu.players-item-name", "staff-menu.players-item-lore",
                 "%players%", Integer.toString(count)));
 
         staffInventory.setItem(22, utils.setItemStack(Material.ARROW, "staff-menu.back-item-name", "staff-menu.back-item-lore"));
@@ -74,9 +73,9 @@ public class StaffMenu implements Listener {
         plugin.inventories.get(player).playerSlot = new HashMap<>();
         if (!arena.playerTeam.keySet().isEmpty()) {
             for (Player p : playerList) {
-                ItemStack playerItem = new ItemStack(Material.PLAYER_HEAD);
+                ItemStack playerItem = new ItemStack(Material.SKULL_ITEM);
                 SkullMeta skullMeta = (SkullMeta) playerItem.getItemMeta();
-                skullMeta.setOwningPlayer(Bukkit.getOfflinePlayer(p.getUniqueId()));
+                skullMeta.setOwner(p.getName());
                 skullMeta.setDisplayName(plugin.getMessage("staff-menu.player-item-name").replace("%nick%", p.getName()));
                 List<String> playerItemLore = new ArrayList<>(plugin.getMessageList("staff-menu.player-item-lore"));
                 for (String s : playerItemLore) {
@@ -141,7 +140,7 @@ public class StaffMenu implements Listener {
                 updateStaffMenu(arena, player);
                 player.openInventory(plugin.inventories.get(player).staffInventory);
             }
-            if (evt.getCurrentItem().getType().equals(Material.PLAYER_HEAD)) {
+            if (evt.getCurrentItem().getType().equals(Material.SKULL_ITEM)) {
                 Player skullOwner = plugin.inventories.get(player).playerSlot.get(evt.getSlot());
                 if (evt.getClick().equals(ClickType.RIGHT)) {
                     new StaffCommands(plugin).kick(player, new String[]{"kick", skullOwner.getName()});

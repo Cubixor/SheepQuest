@@ -34,7 +34,7 @@ public class Items {
 
         weaponItem = utils.setItemStack("items.weapon-item.type", "game.weapon-item-name", "game.weapon-item-lore");
         ItemMeta weaponItemMeta = weaponItem.getItemMeta();
-        weaponItemMeta.setUnbreakable(true);
+        weaponItemMeta.spigot().setUnbreakable(true);
         weaponItem.setItemMeta(weaponItemMeta);
         weaponItemSlot = plugin.getConfig().getInt("items.weapon-item.slot");
 
