@@ -28,29 +28,24 @@ public final class SheepQuest extends JavaPlugin {
 
 
     private final File messages = new File(getDataFolder(), "messages.yml");
-    private FileConfiguration messagesConfig;
     private final File arenasFile = new File(getDataFolder(), "arenas.yml");
-    private FileConfiguration arenasConfig;
     private final File players = new File(getDataFolder(), "players.yml");
-    private FileConfiguration playersConfig;
-
-
-    public HashMap<String, Arena> arenas = new HashMap<>();
     private final HashMap<Player, PlayerData> playerData = new HashMap<>();
+    public HashMap<String, Arena> arenas = new HashMap<>();
     public HashMap<Player, PlayerInfo> playerInfo = new HashMap<>();
-
     public HashMap<Player, ArenaInventories> inventories = new HashMap<>();
     public Items items;
-
     public PassengerFix passengerFix;
-    public boolean below1_13;
+    private FileConfiguration messagesConfig;
+    private FileConfiguration arenasConfig;
+    private FileConfiguration playersConfig;
 
     @Override
     public void onEnable() {
         getConfig().options().copyDefaults(true);
         saveConfig();
         loadConfigs();
-        getConfig().set("config-version", 1.1);
+        getConfig().set("config-version", 1.2);
         saveConfig();
 
         new Updater(this, 83005).getVersion(version -> {
@@ -191,17 +186,6 @@ public final class SheepQuest extends JavaPlugin {
         } else if (version.equals("v1_10_R1")) {
             passengerFix = new PassengerFix_1_10_R1();
         }
-
-        String ver = Character.toString(version.charAt(3)) + version.charAt(4);
-        try {
-            int verInt = Integer.parseInt(ver);
-            if (verInt < 13) {
-                below1_13 = true;
-            }
-        } catch (NumberFormatException e) {
-            below1_13 = true;
-        }
-
     }
 
     @Override

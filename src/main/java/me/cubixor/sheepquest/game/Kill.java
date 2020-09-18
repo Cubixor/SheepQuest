@@ -56,12 +56,13 @@ public class Kill implements Listener {
         sheepCooldown(player);
         utils.removeSheep(player);
 
+
         if (((player.getHealth() - evt.getFinalDamage()) <= 0)) {
             player.setHealth(20);
             player.setAllowFlight(true);
 
-            String killerColor = plugin.getMessage("general."+utils.getTeamString(arena.playerTeam.get(attacker)) + "-color");
-            String playerColor = plugin.getMessage("general."+utils.getTeamString(arena.playerTeam.get(player)) + "-color");
+            String killerColor = plugin.getMessage("general." + utils.getTeamString(arena.playerTeam.get(attacker)) + "-color");
+            String playerColor = plugin.getMessage("general." + utils.getTeamString(arena.playerTeam.get(player)) + "-color");
             for (Player p : arena.playerTeam.keySet()) {
                 p.hidePlayer(player);
                 p.sendMessage(plugin.getMessage("game.kill").replace("%killer%", attacker.getName()).replace("%player%", player.getName())
@@ -119,6 +120,7 @@ public class Kill implements Listener {
 
         }.runTaskTimer(plugin, 0, 20);
     }
+
 
     private void sheepCooldown(Player player) {
         Arena arena = new Utils(plugin).getArena(player);

@@ -65,7 +65,7 @@ public class Countdown {
                 }
 
 
-                if (arena.timer > 0) {
+                if (arena.timer >= 0) {
                     float exp = Iterables.getFirst(arena.playerTeam.keySet(), null).getExp();
                     if (exp <= 0) {
                         exp = 0.94F;

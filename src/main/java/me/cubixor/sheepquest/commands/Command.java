@@ -113,7 +113,7 @@ public class Command implements CommandExecutor {
                 return true;
             }
 
-            if(args.length == 0){
+            if (args.length == 0) {
                 player.sendMessage(plugin.getMessage("game.team-chat-usage"));
                 return true;
             }
@@ -122,7 +122,7 @@ public class Command implements CommandExecutor {
             for (String msg : args) {
                 finalMessageBuilder.append(msg).append(" ");
             }
-            finalMessageBuilder.deleteCharAt(finalMessageBuilder.length()-1);
+            finalMessageBuilder.deleteCharAt(finalMessageBuilder.length() - 1);
             String finalMessage = finalMessageBuilder.toString();
 
             String teamColor = plugin.getMessage("general." + utils.getTeamString(arena.playerTeam.get(player)) + "-color");

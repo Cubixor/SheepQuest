@@ -1,12 +1,12 @@
 package me.cubixor.sheepquest.menu;
 
+import com.cryptomorin.xseries.XMaterial;
 import me.cubixor.sheepquest.PlayerInfo;
 import me.cubixor.sheepquest.SheepQuest;
 import me.cubixor.sheepquest.Team;
 import me.cubixor.sheepquest.Utils;
 import me.cubixor.sheepquest.commands.SetupCommands;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -44,24 +44,24 @@ public class SetupMenu implements Listener {
         LinkedHashMap<String, Boolean> check = new LinkedHashMap<>(utils.checkIfReady(arena));
 
         Inventory setupInventory = Bukkit.createInventory(null, 27, plugin.getMessage("setup-menu.name").replace("%arena%", arena));
-        setupInventory.setItem(0, utils.setItemStack(Material.COMPASS, "setup-menu.check-item-name", "setup-menu.check-item-lore",
+        setupInventory.setItem(0, utils.setItemStack(XMaterial.COMPASS.parseMaterial(), "setup-menu.check-item-name", "setup-menu.check-item-lore",
                 "%ready%", !check.containsValue(false) ? plugin.getMessage("arena-setup.check-yes") : plugin.getMessage("arena-setup.check-no")));
-        setupInventory.setItem(1, utils.setItemStack(Material.LAVA_BUCKET, "setup-menu.delete-item-name", "setup-menu.delete-item-lore"));
-        setupInventory.setItem(2, utils.setItemStack(Material.IRON_INGOT, "setup-menu.min-players-item-name", "setup-menu.min-players-item-lore",
+        setupInventory.setItem(1, utils.setItemStack(XMaterial.LAVA_BUCKET.parseMaterial(), "setup-menu.delete-item-name", "setup-menu.delete-item-lore"));
+        setupInventory.setItem(2, utils.setItemStack(XMaterial.IRON_INGOT.parseMaterial(), "setup-menu.min-players-item-name", "setup-menu.min-players-item-lore",
                 "%set%", checkString(check.get("min-players"))));
-        setupInventory.setItem(3, utils.setItemStack(Material.GOLD_INGOT, "setup-menu.max-players-item-name", "setup-menu.max-players-item-lore",
+        setupInventory.setItem(3, utils.setItemStack(XMaterial.GOLD_INGOT.parseMaterial(), "setup-menu.max-players-item-name", "setup-menu.max-players-item-lore",
                 "%set%", checkString(check.get("max-players"))));
-        setupInventory.setItem(4, utils.setItemStack(Material.EYE_OF_ENDER, "setup-menu.main-lobby-item-name", "setup-menu.main-lobby-item-lore",
+        setupInventory.setItem(4, utils.setItemStack(XMaterial.ENDER_EYE.parseMaterial(), "setup-menu.main-lobby-item-name", "setup-menu.main-lobby-item-lore",
                 "%set%", checkString(check.get("main-lobby"))));
-        setupInventory.setItem(5, utils.setItemStack(Material.WATCH, "setup-menu.waiting-lobby-item-name", "setup-menu.waiting-lobby-item-lore",
+        setupInventory.setItem(5, utils.setItemStack(XMaterial.CLOCK.parseMaterial(), "setup-menu.waiting-lobby-item-name", "setup-menu.waiting-lobby-item-lore",
                 "%set%", checkString(check.get("waiting-lobby"))));
-        setupInventory.setItem(6, utils.setItemStack(Material.SHEARS, "setup-menu.sheep-spawn-item-name", "setup-menu.sheep-spawn-item-lore",
+        setupInventory.setItem(6, utils.setItemStack(XMaterial.SHEARS.parseMaterial(), "setup-menu.sheep-spawn-item-name", "setup-menu.sheep-spawn-item-lore",
                 "%set%", checkString(check.get("sheep-spawn"))));
-        setupInventory.setItem(7, utils.setItemStack(Material.BANNER, "setup-menu.team-spawn-item-name", "setup-menu.team-spawn-item-lore",
+        setupInventory.setItem(7, utils.setItemStack(XMaterial.WHITE_BANNER.parseMaterial(), "setup-menu.team-spawn-item-name", "setup-menu.team-spawn-item-lore",
                 "%set%", checkString(check.get("red-spawn") && check.get("green-spawn") && check.get("blue-spawn") && check.get("yellow-spawn"))));
-        setupInventory.setItem(8, utils.setItemStack(Material.WOOL, "setup-menu.team-area-item-name", "setup-menu.team-area-item-lore",
+        setupInventory.setItem(8, utils.setItemStack(XMaterial.WHITE_WOOL.parseMaterial(), "setup-menu.team-area-item-name", "setup-menu.team-area-item-lore",
                 "%set%", checkString(check.get("red-area") && check.get("green-area") && check.get("blue-area") && check.get("yellow-area"))));
-        setupInventory.setItem(22, utils.setItemStack(Material.ARROW, "setup-menu.back-item-name", "setup-menu.back-item-lore"));
+        setupInventory.setItem(22, utils.setItemStack(XMaterial.ARROW.parseMaterial(), "setup-menu.back-item-name", "setup-menu.back-item-lore"));
 
         plugin.inventories.get(player).setupInventory = setupInventory;
     }
@@ -74,7 +74,7 @@ public class SetupMenu implements Listener {
         HashMap<Team, ItemStack> banners = new HashMap<>();
         for (Team team : Team.values()) {
             if (!team.equals(Team.NONE)) {
-                ItemStack banner = new ItemStack(Material.BANNER, 1);
+                ItemStack banner = new ItemStack(XMaterial.WHITE_BANNER.parseMaterial(), 1);
                 BannerMeta bannerMeta = (BannerMeta) banner.getItemMeta();
                 bannerMeta.setBaseColor(utils.getDyeColor(team));
                 banner.setItemMeta(bannerMeta);
@@ -91,7 +91,7 @@ public class SetupMenu implements Listener {
                 "%set%", checkString(check.get("blue-spawn"))));
         spawnSetupInventory.setItem(7, utils.setItemStack(banners.get(Team.YELLOW), "setup-menu.yellow-team-spawn-item-name", "setup-menu.yellow-team-spawn-item-lore",
                 "%set%", checkString(check.get("yellow-spawn"))));
-        spawnSetupInventory.setItem(22, utils.setItemStack(Material.ARROW, "setup-menu.team-spawn-menu-back-item-name", "setup-menu.team-spawn-menu-back-item-lore"));
+        spawnSetupInventory.setItem(22, utils.setItemStack(XMaterial.ARROW.parseMaterial(), "setup-menu.team-spawn-menu-back-item-name", "setup-menu.team-spawn-menu-back-item-lore"));
 
 
         plugin.inventories.get(player).spawnSetupInventory = spawnSetupInventory;
@@ -112,9 +112,9 @@ public class SetupMenu implements Listener {
                 "%set%", checkString(check.get("blue-area"))));
         areaSetupInventory.setItem(7, utils.setItemStack(utils.getTeamWool(Team.YELLOW), "setup-menu.yellow-team-area-item-name", "setup-menu.yellow-team-area-item-lore",
                 "%set%", checkString(check.get("yellow-area"))));
-        areaSetupInventory.setItem(22, utils.setItemStack(Material.ARROW, "setup-menu.team-area-menu-back-item-name", "setup-menu.team-area-menu-back-item-lore"));
+        areaSetupInventory.setItem(22, utils.setItemStack(XMaterial.ARROW.parseMaterial(), "setup-menu.team-area-menu-back-item-name", "setup-menu.team-area-menu-back-item-lore"));
 
-        areaSetupInventory.setItem(21, utils.setItemStack(Material.BLAZE_ROD, "setup-menu.wand-item-name", "setup-menu.wand-item-lore"));
+        areaSetupInventory.setItem(21, utils.setItemStack(XMaterial.BLAZE_ROD.parseMaterial(), "setup-menu.wand-item-name", "setup-menu.wand-item-lore"));
 
 
         plugin.inventories.get(player).areaSetupInventory = areaSetupInventory;

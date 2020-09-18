@@ -5,8 +5,8 @@ import me.cubixor.sheepquest.SheepQuest;
 import me.cubixor.sheepquest.Utils;
 import me.cubixor.sheepquest.commands.PlayCommands;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,6 +14,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 
@@ -153,19 +154,22 @@ public class Signs implements Listener {
             return;
         }
         Block attachedBlock;
-        if (block.getType().equals(Material.WALL_SIGN)) {
-            attachedBlock = block.getRelative(((org.bukkit.material.Sign) sign.getBlock().getState().getData()).getAttachedFace());
-        } else {
-            attachedBlock = block.getRelative(0, -1, 0);
-        }
+
+        attachedBlock = block.getRelative(((org.bukkit.material.Sign) sign.getBlock().getState().getData()).getAttachedFace());
 
         String count = Integer.toString(arena.playerTeam.keySet().size());
         String max = Integer.toString(plugin.getArenasConfig().getInt("Arenas." + arenaString + ".max-players"));
 
         String gameState = utils.getStringState(arena);
         if (plugin.getConfig().getBoolean("color-signs")) {
-            attachedBlock.setType(utils.setGlassColor(arena).getType());
-            attachedBlock.setData(utils.setGlassColor(arena).getData().getData());
+            ItemStack blockType = utils.setGlassColor(arena);
+
+            attachedBlock.setType(blockType.getType());
+            BlockState state = attachedBlock.getState();
+
+            state.setData(blockType.getData());
+            state.update();
+
         }
 
         String vip = plugin.getConfig().getStringList("vip-arenas").contains(arenaString) ? plugin.getMessage("general.vip-prefix") : "";

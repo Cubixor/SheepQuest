@@ -1,5 +1,6 @@
 package me.cubixor.sheepquest;
 
+import com.cryptomorin.xseries.XMaterial;
 import org.bukkit.*;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BossBar;
@@ -45,7 +46,7 @@ public class Utils {
     }
 
     public ItemStack setItemStack(String materialPath, String namePath, String lorePath) {
-        ItemStack itemStack = new ItemStack(Material.matchMaterial(plugin.getConfig().getString(materialPath)), 1);
+        ItemStack itemStack = XMaterial.matchXMaterial(plugin.getConfig().getString(materialPath)).get().parseItem(true);
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(plugin.getMessage(namePath));
         itemMeta.setLore(plugin.getMessageList(lorePath));
@@ -62,13 +63,6 @@ public class Utils {
         return itemStack;
     }
 
-    public ItemStack setItemStack(Material material, String namePath) {
-        ItemStack itemStack = new ItemStack(material, 1);
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.setDisplayName(plugin.getMessage(namePath));
-        itemStack.setItemMeta(itemMeta);
-        return itemStack;
-    }
 
     public ItemStack setItemStack(ItemStack itemStack, String namePath) {
         ItemMeta itemMeta = itemStack.getItemMeta();
@@ -182,15 +176,14 @@ public class Utils {
 
     public Team getWoolTeam(ItemStack material) {
         Team team = null;
-        if (material.getType().equals(Material.WOOL)) {
-            Wool wool = (Wool) material.getData();
-            if (wool.getColor().equals(DyeColor.RED)) {
+        if (material.getType().toString().contains("WOOL")) {
+            if (XMaterial.matchXMaterial(material).equals(XMaterial.RED_WOOL)) {
                 team = Team.RED;
-            } else if (wool.getColor().equals(DyeColor.LIME)) {
+            } else if (XMaterial.matchXMaterial(material).equals(XMaterial.LIME_WOOL)) {
                 team = Team.GREEN;
-            } else if (wool.getColor().equals(DyeColor.BLUE)) {
+            } else if (XMaterial.matchXMaterial(material).equals(XMaterial.BLUE_WOOL)) {
                 team = Team.BLUE;
-            } else if (wool.getColor().equals(DyeColor.YELLOW)) {
+            } else if (XMaterial.matchXMaterial(material).equals(XMaterial.YELLOW_WOOL)) {
                 team = Team.YELLOW;
             }
         } else {
@@ -401,36 +394,17 @@ public class Utils {
         String arena = getArenaString(arenaObject);
         ItemStack material = null;
         if (!plugin.getArenasConfig().getBoolean("Arenas." + arena + ".active")) {
-            if (plugin.below1_13) {
-                material = new ItemStack(Material.STAINED_GLASS, 1, (short) 15);
-            } else {
-                material = new ItemStack(Material.matchMaterial(plugin.getConfig().getString("sign-colors.inactive")));
-            }
+            material = XMaterial.matchXMaterial(plugin.getConfig().getString("sign-colors.inactive")).get().parseItem();
         } else if (arenaObject.state.equals(GameState.WAITING)) {
-            if (plugin.below1_13) {
-                material = new ItemStack(Material.STAINED_GLASS, 1, (short) 5);
-            } else {
-                material = new ItemStack(Material.matchMaterial(plugin.getConfig().getString("sign-colors.waiting")));
-            }
+            material = XMaterial.matchXMaterial(plugin.getConfig().getString("sign-colors.waiting")).get().parseItem();
         } else if (arenaObject.state.equals(GameState.STARTING)) {
-            if (plugin.below1_13) {
-                material = new ItemStack(Material.STAINED_GLASS, 1, (short) 9);
-            } else {
-                material = new ItemStack(Material.matchMaterial(plugin.getConfig().getString("sign-colors.starting")));
-            }
+            material = XMaterial.matchXMaterial(plugin.getConfig().getString("sign-colors.starting")).get().parseItem();
         } else if (arenaObject.state.equals(GameState.GAME)) {
-            if (plugin.below1_13) {
-                material = new ItemStack(Material.STAINED_GLASS, 1, (short) 14);
-            } else {
-                material = new ItemStack(Material.matchMaterial(plugin.getConfig().getString("sign-colors.ingame")));
-            }
+            material = XMaterial.matchXMaterial(plugin.getConfig().getString("sign-colors.ingame")).get().parseItem();
         } else if (arenaObject.state.equals(GameState.ENDING)) {
-            if (plugin.below1_13) {
-                material = new ItemStack(Material.STAINED_GLASS, 1, (short) 10);
-            } else {
-                material = new ItemStack(Material.matchMaterial(plugin.getConfig().getString("sign-colors.ending")));
-            }
+            material = XMaterial.matchXMaterial(plugin.getConfig().getString("sign-colors.ending")).get().parseItem();
         }
         return material;
     }
+
 }

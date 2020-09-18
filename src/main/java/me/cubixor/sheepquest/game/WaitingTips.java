@@ -26,7 +26,7 @@ public class WaitingTips {
             plugin.playerInfo.get(player).tipTask.cancel();
             plugin.playerInfo.get(player).tipTask = null;
         }
-        plugin.playerInfo.get(player).tipTask= new BukkitRunnable() {
+        plugin.playerInfo.get(player).tipTask = new BukkitRunnable() {
             @Override
             public void run() {
                 Utils utils = new Utils(plugin);
@@ -43,6 +43,7 @@ public class WaitingTips {
 
                 new BukkitRunnable() {
                     private int period = 0;
+
                     @Override
                     public void run() {
                         Arena arena1 = utils.getArena(player);
@@ -51,7 +52,7 @@ public class WaitingTips {
                             return;
                         }
                         if (period < 100) {
-                            period+=20;
+                            period += 20;
                             player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(tip));
                         } else {
                             period = 0;

@@ -45,7 +45,7 @@ items:
     type: CHEST
     slot: 0
   leave-item:
-    type: BED
+    type: RED_BED
     slot: 8
   weapon-item:
     type: IRON_SWORD
@@ -58,8 +58,6 @@ items:
 # If true, blocks behind signs will be changed depending on game state.
 color-signs: true
 # Full item list on https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html [item name]
-# WARNING! Sign color customization is available only on versions above 1.13!
-# If you are using 1.9-1.12 sign colors will be set to defaults.
 sign-colors:
   inactive: BLACK_STAINED_GLASS
   waiting: LIME_STAINED_GLASS
@@ -102,4 +100,4 @@ rewards:
     - eco give %player% 0
 
 # Config version - DO NOT CHANGE IT!
-config-version: 1.0
+config-version: 1.2

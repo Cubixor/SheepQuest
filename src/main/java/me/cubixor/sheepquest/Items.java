@@ -1,8 +1,8 @@
 package me.cubixor.sheepquest;
 
-import org.bukkit.Material;
+import com.cryptomorin.xseries.XMaterial;
+import io.github.bananapuncher714.nbteditor.NBTEditor;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.HashMap;
 
@@ -33,15 +33,13 @@ public class Items {
         sheepItemSlot = plugin.getConfig().getInt("items.sheep-item.slot");
 
         weaponItem = utils.setItemStack("items.weapon-item.type", "game.weapon-item-name", "game.weapon-item-lore");
-        ItemMeta weaponItemMeta = weaponItem.getItemMeta();
-        weaponItemMeta.spigot().setUnbreakable(true);
-        weaponItem.setItemMeta(weaponItemMeta);
         weaponItemSlot = plugin.getConfig().getInt("items.weapon-item.slot");
+        weaponItem = NBTEditor.set(weaponItem, (byte) 1, "Unbreakable");
 
-        setupWandItem = utils.setItemStack(Material.BLAZE_ROD, "arena-setup.wand-item-name", "arena-setup.wand-item-lore");
+        setupWandItem = utils.setItemStack(XMaterial.BLAZE_ROD.parseMaterial(), "arena-setup.wand-item-name", "arena-setup.wand-item-lore");
 
-        for(Team team : Team.values()){
-            if(!team.equals(Team.NONE)){
+        for (Team team : Team.values()) {
+            if (!team.equals(Team.NONE)) {
                 teamItems.put(team, utils.setItemStack(utils.getTeamWool(team), "game.team-menu-team-" + utils.getTeamString(team)));
             }
         }

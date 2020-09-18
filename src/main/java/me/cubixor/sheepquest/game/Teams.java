@@ -1,12 +1,12 @@
 package me.cubixor.sheepquest.game;
 
+import com.cryptomorin.xseries.XMaterial;
 import me.cubixor.sheepquest.Arena;
 import me.cubixor.sheepquest.SheepQuest;
 import me.cubixor.sheepquest.Team;
 import me.cubixor.sheepquest.Utils;
 import me.cubixor.sheepquest.commands.PlayCommands;
 import org.bukkit.Bukkit;
-import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.entity.Player;
@@ -16,7 +16,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BannerMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
@@ -75,10 +74,10 @@ public class Teams implements Listener {
 
             if (evt.getCurrentItem().getType().toString().contains("WOOL")) {
 
-                HashMap<Team, Integer> teamPlayers = utils.getTeamPlayers(arena);
-
+                HashMap<Team, Integer> teamPlayers = new HashMap<>(utils.getTeamPlayers(arena));
                 String teamMessage = plugin.getMessage("general.team-" + utils.getTeamString(team));
-                if (teamPlayers.get(team) < plugin.getArenasConfig().getInt("Arenas." + utils.getArenaString(arena) + ".max-players") / 4) {
+
+                if (teamPlayers.get(team) < (plugin.getArenasConfig().getInt("Arenas." + utils.getArenaString(arena) + ".max-players") / 4)) {
                     if (!arena.playerTeam.get(player).equals(team)) {
                         arena.playerTeam.replace(player, team);
                         utils.removeBossBars(player, arena);
@@ -100,23 +99,21 @@ public class Teams implements Listener {
     }
 
     private ItemStack getTeamBanner(Team team) {
-        ItemStack banner = new ItemStack(Material.BANNER);
-        BannerMeta bannerMeta = (BannerMeta) banner.getItemMeta();
+        ItemStack banner = null;
         switch (team) {
             case RED:
-                bannerMeta.setBaseColor(DyeColor.RED);
+                banner = XMaterial.RED_BANNER.parseItem();
                 break;
             case GREEN:
-                bannerMeta.setBaseColor(DyeColor.LIME);
+                banner = XMaterial.LIME_BANNER.parseItem();
                 break;
             case BLUE:
-                bannerMeta.setBaseColor(DyeColor.BLUE);
+                banner = XMaterial.BLUE_BANNER.parseItem();
                 break;
             case YELLOW:
-                bannerMeta.setBaseColor(DyeColor.YELLOW);
+                banner = XMaterial.YELLOW_BANNER.parseItem();
                 break;
         }
-        banner.setItemMeta(bannerMeta);
         return banner;
     }
 
@@ -185,6 +182,6 @@ public class Teams implements Listener {
         arena.teamInventory.setItem(2, teamItems.get(Team.GREEN));
         arena.teamInventory.setItem(4, teamItems.get(Team.BLUE));
         arena.teamInventory.setItem(6, teamItems.get(Team.YELLOW));
-        arena.teamInventory.setItem(8, utils.setItemStack(Material.QUARTZ, "game.team-menu-team-random", "game.team-menu-team-random-lore"));
+        arena.teamInventory.setItem(8, utils.setItemStack(XMaterial.QUARTZ.parseMaterial(), "game.team-menu-team-random", "game.team-menu-team-random-lore"));
     }
 }

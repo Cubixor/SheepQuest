@@ -20,12 +20,11 @@ import java.util.LinkedHashMap;
 public class End {
 
     private final SheepQuest plugin;
+    private Team winnerTeam;
 
     public End(SheepQuest s) {
         plugin = s;
     }
-
-    private Team winnerTeam;
 
     public void gameEnd(Arena arena) {
         Utils utils = new Utils(plugin);

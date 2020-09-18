@@ -16,12 +16,6 @@ import java.util.List;
 
 public class Arena {
 
-    public Arena(SheepQuest plugin) {
-        teamInventory = Bukkit.createInventory(null, 9, plugin.getMessage("game.team-menu-name"));
-        new Teams(plugin).loadBossBars(this);
-        new Signs(plugin).loadArenaSigns(new Utils(plugin).getArenaString(this));
-    }
-
     public GameState state = GameState.WAITING;
     public HashMap<Player, Team> playerTeam = new HashMap<>();
     public int timer = -1;
@@ -33,4 +27,10 @@ public class Arena {
     public List<Sign> signs = new ArrayList<>();
     public HashMap<Player, PlayerGameStats> playerStats = new HashMap<>();
     public HashMap<Team, BossBar> teamBossBars = new HashMap<>();
+
+    public Arena(SheepQuest plugin) {
+        teamInventory = Bukkit.createInventory(null, 9, plugin.getMessage("game.team-menu-name"));
+        new Teams(plugin).loadBossBars(this);
+        new Signs(plugin).loadArenaSigns(new Utils(plugin).getArenaString(this));
+    }
 }

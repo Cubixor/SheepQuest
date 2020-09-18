@@ -5,6 +5,7 @@ import me.cubixor.sheepquest.game.Signs;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -187,7 +188,8 @@ public class SetupCommands {
         }
 
         for (String arena : plugin.arenas.keySet()) {
-            for (Player p : plugin.arenas.get(arena).playerTeam.keySet()) {
+            List<Player> list = new ArrayList<>(plugin.arenas.get(arena).playerTeam.keySet());
+            for (Player p : list) {
                 new PlayCommands(plugin).kickPlayer(p, arena);
                 p.sendMessage(plugin.getMessage("game.arena-leave-reload"));
             }
@@ -239,7 +241,6 @@ public class SetupCommands {
             player.sendMessage(s);
         }
     }
-
 
 
     public void confirmScheduler(Player player) {

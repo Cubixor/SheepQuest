@@ -1,12 +1,12 @@
 package me.cubixor.sheepquest.menu;
 
+import com.cryptomorin.xseries.XMaterial;
 import me.cubixor.sheepquest.Arena;
 import me.cubixor.sheepquest.PlayerGameStats;
 import me.cubixor.sheepquest.SheepQuest;
 import me.cubixor.sheepquest.Utils;
 import me.cubixor.sheepquest.commands.StaffCommands;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,7 +14,7 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,9 +29,9 @@ public class StaffMenu implements Listener {
         plugin = s;
     }
 
-    public void staffMenuCommand(Player player, String[] args){
+    public void staffMenuCommand(Player player, String[] args) {
         Utils utils = new Utils(plugin);
-        if(!utils.checkIfValid(player, args, "sheepquest.staff.menu", "staff-menu.command", 2)){
+        if (!utils.checkIfValid(player, args, "sheepquest.staff.menu", "staff-menu.command", 2)) {
             return;
         }
         updateStaffMenu(args[1], player);
@@ -48,16 +48,16 @@ public class StaffMenu implements Listener {
         int count = plugin.arenas.get(arena).playerTeam.keySet().size();
 
         Inventory staffInventory = Bukkit.createInventory(null, 27, plugin.getMessage("staff-menu.name").replace("%arena%", arena));
-        staffInventory.setItem(0, utils.setItemStack(Material.NETHER_STAR, "staff-menu.active-item-name", "staff-menu.active-item-lore",
+        staffInventory.setItem(0, utils.setItemStack(XMaterial.NETHER_STAR.parseMaterial(), "staff-menu.active-item-name", "staff-menu.active-item-lore",
                 "%active%", active ? plugin.getMessage("staff-menu.state-active") : plugin.getMessage("staff-menu.state-not-active")));
-        staffInventory.setItem(1, utils.setItemStack(Material.SLIME_BALL, "staff-menu.start-item-name", "staff-menu.start-item-lore",
+        staffInventory.setItem(1, utils.setItemStack(XMaterial.SLIME_BALL.parseMaterial(), "staff-menu.start-item-name", "staff-menu.start-item-lore",
                 "%state%", gameState));
-        staffInventory.setItem(2, utils.setItemStack(Material.MAGMA_CREAM, "staff-menu.stop-item-name", "staff-menu.stop-item-lore",
+        staffInventory.setItem(2, utils.setItemStack(XMaterial.MAGMA_CREAM.parseMaterial(), "staff-menu.stop-item-name", "staff-menu.stop-item-lore",
                 "%state%", gameState));
-        staffInventory.setItem(3, utils.setItemStack(Material.SKULL_ITEM, "staff-menu.players-item-name", "staff-menu.players-item-lore",
+        staffInventory.setItem(3, utils.setItemStack(XMaterial.PLAYER_HEAD.parseMaterial(), "staff-menu.players-item-name", "staff-menu.players-item-lore",
                 "%players%", Integer.toString(count)));
 
-        staffInventory.setItem(22, utils.setItemStack(Material.ARROW, "staff-menu.back-item-name", "staff-menu.back-item-lore"));
+        staffInventory.setItem(22, utils.setItemStack(XMaterial.ARROW.parseMaterial(), "staff-menu.back-item-name", "staff-menu.back-item-lore"));
 
         plugin.inventories.get(player).staffInventory = staffInventory;
     }
@@ -73,9 +73,8 @@ public class StaffMenu implements Listener {
         plugin.inventories.get(player).playerSlot = new HashMap<>();
         if (!arena.playerTeam.keySet().isEmpty()) {
             for (Player p : playerList) {
-                ItemStack playerItem = new ItemStack(Material.SKULL_ITEM);
-                SkullMeta skullMeta = (SkullMeta) playerItem.getItemMeta();
-                skullMeta.setOwner(p.getName());
+                ItemStack playerItem = new ItemStack(XMaterial.PLAYER_HEAD.parseMaterial());
+                ItemMeta skullMeta = playerItem.getItemMeta();
                 skullMeta.setDisplayName(plugin.getMessage("staff-menu.player-item-name").replace("%nick%", p.getName()));
                 List<String> playerItemLore = new ArrayList<>(plugin.getMessageList("staff-menu.player-item-lore"));
                 for (String s : playerItemLore) {
@@ -94,9 +93,10 @@ public class StaffMenu implements Listener {
             }
         }
 
-        playersInventory.setItem(49, utils.setItemStack(Material.ARROW, "staff-menu.players-menu-back-item-name", "staff-menu.players-menu-back-item-lore"));
+        playersInventory.setItem(49, utils.setItemStack(XMaterial.ARROW.parseMaterial(), "staff-menu.players-menu-back-item-name", "staff-menu.players-menu-back-item-lore"));
 
         plugin.inventories.get(player).playersInventory = playersInventory;
+
     }
 
     @EventHandler
@@ -105,7 +105,7 @@ public class StaffMenu implements Listener {
         if (!plugin.inventories.containsKey(player)) {
             return;
         }
-        if(evt.getCurrentItem() == null){
+        if (evt.getCurrentItem() == null) {
             return;
         }
         StaffCommands staffCommands = new StaffCommands(plugin);
@@ -140,7 +140,7 @@ public class StaffMenu implements Listener {
                 updateStaffMenu(arena, player);
                 player.openInventory(plugin.inventories.get(player).staffInventory);
             }
-            if (evt.getCurrentItem().getType().equals(Material.SKULL_ITEM)) {
+            if (evt.getCurrentItem().getType().equals(XMaterial.PLAYER_HEAD.parseMaterial())) {
                 Player skullOwner = plugin.inventories.get(player).playerSlot.get(evt.getSlot());
                 if (evt.getClick().equals(ClickType.RIGHT)) {
                     new StaffCommands(plugin).kick(player, new String[]{"kick", skullOwner.getName()});

@@ -1,5 +1,7 @@
 package me.cubixor.sheepquest.game;
 
+import com.cryptomorin.xseries.XMaterial;
+import io.github.bananapuncher714.nbteditor.NBTEditor;
 import me.cubixor.sheepquest.*;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -67,9 +69,9 @@ public class Start {
 
     private ItemStack setArmorItem(Material armorType, Color color) {
         ItemStack armor = new ItemStack(armorType, 1);
+        armor = NBTEditor.set(armor, (byte) 1, "Unbreakable");
         LeatherArmorMeta armorMeta = (LeatherArmorMeta) armor.getItemMeta();
         armorMeta.setColor(color);
-        armorMeta.spigot().setUnbreakable(true);
         armor.setItemMeta(armorMeta);
         return armor;
     }
@@ -79,10 +81,10 @@ public class Start {
 
         Color color = utils.getColor(team);
 
-        ItemStack helmet = setArmorItem(Material.LEATHER_HELMET, color);
-        ItemStack chestplate = setArmorItem(Material.LEATHER_CHESTPLATE, color);
-        ItemStack leggings = setArmorItem(Material.LEATHER_LEGGINGS, color);
-        ItemStack boots = setArmorItem(Material.LEATHER_BOOTS, color);
+        ItemStack helmet = setArmorItem(XMaterial.LEATHER_HELMET.parseMaterial(), color);
+        ItemStack chestplate = setArmorItem(XMaterial.LEATHER_CHESTPLATE.parseMaterial(), color);
+        ItemStack leggings = setArmorItem(XMaterial.LEATHER_LEGGINGS.parseMaterial(), color);
+        ItemStack boots = setArmorItem(XMaterial.LEATHER_BOOTS.parseMaterial(), color);
 
         player.getInventory().setHelmet(helmet);
         player.getInventory().setChestplate(chestplate);

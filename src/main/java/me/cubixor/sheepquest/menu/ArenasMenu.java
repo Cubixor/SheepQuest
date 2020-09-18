@@ -1,5 +1,6 @@
 package me.cubixor.sheepquest.menu;
 
+import com.cryptomorin.xseries.XMaterial;
 import me.cubixor.sheepquest.Arena;
 import me.cubixor.sheepquest.SheepQuest;
 import me.cubixor.sheepquest.Utils;
@@ -48,11 +49,11 @@ public class ArenasMenu implements Listener {
         int slot = 0;
         for (String arena : plugin.arenas.keySet()) {
             Arena arenaObject = plugin.arenas.get(arena);
-            ItemStack material = null;
+            ItemStack material;
             if (plugin.getConfig().getBoolean("color-signs")) {
                 material = utils.setGlassColor(arenaObject);
             } else {
-                material = new ItemStack(Material.NETHER_STAR);
+                material = new ItemStack(XMaterial.NETHER_STAR.parseMaterial());
             }
 
 
@@ -64,9 +65,9 @@ public class ArenasMenu implements Listener {
             slot++;
         }
 
-        arenasInventory.setItem(48, utils.setItemStack(Material.SLIME_BALL, "arenas-menu.quickjoin-item-name", "arenas-menu.quickjoin-item-lore"));
-        arenasInventory.setItem(49, utils.setItemStack(Material.ARROW, "arenas-menu.close-item-name", "arenas-menu.close-item-lore"));
-        arenasInventory.setItem(50, utils.setItemStack(Material.DIAMOND, "arenas-menu.stats-item-name", "arenas-menu.stats-item-lore"));
+        arenasInventory.setItem(48, utils.setItemStack(XMaterial.SLIME_BALL.parseMaterial(), "arenas-menu.quickjoin-item-name", "arenas-menu.quickjoin-item-lore"));
+        arenasInventory.setItem(49, utils.setItemStack(XMaterial.ARROW.parseMaterial(), "arenas-menu.close-item-name", "arenas-menu.close-item-lore"));
+        arenasInventory.setItem(50, utils.setItemStack(XMaterial.DIAMOND.parseMaterial(), "arenas-menu.stats-item-name", "arenas-menu.stats-item-lore"));
 
 
         plugin.inventories.get(player).arenasInventory = arenasInventory;
@@ -78,11 +79,11 @@ public class ArenasMenu implements Listener {
 
         Inventory optionsInventory = Bukkit.createInventory(null, 27, plugin.getMessage("arenas-menu.name"));
 
-        optionsInventory.setItem(2, arenaItemStack(new ItemStack(Material.NETHER_STAR), arena, "arenas-menu.play-item-name", "arenas-menu.play-item-lore"));
-        optionsInventory.setItem(4, utils.setItemStack(Material.ENDER_PEARL, "arenas-menu.staff-item-name", "arenas-menu.staff-item-lore"));
-        optionsInventory.setItem(6, utils.setItemStack(Material.EYE_OF_ENDER, "arenas-menu.setup-item-name", "arenas-menu.setup-item-lore"));
+        optionsInventory.setItem(2, arenaItemStack(new ItemStack(XMaterial.NETHER_STAR.parseMaterial()), arena, "arenas-menu.play-item-name", "arenas-menu.play-item-lore"));
+        optionsInventory.setItem(4, utils.setItemStack(XMaterial.ENDER_PEARL.parseMaterial(), "arenas-menu.staff-item-name", "arenas-menu.staff-item-lore"));
+        optionsInventory.setItem(6, utils.setItemStack(XMaterial.ENDER_EYE.parseMaterial(), "arenas-menu.setup-item-name", "arenas-menu.setup-item-lore"));
 
-        optionsInventory.setItem(22, utils.setItemStack(Material.ARROW, "arenas-menu.options-menu-back-item-name", "arenas-menu.options-menu-back-item-lore"));
+        optionsInventory.setItem(22, utils.setItemStack(XMaterial.ARROW.parseMaterial(), "arenas-menu.options-menu-back-item-name", "arenas-menu.options-menu-back-item-lore"));
 
         plugin.inventories.get(player).optionsInventory = optionsInventory;
     }
@@ -110,14 +111,16 @@ public class ArenasMenu implements Listener {
                     player.getOpenInventory().close();
                     break;
                 default:
-                    if (evt.getClick().equals(ClickType.LEFT)) {
-                        String arena = plugin.inventories.get(player).arenaSlot.get(evt.getSlot());
-                        new PlayCommands(plugin).join(player, new String[]{"join", arena});
-                        player.getOpenInventory().close();
-                    } else if (evt.getClick().equals(ClickType.RIGHT)) {
-                        updateOptionsMenu(plugin.inventories.get(player).arenaSlot.get(evt.getSlot()), player);
-                        plugin.inventories.get(player).arena = plugin.inventories.get(player).arenaSlot.get(evt.getSlot());
-                        player.openInventory(plugin.inventories.get(player).optionsInventory);
+                    if (evt.getCurrentItem().getType() != Material.AIR) {
+                        if (evt.getClick().equals(ClickType.LEFT)) {
+                            String arena = plugin.inventories.get(player).arenaSlot.get(evt.getSlot());
+                            new PlayCommands(plugin).join(player, new String[]{"join", arena});
+                            player.getOpenInventory().close();
+                        } else if (evt.getClick().equals(ClickType.RIGHT)) {
+                            updateOptionsMenu(plugin.inventories.get(player).arenaSlot.get(evt.getSlot()), player);
+                            plugin.inventories.get(player).arena = plugin.inventories.get(player).arenaSlot.get(evt.getSlot());
+                            player.openInventory(plugin.inventories.get(player).optionsInventory);
+                        }
                     }
                     break;
             }
@@ -130,12 +133,12 @@ public class ArenasMenu implements Listener {
                     player.getOpenInventory().close();
                     break;
                 case 4:
-                    new StaffMenu(plugin).updateStaffMenu(arena, player);
-                    player.openInventory(plugin.inventories.get(player).staffInventory);
+                    player.getOpenInventory().close();
+                    new StaffMenu(plugin).staffMenuCommand(player, new String[]{"staffmenu", arena});
                     break;
                 case 6:
-                    new SetupMenu(plugin).updateSetupMenu(arena, player);
-                    player.openInventory(plugin.inventories.get(player).setupInventory);
+                    player.getOpenInventory().close();
+                    new SetupMenu(plugin).setupMenuCommand(player, new String[]{"setupmenu", arena});
                     break;
                 case 22:
                     updateArenasMenu(player);
