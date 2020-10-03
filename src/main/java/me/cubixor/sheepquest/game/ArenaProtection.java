@@ -1,10 +1,10 @@
 package me.cubixor.sheepquest.game;
 
-import me.cubixor.sheepquest.Arena;
-import me.cubixor.sheepquest.GameState;
 import me.cubixor.sheepquest.SheepQuest;
-import me.cubixor.sheepquest.Utils;
+import me.cubixor.sheepquest.api.Utils;
 import me.cubixor.sheepquest.commands.PlayCommands;
+import me.cubixor.sheepquest.gameInfo.Arena;
+import me.cubixor.sheepquest.gameInfo.GameState;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -22,46 +22,33 @@ public class ArenaProtection implements Listener {
 
     private final SheepQuest plugin;
 
-    public ArenaProtection(SheepQuest s) {
-        plugin = s;
+    public ArenaProtection() {
+        plugin = SheepQuest.getInstance();
     }
 
     @EventHandler
     public void onHurt(EntityDamageEvent evt) {
-        if (!evt.getEntityType().equals(EntityType.SHEEP) && !evt.getEntityType().equals(EntityType.PLAYER)) {
+        if (!evt.getEntityType().equals(EntityType.PLAYER)) {
             return;
         }
-        if (evt.getEntityType().equals(EntityType.SHEEP)) {
-            for (String arena : plugin.arenas.keySet()) {
-                if (plugin.arenas.get(arena).sheep.containsKey(evt.getEntity())) {
-                    evt.setDamage(0.0F);
-                    evt.setCancelled(true);
-                    return;
-                }
-            }
-        }
-        if (evt.getEntityType().equals(EntityType.PLAYER)) {
-            if (new Utils(plugin).getArena((Player) evt.getEntity()) != null) {
-                if (!evt.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK)) {
-                    evt.setDamage(0.0F);
-                    evt.setCancelled(true);
-                }
+        if (Utils.getArena((Player) evt.getEntity()) != null) {
+            if (!evt.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK)) {
+                evt.setDamage(0.0F);
+                evt.setCancelled(true);
             }
         }
     }
 
     @EventHandler
     public void onDrop(PlayerDropItemEvent evt) {
-        Utils utils = new Utils(plugin);
-        if (utils.getArena(evt.getPlayer()) != null) {
+        if (Utils.getArena(evt.getPlayer()) != null) {
             evt.setCancelled(true);
         }
     }
 
     @EventHandler
     public void onPickup(PlayerPickupItemEvent evt) {
-        Utils utils = new Utils(plugin);
-        if (utils.getArena(evt.getPlayer()) != null) {
+        if (Utils.getArena(evt.getPlayer()) != null) {
             evt.setCancelled(true);
         }
 
@@ -69,36 +56,33 @@ public class ArenaProtection implements Listener {
 
     @EventHandler
     public void onLeave(PlayerQuitEvent evt) {
-        Utils utils = new Utils(plugin);
-        if (utils.getArena(evt.getPlayer()) != null) {
-            PlayCommands playCommands = new PlayCommands(plugin);
-            playCommands.sendKickMessage(evt.getPlayer(), utils.getArena(evt.getPlayer()));
-            playCommands.kickPlayer(evt.getPlayer(), utils.getArenaString(utils.getArena(evt.getPlayer())));
+        if (Utils.getArena(evt.getPlayer()) != null) {
+            PlayCommands playCommands = new PlayCommands();
+            playCommands.sendKickMessage(evt.getPlayer(), Utils.getArena(evt.getPlayer()));
+            playCommands.kickPlayer(evt.getPlayer(), Utils.getArenaString(Utils.getArena(evt.getPlayer())));
         }
     }
 
     @EventHandler
     public void onFood(FoodLevelChangeEvent evt) {
-        Utils utils = new Utils(plugin);
         if (!evt.getEntity().getType().equals(EntityType.PLAYER)) {
             return;
         }
-        if (utils.getArena((Player) evt.getEntity()) != null) {
+        if (Utils.getArena((Player) evt.getEntity()) != null) {
             evt.setCancelled(true);
         }
     }
 
     @EventHandler
     public void onMove(PlayerMoveEvent evt) {
-        Utils utils = new Utils(plugin);
-        Arena arena = utils.getArena(evt.getPlayer());
-        String arenaString = utils.getArenaString(arena);
+        Arena arena = Utils.getArena(evt.getPlayer());
+        String arenaString = Utils.getArenaString(arena);
         if (arena != null) {
             if (evt.getTo().getY() < 0) {
-                if (arena.state.equals(GameState.WAITING) || arena.state.equals(GameState.STARTING)) {
+                if (arena.getState().equals(GameState.WAITING) || arena.getState().equals(GameState.STARTING)) {
                     evt.getPlayer().teleport((Location) plugin.getArenasConfig().get("Arenas." + arenaString + ".waiting-lobby"));
                 } else {
-                    evt.getPlayer().teleport((Location) plugin.getArenasConfig().get("Arenas." + arenaString + ".teams." + utils.getTeamString(arena.playerTeam.get(evt.getPlayer())) + "-spawn"));
+                    evt.getPlayer().teleport((Location) plugin.getArenasConfig().get("Arenas." + arenaString + ".teams." + Utils.getTeamString(arena.getPlayers().get(evt.getPlayer())) + "-spawn"));
                 }
             }
         }
@@ -106,8 +90,7 @@ public class ArenaProtection implements Listener {
 
     @EventHandler
     public void onClick(InventoryClickEvent evt) {
-        Utils utils = new Utils(plugin);
-        Arena arena = utils.getArena((Player) evt.getWhoClicked());
+        Arena arena = Utils.getArena((Player) evt.getWhoClicked());
         if (arena != null) {
             evt.setCancelled(true);
         }

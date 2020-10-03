@@ -1,9 +1,9 @@
 package me.cubixor.sheepquest.commands;
 
-import me.cubixor.sheepquest.Arena;
-import me.cubixor.sheepquest.GameState;
 import me.cubixor.sheepquest.SheepQuest;
-import me.cubixor.sheepquest.Utils;
+import me.cubixor.sheepquest.api.Utils;
+import me.cubixor.sheepquest.gameInfo.Arena;
+import me.cubixor.sheepquest.gameInfo.GameState;
 import me.cubixor.sheepquest.menu.ArenasMenu;
 import me.cubixor.sheepquest.menu.SetupMenu;
 import me.cubixor.sheepquest.menu.StaffMenu;
@@ -14,12 +14,11 @@ import org.bukkit.entity.Player;
 
 public class Command implements CommandExecutor {
 
-    private final SheepQuest plugin;
+    public final SheepQuest plugin;
 
-    public Command(SheepQuest s) {
-        plugin = s;
+    public Command() {
+        plugin = SheepQuest.getInstance();
     }
-
 
     @Override
     public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
@@ -30,9 +29,9 @@ public class Command implements CommandExecutor {
             }
             Player player = (Player) sender;
 
-            SetupCommands setupCommands = new SetupCommands(plugin);
-            StaffCommands staffCommands = new StaffCommands(plugin);
-            PlayCommands playCommands = new PlayCommands(plugin);
+            SetupCommands setupCommands = new SetupCommands();
+            StaffCommands staffCommands = new StaffCommands();
+            PlayCommands playCommands = new PlayCommands();
 
             if (args.length == 0 || args[0].equalsIgnoreCase("help")) {
                 help(player, "sheepquest.play.help", "help.general-help");
@@ -86,11 +85,11 @@ public class Command implements CommandExecutor {
             } else if (args[0].equalsIgnoreCase("admin")) {
                 help(player, "sheepquest.admin.help", "help.admin-help");
             } else if (args[0].equalsIgnoreCase("setupmenu")) {
-                new SetupMenu(plugin).setupMenuCommand(player, args);
+                new SetupMenu().setupMenuCommand(player, args);
             } else if (args[0].equalsIgnoreCase("staffmenu")) {
-                new StaffMenu(plugin).staffMenuCommand(player, args);
+                new StaffMenu().staffMenuCommand(player, args);
             } else if (args[0].equalsIgnoreCase("arenasmenu")) {
-                new ArenasMenu(plugin).arenasMenuCommand(player, args);
+                new ArenasMenu().arenasMenuCommand(player, args);
             } else {
                 sender.sendMessage(plugin.getMessage("general.unknown-command"));
             }
@@ -100,15 +99,14 @@ public class Command implements CommandExecutor {
                 return true;
             }
 
-            Utils utils = new Utils(plugin);
             Player player = (Player) sender;
-            Arena arena = utils.getArena(player);
+            Arena arena = Utils.getArena(player);
             if (arena == null) {
                 player.sendMessage(plugin.getMessage("game.chat-not-in-game"));
                 return true;
             }
 
-            if (!arena.state.equals(GameState.GAME)) {
+            if (!arena.getState().equals(GameState.GAME)) {
                 player.sendMessage(plugin.getMessage("game.team-chat-game"));
                 return true;
             }
@@ -125,10 +123,10 @@ public class Command implements CommandExecutor {
             finalMessageBuilder.deleteCharAt(finalMessageBuilder.length() - 1);
             String finalMessage = finalMessageBuilder.toString();
 
-            String teamColor = plugin.getMessage("general." + utils.getTeamString(arena.playerTeam.get(player)) + "-color");
+            String teamColor = plugin.getMessage("general." + Utils.getTeamString(arena.getPlayers().get(player)) + "-color");
 
-            for (Player p : arena.playerTeam.keySet()) {
-                if (arena.playerTeam.get(p).equals(arena.playerTeam.get(player))) {
+            for (Player p : arena.getPlayers().keySet()) {
+                if (arena.getPlayers().get(p).equals(arena.getPlayers().get(player))) {
                     p.sendMessage(plugin.getMessage("game.team-chat-format").replace("%player%", player.getName()).replace("%message%", finalMessage).replace("%color%", teamColor));
                 }
             }

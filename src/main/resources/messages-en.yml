@@ -1,4 +1,4 @@
-# SheepQuest plugin messages file (messages.yml)
+# SheepQuest plugin messages file (messages-en.yml) - English
 #
 # This file contains all plugin messages. Edit them as you like!
 #
@@ -118,6 +118,27 @@ game:
   arena-leave-success: '%prefix% &7Player &e%player% &7left the game! &7(&e&l&o%count%/%max%&7)'
   arena-leave-reload: '%prefix% &cYou were kicked from the game because of plugin reload!'
   quick-join-no-games-found: '%prefix% &cThere are no games that you could join now. Please try again later.'
+  countdown-started: "%prefix% &7Countdown has started. The game will begin soon."
+  full-countdown: "%prefix% &7Game is full! Waiting time has been reduced to &e%time% seconds&7."
+  countdown-60s-title: '&a&l60'
+  countdown-60s-subtitle: '&7Waiting for more players...'
+  countdown-30s-title: '&a&l30'
+  countdown-30s-subtitle: '&7Waiting for more players...'
+  countdown-10s-title: '&a&l10'
+  countdown-10s-subtitle: '&7Prepare to play!'
+  countdown-5s-title: '&a&l5'
+  countdown-5s-subtitle: '&7Collect sheep from the middle'
+  countdown-4s-title: '&a&l4'
+  countdown-4s-subtitle: '&7Protect your pen'
+  countdown-3s-title: '&a&l3'
+  countdown-3s-subtitle: '&7Kill others to stole their sheep'
+  countdown-2s-title: '&a&l2'
+  countdown-2s-subtitle: '&7Cooperate with your team'
+  countdown-1s-title: '&a&l1'
+  countdown-1s-subtitle: '&7&lHave fun!'
+  start-title: "&d&lStart!"
+  start-subtitle: "&7You are in team %team%"
+  time-left: "&d&l%time% &7seconds left!"
   team-join-success: '%prefix% &7You have successfully joined team %team%&7!'
   team-join-random: '%prefix% &7You will be put in random team when the game starts!'
   already-in-this-team: '%prefix% &cYou are already in team %team%&c!'
@@ -156,16 +177,14 @@ game:
     - '&7Click to leave game'
     - '&7and go back to lobby!'
   kill: "%prefix% &7Player %killerTeam%%killer% &7killed %playerTeam%%player%&7!"
-  respawn-in-title: '&a&lYou will respawn in'
-  respawn-in-subtitle: '&a&l%time%'
-  red-win-title: '&c&lRed'
-  red-win-subtitle: '&cwon the game'
-  green-win-title: '&a&lGreen'
-  green-win-subtitle: '&awon the game'
-  blue-win-title: '&9&lBlue'
-  blue-win-subtitle: '&9won the game'
-  yellow-win-title: '&e&lYellow'
-  yellow-win-subtitle: '&ewon the game'
+  kill-subtitle: "&7You killed %team-color%%player%"
+  respawn-in-title: '&7Killer: %team-color%%player%'
+  respawn-in-subtitle: '&d&lRespawn in: %time%'
+  respawned-title: '&a&lRespawned!'
+  respawned-subtitle: '&a&lGet back to the game!'
+  win-title: '&a&lVictory'
+  defeat-title: '&c&lDefeat'
+  win-defeat-subtitle: '&7Team %team% &7won the game'
   chat-format: '%color%%player% &8&l» &r%message%'
   team-chat-format: '&7[&d&lTEAM&7] %color%%player% &8&l» &r%message%'
   team-chat-usage: '%prefix% &cWrong use! &7Use /t &e<message>'
@@ -189,6 +208,20 @@ game:
   scoreboard-minute: '&f%count% &fminute'
   scoreboard-server: '&espigotmc.org'
   scoreboard-ending: '&e&lEnding in:'
+  summary:
+    - '&m---------------------------------------------------'
+    - ' &7&l| &c&lRed&7: %red-points% &7&l| &a&lGreen&7: %green-points% &7&l| &9&lBlue&7: %blue-points% &7&l| &e&lYellow&7: %yellow-points% &7&l|'
+    - ''
+    - '   &eGame stats:'
+    - '   &7Kills: &e%kills%'
+    - '   &7Deaths: &e%deaths%'
+    - '   &7Sheep taken: &e%sheep%'
+    - ''
+    - '&d&lThanks for playing!'
+    - '&m---------------------------------------------------'
+special-events:
+  bonus-sheep-name: "&d&l%points% &f&lPOINTS"
+  bonus-sheep-spawn: "%prefix% &7The &d&lBONUS SHEEP &7has spawned!"
 arena-moderate:
   force-start-usage: '%prefix% &cWrong use! &7Type: /sheepquest forcestart &e<arena>'
   force-start-already-started: '%prefix% &cArena &e%arena% &chas already started!'
@@ -210,6 +243,7 @@ arena-moderate:
   active-players: "%prefix% &7You were kicked from the game because arena was deactivated by server staff!"
   active-not-ready: "%prefix% &cArena &e%arena% &cis not ready to play and it cannot be activated!"
 arena-setup:
+  active-block: "%prefix% &cThis arena is active so you cannot modify it's settings! &7Deactivate it using staff menu or &e/sq active %arena% false &7command."
   wand-item-name: '&6&lSetup wand'
   wand-item-lore:
     - '&7Click LMB to select first pos.'

@@ -1,11 +1,12 @@
 package me.cubixor.sheepquest.game;
 
 import com.cryptomorin.xseries.XMaterial;
-import me.cubixor.sheepquest.Arena;
+import com.cryptomorin.xseries.XSound;
 import me.cubixor.sheepquest.SheepQuest;
-import me.cubixor.sheepquest.Team;
-import me.cubixor.sheepquest.Utils;
+import me.cubixor.sheepquest.api.Utils;
 import me.cubixor.sheepquest.commands.PlayCommands;
+import me.cubixor.sheepquest.gameInfo.Arena;
+import me.cubixor.sheepquest.gameInfo.Team;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.boss.BarStyle;
@@ -26,62 +27,59 @@ public class Teams implements Listener {
 
     private final SheepQuest plugin;
 
-    public Teams(SheepQuest sq) {
-        plugin = sq;
+    public Teams() {
+        plugin = SheepQuest.getInstance();
     }
 
     @EventHandler
     public void onClick(PlayerInteractEvent evt) {
-        Utils utils = new Utils(plugin);
-        Arena arena = utils.getArena(evt.getPlayer());
+        Arena arena = Utils.getArena(evt.getPlayer());
         if (arena != null && evt.getItem() != null && evt.getHand().equals(EquipmentSlot.HAND)) {
             evt.setCancelled(true);
-            if (evt.getItem().equals(plugin.items.teamItem)) {
+            if (evt.getItem().equals(plugin.getItems().getTeamItem())) {
 
-                evt.getPlayer().openInventory(arena.teamInventory);
-                if (arena.teamInventory.getItem(1) == null) {
+                evt.getPlayer().openInventory(arena.getTeamChooseInv());
+                if (arena.getTeamChooseInv().getItem(1) == null) {
                     menuUpdate(arena);
                 }
 
 
-            } else if (evt.getItem().equals(plugin.items.leaveItem)) {
-                PlayCommands playCommands = new PlayCommands(plugin);
+            } else if (evt.getItem().equals(plugin.getItems().getLeaveItem())) {
+                PlayCommands playCommands = new PlayCommands();
                 playCommands.sendKickMessage(evt.getPlayer(), arena);
-                playCommands.kickPlayer(evt.getPlayer(), utils.getArenaString(arena));
+                playCommands.kickPlayer(evt.getPlayer(), Utils.getArenaString(arena));
             }
         }
     }
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent evt) {
-        Utils utils = new Utils(plugin);
-        Arena arena = utils.getArena((Player) evt.getWhoClicked());
-        if (arena != null && evt.getInventory().equals(arena.teamInventory) && evt.getCurrentItem() != null) {
+        Arena arena = Utils.getArena((Player) evt.getWhoClicked());
+        if (arena != null && evt.getClickedInventory().equals(arena.getTeamChooseInv()) && evt.getCurrentItem() != null) {
 
             evt.setCancelled(true);
 
             Player player = (Player) evt.getWhoClicked();
-            Team team = utils.getWoolTeam(evt.getCurrentItem());
+            Team team = Utils.getWoolTeam(evt.getCurrentItem());
 
             if (team.equals(Team.NONE)) {
-                arena.playerTeam.replace(player, Team.NONE);
+                arena.getPlayers().replace(player, Team.NONE);
                 player.sendMessage(plugin.getMessage("game.team-join-random"));
-                utils.removeBossBars(player, arena);
-                arena.teamBossBars.get(Team.NONE).addPlayer(player);
+                Utils.removeBossBars(player, arena);
+                arena.getTeamBossBars().get(Team.NONE).addPlayer(player);
                 player.getInventory().setHelmet(new ItemStack(Material.AIR));
-                player.getOpenInventory().close();
             }
 
             if (evt.getCurrentItem().getType().toString().contains("WOOL")) {
 
-                HashMap<Team, Integer> teamPlayers = new HashMap<>(utils.getTeamPlayers(arena));
-                String teamMessage = plugin.getMessage("general.team-" + utils.getTeamString(team));
+                HashMap<Team, Integer> teamPlayers = new HashMap<>(Utils.getTeamPlayers(arena));
+                String teamMessage = plugin.getMessage("general.team-" + Utils.getTeamString(team));
 
-                if (teamPlayers.get(team) < (plugin.getArenasConfig().getInt("Arenas." + utils.getArenaString(arena) + ".max-players") / 4)) {
-                    if (!arena.playerTeam.get(player).equals(team)) {
-                        arena.playerTeam.replace(player, team);
-                        utils.removeBossBars(player, arena);
-                        arena.teamBossBars.get(team).addPlayer(player);
+                if (teamPlayers.get(team) < (plugin.getArenasConfig().getInt("Arenas." + Utils.getArenaString(arena) + ".max-players") / 4)) {
+                    if (!arena.getPlayers().get(player).equals(team)) {
+                        arena.getPlayers().replace(player, team);
+                        Utils.removeBossBars(player, arena);
+                        arena.getTeamBossBars().get(team).addPlayer(player);
                         player.getInventory().setHelmet(getTeamBanner(team));
                         player.sendMessage(plugin.getMessage("game.team-join-success").replace("%team%", teamMessage));
                     } else {
@@ -90,11 +88,13 @@ public class Teams implements Listener {
                 } else {
                     player.sendMessage(plugin.getMessage("game.team-full").replace("%team%", teamMessage));
                 }
-                player.getOpenInventory().close();
-
 
                 menuUpdate(arena);
             }
+
+            player.playSound(player.getLocation(), XSound.matchXSound(plugin.getConfig().getString("sounds.team-choose")).get().parseSound(), 100, 1);
+            player.getOpenInventory().close();
+
         }
     }
 
@@ -118,18 +118,15 @@ public class Teams implements Listener {
     }
 
     public void loadBossBars(Arena arena) {
-        Utils utils = new Utils(plugin);
         for (Team team : Team.values()) {
-            String teamString = plugin.getMessage("general.team-" + utils.getTeamString(team));
+            String teamString = plugin.getMessage("general.team-" + Utils.getTeamString(team));
 
-            arena.teamBossBars.put(team, Bukkit.createBossBar(plugin.getMessage("game.bossbar-team").replace("%team%", teamString), utils.getBossBarColor(team), BarStyle.SOLID));
+            arena.getTeamBossBars().put(team, Bukkit.createBossBar(plugin.getMessage("game.bossbar-team").replace("%team%", teamString), Utils.getBossBarColor(team), BarStyle.SOLID));
         }
     }
 
 
     public void menuUpdate(Arena arena) {
-        Utils utils = new Utils(plugin);
-
         HashMap<Team, List<String>> lore = new HashMap<>();
         List<String> lorePlayers = new ArrayList<>(plugin.getMessageList("game.team-menu-players"));
 
@@ -143,8 +140,8 @@ public class Teams implements Listener {
         }
 
 
-        for (Player p : arena.playerTeam.keySet()) {
-            Team team = arena.playerTeam.get(p);
+        for (Player p : arena.getPlayers().keySet()) {
+            Team team = arena.getPlayers().get(p);
             if (!team.equals(Team.NONE)) {
                 List<String> newLore = new ArrayList<>(lore.get(team));
                 newLore.add(plugin.getMessage("game.team-menu-players-format").replace("%player%", p.getName()));
@@ -161,7 +158,7 @@ public class Teams implements Listener {
             }
         }
 
-        HashMap<Team, ItemStack> teamItems = new HashMap<>(plugin.items.teamItems);
+        HashMap<Team, ItemStack> teamItems = new HashMap<>(plugin.getItems().getTeamItems());
         for (Team team : teamItems.keySet()) {
 
             ItemStack itemStack = teamItems.get(team);
@@ -178,10 +175,10 @@ public class Teams implements Listener {
         }
 
 
-        arena.teamInventory.setItem(0, teamItems.get(Team.RED));
-        arena.teamInventory.setItem(2, teamItems.get(Team.GREEN));
-        arena.teamInventory.setItem(4, teamItems.get(Team.BLUE));
-        arena.teamInventory.setItem(6, teamItems.get(Team.YELLOW));
-        arena.teamInventory.setItem(8, utils.setItemStack(XMaterial.QUARTZ.parseMaterial(), "game.team-menu-team-random", "game.team-menu-team-random-lore"));
+        arena.getTeamChooseInv().setItem(0, teamItems.get(Team.RED));
+        arena.getTeamChooseInv().setItem(2, teamItems.get(Team.GREEN));
+        arena.getTeamChooseInv().setItem(4, teamItems.get(Team.BLUE));
+        arena.getTeamChooseInv().setItem(6, teamItems.get(Team.YELLOW));
+        arena.getTeamChooseInv().setItem(8, Utils.setItemStack(XMaterial.QUARTZ.parseMaterial(), "game.team-menu-team-random", "game.team-menu-team-random-lore"));
     }
 }

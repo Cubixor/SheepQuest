@@ -1,10 +1,14 @@
 package me.cubixor.sheepquest.game;
 
-import me.cubixor.sheepquest.*;
-import org.bukkit.Color;
-import org.bukkit.DyeColor;
-import org.bukkit.FireworkEffect;
-import org.bukkit.Location;
+import com.cryptomorin.xseries.XSound;
+import me.cubixor.sheepquest.SheepQuest;
+import me.cubixor.sheepquest.api.PassengerFixReflection;
+import me.cubixor.sheepquest.api.Utils;
+import me.cubixor.sheepquest.game.events.BonusSheep;
+import me.cubixor.sheepquest.gameInfo.Arena;
+import me.cubixor.sheepquest.gameInfo.GameState;
+import me.cubixor.sheepquest.gameInfo.Team;
+import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -19,28 +23,27 @@ public class SheepCarrying implements Listener {
 
     private final SheepQuest plugin;
 
-    public SheepCarrying(SheepQuest s) {
-        plugin = s;
+    public SheepCarrying() {
+        plugin = SheepQuest.getInstance();
     }
 
 
     @EventHandler
     public void onMove(PlayerMoveEvent evt) {
-        Utils utils = new Utils(plugin);
         Player player = evt.getPlayer();
-        Arena arena = utils.getArena(player);
+        Arena arena = Utils.getArena(player);
         if (arena == null) {
             return;
         }
-        if (!arena.state.equals(GameState.GAME)) {
+        if (!arena.getState().equals(GameState.GAME)) {
             return;
         }
 
-        if (arena.playerStats.get(player).sheepCooldown != null) {
+        if (arena.getPlayerStats().get(player).getSheepCooldown() != null) {
             return;
         }
 
-        Team team = arena.playerTeam.get(player);
+        Team team = arena.getPlayers().get(player);
 
         for (Entity e : evt.getPlayer().getNearbyEntities(1, 1, 1)) {
             boolean pas1Exists = player.getPassenger() != null;
@@ -64,15 +67,29 @@ public class SheepCarrying implements Listener {
             }
 
 
-            if (e.getType().equals(EntityType.SHEEP) & evt.getPlayer().getInventory().getItemInMainHand().equals(plugin.items.sheepItem) && !arena.respawnTimer.containsKey(evt.getPlayer())) {
+            if (e.getType().equals(EntityType.SHEEP) & evt.getPlayer().getInventory().getItemInMainHand().equals(plugin.getItems().getSheepItem()) && !arena.getRespawnTimer().containsKey(evt.getPlayer())) {
                 Sheep sheep = (Sheep) e;
                 if (sheep.getColor().equals(DyeColor.WHITE) || !team.equals(getTeamByColor(sheep.getColor()))) {
+                    BonusSheep bonusSheep = new BonusSheep();
+                    if (bonusSheep.pickupSheep(player, sheep)) {
+                        continue;
+                    }
+
                     if (evt.getPlayer().getPassenger() == null) {
                         player.setPassenger(e);
+                        if (player.getPassenger() != null) {
+                            player.playSound(player.getLocation(), XSound.matchXSound(plugin.getConfig().getString("sounds.sheep-pick")).get().parseSound(), 100, 1);
+                        }
                     } else {
                         Entity pas1 = evt.getPlayer().getPassenger();
+                        if (bonusSheep.carryingSheep((Sheep) pas1)) {
+                            return;
+                        }
                         if (pas1.getPassenger() == null) {
                             pas1.setPassenger(e);
+                            if (pas1.getPassenger() != null) {
+                                player.playSound(player.getLocation(), XSound.matchXSound(plugin.getConfig().getString("sounds.sheep-pick")).get().parseSound(), 100, 1);
+                            }
                             player.removePotionEffect(PotionEffectType.SLOW);
                             evt.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 9999999, 1, false, false));
 
@@ -80,13 +97,16 @@ public class SheepCarrying implements Listener {
                             Entity pas2 = pas1.getPassenger();
                             if (pas2.getPassenger() == null) {
                                 pas2.setPassenger(e);
+                                if (pas2.getPassenger() != null) {
+                                    player.playSound(player.getLocation(), XSound.matchXSound(plugin.getConfig().getString("sounds.sheep-pick")).get().parseSound(), 100, 1);
+                                }
                                 player.removePotionEffect(PotionEffectType.SLOW);
                                 evt.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 9999999, 2, false, false));
                             }
                         }
                     }
-                    if (plugin.passengerFix != null) {
-                        plugin.passengerFix.updatePassengers(player);
+                    if (plugin.isPassengerFix()) {
+                        new PassengerFixReflection().updatePassengers(player);
                     }
                 }
             }
@@ -94,7 +114,7 @@ public class SheepCarrying implements Listener {
 
 
         if (player.getPassenger() != null) {
-            if (utils.isInRegion(player, utils.getArenaString(arena), team)) {
+            if (Utils.isInRegion(player, Utils.getArenaString(arena), team)) {
                 regionEnter(player);
             }
         }
@@ -104,88 +124,98 @@ public class SheepCarrying implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                Utils utils = new Utils(plugin);
-                if (utils.isInRegion(player, utils.getArenaString(utils.getArena(player)), utils.getArena(player).playerTeam.get(player))) {
+                Arena arena = Utils.getArena(player);
+                if (arena == null) {
+                    return;
+                }
+                if (Utils.isInRegion(player, Utils.getArenaString(Utils.getArena(player)), arena.getPlayers().get(player))) {
                     if (player.getPassenger() != null) {
                         if (player.getPassenger().getPassenger() != null) {
                             if (player.getPassenger().getPassenger().getPassenger() != null) {
 
-                                addPoint(player, (Sheep) player.getPassenger().getPassenger().getPassenger());
+                                sheepBring(player, (Sheep) player.getPassenger().getPassenger().getPassenger());
 
                                 player.getPassenger().getPassenger().eject();
 
                             }
-                            addPoint(player, (Sheep) player.getPassenger().getPassenger());
+                            sheepBring(player, (Sheep) player.getPassenger().getPassenger());
 
                             player.getPassenger().eject();
 
                         }
 
-                        addPoint(player, (Sheep) player.getPassenger());
+                        sheepBring(player, (Sheep) player.getPassenger());
 
                         player.eject();
-                    }
-                    if (plugin.passengerFix != null) {
-                        plugin.passengerFix.updatePassengers(player);
+
+
+                        if (plugin.isPassengerFix()) {
+                            new PassengerFixReflection().updatePassengers(player);
+                        }
                     }
 
                 }
 
             }
-        }.runTaskLater(plugin, 5);
+        }.runTaskLater(plugin, 10);
     }
 
-    private void addPoint(Player player, Sheep sheep) {
-        Utils utils = new Utils(plugin);
+    private void sheepBring(Player player, Sheep sheep) {
+        Arena arena = Utils.getArena(player);
+        Team team = arena.getPlayers().get(player);
+        boolean specialSheep = sheep.getColor().equals(DyeColor.valueOf(plugin.getConfig().getString("special-events.bonus-sheep.color")));
 
-        Arena arena = utils.getArena(player);
-        Team team = arena.playerTeam.get(player);
-
-        arena.playerStats.get(player).sheepTaken++;
-
-        Location path = (Location) plugin.getArenasConfig().get("Arenas." + utils.getArenaString(arena) + ".teams." + utils.getTeamString(team) + "-spawn");
-        new PathFinding(plugin).walkToLocation(sheep, path, 0.7, arena, team);
+        arena.getPlayerStats().get(player).setSheepTaken(arena.getPlayerStats().get(player).getSheepTaken() + 1);
+        player.removePotionEffect(PotionEffectType.SLOW);
 
         Firework firework = (Firework) player.getWorld().spawnEntity(player.getLocation(), EntityType.FIREWORK);
         FireworkMeta fwm = firework.getFireworkMeta();
         FireworkEffect.Type type = FireworkEffect.Type.BALL;
-        Color color = utils.getColor(team);
+        Color color = specialSheep ? DyeColor.valueOf(plugin.getConfig().getString("special-events.bonus-sheep.color")).getColor() : Utils.getColor(team);
         FireworkEffect fwe = FireworkEffect.builder().flicker(true).withColor(color).with(type).withTrail().build();
         fwm.addEffect(fwe);
         fwm.setPower(1);
         firework.setFireworkMeta(fwm);
 
-        player.removePotionEffect(PotionEffectType.SLOW);
-
-        for (Team t : Team.values()) {
-            if (!t.equals(Team.NONE)) {
-                if (sheep.getColor().equals(utils.getDyeColor(t)) && !team.equals(t)) {
-                    arena.points.replace(t, arena.points.get(t) - 1);
-                }
-
-            }
+        if (specialSheep) {
+            new BonusSheep().bringSheep(player, sheep);
+        } else {
+            addPoint(player, sheep);
         }
-
-        sheep.setColor(utils.getDyeColor(team));
-
-
-        arena.points.replace(team, arena.points.get(team) + 1);
     }
 
+    private void addPoint(Player player, Sheep sheep) {
+        Arena arena = Utils.getArena(player);
+        Team team = arena.getPlayers().get(player);
+
+        Location path = (Location) plugin.getArenasConfig().get("Arenas." + Utils.getArenaString(arena) + ".teams." + Utils.getTeamString(team) + "-spawn");
+        new PathFinding().walkToLocation(sheep, path, plugin.getConfig().getDouble("sheep-speed"), arena, team);
+
+        for (Team t : Utils.getTeams()) {
+            if (sheep.getColor().equals(Utils.getDyeColor(t)) && !team.equals(t)) {
+                arena.getPoints().replace(t, arena.getPoints().get(t) - 1);
+            }
+        }
+        arena.getPoints().replace(team, arena.getPoints().get(team) + 1);
+
+        sheep.setColor(Utils.getDyeColor(team));
+
+        Utils.playSound(arena, player.getLocation(), XSound.matchXSound(plugin.getConfig().getString("sounds.sheep-bring")).get().parseSound(), 1, 1);
+        player.getWorld().spawnParticle(Particle.valueOf(plugin.getConfig().getString("particles.sheep-bring")), player.getLocation().getX(), player.getLocation().getY() + 1.5, player.getLocation().getZ(), 50, 1, 1, 1, 0.1);
+    }
 
     @EventHandler
     public void onItemChange(PlayerItemHeldEvent evt) {
-        Utils utils = new Utils(plugin);
         int oldSlot = evt.getPreviousSlot();
         if (evt.getPlayer().getInventory().getItem(oldSlot) != null) {
-            if (evt.getPlayer().getInventory().getItem(oldSlot).equals(plugin.items.sheepItem) && utils.getArena(evt.getPlayer()) != null) {
-                utils.removeSheep(evt.getPlayer());
+            if (evt.getPlayer().getInventory().getItem(oldSlot).equals(plugin.getItems().getSheepItem()) && Utils.getArena(evt.getPlayer()) != null) {
+                Utils.removeSheep(evt.getPlayer());
             }
         }
     }
 
     private Team getTeamByColor(DyeColor color) {
-        Team team = null;
+        Team team = Team.NONE;
         if (color.equals(DyeColor.RED)) {
             team = Team.RED;
         } else if (color.equals(DyeColor.LIME)) {

@@ -1,12 +1,12 @@
 package me.cubixor.sheepquest.commands;
 
-import me.cubixor.sheepquest.Arena;
-import me.cubixor.sheepquest.GameState;
 import me.cubixor.sheepquest.SheepQuest;
-import me.cubixor.sheepquest.Utils;
+import me.cubixor.sheepquest.api.Utils;
 import me.cubixor.sheepquest.game.End;
 import me.cubixor.sheepquest.game.Signs;
 import me.cubixor.sheepquest.game.Start;
+import me.cubixor.sheepquest.gameInfo.Arena;
+import me.cubixor.sheepquest.gameInfo.GameState;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -17,12 +17,11 @@ public class StaffCommands {
 
     private final SheepQuest plugin;
 
-    public StaffCommands(SheepQuest s) {
-        plugin = s;
+    public StaffCommands() {
+        plugin = SheepQuest.getInstance();
     }
 
     public void kick(Player player, String[] args) {
-        Utils utils = new Utils(plugin);
         if (!player.hasPermission("sheepquest.staff.kick")) {
             player.sendMessage(plugin.getMessage("general.no-permission"));
             return;
@@ -33,11 +32,11 @@ public class StaffCommands {
         }
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (p.getName().equals(args[1])) {
-                Arena playerArena = utils.getArena(p);
-                player.sendMessage(plugin.getMessage("arena-moderate.kick-success").replace("%arena%", utils.getArenaString(playerArena)).replace("%player%", p.getName()));
-                new PlayCommands(plugin).kickPlayer(p, utils.getArenaString(playerArena));
+                Arena playerArena = Utils.getArena(p);
+                player.sendMessage(plugin.getMessage("arena-moderate.kick-success").replace("%arena%", Utils.getArenaString(playerArena)).replace("%player%", p.getName()));
+                new PlayCommands().kickPlayer(p, Utils.getArenaString(playerArena));
                 p.sendMessage(plugin.getMessage("arena-moderate.kick-player").replace("%kicker%", player.getName()));
-                for (Player pl : playerArena.playerTeam.keySet()) {
+                for (Player pl : playerArena.getPlayers().keySet()) {
                     pl.sendMessage(plugin.getMessage("arena-moderate.kick-players").replace("%kicker%", player.getName().replace("%player%", p.getName())));
                 }
                 return;
@@ -47,44 +46,42 @@ public class StaffCommands {
     }
 
     public void forceStart(Player player, String[] args) {
-        Utils utils = new Utils(plugin);
-        if (!utils.checkIfValid(player, args, "sheepquest.staff.start", "arena-moderate.force-start", 2)) {
+        if (!Utils.checkIfValid(player, args, "sheepquest.staff.start", "arena-moderate.force-start", 2)) {
             return;
         }
 
-        if (plugin.arenas.get(args[1]).state.equals(GameState.GAME) || plugin.arenas.get(args[1]).state.equals(GameState.ENDING)) {
+        if (plugin.getArenas().get(args[1]).getState().equals(GameState.GAME) || plugin.getArenas().get(args[1]).getState().equals(GameState.ENDING)) {
             player.sendMessage(plugin.getMessage("arena-moderate.force-start-already-started").replace("%arena%", args[1]));
             return;
         }
 
-        int count = plugin.arenas.get(args[1]).playerTeam.keySet().size();
+        int count = plugin.getArenas().get(args[1]).getPlayers().keySet().size();
 
         if (count == 0) {
             player.sendMessage(plugin.getMessage("arena-moderate.force-start-no-players").replace("%arena%", args[1]));
             return;
         }
 
-        for (Player p : plugin.arenas.get(args[1]).playerTeam.keySet()) {
+        for (Player p : plugin.getArenas().get(args[1]).getPlayers().keySet()) {
             p.sendMessage(plugin.getMessage("arena-moderate.force-start-success").replace("%player%", player.getName()));
         }
 
-        if (!plugin.arenas.get(args[1]).playerTeam.containsKey(player)) {
+        if (!plugin.getArenas().get(args[1]).getPlayers().containsKey(player)) {
             player.sendMessage(plugin.getMessage("arena-moderate.force-start-success").replace("%player%", player.getName()));
         }
 
-        Arena arena = plugin.arenas.get(args[1]);
+        Arena arena = plugin.getArenas().get(args[1]);
 
-        new Start(plugin).start(arena);
+        new Start().start(arena);
 
     }
 
     public void forceStop(Player player, String[] args) {
-        Utils utils = new Utils(plugin);
-        if (!utils.checkIfValid(player, args, "sheepquest.staff.stop", "arena-moderate.force-stop", 2)) {
+        if (!Utils.checkIfValid(player, args, "sheepquest.staff.stop", "arena-moderate.force-stop", 2)) {
             return;
         }
 
-        if (plugin.arenas.get(args[1]).state.equals(GameState.WAITING) || plugin.arenas.get(args[1]).state.equals(GameState.STARTING)) {
+        if (plugin.getArenas().get(args[1]).getState().equals(GameState.WAITING) || plugin.getArenas().get(args[1]).getState().equals(GameState.STARTING)) {
             player.sendMessage(plugin.getMessage("arena-moderate.force-stop-not-started").replace("%arena%", args[1]));
             return;
         }
@@ -93,9 +90,9 @@ public class StaffCommands {
     }
 
     public void stop(Player player, String arena) {
-        List<Player> players = new ArrayList<>(plugin.arenas.get(arena).playerTeam.keySet());
+        List<Player> players = new ArrayList<>(plugin.getArenas().get(arena).getPlayers().keySet());
         for (Player p : players) {
-            new PlayCommands(plugin).kickPlayer(p, arena);
+            new PlayCommands().kickPlayer(p, arena);
             p.sendMessage(plugin.getMessage("arena-moderate.force-stop-success").replace("%player%", player.getName()));
         }
 
@@ -103,13 +100,12 @@ public class StaffCommands {
             player.sendMessage(plugin.getMessage("arena-moderate.force-stop-success").replace("%player%", player.getName()));
         }
 
-        new End(plugin).resetArena(plugin.arenas.get(arena));
+        new End().resetArena(plugin.getArenas().get(arena));
     }
 
 
     public void setActive(Player player, String[] args) {
-        Utils utils = new Utils(plugin);
-        if (!utils.checkIfValid(player, args, "sheepquest.staff.active", "arena-moderate.active", 3)) {
+        if (!Utils.checkIfValid(player, args, "sheepquest.staff.active", "arena-moderate.active", 3)) {
             return;
         }
 
@@ -121,7 +117,7 @@ public class StaffCommands {
         boolean cmdActive = Boolean.parseBoolean(args[2]);
         boolean active = plugin.getArenasConfig().getBoolean("Arenas." + args[1] + ".active");
 
-        if (utils.checkIfReady(args[1]).containsValue(false)) {
+        if (Utils.checkIfReady(args[1]).containsValue(false)) {
             player.sendMessage(plugin.getMessage("arena-moderate.active-not-ready").replace("%arena%", args[1]));
             return;
         }
@@ -133,12 +129,12 @@ public class StaffCommands {
         } else {
             plugin.getArenasConfig().set("Arenas." + args[1] + ".active", cmdActive);
             plugin.saveArenas();
-            new Signs(plugin).updateSigns(plugin.arenas.get(args[1]));
+            new Signs().updateSigns(plugin.getArenas().get(args[1]));
             if (cmdActive) {
                 player.sendMessage(plugin.getMessage("arena-moderate.active-activate").replace("%arena%", args[1]));
             } else {
-                for (Player p : plugin.arenas.get(args[1]).playerTeam.keySet()) {
-                    new PlayCommands(plugin).kickPlayer(p, args[1]);
+                for (Player p : plugin.getArenas().get(args[1]).getPlayers().keySet()) {
+                    new PlayCommands().kickPlayer(p, args[1]);
                     p.sendMessage(plugin.getMessage("arena-moderate.active-players"));
                 }
                 player.sendMessage(plugin.getMessage("arena-moderate.active-deactivate").replace("%arena%", args[1]));

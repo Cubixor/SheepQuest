@@ -1,7 +1,13 @@
 package me.cubixor.sheepquest.commands;
 
-import me.cubixor.sheepquest.*;
+import com.cryptomorin.xseries.XSound;
+import me.cubixor.sheepquest.SheepQuest;
+import me.cubixor.sheepquest.api.Utils;
 import me.cubixor.sheepquest.game.*;
+import me.cubixor.sheepquest.gameInfo.Arena;
+import me.cubixor.sheepquest.gameInfo.GameState;
+import me.cubixor.sheepquest.gameInfo.PlayerData;
+import me.cubixor.sheepquest.gameInfo.Team;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -10,6 +16,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -20,18 +27,17 @@ public class PlayCommands {
 
     public final SheepQuest plugin;
 
-    public PlayCommands(SheepQuest s) {
-        plugin = s;
+    public PlayCommands() {
+        plugin = SheepQuest.getInstance();
     }
 
     public void join(Player player, String[] args) {
-        Utils utils = new Utils(plugin);
-        if (!utils.checkIfValid(player, args, "sheepquest.play.join", "game.arena-join", 2)) {
+        if (!Utils.checkIfValid(player, args, "sheepquest.play.join", "game.arena-join", 2)) {
             return;
         }
 
         String arenaString = args[1];
-        Arena arena = plugin.arenas.get(arenaString);
+        Arena arena = plugin.getArenas().get(arenaString);
 
         if (plugin.getConfig().getStringList("vip-arenas").contains(arenaString) && !player.hasPermission("sheepquest.vip")) {
             player.sendMessage(plugin.getMessage("game.arena-join-vip"));
@@ -43,12 +49,10 @@ public class PlayCommands {
     }
 
     public void putInArena(Player player, Arena arena) {
-        Utils utils = new Utils(plugin);
+        int count = arena.getPlayers().keySet().size();
+        String arenaString = Utils.getArenaString(arena);
 
-        int count = arena.playerTeam.keySet().size();
-        String arenaString = utils.getArenaString(arena);
-
-        if (utils.getArena(player) != null) {
+        if (Utils.getArena(player) != null) {
             player.sendMessage(plugin.getMessage("game.arena-join-already-in-game").replace("%arena%", arenaString));
             return;
         }
@@ -58,7 +62,7 @@ public class PlayCommands {
             return;
         }
 
-        if (arena.state.equals(GameState.GAME) || arena.state.equals(GameState.ENDING)) {
+        if (arena.getState().equals(GameState.GAME) || arena.getState().equals(GameState.ENDING)) {
             player.sendMessage(plugin.getMessage("game.arena-join-arena-in-game").replace("%arena%", arenaString));
             return;
         }
@@ -68,11 +72,11 @@ public class PlayCommands {
             return;
         }
 
-        arena.playerTeam.put(player, Team.NONE);
-        arena.teamBossBars.get(Team.NONE).addPlayer(player);
+        arena.getPlayers().put(player, Team.NONE);
+        arena.getTeamBossBars().get(Team.NONE).addPlayer(player);
 
         PlayerData playerData = new PlayerData(player.getInventory().getContents(), player.getLocation(), player.getActivePotionEffects(), player.getGameMode(), player.getHealth(), player.getFoodLevel(), player.getExp(), player.getLevel());
-        plugin.addPlayerData(player, playerData);
+        plugin.getPlayerData().put(player, playerData);
 
         player.getInventory().clear();
         player.setGameMode(GameMode.ADVENTURE);
@@ -83,70 +87,77 @@ public class PlayCommands {
         for (PotionEffect potionEffect : player.getActivePotionEffects()) {
             player.removePotionEffect(potionEffect.getType());
         }
-        player.teleport((Location) plugin.getArenasConfig().get("Arenas." + arenaString + ".waiting-lobby"));
+        Location waitingLobby = (Location) plugin.getArenasConfig().get("Arenas." + arenaString + ".waiting-lobby");
+        player.teleport(waitingLobby);
         if (plugin.getConfig().getBoolean("allow-team-choosing")) {
-            player.getInventory().setItem(plugin.items.teamItemSlot, plugin.items.teamItem);
+            player.getInventory().setItem(plugin.getItems().getTeamItemSlot(), plugin.getItems().getTeamItem());
         }
-        player.getInventory().setItem(plugin.items.leaveItemSlot, plugin.items.leaveItem);
-        new WaitingTips(plugin).playerTips(player);
+        player.getInventory().setItem(plugin.getItems().getLeaveItemSlot(), plugin.getItems().getLeaveItem());
+        new WaitingTips().playerTips(player);
 
         count++;
-        String max = Integer.toString(plugin.getArenasConfig().getInt("Arenas." + arenaString + ".max-players"));
+        int max = plugin.getArenasConfig().getInt("Arenas." + arenaString + ".max-players");
+        String maxString = Integer.toString(max);
         String countString = Integer.toString(count);
 
+        Utils.playSound(arena, player.getLocation(), XSound.matchXSound(plugin.getConfig().getString("sounds.join")).get().parseSound(), 1, 1);
+        waitingLobby.getWorld().spawnParticle(Particle.valueOf(plugin.getConfig().getString("particles.join")), waitingLobby.getX(), waitingLobby.getY() + 1.5, waitingLobby.getZ(), 50, 1, 1, 1, 0.1);
 
-        if (count >= plugin.getArenasConfig().getInt("Arenas." + arenaString + ".min-players") && arena.timer == -1) {
-            arena.timer = plugin.getConfig().getInt("waiting-time");
-            arena.state = GameState.STARTING;
+        for (Player p : arena.getPlayers().keySet()) {
+            p.sendMessage(plugin.getMessage("game.arena-join-success").replace("%player%", player.getName()).replace("%count%", countString).replace("%max%", maxString));
+        }
 
-            for (Player p : arena.playerTeam.keySet()) {
-                p.setLevel(arena.timer);
-                p.setExp(0.94F);
+        if (count >= plugin.getArenasConfig().getInt("Arenas." + arenaString + ".min-players")) {
+            if (arena.getTimer() == -1) {
+                arena.setTimer(plugin.getConfig().getInt("waiting-time"));
+                arena.setState(GameState.STARTING);
+
+                for (Player p : arena.getPlayers().keySet()) {
+                    p.setLevel(arena.getTimer());
+                    p.setExp(0.94F);
+                }
+                new Countdown().time(arenaString);
             }
-            new Countdown(plugin).time(arenaString);
-
+            if (count >= max) {
+                arena.setTimer(plugin.getConfig().getInt("full-waiting-time"));
+                for (Player p : arena.getPlayers().keySet()) {
+                    p.sendMessage(plugin.getMessage("game.full-countdown").replace("%time%", Integer.toString(arena.getTimer())));
+                }
+            }
         } else {
-            Scoreboards scoreboards = new Scoreboards(plugin);
-            for (Player p : arena.playerTeam.keySet()) {
+            Scoreboards scoreboards = new Scoreboards();
+            for (Player p : arena.getPlayers().keySet()) {
                 p.setScoreboard(scoreboards.getWaitingScoreboard(arena));
             }
         }
 
-        for (Player p : arena.playerTeam.keySet()) {
-            p.sendMessage(plugin.getMessage("game.arena-join-success").replace("%player%", player.getName()).replace("%count%", countString).replace("%max%", max));
-        }
-
-        new Signs(plugin).updateSigns(arena);
+        new Signs().updateSigns(arena);
     }
 
     public void quickJoin(Player player) {
-        Utils utils = new Utils(plugin);
-
         if (!player.hasPermission("sheepquest.play.quickjoin")) {
             player.sendMessage(plugin.getMessage("general.no-permission"));
             return;
         }
-        if (utils.getArena(player) != null) {
-            player.sendMessage(plugin.getMessage("game.arena-join-already-in-game").replace("%arena%", utils.getArenaString(utils.getArena(player))));
+        if (Utils.getArena(player) != null) {
+            player.sendMessage(plugin.getMessage("game.arena-join-already-in-game").replace("%arena%", Utils.getArenaString(Utils.getArena(player))));
             return;
         }
         putInRandomArena(player);
     }
 
     public void putInRandomArena(Player player) {
-        Utils utils = new Utils(plugin);
-
         boolean found = false;
         if (plugin.getArenasConfig().getConfigurationSection("Arenas") != null) {
             HashMap<String, Integer> playersCount = new HashMap<>();
             for (String s : plugin.getArenasConfig().getConfigurationSection("Arenas").getKeys(false)) {
-                Arena arena = plugin.arenas.get(s);
-                if (!utils.checkIfReady(s).containsValue(false)) {
+                Arena arena = plugin.getArenas().get(s);
+                if (!Utils.checkIfReady(s).containsValue(false)) {
                     if (plugin.getArenasConfig().getBoolean("Arenas." + s + ".active")) {
-                        if (arena.state.equals(GameState.WAITING) || arena.state.equals(GameState.STARTING)) {
-                            if (arena.playerTeam.keySet().size() < plugin.getArenasConfig().getInt("Arenas." + utils.getArenaString(arena) + ".max-players")) {
-                                if (!plugin.getConfig().getStringList("vip-arenas").contains(utils.getArenaString(arena)) || (plugin.getConfig().getStringList("vip-arenas").contains(utils.getArenaString(arena)) && player.hasPermission("sheepquest.vip"))) {
-                                    playersCount.put(s, arena.playerTeam.keySet().size());
+                        if (arena.getState().equals(GameState.WAITING) || arena.getState().equals(GameState.STARTING)) {
+                            if (arena.getPlayers().keySet().size() < plugin.getArenasConfig().getInt("Arenas." + Utils.getArenaString(arena) + ".max-players")) {
+                                if (!plugin.getConfig().getStringList("vip-arenas").contains(Utils.getArenaString(arena)) || (plugin.getConfig().getStringList("vip-arenas").contains(Utils.getArenaString(arena)) && player.hasPermission("sheepquest.vip"))) {
+                                    playersCount.put(s, arena.getPlayers().keySet().size());
                                     found = true;
                                 }
                             }
@@ -155,10 +166,10 @@ public class PlayCommands {
                 }
             }
             if (found) {
-                LinkedHashMap<String, Integer> maxPlayers = utils.sortByValue(playersCount);
+                LinkedHashMap<String, Integer> maxPlayers = Utils.sortByValue(playersCount);
                 String toJoin = (new ArrayList<>(maxPlayers.keySet())).get(maxPlayers.size() - 1);
 
-                putInArena(player, plugin.arenas.get(toJoin));
+                putInArena(player, plugin.getArenas().get(toJoin));
             }
         }
         if (!found) {
@@ -168,39 +179,36 @@ public class PlayCommands {
 
 
     public void leave(Player player) {
-        Utils utils = new Utils(plugin);
         if (!player.hasPermission("sheepquest.play.leave")) {
             player.sendMessage(plugin.getMessage("general.no-permission"));
             return;
         }
-        if (utils.getArena(player) == null) {
+        if (Utils.getArena(player) == null) {
             player.sendMessage(plugin.getMessage("game.arena-leave-not-in-game"));
             return;
         }
 
-        Arena arena = utils.getArena(player);
-        String arenaString = utils.getArenaString(arena);
+        Arena arena = Utils.getArena(player);
+        String arenaString = Utils.getArenaString(arena);
 
         sendKickMessage(player, arena);
         kickPlayer(player, arenaString);
     }
 
     public void sendKickMessage(Player player, Arena arena) {
-        Utils utils = new Utils(plugin);
-        String arenaString = utils.getArenaString(arena);
-        String count = Integer.toString(arena.playerTeam.keySet().size() - 1);
+        String arenaString = Utils.getArenaString(arena);
+        String count = Integer.toString(arena.getPlayers().keySet().size() - 1);
         String max = Integer.toString(plugin.getArenasConfig().getInt("Arenas." + arenaString + ".max-players"));
-        for (Player p : arena.playerTeam.keySet()) {
+        for (Player p : arena.getPlayers().keySet()) {
             p.sendMessage(plugin.getMessage("game.arena-leave-success").replace("%player%", player.getName()).replace("%count%", count).replace("%max%", max));
         }
 
     }
 
     public void kickPlayer(Player player, String arenaString) {
-        Utils utils = new Utils(plugin);
-        Arena arena = plugin.arenas.get(arenaString);
+        Arena arena = plugin.getArenas().get(arenaString);
 
-        PlayerData playerData = plugin.getPlayerData(player);
+        PlayerData playerData = plugin.getPlayerData().get(player);
 
         player.getInventory().setContents(playerData.getInventory());
         player.updateInventory();
@@ -209,42 +217,45 @@ public class PlayCommands {
             player.addPotionEffect(potionEffect);
         }
         player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(" "));
-        plugin.playerInfo.get(player).tipTask.cancel();
+        plugin.getPlayerInfo().get(player).getTipTask().cancel();
         player.setGameMode(playerData.getGameMode());
         player.setHealth(playerData.getHealth());
         player.setFoodLevel(playerData.getFood());
         player.setExp(playerData.getExp());
         player.setLevel(playerData.getLevel());
         player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
-        Location playerJoinLoc = playerData.getLocation();
-        plugin.removePlayerData(player);
+        plugin.getPlayerData().remove(player);
 
-        if (arena.playerTeam.containsKey(player)) {
-            utils.removeBossBars(player, arena);
-            if (arena.playerStats.get(player) != null && arena.playerStats.get(player).sheepCooldown != null) {
-                arena.playerStats.get(player).sheepCooldown.cancel();
+        Utils.playSound(arena, player.getLocation(), XSound.matchXSound(plugin.getConfig().getString("sounds.leave")).get().parseSound(), 1, 1);
+        player.getWorld().spawnParticle(Particle.valueOf(plugin.getConfig().getString("particles.join")), player.getLocation().getX(), player.getLocation().getY() + 1.5, player.getLocation().getZ(), 50, 1, 1, 1, 0.1);
+
+
+        if (arena.getPlayers().containsKey(player)) {
+            arena.getTeamBossBars().get(arena.getPlayers().get(player)).removePlayer(player);
+            if (arena.getPlayerStats().get(player) != null && arena.getPlayerStats().get(player).getSheepCooldown() != null) {
+                arena.getPlayerStats().get(player).getSheepCooldown().cancel();
             }
-            arena.playerStats.remove(player);
-            arena.playerTeam.remove(player);
+            arena.getPlayerStats().remove(player);
+            arena.getPlayers().remove(player);
 
-            int count = arena.playerTeam.keySet().size();
+            int count = arena.getPlayers().keySet().size();
 
-            if (arena.state.equals(GameState.STARTING) && count < plugin.getArenasConfig().getInt("Arenas." + arenaString + ".min-players")) {
+            if (arena.getState().equals(GameState.STARTING) && count < plugin.getArenasConfig().getInt("Arenas." + arenaString + ".min-players")) {
 
-                arena.state = GameState.WAITING;
-                arena.timer = -1;
+                arena.setState(GameState.WAITING);
+                arena.setTimer(-1);
 
-                Scoreboards scoreboards = new Scoreboards(plugin);
-                for (Player p : arena.playerTeam.keySet()) {
+                Scoreboards scoreboards = new Scoreboards();
+                for (Player p : arena.getPlayers().keySet()) {
                     p.setScoreboard(scoreboards.getWaitingScoreboard(arena));
                     p.sendMessage(plugin.getMessage("game.start-cancelled"));
                     p.setLevel(0);
                     p.setExp(0);
                 }
 
-            } else if (arena.state.equals(GameState.GAME) && count == 0) {
-                utils.removeSheep(player);
-                new End(plugin).resetArena(arena);
+            } else if (arena.getState().equals(GameState.GAME) && count == 0) {
+                Utils.removeSheep(player);
+                new End().resetArena(arena);
             }
         }
 
@@ -253,14 +264,14 @@ public class PlayCommands {
         } else {
             player.teleport(playerData.getLocation());
         }
+        player.playSound(player.getLocation(), XSound.matchXSound(plugin.getConfig().getString("sounds.leave")).get().parseSound(), 100, 1);
 
-        new Teams(plugin).menuUpdate(arena);
-        new Signs(plugin).updateSigns(plugin.arenas.get(arenaString));
+        new Teams().menuUpdate(arena);
+        new Signs().updateSigns(plugin.getArenas().get(arenaString));
     }
 
 
     public void arenaList(Player player) {
-        Utils utils = new Utils(plugin);
         if (!player.hasPermission("sheepquest.play.list")) {
             player.sendMessage(plugin.getMessage("general.no-permission"));
             return;
@@ -276,11 +287,11 @@ public class PlayCommands {
 
         for (String arenaString : plugin.getArenasConfig().getConfigurationSection("Arenas").getKeys(false)) {
 
-            Arena arena = plugin.arenas.get(arenaString);
-            String count = Integer.toString(arena.playerTeam.keySet().size());
+            Arena arena = plugin.getArenas().get(arenaString);
+            String count = Integer.toString(arena.getPlayers().keySet().size());
             String max = Integer.toString(plugin.getArenasConfig().getInt("Arenas." + arenaString + ".max-players"));
 
-            String gameState = utils.getStringState(arena);
+            String gameState = Utils.getStringState(arena);
             String vip = plugin.getConfig().getStringList("vip-arenas").contains(arenaString) ? plugin.getMessage("general.vip-prefix") : "";
 
             TextComponent message = new TextComponent(plugin.getMessage("other.list-arena").replace("%arena%", arenaString).replace("%count%", count).replace("%max%", max).replace("%state%", gameState).replace("%?vip?%", vip));

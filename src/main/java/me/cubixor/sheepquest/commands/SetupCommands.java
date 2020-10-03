@@ -1,7 +1,12 @@
 package me.cubixor.sheepquest.commands;
 
-import me.cubixor.sheepquest.*;
+import me.cubixor.sheepquest.SheepQuest;
+import me.cubixor.sheepquest.api.Utils;
 import me.cubixor.sheepquest.game.Signs;
+import me.cubixor.sheepquest.gameInfo.Arena;
+import me.cubixor.sheepquest.gameInfo.ArenaInventories;
+import me.cubixor.sheepquest.gameInfo.GameState;
+import me.cubixor.sheepquest.gameInfo.Team;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -14,8 +19,8 @@ public class SetupCommands {
 
     public final SheepQuest plugin;
 
-    public SetupCommands(SheepQuest s) {
-        plugin = s;
+    public SetupCommands() {
+        plugin = SheepQuest.getInstance();
     }
 
     public void createArena(Player player, String[] args) {
@@ -33,43 +38,42 @@ public class SetupCommands {
         plugin.getArenasConfig().set("Arenas." + args[1] + ".max-players", 0);
         plugin.saveArenas();
 
-        plugin.arenas.put(args[1], new Arena(plugin));
-        plugin.inventories.put(player, new ArenaInventories(args[1]));
+        plugin.getArenas().put(args[1], new Arena());
+        plugin.getInventories().put(player, new ArenaInventories(args[1]));
 
         player.sendMessage(plugin.getMessage("arena-setup.create-success").replace("%arena%", args[1]));
     }
 
     public void deleteArena(Player player, String[] args) {
-        Utils utils = new Utils(plugin);
-        if (!utils.checkIfValid(player, args, "sheepquest.setup.delete", "arena-setup.delete", 2)) {
+        if (!Utils.checkIfValid(player, args, "sheepquest.setup.delete", "arena-setup.delete", 2)) {
             return;
         }
 
-        plugin.playerInfo.get(player).delete = args[1];
+        plugin.getPlayerInfo().get(player).setDelete(args[1]);
         player.sendMessage(plugin.getMessage("arena-setup.delete-confirm").replace("%arena%", args[1]));
     }
 
     public void deleteConfirm(Player player) {
-        if (plugin.playerInfo.get(player).delete != null) {
-            String arena = plugin.playerInfo.get(player).delete;
-            Arena arenaObj = plugin.arenas.get(arena);
+        if (plugin.getPlayerInfo().get(player).getDelete() != null) {
+            String arena = plugin.getPlayerInfo().get(player).getDelete();
+            Arena arenaObj = plugin.getArenas().get(arena);
 
-            if (arenaObj.state.equals(GameState.GAME) || arenaObj.state.equals(GameState.ENDING)) {
-                new StaffCommands(plugin).stop(player, arena);
+            if (arenaObj.getState().equals(GameState.GAME) || arenaObj.getState().equals(GameState.ENDING)) {
+                new StaffCommands().stop(player, arena);
             } else {
-                for (Player p : plugin.arenas.get(arena).playerTeam.keySet()) {
-                    new PlayCommands(plugin).kickPlayer(p, arena);
+                for (Player p : plugin.getArenas().get(arena).getPlayers().keySet()) {
+                    new PlayCommands().kickPlayer(p, arena);
                     p.sendMessage(plugin.getMessage("arena-moderate.force-stop-success").replace("%player%", player.getName()));
                 }
             }
 
-            plugin.arenas.remove(arena);
-            new Signs(plugin).removeSigns(arenaObj);
+            plugin.getArenas().remove(arena);
+            new Signs().removeSigns(arenaObj);
 
             plugin.getArenasConfig().set("Arenas." + arena, null);
             plugin.saveArenas();
 
-            plugin.playerInfo.get(player).delete = null;
+            plugin.getPlayerInfo().get(player).setDelete(null);
             player.sendMessage(plugin.getMessage("arena-setup.delete-success").replace("%arena%", arena));
         } else {
             player.sendMessage(plugin.getMessage("arena-setup.delete-confirm-none"));
@@ -78,8 +82,10 @@ public class SetupCommands {
     }
 
     public void setLocation(Player player, String[] args, String messagesPath, String arenasPath, String permission) {
-        Utils utils = new Utils(plugin);
-        if (!utils.checkIfValid(player, args, permission, messagesPath, 2)) {
+        if (!setupCheckActive(player, args[1])) {
+            return;
+        }
+        if (!Utils.checkIfValid(player, args, permission, messagesPath, 2)) {
             return;
         }
 
@@ -89,8 +95,10 @@ public class SetupCommands {
     }
 
     public void setMaxPlayers(Player player, String[] args) {
-        Utils utils = new Utils(plugin);
-        if (!utils.checkIfValid(player, args, "sheepquest.setup.setmaxplayers", "arena-setup.set-max-players", 3)) {
+        if (!setupCheckActive(player, args[1])) {
+            return;
+        }
+        if (!Utils.checkIfValid(player, args, "sheepquest.setup.setmaxplayers", "arena-setup.set-max-players", 3)) {
             return;
         }
 
@@ -113,8 +121,10 @@ public class SetupCommands {
     }
 
     public void setMinPlayers(Player player, String[] args) {
-        Utils utils = new Utils(plugin);
-        if (!utils.checkIfValid(player, args, "sheepquest.setup.setminplayers", "arena-setup.set-min-players", 3)) {
+        if (!setupCheckActive(player, args[1])) {
+            return;
+        }
+        if (!Utils.checkIfValid(player, args, "sheepquest.setup.setminplayers", "arena-setup.set-min-players", 3)) {
             return;
         }
 
@@ -133,8 +143,10 @@ public class SetupCommands {
     }
 
     public void setTeamSpawn(Player player, String[] args) {
-        Utils utils = new Utils(plugin);
-        if (!utils.checkIfValid(player, args, "sheepquest.setup.setspawn", "arena-setup.set-spawn", 3)) {
+        if (!setupCheckActive(player, args[1])) {
+            return;
+        }
+        if (!Utils.checkIfValid(player, args, "sheepquest.setup.setspawn", "arena-setup.set-spawn", 3)) {
             return;
         }
 
@@ -150,8 +162,10 @@ public class SetupCommands {
     }
 
     public void setTeamArea(Player player, String[] args) {
-        Utils utils = new Utils(plugin);
-        if (!utils.checkIfValid(player, args, "sheepquest.setup.setteamarea", "arena-setup.set-teams-area", 3)) {
+        if (!setupCheckActive(player, args[1])) {
+            return;
+        }
+        if (!Utils.checkIfValid(player, args, "sheepquest.setup.setteamarea", "arena-setup.set-teams-area", 3)) {
             return;
         }
 
@@ -160,13 +174,13 @@ public class SetupCommands {
             player.sendMessage(plugin.getMessage("arena-setup.invalid-team"));
             return;
         }
-        if (!(plugin.playerInfo.get(player).selMin != null && plugin.playerInfo.get(player).selMax != null)) {
+        if (!(plugin.getPlayerInfo().get(player).getSelMin() != null && plugin.getPlayerInfo().get(player).getSelMax() != null)) {
             player.sendMessage(plugin.getMessage("arena-setup.selection-empty"));
             return;
         }
 
-        plugin.getArenasConfig().set("Arenas." + args[1] + ".teams-area." + team + ".min-point", plugin.playerInfo.get(player).selMin.getLocation());
-        plugin.getArenasConfig().set("Arenas." + args[1] + ".teams-area." + team + ".max-point", plugin.playerInfo.get(player).selMax.getLocation());
+        plugin.getArenasConfig().set("Arenas." + args[1] + ".teams-area." + team + ".min-point", plugin.getPlayerInfo().get(player).getSelMin().getLocation());
+        plugin.getArenasConfig().set("Arenas." + args[1] + ".teams-area." + team + ".max-point", plugin.getPlayerInfo().get(player).getSelMax().getLocation());
         plugin.saveArenas();
         player.sendMessage(plugin.getMessage("arena-setup.set-teams-area-success").replace("%arena%", args[1]).replace("%team%", plugin.getMessage("general.team-" + team)));
 
@@ -177,7 +191,7 @@ public class SetupCommands {
             player.sendMessage(plugin.getMessage("general.no-permission"));
             return;
         }
-        player.getInventory().addItem(plugin.items.setupWandItem);
+        player.getInventory().addItem(plugin.getItems().getSetupWandItem());
         player.sendMessage(plugin.getMessage("arena-setup.wand-item-recive"));
     }
 
@@ -187,24 +201,23 @@ public class SetupCommands {
             return;
         }
 
-        for (String arena : plugin.arenas.keySet()) {
-            List<Player> list = new ArrayList<>(plugin.arenas.get(arena).playerTeam.keySet());
+        for (String arena : plugin.getArenas().keySet()) {
+            List<Player> list = new ArrayList<>(plugin.getArenas().get(arena).getPlayers().keySet());
             for (Player p : list) {
-                new PlayCommands(plugin).kickPlayer(p, arena);
+                new PlayCommands().kickPlayer(p, arena);
                 p.sendMessage(plugin.getMessage("game.arena-leave-reload"));
             }
         }
 
         plugin.loadConfigs();
-        new Signs(plugin).loadSigns();
+        new Signs().loadSigns();
 
         player.sendMessage(plugin.getMessage("general.reload-success"));
 
     }
 
     public void checkArena(Player player, String[] args) {
-        Utils utils = new Utils(plugin);
-        if (!utils.checkIfValid(player, args, "sheepquest.setup.check", "arena-setup.check", 2)) {
+        if (!Utils.checkIfValid(player, args, "sheepquest.setup.check", "arena-setup.check", 2)) {
             return;
         }
 
@@ -213,7 +226,7 @@ public class SetupCommands {
 
         List<String> checkPage = plugin.getMessageList("arena-setup.check-page");
 
-        LinkedHashMap<String, Boolean> checkReady = new LinkedHashMap<>(new Utils(plugin).checkIfReady(args[1]));
+        LinkedHashMap<String, Boolean> checkReady = new LinkedHashMap<>(Utils.checkIfReady(args[1]));
 
         boolean ready = true;
         boolean active = plugin.getArenasConfig().getBoolean("Arenas." + args[1] + ".active");
@@ -247,12 +260,12 @@ public class SetupCommands {
         new BukkitRunnable() {
             @Override
             public void run() {
-                if (plugin.playerInfo.get(player).confirmTimer == 0) {
-                    plugin.playerInfo.get(player).delete = null;
-                    plugin.playerInfo.get(player).confirmTimer = 20;
+                if (plugin.getPlayerInfo().get(player).getConfirmTimer() == 0) {
+                    plugin.getPlayerInfo().get(player).setDelete(null);
+                    plugin.getPlayerInfo().get(player).setConfirmTimer(20);
                     this.cancel();
                 } else {
-                    plugin.playerInfo.get(player).confirmTimer--;
+                    plugin.getPlayerInfo().get(player).setConfirmTimer(plugin.getPlayerInfo().get(player).getConfirmTimer() - 1);
                 }
             }
         }.runTaskTimer(plugin, 0, 20);
@@ -279,5 +292,13 @@ public class SetupCommands {
                 break;
         }
         return !team.equals(Team.NONE);
+    }
+
+    private boolean setupCheckActive(Player player, String arena) {
+        if (plugin.getArenasConfig().getBoolean("Arenas." + arena + ".active")) {
+            player.sendMessage(plugin.getMessage("arena-setup.active-block").replace("%arena%", arena));
+            return false;
+        }
+        return true;
     }
 }

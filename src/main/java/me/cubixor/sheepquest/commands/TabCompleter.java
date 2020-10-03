@@ -1,7 +1,7 @@
 package me.cubixor.sheepquest.commands;
 
 import me.cubixor.sheepquest.SheepQuest;
-import me.cubixor.sheepquest.Utils;
+import me.cubixor.sheepquest.api.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -14,8 +14,8 @@ public class TabCompleter implements org.bukkit.command.TabCompleter {
 
     private final SheepQuest plugin;
 
-    public TabCompleter(SheepQuest s) {
-        plugin = s;
+    public TabCompleter() {
+        plugin = SheepQuest.getInstance();
     }
 
     @Override
@@ -65,7 +65,7 @@ public class TabCompleter implements org.bukkit.command.TabCompleter {
                 }
                 if (player.hasPermission("sheepquest.setup.delete") && "delete".startsWith(args[0])) {
                     result.add("delete");
-                    if (plugin.playerInfo.get(player).delete != null) {
+                    if (plugin.getPlayerInfo().get(player).getDelete() != null) {
                         result.add("confirm");
                     }
                 }
@@ -110,7 +110,7 @@ public class TabCompleter implements org.bukkit.command.TabCompleter {
                 }
                 break;
             case 2:
-                List<String> arenasList = new ArrayList<>(plugin.arenas.keySet());
+                List<String> arenasList = new ArrayList<>(plugin.getArenas().keySet());
                 if ((args[0].equalsIgnoreCase("delete") && player.hasPermission("sheepquest.setup.delete")) ||
                         (args[0].equalsIgnoreCase("check") && player.hasPermission("sheepquest.setup.check")) ||
                         (args[0].equalsIgnoreCase("setmainlobby") && player.hasPermission("sheepquest.setup.setmainlobby")) ||
@@ -141,9 +141,8 @@ public class TabCompleter implements org.bukkit.command.TabCompleter {
                     result.add("admin");
                 }
                 if (args[0].equalsIgnoreCase("kick") && player.hasPermission("sheepquest.setup.kick")) {
-                    Utils utils = new Utils(plugin);
                     for (Player p : Bukkit.getOnlinePlayers()) {
-                        if (utils.getArena(player) != null) {
+                        if (Utils.getArena(player) != null) {
                             if (p.getName().startsWith(args[1])) {
                                 result.add(p.getName());
                             }

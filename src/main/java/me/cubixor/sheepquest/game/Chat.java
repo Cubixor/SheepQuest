@@ -1,8 +1,8 @@
 package me.cubixor.sheepquest.game;
 
-import me.cubixor.sheepquest.Arena;
 import me.cubixor.sheepquest.SheepQuest;
-import me.cubixor.sheepquest.Utils;
+import me.cubixor.sheepquest.api.Utils;
+import me.cubixor.sheepquest.gameInfo.Arena;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -13,14 +13,13 @@ public class Chat implements Listener {
 
     private final SheepQuest plugin;
 
-    public Chat(SheepQuest sq) {
-        plugin = sq;
+    public Chat() {
+        plugin = SheepQuest.getInstance();
     }
 
     @EventHandler
     public void blockCommand(PlayerCommandPreprocessEvent evt) {
-        Utils utils = new Utils(plugin);
-        if (utils.getArena(evt.getPlayer()) == null) {
+        if (Utils.getArena(evt.getPlayer()) == null) {
             return;
         }
         if (evt.getPlayer().hasPermission("sheepquest.bypass")) {
@@ -51,8 +50,7 @@ public class Chat implements Listener {
 
     @EventHandler
     public void onChat(AsyncPlayerChatEvent evt) {
-        Utils utils = new Utils(plugin);
-        if (utils.getArena(evt.getPlayer()) == null) {
+        if (Utils.getArena(evt.getPlayer()) == null) {
             return;
         }
         if (!plugin.getConfig().getBoolean("game-chat")) {
@@ -60,11 +58,11 @@ public class Chat implements Listener {
         }
         evt.setCancelled(true);
 
-        Arena arena = utils.getArena(evt.getPlayer());
+        Arena arena = Utils.getArena(evt.getPlayer());
 
-        String team = plugin.getMessage("general." + utils.getTeamString(arena.playerTeam.get(evt.getPlayer())) + "-color");
+        String team = plugin.getMessage("general." + Utils.getTeamString(arena.getPlayers().get(evt.getPlayer())) + "-color");
 
-        for (Player p : arena.playerTeam.keySet()) {
+        for (Player p : arena.getPlayers().keySet()) {
             p.sendMessage(plugin.getMessage("game.chat-format").replace("%player%", evt.getPlayer().getName()).replace("%message%", evt.getMessage()).replace("%color%", team));
         }
 

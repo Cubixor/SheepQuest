@@ -1,9 +1,9 @@
 package me.cubixor.sheepquest.game;
 
-import me.cubixor.sheepquest.Arena;
-import me.cubixor.sheepquest.GameState;
 import me.cubixor.sheepquest.SheepQuest;
-import me.cubixor.sheepquest.Utils;
+import me.cubixor.sheepquest.api.Utils;
+import me.cubixor.sheepquest.gameInfo.Arena;
+import me.cubixor.sheepquest.gameInfo.GameState;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
@@ -17,21 +17,20 @@ public class WaitingTips {
 
     private final SheepQuest plugin;
 
-    public WaitingTips(SheepQuest s) {
-        plugin = s;
+    public WaitingTips() {
+        plugin = SheepQuest.getInstance();
     }
 
     public void playerTips(Player player) {
-        if (plugin.playerInfo.get(player).tipTask != null) {
-            plugin.playerInfo.get(player).tipTask.cancel();
-            plugin.playerInfo.get(player).tipTask = null;
+        if (plugin.getPlayerInfo().get(player).getTipTask() != null) {
+            plugin.getPlayerInfo().get(player).getTipTask().cancel();
+            plugin.getPlayerInfo().get(player).setTipTask(null);
         }
-        plugin.playerInfo.get(player).tipTask = new BukkitRunnable() {
+        plugin.getPlayerInfo().get(player).setTipTask(new BukkitRunnable() {
             @Override
             public void run() {
-                Utils utils = new Utils(plugin);
-                Arena arena = utils.getArena(player);
-                if (arena == null || !(arena.state.equals(GameState.WAITING) || arena.state.equals(GameState.STARTING))) {
+                Arena arena = Utils.getArena(player);
+                if (arena == null || !(arena.getState().equals(GameState.WAITING) || arena.getState().equals(GameState.STARTING))) {
                     this.cancel();
                     return;
                 }
@@ -46,8 +45,8 @@ public class WaitingTips {
 
                     @Override
                     public void run() {
-                        Arena arena1 = utils.getArena(player);
-                        if (arena1 == null || !(arena1.state.equals(GameState.WAITING) || arena1.state.equals(GameState.STARTING))) {
+                        Arena arena1 = Utils.getArena(player);
+                        if (arena1 == null || !(arena1.getState().equals(GameState.WAITING) || arena1.getState().equals(GameState.STARTING))) {
                             this.cancel();
                             return;
                         }
@@ -61,7 +60,7 @@ public class WaitingTips {
                     }
                 }.runTaskTimer(plugin, 0, 20);
             }
-        }.runTaskTimerAsynchronously(plugin, 0, 100);
+        }.runTaskTimerAsynchronously(plugin, 0, 100));
     }
 
 }

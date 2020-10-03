@@ -1,9 +1,9 @@
 package me.cubixor.sheepquest.game;
 
-import me.cubixor.sheepquest.Arena;
 import me.cubixor.sheepquest.SheepQuest;
-import me.cubixor.sheepquest.Team;
-import me.cubixor.sheepquest.Utils;
+import me.cubixor.sheepquest.api.Utils;
+import me.cubixor.sheepquest.gameInfo.Arena;
+import me.cubixor.sheepquest.gameInfo.Team;
 import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Sheep;
@@ -15,8 +15,8 @@ public class PathFinding {
 
     private final SheepQuest plugin;
 
-    public PathFinding(SheepQuest s) {
-        plugin = s;
+    public PathFinding() {
+        plugin = SheepQuest.getInstance();
     }
 
     public static float[] getRotations(Location one, Location two) {
@@ -30,14 +30,13 @@ public class PathFinding {
     }
 
     public void walkToLocation(LivingEntity entity, Location location, double speed, Arena arena, Team team) {
-        if (arena.sheep.containsKey(entity)) {
-            arena.sheep.get(entity).cancel();
+        if (arena.getSheep().containsKey(entity)) {
+            arena.getSheep().get(entity).cancel();
         }
 
-        arena.sheep.put((Sheep) entity, new BukkitRunnable() {
+        arena.getSheep().put((Sheep) entity, new BukkitRunnable() {
             public void run() {
-                Utils utils = new Utils(plugin);
-                if (!utils.isInRegion(entity, utils.getArenaString(arena), team)) {
+                if (!Utils.isInRegion(entity, Utils.getArenaString(arena), team)) {
                     float yaw = getRotations(entity.getLocation(), location)[0];
 
                     Vector direction = new Vector(-Math.sin(yaw * 3.1415927F / 180.0F) * (float) 1 * 0.5F, 0, Math.cos(yaw * 3.1415927F / 180.0F) * (float) 1 * 0.5F).multiply(speed);

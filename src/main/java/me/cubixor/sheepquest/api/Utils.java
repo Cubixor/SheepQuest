@@ -1,6 +1,11 @@
-package me.cubixor.sheepquest;
+package me.cubixor.sheepquest.api;
 
 import com.cryptomorin.xseries.XMaterial;
+import com.cryptomorin.xseries.XSound;
+import me.cubixor.sheepquest.SheepQuest;
+import me.cubixor.sheepquest.gameInfo.Arena;
+import me.cubixor.sheepquest.gameInfo.GameState;
+import me.cubixor.sheepquest.gameInfo.Team;
 import org.bukkit.*;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BossBar;
@@ -8,20 +13,13 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.material.Wool;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.*;
 
 public class Utils {
 
-    private final SheepQuest plugin;
-
-    public Utils(SheepQuest sq) {
-        plugin = sq;
-    }
-
-    public LinkedHashMap<Team, Integer> sortTeams(HashMap<Team, Integer> hm) {
+    public static LinkedHashMap<Team, Integer> sortTeams(HashMap<Team, Integer> hm) {
         List<Map.Entry<Team, Integer>> list = new LinkedList<>(hm.entrySet());
 
         Collections.sort(list, Map.Entry.comparingByValue());
@@ -33,7 +31,7 @@ public class Utils {
         return temp;
     }
 
-    public LinkedHashMap<String, Integer> sortByValue(HashMap<String, Integer> hm) {
+    public static LinkedHashMap<String, Integer> sortByValue(HashMap<String, Integer> hm) {
         List<Map.Entry<String, Integer>> list = new LinkedList<>(hm.entrySet());
 
         Collections.sort(list, Map.Entry.comparingByValue());
@@ -45,7 +43,9 @@ public class Utils {
         return temp;
     }
 
-    public ItemStack setItemStack(String materialPath, String namePath, String lorePath) {
+    public static ItemStack setItemStack(String materialPath, String namePath, String lorePath) {
+        SheepQuest plugin = SheepQuest.getInstance();
+
         ItemStack itemStack = XMaterial.matchXMaterial(plugin.getConfig().getString(materialPath)).get().parseItem(true);
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(plugin.getMessage(namePath));
@@ -54,7 +54,9 @@ public class Utils {
         return itemStack;
     }
 
-    public ItemStack setItemStack(Material material, String namePath, String lorePath) {
+    public static ItemStack setItemStack(Material material, String namePath, String lorePath) {
+        SheepQuest plugin = SheepQuest.getInstance();
+
         ItemStack itemStack = new ItemStack(material, 1);
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(plugin.getMessage(namePath));
@@ -64,32 +66,18 @@ public class Utils {
     }
 
 
-    public ItemStack setItemStack(ItemStack itemStack, String namePath) {
+    public static ItemStack setItemStack(ItemStack itemStack, String namePath) {
+        SheepQuest plugin = SheepQuest.getInstance();
+
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(plugin.getMessage(namePath));
         itemStack.setItemMeta(itemMeta);
         return itemStack;
     }
 
-    public Arena getArena(Player player) {
-        for (String arena : plugin.arenas.keySet()) {
-            if (plugin.arenas.get(arena).playerTeam.containsKey(player)) {
-                return plugin.arenas.get(arena);
-            }
-        }
-        return null;
-    }
+    public static ItemStack setItemStack(Material material, String namePath, String lorePath, String toReplace, String replaceMessage) {
+        SheepQuest plugin = SheepQuest.getInstance();
 
-    public String getArenaString(Arena arena) {
-        for (String s : plugin.arenas.keySet()) {
-            if (plugin.arenas.get(s).equals(arena)) {
-                return s;
-            }
-        }
-        return null;
-    }
-
-    public ItemStack setItemStack(Material material, String namePath, String lorePath, String toReplace, String replaceMessage) {
         ItemStack itemStack = new ItemStack(material, 1);
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(plugin.getMessage(namePath));
@@ -102,7 +90,9 @@ public class Utils {
         return itemStack;
     }
 
-    public ItemStack setItemStack(ItemStack itemStack, String namePath, String lorePath, String toReplace, String replaceMessage) {
+    public static ItemStack setItemStack(ItemStack itemStack, String namePath, String lorePath, String toReplace, String replaceMessage) {
+        SheepQuest plugin = SheepQuest.getInstance();
+
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(plugin.getMessage(namePath));
         List<String> lore = plugin.getMessageList(lorePath);
@@ -115,8 +105,33 @@ public class Utils {
         return itemStack;
     }
 
+    public static Team[] getTeams() {
+        return new Team[]{Team.RED, Team.GREEN, Team.BLUE, Team.YELLOW};
+    }
 
-    public HashMap<Team, Integer> getTeamPlayers(Arena arena) {
+    public static Arena getArena(Player player) {
+        SheepQuest plugin = SheepQuest.getInstance();
+
+        for (String arena : plugin.getArenas().keySet()) {
+            if (plugin.getArenas().get(arena).getPlayers().containsKey(player)) {
+                return plugin.getArenas().get(arena);
+            }
+        }
+        return null;
+    }
+
+    public static String getArenaString(Arena arena) {
+        SheepQuest plugin = SheepQuest.getInstance();
+
+        for (String s : plugin.getArenas().keySet()) {
+            if (plugin.getArenas().get(s).equals(arena)) {
+                return s;
+            }
+        }
+        return null;
+    }
+
+    public static HashMap<Team, Integer> getTeamPlayers(Arena arena) {
         HashMap<Team, Integer> teamPlayers = new HashMap<>();
         for (Team team : Team.values()) {
             if (!team.equals(Team.NONE)) {
@@ -124,8 +139,8 @@ public class Utils {
             }
         }
 
-        for (Player p : arena.playerTeam.keySet()) {
-            switch (arena.playerTeam.get(p)) {
+        for (Player p : arena.getPlayers().keySet()) {
+            switch (arena.getPlayers().get(p)) {
                 case RED:
                     teamPlayers.replace(Team.RED, teamPlayers.get(Team.RED) + 1);
                     break;
@@ -144,7 +159,7 @@ public class Utils {
         return teamPlayers;
     }
 
-    public String getTeamString(Team team) {
+    public static String getTeamString(Team team) {
         String teamString;
         if (team.equals(Team.RED)) {
             teamString = "red";
@@ -160,21 +175,21 @@ public class Utils {
         return teamString;
     }
 
-    public ItemStack getTeamWool(Team team) {
-        Wool wool = null;
+    public static ItemStack getTeamWool(Team team) {
+        ItemStack wool = null;
         if (team.equals(Team.RED)) {
-            wool = new Wool(DyeColor.RED);
+            wool = XMaterial.RED_WOOL.parseItem();
         } else if (team.equals(Team.GREEN)) {
-            wool = new Wool(DyeColor.LIME);
+            wool = XMaterial.LIME_WOOL.parseItem();
         } else if (team.equals(Team.BLUE)) {
-            wool = new Wool(DyeColor.BLUE);
+            wool = XMaterial.BLUE_WOOL.parseItem();
         } else if (team.equals(Team.YELLOW)) {
-            wool = new Wool(DyeColor.YELLOW);
+            wool = XMaterial.YELLOW_WOOL.parseItem();
         }
-        return wool.toItemStack();
+        return wool;
     }
 
-    public Team getWoolTeam(ItemStack material) {
+    public static Team getWoolTeam(ItemStack material) {
         Team team = null;
         if (material.getType().toString().contains("WOOL")) {
             if (XMaterial.matchXMaterial(material).equals(XMaterial.RED_WOOL)) {
@@ -192,23 +207,25 @@ public class Utils {
         return team;
     }
 
-    public String getStringState(Arena arena) {
+    public static String getStringState(Arena arena) {
+        SheepQuest plugin = SheepQuest.getInstance();
+
         String gameState = null;
         if (!plugin.getArenasConfig().getBoolean("Arenas." + getArenaString(arena) + ".active")) {
             gameState = plugin.getMessage("general.state-inactive");
-        } else if (arena.state.equals(GameState.WAITING)) {
+        } else if (arena.getState().equals(GameState.WAITING)) {
             gameState = plugin.getMessage("general.state-waiting");
-        } else if (arena.state.equals(GameState.STARTING)) {
+        } else if (arena.getState().equals(GameState.STARTING)) {
             gameState = plugin.getMessage("general.state-starting");
-        } else if (arena.state.equals(GameState.GAME)) {
+        } else if (arena.getState().equals(GameState.GAME)) {
             gameState = plugin.getMessage("general.state-game");
-        } else if (arena.state.equals(GameState.ENDING)) {
+        } else if (arena.getState().equals(GameState.ENDING)) {
             gameState = plugin.getMessage("general.state-ending");
         }
         return gameState;
     }
 
-    public Color getColor(Team team) {
+    public static Color getColor(Team team) {
         Color color = null;
         if (team.equals(Team.RED)) {
             color = Color.RED;
@@ -222,7 +239,7 @@ public class Utils {
         return color;
     }
 
-    public DyeColor getDyeColor(Team team) {
+    public static DyeColor getDyeColor(Team team) {
         DyeColor color = null;
         if (team.equals(Team.RED)) {
             color = DyeColor.RED;
@@ -236,7 +253,7 @@ public class Utils {
         return color;
     }
 
-    public BarColor getBossBarColor(Team team) {
+    public static BarColor getBossBarColor(Team team) {
         BarColor barColor = BarColor.WHITE;
         switch (team) {
             case RED:
@@ -255,13 +272,21 @@ public class Utils {
         return barColor;
     }
 
-    public void removeBossBars(Player player, Arena arena) {
-        for (BossBar bossBar : arena.teamBossBars.values()) {
+    public static void removeBossBars(Player player, Arena arena) {
+        for (BossBar bossBar : arena.getTeamBossBars().values()) {
             bossBar.removePlayer(player);
         }
     }
 
-    public LinkedHashMap<String, Boolean> checkIfReady(String arena) {
+    public static void playSound(Arena arena, Location loc, Sound sound, float volume, float pitch) {
+        for (Player p : arena.getPlayers().keySet()) {
+            p.playSound(loc, sound, volume, pitch);
+        }
+    }
+
+    public static LinkedHashMap<String, Boolean> checkIfReady(String arena) {
+        SheepQuest plugin = SheepQuest.getInstance();
+
         LinkedHashMap<String, Boolean> ready = new LinkedHashMap<>();
 
         ready.put("min-players", plugin.getArenasConfig().getInt("Arenas." + arena + ".min-players") != 0);
@@ -282,7 +307,9 @@ public class Utils {
     }
 
 
-    public boolean checkIfValid(Player player, String[] args, String permission, String messagesPath, int argsLength) {
+    public static boolean checkIfValid(Player player, String[] args, String permission, String messagesPath, int argsLength) {
+        SheepQuest plugin = SheepQuest.getInstance();
+
 
         if (!player.hasPermission(permission)) {
             player.sendMessage(plugin.getMessage("general.no-permission"));
@@ -302,7 +329,9 @@ public class Utils {
         return true;
     }
 
-    public void removeSheep(Player player) {
+    public static void removeSheep(Player player) {
+        SheepQuest plugin = SheepQuest.getInstance();
+
         if (player.getPassenger() != null) {
             if (player.getPassenger().getPassenger() != null) {
                 if (player.getPassenger().getPassenger().getPassenger() != null) {
@@ -314,22 +343,22 @@ public class Utils {
             }
             player.eject();
 
-            if (plugin.passengerFix != null) {
-                plugin.passengerFix.updatePassengers(player);
+            if (plugin.isPassengerFix()) {
+                new PassengerFixReflection().updatePassengers(player);
             }
-
+            player.playSound(player.getLocation(), XSound.matchXSound(plugin.getConfig().getString("sounds.sheep-drop")).get().parseSound(), 100, 1);
             player.removePotionEffect(PotionEffectType.SLOW);
         }
     }
 
-    public boolean isInRegion(Entity entity, String arena, Team team) {
-        Utils utils = new Utils(plugin);
+    public static boolean isInRegion(Entity entity, String arena, Team team) {
+        SheepQuest plugin = SheepQuest.getInstance();
 
         if (team.equals(Team.NONE)) {
             return entity.getLocation().distance((Location) plugin.getArenasConfig().get("Arenas." + arena + ".sheep-spawn")) < 10;
         }
 
-        String teamString = utils.getTeamString(team);
+        String teamString = getTeamString(team);
 
         Location min = (Location) plugin.getArenasConfig().get("Arenas." + arena + ".teams-area." + teamString + ".min-point");
         Location max = (Location) plugin.getArenasConfig().get("Arenas." + arena + ".teams-area." + teamString + ".max-point");
@@ -390,18 +419,20 @@ public class Utils {
         return inRegion;
     }
 
-    public ItemStack setGlassColor(Arena arenaObject) {
+    public static ItemStack setGlassColor(Arena arenaObject) {
+        SheepQuest plugin = SheepQuest.getInstance();
+
         String arena = getArenaString(arenaObject);
         ItemStack material = null;
         if (!plugin.getArenasConfig().getBoolean("Arenas." + arena + ".active")) {
             material = XMaterial.matchXMaterial(plugin.getConfig().getString("sign-colors.inactive")).get().parseItem();
-        } else if (arenaObject.state.equals(GameState.WAITING)) {
+        } else if (arenaObject.getState().equals(GameState.WAITING)) {
             material = XMaterial.matchXMaterial(plugin.getConfig().getString("sign-colors.waiting")).get().parseItem();
-        } else if (arenaObject.state.equals(GameState.STARTING)) {
+        } else if (arenaObject.getState().equals(GameState.STARTING)) {
             material = XMaterial.matchXMaterial(plugin.getConfig().getString("sign-colors.starting")).get().parseItem();
-        } else if (arenaObject.state.equals(GameState.GAME)) {
+        } else if (arenaObject.getState().equals(GameState.GAME)) {
             material = XMaterial.matchXMaterial(plugin.getConfig().getString("sign-colors.ingame")).get().parseItem();
-        } else if (arenaObject.state.equals(GameState.ENDING)) {
+        } else if (arenaObject.getState().equals(GameState.ENDING)) {
             material = XMaterial.matchXMaterial(plugin.getConfig().getString("sign-colors.ending")).get().parseItem();
         }
         return material;

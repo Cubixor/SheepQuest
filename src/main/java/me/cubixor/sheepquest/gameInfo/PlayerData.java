@@ -1,4 +1,4 @@
-package me.cubixor.sheepquest;
+package me.cubixor.sheepquest.gameInfo;
 
 import org.bukkit.GameMode;
 import org.bukkit.Location;

@@ -1,5 +1,9 @@
-package me.cubixor.sheepquest;
+package me.cubixor.sheepquest.game;
 
+import me.cubixor.sheepquest.SheepQuest;
+import me.cubixor.sheepquest.api.Utils;
+import me.cubixor.sheepquest.gameInfo.Arena;
+import me.cubixor.sheepquest.gameInfo.Team;
 import org.bukkit.Bukkit;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
@@ -10,14 +14,13 @@ public class Scoreboards {
 
     private final SheepQuest plugin;
 
-    public Scoreboards(SheepQuest sq) {
-        plugin = sq;
+    public Scoreboards() {
+        plugin = SheepQuest.getInstance();
     }
 
     public Scoreboard getWaitingScoreboard(Arena arena) {
-        Utils utils = new Utils(plugin);
-        String arenaString = utils.getArenaString(arena);
-        int count = arena.playerTeam.keySet().size();
+        String arenaString = Utils.getArenaString(arena);
+        int count = arena.getPlayers().keySet().size();
 
         Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
         Objective objective = scoreboard.registerNewObjective("SheepQuest", "");
@@ -44,9 +47,8 @@ public class Scoreboards {
     }
 
     public Scoreboard getStartingScoreboard(Arena arena) {
-        Utils utils = new Utils(plugin);
-        String arenaString = utils.getArenaString(arena);
-        int count = arena.playerTeam.keySet().size();
+        String arenaString = Utils.getArenaString(arena);
+        int count = arena.getPlayers().keySet().size();
 
         Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
         Objective objective = scoreboard.registerNewObjective("SheepQuest", "");
@@ -63,7 +65,7 @@ public class Scoreboards {
         players.setScore(5);
         Score clear3 = objective.getScore("  ");
         clear3.setScore(4);
-        Score waiting = objective.getScore(plugin.getMessage("game.scoreboard-starting").replace("%time%", Integer.toString(arena.timer)));
+        Score waiting = objective.getScore(plugin.getMessage("game.scoreboard-starting").replace("%time%", Integer.toString(arena.getTimer())));
         waiting.setScore(3);
         Score clear4 = objective.getScore("   ");
         clear4.setScore(2);
@@ -82,23 +84,23 @@ public class Scoreboards {
 
         Score clear1 = objective.getScore("");
         clear1.setScore(10);
-        Score red = objective.getScore(plugin.getMessage("game.scoreboard-red-sheep").replace("%count%", arena.points.get(Team.RED).toString()));
+        Score red = objective.getScore(plugin.getMessage("game.scoreboard-red-sheep").replace("%count%", arena.getPoints().get(Team.RED).toString()));
         red.setScore(9);
-        Score green = objective.getScore(plugin.getMessage("game.scoreboard-green-sheep").replace("%count%", arena.points.get(Team.GREEN).toString()));
+        Score green = objective.getScore(plugin.getMessage("game.scoreboard-green-sheep").replace("%count%", arena.getPoints().get(Team.GREEN).toString()));
         green.setScore(8);
-        Score blue = objective.getScore(plugin.getMessage("game.scoreboard-blue-sheep").replace("%count%", arena.points.get(Team.BLUE).toString()));
+        Score blue = objective.getScore(plugin.getMessage("game.scoreboard-blue-sheep").replace("%count%", arena.getPoints().get(Team.BLUE).toString()));
         blue.setScore(7);
-        Score yellow = objective.getScore(plugin.getMessage("game.scoreboard-yellow-sheep").replace("%count%", arena.points.get(Team.YELLOW).toString()));
+        Score yellow = objective.getScore(plugin.getMessage("game.scoreboard-yellow-sheep").replace("%count%", arena.getPoints().get(Team.YELLOW).toString()));
         yellow.setScore(6);
         Score clear2 = objective.getScore(" ");
         clear2.setScore(5);
         Score next = objective.getScore(plugin.getMessage("game.scoreboard-next-sheep"));
         next.setScore(4);
         Score nextTime;
-        if (arena.sheepTimer == 1) {
-            nextTime = objective.getScore(plugin.getMessage("game.scoreboard-second").replace("%count%", Integer.toString(arena.sheepTimer)) + " ");
+        if (arena.getSheepTimer() == 1) {
+            nextTime = objective.getScore(plugin.getMessage("game.scoreboard-second").replace("%count%", Integer.toString(arena.getSheepTimer())) + " ");
         } else {
-            nextTime = objective.getScore(plugin.getMessage("game.scoreboard-seconds").replace("%count%", Integer.toString(arena.sheepTimer)) + " ");
+            nextTime = objective.getScore(plugin.getMessage("game.scoreboard-seconds").replace("%count%", Integer.toString(arena.getSheepTimer())) + " ");
         }
         nextTime.setScore(3);
         Score clear3 = objective.getScore("  ");
@@ -108,8 +110,8 @@ public class Scoreboards {
 
 
         int time;
-        if (arena.timer > 60) {
-            time = arena.timer / 60;
+        if (arena.getTimer() > 60) {
+            time = arena.getTimer() / 60;
             String timeString = Integer.toString(time);
             Score timeLeft;
             if (time == 1) {
@@ -121,7 +123,7 @@ public class Scoreboards {
             timeLeft.setScore(0);
 
         } else {
-            time = arena.timer;
+            time = arena.getTimer();
             String timeString = Integer.toString(time);
             Score timeLeft;
             if (time == 1) {
@@ -144,23 +146,23 @@ public class Scoreboards {
 
         Score clear1 = objective.getScore("");
         clear1.setScore(7);
-        Score red = objective.getScore(plugin.getMessage("game.scoreboard-red-sheep").replace("%count%", arena.points.get(Team.RED).toString()));
+        Score red = objective.getScore(plugin.getMessage("game.scoreboard-red-sheep").replace("%count%", arena.getPoints().get(Team.RED).toString()));
         red.setScore(6);
-        Score green = objective.getScore(plugin.getMessage("game.scoreboard-green-sheep").replace("%count%", arena.points.get(Team.GREEN).toString()));
+        Score green = objective.getScore(plugin.getMessage("game.scoreboard-green-sheep").replace("%count%", arena.getPoints().get(Team.GREEN).toString()));
         green.setScore(5);
-        Score blue = objective.getScore(plugin.getMessage("game.scoreboard-blue-sheep").replace("%count%", arena.points.get(Team.BLUE).toString()));
+        Score blue = objective.getScore(plugin.getMessage("game.scoreboard-blue-sheep").replace("%count%", arena.getPoints().get(Team.BLUE).toString()));
         blue.setScore(4);
-        Score yellow = objective.getScore(plugin.getMessage("game.scoreboard-yellow-sheep").replace("%count%", arena.points.get(Team.YELLOW).toString()));
+        Score yellow = objective.getScore(plugin.getMessage("game.scoreboard-yellow-sheep").replace("%count%", arena.getPoints().get(Team.YELLOW).toString()));
         yellow.setScore(3);
         Score clear2 = objective.getScore(" ");
         clear2.setScore(2);
         Score next = objective.getScore(plugin.getMessage("game.scoreboard-ending"));
         next.setScore(1);
         Score nextTime;
-        if (arena.timer == 1) {
-            nextTime = objective.getScore(plugin.getMessage("game.scoreboard-second").replace("%count%", Integer.toString(arena.timer)) + " ");
+        if (arena.getTimer() == 1) {
+            nextTime = objective.getScore(plugin.getMessage("game.scoreboard-second").replace("%count%", Integer.toString(arena.getTimer())) + " ");
         } else {
-            nextTime = objective.getScore(plugin.getMessage("game.scoreboard-seconds").replace("%count%", Integer.toString(arena.timer)) + " ");
+            nextTime = objective.getScore(plugin.getMessage("game.scoreboard-seconds").replace("%count%", Integer.toString(arena.getTimer())) + " ");
         }
         nextTime.setScore(0);
         return scoreboard;

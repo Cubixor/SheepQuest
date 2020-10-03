@@ -1,11 +1,11 @@
 package me.cubixor.sheepquest.menu;
 
 import com.cryptomorin.xseries.XMaterial;
-import me.cubixor.sheepquest.Arena;
-import me.cubixor.sheepquest.PlayerGameStats;
 import me.cubixor.sheepquest.SheepQuest;
-import me.cubixor.sheepquest.Utils;
+import me.cubixor.sheepquest.api.Utils;
 import me.cubixor.sheepquest.commands.StaffCommands;
+import me.cubixor.sheepquest.gameInfo.Arena;
+import me.cubixor.sheepquest.gameInfo.PlayerGameStats;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -25,92 +25,89 @@ public class StaffMenu implements Listener {
 
     private final SheepQuest plugin;
 
-    public StaffMenu(SheepQuest s) {
-        plugin = s;
+    public StaffMenu() {
+        plugin = SheepQuest.getInstance();
     }
 
     public void staffMenuCommand(Player player, String[] args) {
-        Utils utils = new Utils(plugin);
-        if (!utils.checkIfValid(player, args, "sheepquest.staff.menu", "staff-menu.command", 2)) {
+        if (!Utils.checkIfValid(player, args, "sheepquest.staff.menu", "staff-menu.command", 2)) {
             return;
         }
         updateStaffMenu(args[1], player);
-        player.openInventory(plugin.inventories.get(player).staffInventory);
+        player.openInventory(plugin.getInventories().get(player).getStaffInventory());
     }
 
 
     public void updateStaffMenu(String arena, Player player) {
         plugin.putInventories(player, arena);
-        Utils utils = new Utils(plugin);
 
         boolean active = plugin.getArenasConfig().getBoolean("Arenas." + arena + ".active");
-        String gameState = utils.getStringState(plugin.arenas.get(arena));
-        int count = plugin.arenas.get(arena).playerTeam.keySet().size();
+        String gameState = Utils.getStringState(plugin.getArenas().get(arena));
+        int count = plugin.getArenas().get(arena).getPlayers().keySet().size();
 
         Inventory staffInventory = Bukkit.createInventory(null, 27, plugin.getMessage("staff-menu.name").replace("%arena%", arena));
-        staffInventory.setItem(0, utils.setItemStack(XMaterial.NETHER_STAR.parseMaterial(), "staff-menu.active-item-name", "staff-menu.active-item-lore",
+        staffInventory.setItem(0, Utils.setItemStack(XMaterial.NETHER_STAR.parseMaterial(), "staff-menu.active-item-name", "staff-menu.active-item-lore",
                 "%active%", active ? plugin.getMessage("staff-menu.state-active") : plugin.getMessage("staff-menu.state-not-active")));
-        staffInventory.setItem(1, utils.setItemStack(XMaterial.SLIME_BALL.parseMaterial(), "staff-menu.start-item-name", "staff-menu.start-item-lore",
+        staffInventory.setItem(1, Utils.setItemStack(XMaterial.SLIME_BALL.parseMaterial(), "staff-menu.start-item-name", "staff-menu.start-item-lore",
                 "%state%", gameState));
-        staffInventory.setItem(2, utils.setItemStack(XMaterial.MAGMA_CREAM.parseMaterial(), "staff-menu.stop-item-name", "staff-menu.stop-item-lore",
+        staffInventory.setItem(2, Utils.setItemStack(XMaterial.MAGMA_CREAM.parseMaterial(), "staff-menu.stop-item-name", "staff-menu.stop-item-lore",
                 "%state%", gameState));
-        staffInventory.setItem(3, utils.setItemStack(XMaterial.PLAYER_HEAD.parseMaterial(), "staff-menu.players-item-name", "staff-menu.players-item-lore",
+        staffInventory.setItem(3, Utils.setItemStack(XMaterial.PLAYER_HEAD.parseMaterial(), "staff-menu.players-item-name", "staff-menu.players-item-lore",
                 "%players%", Integer.toString(count)));
 
-        staffInventory.setItem(22, utils.setItemStack(XMaterial.ARROW.parseMaterial(), "staff-menu.back-item-name", "staff-menu.back-item-lore"));
+        staffInventory.setItem(22, Utils.setItemStack(XMaterial.ARROW.parseMaterial(), "staff-menu.back-item-name", "staff-menu.back-item-lore"));
 
-        plugin.inventories.get(player).staffInventory = staffInventory;
+        plugin.getInventories().get(player).setStaffInventory(staffInventory);
     }
 
     public void updatePlayersMenu(String arenaString, Player player) {
         plugin.putInventories(player, arenaString);
-        Utils utils = new Utils(plugin);
-        Arena arena = plugin.arenas.get(arenaString);
+        Arena arena = plugin.getArenas().get(arenaString);
 
         Inventory playersInventory = Bukkit.createInventory(null, 54, plugin.getMessage("staff-menu.players-menu-name").replace("%arena%", arenaString));
-        List<Player> playerList = new ArrayList<>(arena.playerTeam.keySet());
+        List<Player> playerList = new ArrayList<>(arena.getPlayers().keySet());
         int slot = 0;
-        plugin.inventories.get(player).playerSlot = new HashMap<>();
-        if (!arena.playerTeam.keySet().isEmpty()) {
+        plugin.getInventories().get(player).setPlayerSlot(new HashMap<>());
+        if (!arena.getPlayers().keySet().isEmpty()) {
             for (Player p : playerList) {
                 ItemStack playerItem = new ItemStack(XMaterial.PLAYER_HEAD.parseMaterial());
                 ItemMeta skullMeta = playerItem.getItemMeta();
                 skullMeta.setDisplayName(plugin.getMessage("staff-menu.player-item-name").replace("%nick%", p.getName()));
                 List<String> playerItemLore = new ArrayList<>(plugin.getMessageList("staff-menu.player-item-lore"));
                 for (String s : playerItemLore) {
-                    PlayerGameStats playerGameStats = arena.playerStats.get(p);
-                    String replaced = s.replace("%team%", plugin.getMessage("general.team-" + utils.getTeamString(arena.playerTeam.get(p))));
-                    replaced = replaced.replace("%sheep%", playerGameStats == null ? "0" : Integer.toString(arena.playerStats.get(p).sheepTaken));
-                    replaced = replaced.replace("%kills%", playerGameStats == null ? "0" : Integer.toString(arena.playerStats.get(p).kills));
-                    replaced = replaced.replace("%deaths%", playerGameStats == null ? "0" : Integer.toString(arena.playerStats.get(p).deaths));
+                    PlayerGameStats playerGameStats = arena.getPlayerStats().get(p);
+                    String replaced = s.replace("%team%", plugin.getMessage("general.team-" + Utils.getTeamString(arena.getPlayers().get(p))));
+                    replaced = replaced.replace("%sheep%", playerGameStats == null ? "0" : Integer.toString(arena.getPlayerStats().get(p).getSheepTaken()));
+                    replaced = replaced.replace("%kills%", playerGameStats == null ? "0" : Integer.toString(arena.getPlayerStats().get(p).getKills()));
+                    replaced = replaced.replace("%deaths%", playerGameStats == null ? "0" : Integer.toString(arena.getPlayerStats().get(p).getDeaths()));
                     Collections.replaceAll(playerItemLore, s, replaced);
                 }
                 skullMeta.setLore(playerItemLore);
                 playerItem.setItemMeta(skullMeta);
                 playersInventory.setItem(slot, playerItem);
-                plugin.inventories.get(player).playerSlot.put(slot, p);
+                plugin.getInventories().get(player).getPlayerSlot().put(slot, p);
                 slot++;
             }
         }
 
-        playersInventory.setItem(49, utils.setItemStack(XMaterial.ARROW.parseMaterial(), "staff-menu.players-menu-back-item-name", "staff-menu.players-menu-back-item-lore"));
+        playersInventory.setItem(49, Utils.setItemStack(XMaterial.ARROW.parseMaterial(), "staff-menu.players-menu-back-item-name", "staff-menu.players-menu-back-item-lore"));
 
-        plugin.inventories.get(player).playersInventory = playersInventory;
+        plugin.getInventories().get(player).setPlayersInventory(playersInventory);
 
     }
 
     @EventHandler
     public void onClick(InventoryClickEvent evt) {
         Player player = (Player) evt.getWhoClicked();
-        if (!plugin.inventories.containsKey(player)) {
+        if (!plugin.getInventories().containsKey(player)) {
             return;
         }
         if (evt.getCurrentItem() == null) {
             return;
         }
-        StaffCommands staffCommands = new StaffCommands(plugin);
-        String arena = plugin.inventories.get(player).arena;
-        if (evt.getClickedInventory().equals(plugin.inventories.get(player).staffInventory)) {
+        StaffCommands staffCommands = new StaffCommands();
+        String arena = plugin.getInventories().get(player).getArena();
+        if (evt.getClickedInventory().equals(plugin.getInventories().get(player).getStaffInventory())) {
             switch (evt.getSlot()) {
                 case 0:
                     boolean active = plugin.getArenasConfig().getBoolean("Arenas." + arena + ".active");
@@ -127,25 +124,25 @@ public class StaffMenu implements Listener {
                     break;
                 case 3:
                     updatePlayersMenu(arena, player);
-                    player.openInventory(plugin.inventories.get(player).playersInventory);
+                    player.openInventory(plugin.getInventories().get(player).getPlayersInventory());
                     break;
                 case 22:
-                    new ArenasMenu(plugin).updateArenasMenu(player);
-                    player.openInventory(plugin.inventories.get(player).arenasInventory);
+                    new ArenasMenu().updateArenasMenu(player);
+                    player.openInventory(plugin.getInventories().get(player).getArenasInventory());
                     break;
             }
             evt.setCancelled(true);
-        } else if (evt.getClickedInventory().equals(plugin.inventories.get(player).playersInventory)) {
+        } else if (evt.getClickedInventory().equals(plugin.getInventories().get(player).getPlayersInventory())) {
             if (evt.getSlot() == 49) {
                 updateStaffMenu(arena, player);
-                player.openInventory(plugin.inventories.get(player).staffInventory);
+                player.openInventory(plugin.getInventories().get(player).getStaffInventory());
             }
             if (evt.getCurrentItem().getType().equals(XMaterial.PLAYER_HEAD.parseMaterial())) {
-                Player skullOwner = plugin.inventories.get(player).playerSlot.get(evt.getSlot());
+                Player skullOwner = plugin.getInventories().get(player).getPlayerSlot().get(evt.getSlot());
                 if (evt.getClick().equals(ClickType.RIGHT)) {
-                    new StaffCommands(plugin).kick(player, new String[]{"kick", skullOwner.getName()});
+                    new StaffCommands().kick(player, new String[]{"kick", skullOwner.getName()});
                     updatePlayersMenu(arena, player);
-                    player.openInventory(plugin.inventories.get(player).playersInventory);
+                    player.openInventory(plugin.getInventories().get(player).getPlayersInventory());
                 } else if (evt.getClick().equals(ClickType.LEFT)) {
                     player.teleport(skullOwner);
                     player.closeInventory();

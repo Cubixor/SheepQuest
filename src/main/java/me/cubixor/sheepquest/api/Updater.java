@@ -1,4 +1,4 @@
-package me.cubixor.sheepquest;
+package me.cubixor.sheepquest.api;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -19,6 +19,17 @@ public class Updater {
         this.resourceId = resourceId;
     }
 
+    public void runUpdater() {
+        getVersion(version -> {
+            if (!plugin.getDescription().getVersion().equalsIgnoreCase(version)) {
+                plugin.getLogger().warning("There is a new update of SheepQuest available!");
+                plugin.getLogger().warning("Your version: " + plugin.getDescription().getVersion());
+                plugin.getLogger().warning("New version: " + version);
+                plugin.getLogger().warning("Go to spigotmc.org and download it!");
+            }
+        });
+    }
+
     public void getVersion(final Consumer<String> consumer) {
         Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> {
             try (InputStream inputStream = new URL("https://api.spigotmc.org/legacy/update.php?resource=" + this.resourceId).openStream(); Scanner scanner = new Scanner(inputStream)) {
@@ -30,5 +41,4 @@ public class Updater {
             }
         });
     }
-
 }

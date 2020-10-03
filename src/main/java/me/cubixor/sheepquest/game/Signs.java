@@ -1,9 +1,9 @@
 package me.cubixor.sheepquest.game;
 
-import me.cubixor.sheepquest.Arena;
 import me.cubixor.sheepquest.SheepQuest;
-import me.cubixor.sheepquest.Utils;
+import me.cubixor.sheepquest.api.Utils;
 import me.cubixor.sheepquest.commands.PlayCommands;
+import me.cubixor.sheepquest.gameInfo.Arena;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -22,15 +22,14 @@ public class Signs implements Listener {
 
     private final SheepQuest plugin;
 
-    public Signs(SheepQuest s) {
-        plugin = s;
+    public Signs() {
+        plugin = SheepQuest.getInstance();
     }
 
     @EventHandler
     public void signCreate(SignChangeEvent evt) {
-        Utils utils = new Utils(plugin);
         Sign sign = (Sign) evt.getBlock().getState();
-        if (!(evt.getLine(0) != null && evt.getLine(1) != null && evt.getLine(0).equalsIgnoreCase("[sheepquest]") && plugin.getArenasConfig().getConfigurationSection("Arenas").contains(evt.getLine(1)) && !utils.checkIfReady(evt.getLine(1)).containsValue(false))) {
+        if (!(evt.getLine(0) != null && evt.getLine(1) != null && evt.getLine(0).equalsIgnoreCase("[sheepquest]") && plugin.getArenasConfig().getConfigurationSection("Arenas").contains(evt.getLine(1)) && !Utils.checkIfReady(evt.getLine(1)).containsValue(false))) {
             return;
         }
         if (!evt.getPlayer().hasPermission("sheepquest.setup.signs")) {
@@ -50,10 +49,10 @@ public class Signs implements Listener {
             }
         }
 
-        plugin.arenas.get(arena).signs.add(sign);
+        plugin.getArenas().get(arena).getSigns().add(sign);
 
         evt.setCancelled(true);
-        updateSign(sign, plugin.arenas.get(arena));
+        updateSign(sign, plugin.getArenas().get(arena));
 
     }
 
@@ -84,17 +83,15 @@ public class Signs implements Listener {
     }
 
     public void removeSigns(Arena arena) {
-        Utils utils = new Utils(plugin);
-        String arenaString = utils.getArenaString(arena);
-        arena.signs = new ArrayList<>();
+        String arenaString = Utils.getArenaString(arena);
+        arena.setSigns(new ArrayList<>());
         plugin.getArenasConfig().set("Signs." + arenaString, null);
         plugin.saveArenas();
     }
 
     private void removeSign(Arena arena, Sign sign) {
-        Utils utils = new Utils(plugin);
-        String arenaString = utils.getArenaString(arena);
-        arena.signs.remove(sign);
+        String arenaString = Utils.getArenaString(arena);
+        arena.getSigns().remove(sign);
         int count = 0;
         while (true) {
             if (plugin.getArenasConfig().get("Signs." + arenaString + "." + count).equals(sign.getLocation())) {
@@ -130,39 +127,37 @@ public class Signs implements Listener {
         }
         evt.setCancelled(true);
 
-        Utils utils = new Utils(plugin);
-        new PlayCommands(plugin).join(evt.getPlayer(), new String[]{"join", utils.getArenaString(arenaSign(sign))});
-        if (utils.getArena(evt.getPlayer()) != null) {
+        new PlayCommands().join(evt.getPlayer(), new String[]{"join", Utils.getArenaString(arenaSign(sign))});
+        if (Utils.getArena(evt.getPlayer()) != null) {
             evt.getPlayer().getInventory().setHeldItemSlot(4);
         }
     }
 
     public void updateSigns(Arena arena) {
-        for (Sign sign : arena.signs) {
+        for (Sign sign : arena.getSigns()) {
             updateSign(sign, arena);
         }
     }
 
     public void updateSign(Sign sign, Arena arena) {
-        Utils utils = new Utils(plugin);
-        String arenaString = utils.getArenaString(arena);
+        String arenaString = Utils.getArenaString(arena);
         Block block;
+        Block attachedBlock;
         try {
             block = sign.getBlock();
+            attachedBlock = block.getRelative(((org.bukkit.material.Sign) sign.getBlock().getState().getData()).getAttachedFace());
         } catch (Exception e) {
             removeSign(arena, sign);
             return;
         }
-        Block attachedBlock;
 
-        attachedBlock = block.getRelative(((org.bukkit.material.Sign) sign.getBlock().getState().getData()).getAttachedFace());
 
-        String count = Integer.toString(arena.playerTeam.keySet().size());
+        String count = Integer.toString(arena.getPlayers().keySet().size());
         String max = Integer.toString(plugin.getArenasConfig().getInt("Arenas." + arenaString + ".max-players"));
 
-        String gameState = utils.getStringState(arena);
+        String gameState = Utils.getStringState(arena);
         if (plugin.getConfig().getBoolean("color-signs")) {
-            ItemStack blockType = utils.setGlassColor(arena);
+            ItemStack blockType = Utils.setGlassColor(arena);
 
             attachedBlock.setType(blockType.getType());
             BlockState state = attachedBlock.getState();
@@ -189,7 +184,7 @@ public class Signs implements Listener {
         }
         for (String arena : plugin.getArenasConfig().getConfigurationSection("Arenas").getKeys(false)) {
             loadArenaSigns(arena);
-            updateSigns(plugin.arenas.get(arena));
+            updateSigns(plugin.getArenas().get(arena));
         }
     }
 
@@ -201,7 +196,7 @@ public class Signs implements Listener {
             Location loc = (Location) plugin.getArenasConfig().get("Signs." + arena + "." + signNumber);
             try {
                 Sign sign = (Sign) loc.getBlock().getState();
-                plugin.arenas.get(arena).signs.add(sign);
+                plugin.getArenas().get(arena).getSigns().add(sign);
             } catch (Exception ex) {
                 plugin.getArenasConfig().set("Signs." + arena + "." + signNumber, null);
             }
@@ -209,9 +204,9 @@ public class Signs implements Listener {
     }
 
     private Arena arenaSign(Sign sign) {
-        for (String s : plugin.arenas.keySet()) {
-            if (plugin.arenas.get(s).signs.contains(sign)) {
-                return plugin.arenas.get(s);
+        for (String s : plugin.getArenas().keySet()) {
+            if (plugin.getArenas().get(s).getSigns().contains(sign)) {
+                return plugin.getArenas().get(s);
             }
         }
         return null;
