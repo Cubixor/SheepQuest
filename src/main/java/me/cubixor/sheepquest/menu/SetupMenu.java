@@ -150,7 +150,6 @@ public class SetupMenu implements Listener {
 
     @EventHandler
     public void onLeave(PlayerQuitEvent evt) {
-        plugin.getPlayerInfo().remove(evt.getPlayer());
         plugin.getInventories().remove(evt.getPlayer());
     }
 

@@ -1,11 +1,13 @@
 package me.cubixor.sheepquest.game;
 
+import com.cryptomorin.xseries.XBlock;
 import me.cubixor.sheepquest.SheepQuest;
 import me.cubixor.sheepquest.api.Utils;
 import me.cubixor.sheepquest.commands.PlayCommands;
 import me.cubixor.sheepquest.gameInfo.Arena;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.event.EventHandler;
@@ -17,6 +19,8 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class Signs implements Listener {
 
@@ -29,36 +33,30 @@ public class Signs implements Listener {
     @EventHandler
     public void signCreate(SignChangeEvent evt) {
         Sign sign = (Sign) evt.getBlock().getState();
-        if (!(evt.getLine(0) != null && evt.getLine(1) != null && evt.getLine(0).equalsIgnoreCase("[sheepquest]") && plugin.getArenasConfig().getConfigurationSection("Arenas").contains(evt.getLine(1)) && !Utils.checkIfReady(evt.getLine(1)).containsValue(false))) {
+        if (!(evt.getLine(0) != null && evt.getLine(1) != null
+                && evt.getLine(0).equalsIgnoreCase("[sheepquest]")
+                && plugin.getArenasConfig().getConfigurationSection("Arenas").contains(evt.getLine(1))
+                && !Utils.checkIfReady(evt.getLine(1)).containsValue(false))) {
             return;
         }
         if (!evt.getPlayer().hasPermission("sheepquest.setup.signs")) {
             return;
         }
-
         String arena = evt.getLine(1);
 
-        int count = 0;
-        while (true) {
-            if (plugin.getArenasConfig().get("Signs." + arena + "." + count) == null) {
-                plugin.getArenasConfig().set("Signs." + arena + "." + count, sign.getBlock().getLocation());
-                plugin.saveArenas();
-                break;
-            } else {
-                count++;
-            }
-        }
-
+        List<Location> signList = new ArrayList<>(getSignList(arena));
+        signList.add(sign.getBlock().getLocation());
+        plugin.getArenasConfig().set("Signs." + arena, signList);
+        plugin.saveArenas();
         plugin.getArenas().get(arena).getSigns().add(sign);
 
         evt.setCancelled(true);
         updateSign(sign, plugin.getArenas().get(arena));
-
     }
 
     @EventHandler
     public void signBreak(BlockBreakEvent evt) {
-        if (!evt.getBlock().getType().toString().contains("SIGN")) {
+        if (!(evt.getBlock().getType().toString().contains("SIGN"))) {
             return;
         }
 
@@ -79,7 +77,6 @@ public class Signs implements Listener {
         }
 
         removeSign(arena, sign);
-
     }
 
     public void removeSigns(Arena arena) {
@@ -92,16 +89,11 @@ public class Signs implements Listener {
     private void removeSign(Arena arena, Sign sign) {
         String arenaString = Utils.getArenaString(arena);
         arena.getSigns().remove(sign);
-        int count = 0;
-        while (true) {
-            if (plugin.getArenasConfig().get("Signs." + arenaString + "." + count).equals(sign.getLocation())) {
-                plugin.getArenasConfig().set("Signs." + arenaString + "." + count, null);
-                plugin.saveArenas();
-                break;
-            } else {
-                count++;
-            }
-        }
+
+        List<Location> signList = new ArrayList<>(getSignList(arenaString));
+        signList.remove(sign.getBlock().getLocation());
+        plugin.getArenasConfig().set("Signs." + arenaString, signList);
+        plugin.saveArenas();
     }
 
     @EventHandler
@@ -134,7 +126,8 @@ public class Signs implements Listener {
     }
 
     public void updateSigns(Arena arena) {
-        for (Sign sign : arena.getSigns()) {
+        List<Sign> signList = new ArrayList<>(arena.getSigns());
+        for (Sign sign : signList) {
             updateSign(sign, arena);
         }
     }
@@ -143,14 +136,24 @@ public class Signs implements Listener {
         String arenaString = Utils.getArenaString(arena);
         Block block;
         Block attachedBlock;
+
         try {
             block = sign.getBlock();
-            attachedBlock = block.getRelative(((org.bukkit.material.Sign) sign.getBlock().getState().getData()).getAttachedFace());
+            if (!block.getType().toString().contains("SIGN")) {
+                removeSign(arena, sign);
+                return;
+            }
         } catch (Exception e) {
             removeSign(arena, sign);
             return;
         }
 
+
+        if (block.getType().toString().contains("WALL")) {
+            attachedBlock = block.getRelative(XBlock.getDirection(block).getOppositeFace());
+        } else {
+            attachedBlock = block.getRelative(BlockFace.DOWN);
+        }
 
         String count = Integer.toString(arena.getPlayers().keySet().size());
         String max = Integer.toString(plugin.getArenasConfig().getInt("Arenas." + arenaString + ".max-players"));
@@ -160,11 +163,10 @@ public class Signs implements Listener {
             ItemStack blockType = Utils.setGlassColor(arena);
 
             attachedBlock.setType(blockType.getType());
-            BlockState state = attachedBlock.getState();
 
+            BlockState state = attachedBlock.getState();
             state.setData(blockType.getData());
             state.update();
-
         }
 
         String vip = plugin.getConfig().getStringList("vip-arenas").contains(arenaString) ? plugin.getMessage("general.vip-prefix") : "";
@@ -175,7 +177,6 @@ public class Signs implements Listener {
 
 
         sign.update(true);
-
     }
 
     public void loadSigns() {
@@ -189,16 +190,19 @@ public class Signs implements Listener {
     }
 
     public void loadArenaSigns(String arena) {
-        if (plugin.getArenasConfig().getConfigurationSection("Signs." + arena) == null) {
+        if (plugin.getArenasConfig().get("Signs." + arena) == null) {
             return;
         }
-        for (String signNumber : plugin.getArenasConfig().getConfigurationSection("Signs." + arena).getKeys(false)) {
-            Location loc = (Location) plugin.getArenasConfig().get("Signs." + arena + "." + signNumber);
+        for (Location loc : (Collection<? extends Location>) plugin.getArenasConfig().getList("Signs." + arena)) {
             try {
                 Sign sign = (Sign) loc.getBlock().getState();
                 plugin.getArenas().get(arena).getSigns().add(sign);
             } catch (Exception ex) {
-                plugin.getArenasConfig().set("Signs." + arena + "." + signNumber, null);
+                List<Location> signList = new ArrayList<>(getSignList(arena));
+                signList.remove(loc);
+                plugin.getArenasConfig().set("Signs." + arena, signList);
+                plugin.saveArenas();
+
             }
         }
     }
@@ -210,5 +214,13 @@ public class Signs implements Listener {
             }
         }
         return null;
+    }
+
+    private List<Location> getSignList(String arena) {
+        List<Location> signList = new ArrayList<>();
+        if (plugin.getArenasConfig().getList("Signs." + arena) != null && !plugin.getArenasConfig().getList("Signs." + arena).isEmpty()) {
+            signList.addAll((Collection<? extends Location>) plugin.getArenasConfig().getList("Signs." + arena));
+        }
+        return signList;
     }
 }

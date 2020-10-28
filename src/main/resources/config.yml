@@ -194,6 +194,9 @@ special-events:
       spawn: ENTITY_GENERIC_EXPLODE
       bring: ENTITY_PLAYER_LEVELUP
 
+# Can plugin send usage statistics to the author using bStats software?
+# Please, leave it enabled if you want to help me working on the plugin.
+send-stats: true
 
 # Config version - DO NOT CHANGE IT!
-config-version: 1.3
+config-version: 1.4

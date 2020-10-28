@@ -15,7 +15,7 @@ general:
   reload-success: '%prefix% &aAll plugin files were reloaded successfully!'
   arenas-save-error: '%prefix% &cAn error occurred while saving arenas.yml file.'
   players-save-error: '%prefix% &cAn error occurred while saving players.yml file.'
-  unknown-command: '%prefix% &cUnknown command. Type &e/sq help &cfor help.'
+  unknown-command: '%prefix% &cUnknown command. &7Type &e/sq help &7for help.'
   team-red: '&c&lRed'
   team-green: '&a&lGreen'
   team-blue: '&9&lBlue'

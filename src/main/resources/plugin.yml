@@ -1,9 +1,9 @@
 name: SheepQuest
-version: 1.3
+version: 1.4
 main: me.cubixor.sheepquest.SheepQuest
-api-version: 1.13
 authors: [Cubixor]
 softdepend: [Vault, Multiverse-Core]
+api-version: 1.13
 description: SheepQuest minigame plugin.
 commands:
   sheepquest:

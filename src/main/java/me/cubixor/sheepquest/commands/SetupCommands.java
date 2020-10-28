@@ -82,10 +82,10 @@ public class SetupCommands {
     }
 
     public void setLocation(Player player, String[] args, String messagesPath, String arenasPath, String permission) {
-        if (!setupCheckActive(player, args[1])) {
+        if (!Utils.checkIfValid(player, args, permission, messagesPath, 2)) {
             return;
         }
-        if (!Utils.checkIfValid(player, args, permission, messagesPath, 2)) {
+        if (!setupCheckActive(player, args[1])) {
             return;
         }
 
@@ -95,10 +95,10 @@ public class SetupCommands {
     }
 
     public void setMaxPlayers(Player player, String[] args) {
-        if (!setupCheckActive(player, args[1])) {
+        if (!Utils.checkIfValid(player, args, "sheepquest.setup.setmaxplayers", "arena-setup.set-max-players", 3)) {
             return;
         }
-        if (!Utils.checkIfValid(player, args, "sheepquest.setup.setmaxplayers", "arena-setup.set-max-players", 3)) {
+        if (!setupCheckActive(player, args[1])) {
             return;
         }
 
@@ -121,10 +121,10 @@ public class SetupCommands {
     }
 
     public void setMinPlayers(Player player, String[] args) {
-        if (!setupCheckActive(player, args[1])) {
+        if (!Utils.checkIfValid(player, args, "sheepquest.setup.setminplayers", "arena-setup.set-min-players", 3)) {
             return;
         }
-        if (!Utils.checkIfValid(player, args, "sheepquest.setup.setminplayers", "arena-setup.set-min-players", 3)) {
+        if (!setupCheckActive(player, args[1])) {
             return;
         }
 
@@ -143,10 +143,10 @@ public class SetupCommands {
     }
 
     public void setTeamSpawn(Player player, String[] args) {
-        if (!setupCheckActive(player, args[1])) {
+        if (!Utils.checkIfValid(player, args, "sheepquest.setup.setspawn", "arena-setup.set-spawn", 3)) {
             return;
         }
-        if (!Utils.checkIfValid(player, args, "sheepquest.setup.setspawn", "arena-setup.set-spawn", 3)) {
+        if (!setupCheckActive(player, args[1])) {
             return;
         }
 
@@ -162,10 +162,10 @@ public class SetupCommands {
     }
 
     public void setTeamArea(Player player, String[] args) {
-        if (!setupCheckActive(player, args[1])) {
+        if (!Utils.checkIfValid(player, args, "sheepquest.setup.setteamarea", "arena-setup.set-teams-area", 3)) {
             return;
         }
-        if (!Utils.checkIfValid(player, args, "sheepquest.setup.setteamarea", "arena-setup.set-teams-area", 3)) {
+        if (!setupCheckActive(player, args[1])) {
             return;
         }
 

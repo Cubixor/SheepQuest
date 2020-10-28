@@ -5,6 +5,7 @@ import me.cubixor.sheepquest.api.Utils;
 import me.cubixor.sheepquest.commands.PlayCommands;
 import me.cubixor.sheepquest.gameInfo.Arena;
 import me.cubixor.sheepquest.gameInfo.GameState;
+import me.cubixor.sheepquest.gameInfo.PlayerInfo;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -13,10 +14,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.*;
 
 public class ArenaProtection implements Listener {
 
@@ -61,6 +59,7 @@ public class ArenaProtection implements Listener {
             playCommands.sendKickMessage(evt.getPlayer(), Utils.getArena(evt.getPlayer()));
             playCommands.kickPlayer(evt.getPlayer(), Utils.getArenaString(Utils.getArena(evt.getPlayer())));
         }
+        plugin.getPlayerInfo().remove(evt.getPlayer());
     }
 
     @EventHandler
@@ -94,5 +93,10 @@ public class ArenaProtection implements Listener {
         if (arena != null) {
             evt.setCancelled(true);
         }
+    }
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent evt) {
+        plugin.getPlayerInfo().put(evt.getPlayer(), new PlayerInfo());
     }
 }

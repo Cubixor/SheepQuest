@@ -1,5 +1,6 @@
 package me.cubixor.sheepquest;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.google.common.base.Charsets;
 import me.cubixor.sheepquest.api.PassengerFixReflection;
 import me.cubixor.sheepquest.api.Updater;
@@ -12,6 +13,7 @@ import me.cubixor.sheepquest.gameInfo.*;
 import me.cubixor.sheepquest.menu.ArenasMenu;
 import me.cubixor.sheepquest.menu.SetupMenu;
 import me.cubixor.sheepquest.menu.StaffMenu;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -37,13 +39,14 @@ public final class SheepQuest extends JavaPlugin {
     private FileConfiguration arenasConfig;
     private FileConfiguration playersConfig;
 
-    private static SheepQuest instance;
     private final HashMap<Player, PlayerData> playerData = new HashMap<>();
     private final HashMap<Player, PlayerInfo> playerInfo = new HashMap<>();
     private final HashMap<Player, ArenaInventories> inventories = new HashMap<>();
     private HashMap<String, Arena> arenas = new HashMap<>();
     private Items items;
     private boolean passengerFix = false;
+
+    private static SheepQuest instance;
 
     public static SheepQuest getInstance() {
         return instance;
@@ -57,9 +60,8 @@ public final class SheepQuest extends JavaPlugin {
         getConfig().options().copyDefaults(true);
         saveConfig();
         loadConfigs();
-        getConfig().set("config-version", 1.3);
+        getConfig().set("config-version", 1.4);
         saveConfig();
-
 
         getCommand("sheepquest").setExecutor(new Command());
         getCommand("t").setExecutor(new Command());
@@ -75,10 +77,19 @@ public final class SheepQuest extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new StaffMenu(), this);
         getServer().getPluginManager().registerEvents(new ArenasMenu(), this);
 
+        //Legacy material initialization
+        XMaterial.matchXMaterial(getConfig().getString("sign-colors.inactive")).get().parseItem().getData();
+
         new PassengerFixReflection().setupPassengerFix();
+        new Signs().loadSigns();
+
         new Updater(this, 83005).runUpdater();
 
-        new Signs().loadSigns();
+        if (getConfig().getBoolean("send-stats")) {
+            Metrics metrics = new Metrics(this, 9022);
+            metrics.addCustomChart(new Metrics.SimplePie("used_language", () -> getConfig().getString("language", "en")));
+            metrics.addCustomChart(new Metrics.SingleLineChart("games", () -> getArenas().keySet().size()));
+        }
     }
 
     @Override
@@ -151,7 +162,9 @@ public final class SheepQuest extends JavaPlugin {
         if (getArenasConfig().getConfigurationSection("Arenas") != null) {
             for (String arena : getArenasConfig().getConfigurationSection("Arenas").getKeys(false)) {
                 getArenas().put(arena, new Arena());
-                new Signs().loadArenaSigns(arena);
+                Signs signs = new Signs();
+                signs.loadArenaSigns(arena);
+                signs.updateSigns(getArenas().get(arena));
             }
         }
         setItems(new Items());
