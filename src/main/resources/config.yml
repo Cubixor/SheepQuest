@@ -199,4 +199,4 @@ special-events:
 send-stats: true
 
 # Config version - DO NOT CHANGE IT!
-config-version: 1.4
+config-version: 1.5
