@@ -123,13 +123,13 @@ permissions:
     default: true
     description: Gives access to /sq stats command.
   sheepquest.play.stats.others:
-    default: true
+    default: op
     description: Gives access to /sq stats <player> command.
   sheepquest.play.stats.menu:
     default: true
     description: Gives access to stats menu.
   sheepquest.play.stats.menu.others:
-    default: true
+    default: op
     description: Gives access to other players' stats menu.
   sheepquest.play.list:
     default: true
@@ -153,6 +153,8 @@ permissions:
       sheepquest.staff.help: true
       sheepquest.staff.menu: true
       sheepquest.staff.kick: true
+      sheepquest.play.stats.menu: true
+      sheepquest.play.stats.menu.others: true
 
   sheepquest.staff.help:
     default: true
