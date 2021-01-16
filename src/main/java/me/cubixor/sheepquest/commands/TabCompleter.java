@@ -45,6 +45,9 @@ public class TabCompleter implements org.bukkit.command.TabCompleter {
                 if (player.hasPermission("sheepquest.play.stats") && "stats".startsWith(args[0])) {
                     result.add("stats");
                 }
+                if (player.hasPermission("sheepquest.play.stats.menu") && "statsmenu".startsWith(args[0])) {
+                    result.add("statsmenu");
+                }
                 if (player.hasPermission("sheepquest.play.list") && "list".startsWith(args[0])) {
                     result.add("list");
                 }
@@ -146,6 +149,14 @@ public class TabCompleter implements org.bukkit.command.TabCompleter {
                             if (p.getName().startsWith(args[1])) {
                                 result.add(p.getName());
                             }
+                        }
+                    }
+                }
+                if ((args[0].equalsIgnoreCase("stats") && player.hasPermission("sheepquest.play.stats.others")) ||
+                        (args[0].equalsIgnoreCase("statsmenu") && player.hasPermission("sheepquest.play.stats.menu.others"))) {
+                    for (String p : plugin.getStats().getConfigurationSection("Players").getKeys(false)) {
+                        if (p.startsWith(args[1])) {
+                            result.add(p);
                         }
                     }
                 }

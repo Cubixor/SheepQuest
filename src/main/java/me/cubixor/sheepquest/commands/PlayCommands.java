@@ -295,8 +295,7 @@ public class PlayCommands {
             String vip = plugin.getConfig().getStringList("vip-arenas").contains(arenaString) ? plugin.getMessage("general.vip-prefix") : "";
 
             TextComponent message = new TextComponent(plugin.getMessage("other.list-arena").replace("%arena%", arenaString).replace("%count%", count).replace("%max%", max).replace("%state%", gameState).replace("%?vip?%", vip));
-            TextComponent hover = new TextComponent(plugin.getMessage("other.list-hover"));
-            message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(String.valueOf(hover)).create()));
+            message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(plugin.getMessage("other.list-hover")).create()));
             message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/sq join " + arenaString));
             player.spigot().sendMessage(message);
         }
@@ -307,17 +306,38 @@ public class PlayCommands {
 
     }
 
-    public void stats(Player player) {
+    public void stats(Player player, String[] args) {
         if (!player.hasPermission("sheepquest.play.stats")) {
             player.sendMessage(plugin.getMessage("general.no-permission"));
             return;
         }
-        int wins = plugin.getStats().getInt("Players." + player.getName() + ".wins");
-        int looses = plugin.getStats().getInt("Players." + player.getName() + ".looses");
-        int gamesPlayed = plugin.getStats().getInt("Players." + player.getName() + ".games-played");
-        int kills = plugin.getStats().getInt("Players." + player.getName() + ".kills");
-        int deaths = plugin.getStats().getInt("Players." + player.getName() + ".deaths");
-        int sheepTaken = plugin.getStats().getInt("Players." + player.getName() + ".sheep-taken");
+        if (args.length != 1 && args.length != 2) {
+            player.sendMessage(plugin.getMessage("stats-menu.command-usage"));
+        }
+
+        if (args.length == 1) {
+            sendStats(player, player.getName());
+            return;
+        }
+
+        String target = args[1];
+
+        if (plugin.getStats().getConfigurationSection("Players." + target) == null) {
+            player.sendMessage(plugin.getMessage("general.invalid-player"));
+            return;
+        }
+
+        sendStats(player, target);
+    }
+
+    private void sendStats(Player player, String target) {
+        int wins = plugin.getStats().getInt("Players." + target + ".wins");
+        int looses = plugin.getStats().getInt("Players." + target + ".looses");
+        int gamesPlayed = plugin.getStats().getInt("Players." + target + ".games-played");
+        int kills = plugin.getStats().getInt("Players." + target + ".kills");
+        int deaths = plugin.getStats().getInt("Players." + target + ".deaths");
+        int sheepTaken = plugin.getStats().getInt("Players." + target + ".sheep-taken");
+        int bonusSheepTaken = plugin.getStats().getInt("Players." + target + ".bonus-sheep-taken");
 
         List<String> stats = new ArrayList<>(plugin.getMessageList("other.stats"));
         String statsString = String.join(",", stats);
@@ -328,11 +348,13 @@ public class PlayCommands {
         statsString = statsString.replace("%kills%", Integer.toString(kills));
         statsString = statsString.replace("%deaths%", Integer.toString(deaths));
         statsString = statsString.replace("%sheep%", Integer.toString(sheepTaken));
+        statsString = statsString.replace("%bonus-sheep%", Integer.toString(bonusSheepTaken));
 
         List<String> statsReplaced = new ArrayList<>(Arrays.asList(statsString.split(",")));
 
         for (String s : statsReplaced) {
             player.sendMessage(s);
         }
+
     }
 }

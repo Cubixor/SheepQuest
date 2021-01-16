@@ -75,6 +75,16 @@ public class Utils {
         return itemStack;
     }
 
+    public static ItemStack setItemStack(Material material, String namePath, String toReplace, String replacement) {
+        SheepQuest plugin = SheepQuest.getInstance();
+
+        ItemStack itemStack = new ItemStack(material, 1);
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        itemMeta.setDisplayName(plugin.getMessage(namePath).replace(toReplace, replacement));
+        itemStack.setItemMeta(itemMeta);
+        return itemStack;
+    }
+
     public static ItemStack setItemStack(Material material, String namePath, String lorePath, String toReplace, String replaceMessage) {
         SheepQuest plugin = SheepQuest.getInstance();
 

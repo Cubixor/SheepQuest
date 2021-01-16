@@ -74,13 +74,13 @@ public class ArenasMenu implements Listener {
     public void updateOptionsMenu(String arena, Player player) {
         plugin.putInventories(player, arena);
 
-        Inventory optionsInventory = Bukkit.createInventory(null, 27, plugin.getMessage("arenas-menu.name"));
+        Inventory optionsInventory = Bukkit.createInventory(null, 18, plugin.getMessage("arenas-menu.name"));
 
         optionsInventory.setItem(2, arenaItemStack(new ItemStack(XMaterial.NETHER_STAR.parseMaterial()), arena, "arenas-menu.play-item-name", "arenas-menu.play-item-lore"));
         optionsInventory.setItem(4, Utils.setItemStack(XMaterial.ENDER_PEARL.parseMaterial(), "arenas-menu.staff-item-name", "arenas-menu.staff-item-lore"));
         optionsInventory.setItem(6, Utils.setItemStack(XMaterial.ENDER_EYE.parseMaterial(), "arenas-menu.setup-item-name", "arenas-menu.setup-item-lore"));
 
-        optionsInventory.setItem(22, Utils.setItemStack(XMaterial.ARROW.parseMaterial(), "arenas-menu.options-menu-back-item-name", "arenas-menu.options-menu-back-item-lore"));
+        optionsInventory.setItem(13, Utils.setItemStack(XMaterial.ARROW.parseMaterial(), "arenas-menu.options-menu-back-item-name", "arenas-menu.options-menu-back-item-lore"));
 
         plugin.getInventories().get(player).setOptionsInventory(optionsInventory);
     }
@@ -104,8 +104,8 @@ public class ArenasMenu implements Listener {
                     player.getOpenInventory().close();
                     break;
                 case 50:
-                    new PlayCommands().stats(player);
-                    player.getOpenInventory().close();
+                    new StatsMenu().updateStatsMenu(player, player.getName());
+                    player.openInventory(plugin.getInventories().get(player).getStatsInventory());
                     break;
                 default:
                     if (evt.getCurrentItem().getType() != Material.AIR) {
@@ -137,7 +137,7 @@ public class ArenasMenu implements Listener {
                     player.getOpenInventory().close();
                     new SetupMenu().setupMenuCommand(player, new String[]{"setupmenu", arena});
                     break;
-                case 22:
+                case 13:
                     updateArenasMenu(player);
                     player.openInventory(plugin.getInventories().get(player).getArenasInventory());
                     break;

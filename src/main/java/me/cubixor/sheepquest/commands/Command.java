@@ -7,6 +7,7 @@ import me.cubixor.sheepquest.gameInfo.GameState;
 import me.cubixor.sheepquest.menu.ArenasMenu;
 import me.cubixor.sheepquest.menu.SetupMenu;
 import me.cubixor.sheepquest.menu.StaffMenu;
+import me.cubixor.sheepquest.menu.StatsMenu;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -77,7 +78,7 @@ public class Command implements CommandExecutor {
             } else if (args[0].equalsIgnoreCase("quickjoin")) {
                 playCommands.quickJoin(player);
             } else if (args[0].equalsIgnoreCase("stats")) {
-                playCommands.stats(player);
+                playCommands.stats(player, args);
             } else if (args[0].equalsIgnoreCase("list")) {
                 playCommands.arenaList(player);
             } else if (args[0].equalsIgnoreCase("staff")) {
@@ -90,6 +91,8 @@ public class Command implements CommandExecutor {
                 new StaffMenu().staffMenuCommand(player, args);
             } else if (args[0].equalsIgnoreCase("arenasmenu")) {
                 new ArenasMenu().arenasMenuCommand(player, args);
+            } else if (args[0].equalsIgnoreCase("statsmenu")) {
+                new StatsMenu().statsMenuCommand(player, args);
             } else {
                 sender.sendMessage(plugin.getMessage("general.unknown-command"));
             }

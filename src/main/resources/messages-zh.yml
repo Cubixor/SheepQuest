@@ -5,6 +5,8 @@
 # Remember to DO NOT edit placeholders (marked with "%" character).
 #
 # You can use /sq reload command to reload modified files without restarting server.
+# 插件汉化 by Light²(www.mcbbs.net内用户)
+# This language is translated by Light² (from www.mcbbs.net)
 
 prefix: '&7[&9&l抢羊乱战&7]'
 
@@ -33,6 +35,7 @@ general:
   state-ending: '&5&l已结束'
   vip-prefix: "&7[&6&lVIP&7] "
 other:
+  stats-command-usage: "%prefix% &cWrong use! &7Type: /sheepquest stats [player]"
   stats:
     - '&m---------------------------------------------------'
     - '&9&l抢羊乱战 &7统计数据'
@@ -42,6 +45,7 @@ other:
     - '  &a击杀: &e%kills%'
     - '  &a死亡: &e%deaths%'
     - '  &a抢羊总数: &e%sheep%只'
+    - '  &aBonus sheep taken: &e%bonus-sheep%'
     - '&m---------------------------------------------------'
 
   sign-first-line: '&9&l抢羊乱战'
@@ -118,27 +122,27 @@ game:
   arena-leave-success: '%prefix% &7玩家 &e%player% &7退出了游戏！&7(&e&l&o%count%/%max%&7)'
   arena-leave-reload: '%prefix% &c插件重载中，你被踢出了竞技场！'
   quick-join-no-games-found: '%prefix% &c目前没有可加入的游戏！'
-  countdown-started: "%prefix% &7Countdown has started. The game will begin soon."
-  full-countdown: "%prefix% &7Game is full! Waiting time has been reduced to &e%time% seconds&7."
-  countdown-60s-title: '&a&l60'
-  countdown-60s-subtitle: '&7Waiting for more players...'
-  countdown-30s-title: '&a&l30'
-  countdown-30s-subtitle: '&7Waiting for more players...'
-  countdown-10s-title: '&a&l10'
-  countdown-10s-subtitle: '&7Prepare to play!'
-  countdown-5s-title: '&a&l5'
-  countdown-5s-subtitle: '&7Collect sheep from the middle'
+  countdown-started: "%prefix% &7游戏即将开始，正在倒计时..."
+  full-countdown: "%prefix% &7竞技场已满人！等待时间减少至 &e%time% 秒&7."
+  countdown-60s-title: '&a&l离开始还有60秒'
+  countdown-60s-subtitle: '&7等待更多玩家...'
+  countdown-30s-title: '&a&l离开始还有30秒'
+  countdown-30s-subtitle: '&7等待更多玩家...'
+  countdown-10s-title: '&a&l离开始还有10秒'
+  countdown-10s-subtitle: '&7准备游戏！'
+  countdown-5s-title: '&a&l离开始还有5秒'
+  countdown-5s-subtitle: '&7从竞技场中间收集小羊们！'
   countdown-4s-title: '&a&l4'
-  countdown-4s-subtitle: '&7Protect your pen'
+  countdown-4s-subtitle: '&7保护好你的笔'
   countdown-3s-title: '&a&l3'
-  countdown-3s-subtitle: '&7Kill others to stole their sheep'
+  countdown-3s-subtitle: '&7你可以击杀玩家以争夺他们头上的羊'
   countdown-2s-title: '&a&l2'
-  countdown-2s-subtitle: '&7Cooperate with your team'
+  countdown-2s-subtitle: '&7与你的团队合作'
   countdown-1s-title: '&a&l1'
-  countdown-1s-subtitle: '&7&lHave fun!'
-  start-title: "&d&lStart!"
-  start-subtitle: "&7You are in team %team%"
-  time-left: "&d&l%time% &7seconds left!"
+  countdown-1s-subtitle: '&7&l玩的开心！'
+  start-title: "&d&l游戏开始！"
+  start-subtitle: "&7你被分配至 %team%"
+  time-left: "&7还有&d&l%time%秒！"
   team-join-success: '%prefix% &7你成功加入了 %team%&7!'
   team-join-random: '%prefix% &7游戏开始，你被加入了随机的队伍！'
   already-in-this-team: '%prefix% &c你已经在%team%&c了!'
@@ -172,14 +176,14 @@ game:
   leave-item-lore:
     - '&7点击以返回大厅'
   kill: "%prefix% &7玩家 [%killerTeam%]%killer% &7杀死了 [%playerTeam%]%player%&7!"
-  kill-subtitle: "&7You killed %team-color%%player%"
-  respawn-in-title: '&7Killer: %team-color%%player%'
-  respawn-in-subtitle: '&d&lRespawn in: %time%'
-  respawned-title: '&a&lRespawned!'
-  respawned-subtitle: '&a&lGet back to the game!'
-  win-title: '&a&lVictory'
-  defeat-title: '&c&lDefeat'
-  win-defeat-subtitle: '&7Team %team% &7won the game'
+  kill-subtitle: "&7你杀死了 %team-color%%player%"
+  respawn-in-title: '&7击杀者: %team-color%%player%'
+  respawn-in-subtitle: '&d&l%time%&7秒后重生'
+  respawned-title: '&a&l已重生'
+  respawned-subtitle: '&a&l返回竞技场！'
+  win-title: '&a&l胜利'
+  defeat-title: '&c&l失败'
+  win-defeat-subtitle: '&7%team%队 &7赢得了这场游戏！'
   chat-format: '%color%%player% &8&l» &r%message%'
   team-chat-format: '&7[&d&l团队&7] %color%%player% &8&l» &r%message%'
   team-chat-usage: '%prefix% &c错误！! &7正确用法: /t &e<信息>'
@@ -205,18 +209,18 @@ game:
   scoreboard-ending: '&e&l结束倒计时:'
   summary:
     - '&m---------------------------------------------------'
-    - ' &7&l| &c&lRed&7: %red-points% &7&l| &a&lGreen&7: %green-points% &7&l| &9&lBlue&7: %blue-points% &7&l| &e&lYellow&7: %yellow-points% &7&l|'
+    - ' &7&l| &c&l红队&7: %red-points% &7&l| &a&l绿队&7: %green-points% &7&l| &9&l蓝队&7: %blue-points% &7&l| &e&l黄队&7: %yellow-points% &7&l|'
     - ''
-    - '   &eGame stats:'
-    - '   &7Kills: &e%kills%'
-    - '   &7Deaths: &e%deaths%'
-    - '   &7Sheep taken: &e%sheep%'
+    - '   &e游戏数据:'
+    - '   &7击杀: &e%kills%'
+    - '   &7死亡: &e%deaths%'
+    - '   &7抢得羊数: &e%sheep%'
     - ''
     - '&d&lThanks for playing!'
     - '&m---------------------------------------------------'
 special-events:
-  bonus-sheep-name: "&d&l%points% &f&lPOINTS"
-  bonus-sheep-spawn: "%prefix% &7The &d&lBONUS SHEEP &7has spawned!"
+  bonus-sheep-name: "&d&l%points% &f&l分"
+  bonus-sheep-spawn: "%prefix% &d&l额外的绵羊 &7出生了！"
 arena-moderate:
   force-start-usage: '%prefix% &c指令错误! &7正确用法: /sheepquest forcestart &e<竞技场>'
   force-start-already-started: '%prefix% &c竞技场 &e%arena% &c已经开始了！'
@@ -343,6 +347,19 @@ arenas-menu:
   options-menu-back-item-name: "&e返回"
   options-menu-back-item-lore:
     - "&7返回默认竞技场菜单"
+stats-menu:
+  command-usage: "%prefix% &cWrong use! &7Type: /sheepquest statsmenu [player]"
+  name: "&3&l%player% &8stats"
+  wins: "&eWins: &7%wins%"
+  looses: "&eLooses: &7%looses%"
+  games-played: "&eGames played: &7%games%"
+  kills: "&eKills: &7%kills%"
+  deaths: "&eDeaths: &7%deaths%"
+  sheep-taken: "&eSheep taken: &7%sheep%"
+  bonus-sheep-taken: "&eBonus sheep taken: &7%bonus-sheep%"
+  back-item-name: "&eExit"
+  back-item-lore:
+    - "&7Go back to arenas menu."
 setup-menu:
   command-usage: "%prefix% &c指令错误! &7正确用法: /sheepquest setupmenu <竞技场>"
   name: "&3&l%arena% &8setup"

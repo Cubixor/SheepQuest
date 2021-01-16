@@ -3,6 +3,7 @@ package me.cubixor.sheepquest;
 import com.cryptomorin.xseries.XMaterial;
 import com.google.common.base.Charsets;
 import me.cubixor.sheepquest.api.PassengerFixReflection;
+import me.cubixor.sheepquest.api.PlaceholderExpansion;
 import me.cubixor.sheepquest.api.Updater;
 import me.cubixor.sheepquest.commands.Command;
 import me.cubixor.sheepquest.commands.PlayCommands;
@@ -13,6 +14,7 @@ import me.cubixor.sheepquest.gameInfo.*;
 import me.cubixor.sheepquest.menu.ArenasMenu;
 import me.cubixor.sheepquest.menu.SetupMenu;
 import me.cubixor.sheepquest.menu.StaffMenu;
+import me.cubixor.sheepquest.menu.StatsMenu;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -60,7 +62,10 @@ public final class SheepQuest extends JavaPlugin {
         getConfig().options().copyDefaults(true);
         saveConfig();
         loadConfigs();
-        getConfig().set("config-version", 1.4);
+        if (getConfig().getDouble("config-version") < 1.4) {
+            getConfig().set("Signs", null);
+        }
+        getConfig().set("config-version", getDescription().getVersion());
         saveConfig();
 
         getCommand("sheepquest").setExecutor(new Command());
@@ -76,6 +81,7 @@ public final class SheepQuest extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new SetupMenu(), this);
         getServer().getPluginManager().registerEvents(new StaffMenu(), this);
         getServer().getPluginManager().registerEvents(new ArenasMenu(), this);
+        getServer().getPluginManager().registerEvents(new StatsMenu(), this);
 
         //Legacy material initialization
         XMaterial.matchXMaterial(getConfig().getString("sign-colors.inactive")).get().parseItem().getData();
@@ -84,6 +90,10 @@ public final class SheepQuest extends JavaPlugin {
         new Signs().loadSigns();
 
         new Updater(this, 83005).runUpdater();
+
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            new PlaceholderExpansion().register();
+        }
 
         if (getConfig().getBoolean("send-stats")) {
             Metrics metrics = new Metrics(this, 9022);

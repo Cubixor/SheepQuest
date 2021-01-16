@@ -16,6 +16,7 @@ public class ArenaInventories {
     private Inventory areaSetupInventory;
     private Inventory staffInventory;
     private Inventory playersInventory;
+    private Inventory statsInventory;
     private HashMap<Integer, Player> playerSlot = new HashMap<>();
 
     public ArenaInventories(String a) {
@@ -100,5 +101,13 @@ public class ArenaInventories {
 
     public void setPlayerSlot(HashMap<Integer, Player> playerSlot) {
         this.playerSlot = playerSlot;
+    }
+
+    public Inventory getStatsInventory() {
+        return statsInventory;
+    }
+
+    public void setStatsInventory(Inventory statsInventory) {
+        this.statsInventory = statsInventory;
     }
 }

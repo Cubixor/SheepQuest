@@ -5,6 +5,7 @@ import org.bukkit.scheduler.BukkitTask;
 public class PlayerGameStats {
 
     private int sheepTaken = 0;
+    private int bonusSheepTaken = 0;
     private int kills = 0;
     private int deaths = 0;
 
@@ -40,5 +41,13 @@ public class PlayerGameStats {
 
     public void setSheepCooldown(BukkitTask sheepCooldown) {
         this.sheepCooldown = sheepCooldown;
+    }
+
+    public int getBonusSheepTaken() {
+        return bonusSheepTaken;
+    }
+
+    public void setBonusSheepTaken(int bonusSheepTaken) {
+        this.bonusSheepTaken = bonusSheepTaken;
     }
 }

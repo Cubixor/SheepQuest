@@ -67,6 +67,7 @@ public class End {
                 plugin.getStats().set("Players." + p.getName() + ".looses", plugin.getStats().getInt("Players." + p.getName() + ".looses") + 1);
             }
             plugin.getStats().set("Players." + p.getName() + ".sheep-taken", plugin.getStats().getInt("Players." + p.getName() + ".sheep-taken") + playerStats.getSheepTaken());
+            plugin.getStats().set("Players." + p.getName() + ".bonus-sheep-taken", plugin.getStats().getInt("Players." + p.getName() + ".bonus-sheep-taken") + playerStats.getBonusSheepTaken());
             plugin.getStats().set("Players." + p.getName() + ".deaths", plugin.getStats().getInt("Players." + p.getName() + ".deaths") + playerStats.getDeaths());
             plugin.getStats().set("Players." + p.getName() + ".kills", plugin.getStats().getInt("Players." + p.getName() + ".kills") + playerStats.getKills());
 

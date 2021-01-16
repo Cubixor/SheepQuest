@@ -33,6 +33,7 @@ general:
   state-ending: '&5&lENDING'
   vip-prefix: "&7[&6&lVIP&7] "
 other:
+  stats-command-usage: "%prefix% &cWrong use! &7Type: /sheepquest stats [player]"
   stats:
     - '&m---------------------------------------------------'
     - '&7Your &9&lSheepQuest &7stats'
@@ -42,6 +43,7 @@ other:
     - '  &aKills: &e%kills%'
     - '  &aDeaths: &e%deaths%'
     - '  &aSheep taken: &e%sheep%'
+    - '  &aBonus sheep taken: &e%bonus-sheep%'
     - '&m---------------------------------------------------'
 
   sign-first-line: '&9&lSheepQuest'
@@ -354,6 +356,19 @@ arenas-menu:
     - "&a&lClick to open setup menu"
   options-menu-back-item-name: "&eBack"
   options-menu-back-item-lore:
+    - "&7Go back to arenas menu."
+stats-menu:
+  command-usage: "%prefix% &cWrong use! &7Type: /sheepquest statsmenu [player]"
+  name: "&3&l%player% &8stats"
+  wins: "&eWins: &7%wins%"
+  looses: "&eLooses: &7%looses%"
+  games-played: "&eGames played: &7%games%"
+  kills: "&eKills: &7%kills%"
+  deaths: "&eDeaths: &7%deaths%"
+  sheep-taken: "&eSheep taken: &7%sheep%"
+  bonus-sheep-taken: "&eBonus sheep taken: &7%bonus-sheep%"
+  back-item-name: "&eExit"
+  back-item-lore:
     - "&7Go back to arenas menu."
 setup-menu:
   command-usage: "%prefix% &cWrong use! &7Type: /sheepquest setupmenu <arena>"

@@ -166,6 +166,7 @@ public class SheepCarrying implements Listener {
         boolean specialSheep = sheep.getColor().equals(DyeColor.valueOf(plugin.getConfig().getString("special-events.bonus-sheep.color")));
 
         arena.getPlayerStats().get(player).setSheepTaken(arena.getPlayerStats().get(player).getSheepTaken() + 1);
+        arena.getPlayerStats().get(player).setBonusSheepTaken(arena.getPlayerStats().get(player).getBonusSheepTaken() + 1);
         player.removePotionEffect(PotionEffectType.SLOW);
 
         Firework firework = (Firework) player.getWorld().spawnEntity(player.getLocation(), EntityType.FIREWORK);

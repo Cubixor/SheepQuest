@@ -45,7 +45,7 @@ public class StaffMenu implements Listener {
         String gameState = Utils.getStringState(plugin.getArenas().get(arena));
         int count = plugin.getArenas().get(arena).getPlayers().keySet().size();
 
-        Inventory staffInventory = Bukkit.createInventory(null, 27, plugin.getMessage("staff-menu.name").replace("%arena%", arena));
+        Inventory staffInventory = Bukkit.createInventory(null, 18, plugin.getMessage("staff-menu.name").replace("%arena%", arena));
         staffInventory.setItem(0, Utils.setItemStack(XMaterial.NETHER_STAR.parseMaterial(), "staff-menu.active-item-name", "staff-menu.active-item-lore",
                 "%active%", active ? plugin.getMessage("staff-menu.state-active") : plugin.getMessage("staff-menu.state-not-active")));
         staffInventory.setItem(1, Utils.setItemStack(XMaterial.SLIME_BALL.parseMaterial(), "staff-menu.start-item-name", "staff-menu.start-item-lore",
@@ -55,7 +55,7 @@ public class StaffMenu implements Listener {
         staffInventory.setItem(3, Utils.setItemStack(XMaterial.PLAYER_HEAD.parseMaterial(), "staff-menu.players-item-name", "staff-menu.players-item-lore",
                 "%players%", Integer.toString(count)));
 
-        staffInventory.setItem(22, Utils.setItemStack(XMaterial.ARROW.parseMaterial(), "staff-menu.back-item-name", "staff-menu.back-item-lore"));
+        staffInventory.setItem(13, Utils.setItemStack(XMaterial.ARROW.parseMaterial(), "staff-menu.back-item-name", "staff-menu.back-item-lore"));
 
         plugin.getInventories().get(player).setStaffInventory(staffInventory);
     }
@@ -126,7 +126,7 @@ public class StaffMenu implements Listener {
                     updatePlayersMenu(arena, player);
                     player.openInventory(plugin.getInventories().get(player).getPlayersInventory());
                     break;
-                case 22:
+                case 13:
                     new ArenasMenu().updateArenasMenu(player);
                     player.openInventory(plugin.getInventories().get(player).getArenasInventory());
                     break;

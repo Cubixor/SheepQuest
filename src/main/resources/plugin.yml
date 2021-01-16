@@ -1,8 +1,8 @@
 name: SheepQuest
-version: 1.4
+version: ${project.version}
 main: me.cubixor.sheepquest.SheepQuest
 authors: [Cubixor]
-softdepend: [Vault, Multiverse-Core]
+softdepend: [ Vault, Multiverse-Core, PlaceholderAPI ]
 api-version: 1.13
 description: SheepQuest minigame plugin.
 commands:
@@ -102,6 +102,7 @@ permissions:
       sheepquest.play.leave: true
       sheepquest.play.quickjoin: true
       sheepquest.play.stats: true
+      sheepquest.play.stats.menu: true
       sheepquest.play.list: true
       sheepquest.play.signs: true
       sheepquest.play.menu: true
@@ -117,10 +118,19 @@ permissions:
     description: Allows to leave arenas.
   sheepquest.play.quickjoin:
     default: true
-    description:  Gives access to /sq quickjoin command.
+    description: Gives access to /sq quickjoin command.
   sheepquest.play.stats:
     default: true
     description: Gives access to /sq stats command.
+  sheepquest.play.stats.others:
+    default: true
+    description: Gives access to /sq stats <player> command.
+  sheepquest.play.stats.menu:
+    default: true
+    description: Gives access to stats menu.
+  sheepquest.play.stats.menu.others:
+    default: true
+    description: Gives access to other players' stats menu.
   sheepquest.play.list:
     default: true
     description: Gives access to /sq list command.
