@@ -1,0 +1,4 @@
+name: SheepQuest
+main: me.cubixor.sheepquest.bungee.SheepQuestBungee
+version: ${project.version}
+author: Cubixor

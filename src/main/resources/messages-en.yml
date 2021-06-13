@@ -2,242 +2,259 @@
 #
 # This file contains all plugin messages. Edit them as you like!
 #
-# Remember to DO NOT edit placeholders (marked with "%" character).
+# Remember NOT to edit placeholders (marked with "%" character).
 #
 # You can use /sq reload command to reload modified files without restarting server.
 
-prefix: '&7[&9&lSheepQuest&7]'
+prefix: "&8&l| &9&lSQ &8&l|"
 
 general:
-  arena-invalid: '%prefix% &cThis arena does not exist!'
-  must-be-player: '%prefix% &cYou have to be player to execute this command!'
-  no-permission: '%prefix% &cYou do not have permission to do it!'
-  reload-success: '%prefix% &aAll plugin files were reloaded successfully!'
-  arenas-save-error: '%prefix% &cAn error occurred while saving arenas.yml file.'
-  players-save-error: '%prefix% &cAn error occurred while saving players.yml file.'
-  unknown-command: '%prefix% &cUnknown command. &7Type &e/sq help &7for help.'
-  team-red: '&c&lRed'
-  team-green: '&a&lGreen'
-  team-blue: '&9&lBlue'
-  team-yellow: '&e&lYellow'
-  team-none: '&8&lRandom'
-  red-color: '&c'
-  green-color: '&a'
-  blue-color: '&9'
-  yellow-color: '&e'
-  none-color: '&7'
-  state-inactive: '&8&lINACTIVE'
-  state-waiting: '&a&lWAITING'
-  state-starting: '&3&lSTARTING'
-  state-game: '&c&lIN-GAME'
-  state-ending: '&5&lENDING'
+  arena-invalid: "%prefix% &cThis arena does not exist!"
+  must-be-player: "%prefix% &cYou have to be player to execute this command!"
+  no-permission: "%prefix% &cYou do not have permission to do this!"
+  reload-success: "%prefix% &aAll plugin files were reloaded successfully!"
+  unknown-command: "%prefix% &cUnknown command. &7Type &e/sq help &7for help."
+  team-red: "&c&lRed"
+  team-green: "&a&lGreen"
+  team-blue: "&9&lBlue"
+  team-yellow: "&e&lYellow"
+  team-none: "&8&lRandom"
+  red-color: "&c"
+  green-color: "&a"
+  blue-color: "&9"
+  yellow-color: "&e"
+  none-color: "&7"
+  state-inactive: "&8&lINACTIVE"
+  state-waiting: "&a&lWAITING"
+  state-starting: "&3&lSTARTING"
+  state-game: "&c&lIN-GAME"
+  state-ending: "&5&lENDING"
+  state-offline: "&4&lOFFLINE"
   vip-prefix: "&7[&6&lVIP&7] "
+  too-fast: "%prefix% &cToo fast!"
+  invalid-player: "%prefix% &cThis player has never played SheepQuest before!"
 other:
-  stats-command-usage: "%prefix% &cWrong use! &7Type: /sheepquest stats [player]"
+  stats-command-usage: "%prefix% &cWrong use! &7Type: &e/sq stats &a[player]"
   stats:
-    - '&m---------------------------------------------------'
-    - '&7Your &9&lSheepQuest &7stats'
-    - '  &aWins: &e%wins%'
-    - '  &aLooses: &e%looses%'
-    - '  &aGames played: &e%games%'
-    - '  &aKills: &e%kills%'
-    - '  &aDeaths: &e%deaths%'
-    - '  &aSheep taken: &e%sheep%'
-    - '  &aBonus sheep taken: &e%bonus-sheep%'
-    - '&m---------------------------------------------------'
-
-  sign-first-line: '&9&lSheepQuest'
-  sign-second-line: '&7&l» %?vip?%&d&l%arena% &7&l«'
-  sign-third-line: '&e&l%count%&7/&e&l%max%'
-  sign-fourth-line: '&7&l│ %state% &7&l│'
+    - "&m---------------------------------------------------"
+    - "&e%player%'s &9&lSheepQuest &7stats"
+    - "  &aWins: &e%wins%"
+    - "  &aLooses: &e%looses%"
+    - "  &aGames played: &e%games%"
+    - "  &aKills: &e%kills%"
+    - "  &aDeaths: &e%deaths%"
+    - "  &aSheep taken: &e%sheep%"
+    - "  &aBonus sheep taken: &e%bonus-sheep%"
+    - "  &aPlaytime: &e%playtime%"
+    - "&m---------------------------------------------------"
+  stats-playtime-hours: "h"
+  stats-playtime-minutes: "min"
+  stats-playtime-seconds: "sec"
+  sign-first-line: "&9&lSheepQuest"
+  sign-second-line: "&7&l» %?vip?%&d&l%arena% &7&l«"
+  sign-third-line: "&e&l%count%&7/&e&l%max%"
+  sign-fourth-line: "&7&l│ %state% &7&l│"
   list-header:
-    - '&m---------------------------------------------------'
-    - '&9&lSheepQuest &7arena list'
+    - "&m---------------------------------------------------"
+    - "&9&lSheepQuest &7arena list"
   list-footer:
-    - '&m---------------------------------------------------'
-  list-empty: '&cThere are not any arenas ready to play!'
-  list-arena: '  %?vip?%&d&l%arena% &7|&e&l%count%&7/&e&l%max%&7| &7|%state%&7|'
-  list-hover: '&aClick to join'
+    - "&m---------------------------------------------------"
+  list-empty: "%prefix% &cCurrently there are no arenas ready to play!"
+  list-arena: "  %?vip?%&d&l%arena% &7|&e&l%count%&7/&e&l%max%&7| &7|%state%&7|"
+  list-hover: "&aClick to join"
   tip-prefix: "&7[&eTip&7]&r"
   tips:
-    - "%tip-prefix% &eYou can stole sheep from other teams"
-    - "%tip-prefix% &eThe more sheep you have, the slower you move"
-    - "%tip-prefix% &eWhen you hit an opponent the sheep fall of his head"
-    - "%tip-prefix% &eYou can hit F5 key to have better view, while carrying sheep"
+    - "%tip-prefix% &eYou can steal sheep from other teams"
+    - "%tip-prefix% &eThe more sheep you carry, the slower you move"
+    - "%tip-prefix% &eWhen you hit an opponent the sheep falls of his head"
+    - "%tip-prefix% &eYou can press F5 key to have a better view while carrying sheep"
     - "%tip-prefix% &eYou can carry up to 3 sheep at once"
     - "%tip-prefix% &eYou can use team chat by adding /t before your message"
     - "%tip-prefix% &eYou can check your game stats using /sq stats command"
 
 help:
   general-help:
-    - '&m---------------------------------------------------'
-    - '&9&lSheepquest &7help'
-    - '  &a/sq join &e<arena> &7- Join arena'
-    - '  &a/sq leave &7- Leave arena'
-    - '  &a/sq quickjoin &7- Join arena with most players'
-    - '  &a/sq list &7- Show arena list'
-    - '  &a/sq stats &7- Show your game stats'
-    - '  &a/sq help &7- Show main help page'
-    - '  &a/sq staff &7- Show help page for moderators'
-    - '  &a/sq admin &7- Show help page for administrators'
-    - '&m---------------------------------------------------'
+    - "&m---------------------------------------------------"
+    - "&9&lSheepquest &7help"
+    - "  &a/sq join &e<arena> &7- Join arena"
+    - "  &a/sq leave &7- Leave arena"
+    - "  &a/sq quickjoin &7- Join arena with most players"
+    - "  &a/sq list &7- Show arena list"
+    - "  &a/sq stats &7- Show your game stats"
+    - "  &a/sq statsmenu &7- Show your game stats in menu"
+    - "  &a/sq arenasmenu &7- Open arenas menu"
+    - "  &a/t &e<message> &7- Use team chat in game"
+    - "  &a/sq help &7- Show main help page"
+    - "  &a/sq staff &7- Show help page for moderators"
+    - "  &a/sq admin &7- Show help page for administrators"
+    - "&m---------------------------------------------------"
   staff-help:
-    - '&m---------------------------------------------------'
-    - '&9&lSheepquest &7help &c(staff)'
-    - '  &a/sq forcestart &e<arena> &7- Force arena start'
-    - '  &a/sq forcestop &e<arena> &7- Force arena stop'
-    - '  &a/sq active &e<arena> <true/false> &7- Set arena active or not.'
-    - '  &a/sq help &7- Show main help page'
-    - '  &a/sq admin &7- Show help page for administrators'
-    - '&m---------------------------------------------------'
+    - "&m---------------------------------------------------"
+    - "&9&lSheepquest &7help &c(staff)"
+    - "  &a/sq forcestart &e<arena> &7- Force arena start"
+    - "  &a/sq forcestop &e<arena> &7- Force arena stop"
+    - "  &a/sq active &e<arena> <true/false> &7- Set arena active or not."
+    - "  &a/sq kick &e<player> &7- Kick player from arena."
+    - "  &a/sq stats &e<player> &7- Show player stats in menu"
+    - "  &a/sq statsmenu &e<player> &7- Show player stats in menu"
+    - "  &a/sq staffmenu &e<arena> &7- Open arena staff menu"
+    - "  &a/sq playersmenu &e<arena> &7- Open arena players menu"
+    - "  &a/sq help &7- Show main help page"
+    - "  &a/sq admin &7- Show help page for administrators"
+    - "&m---------------------------------------------------"
   admin-help:
-    - '&m---------------------------------------------------'
-    - '&9&lSheepquest &7help &c(admin)'
-    - '  &a/sq reload &7- Reload all plugin files'
-    - '  &a/sq create &e<arena> &7- Create arena'
-    - '  &a/sq delete &e<arena> &7- Delete arena'
-    - '  &a/sq setminplayers &e<arena> <min-players> &7- Set min players'
-    - '  &a/sq setmaxplayers &e<arena> <max-players> &7- Set max players'
-    - '  &a/sq setmainlobby &e<arena> &7- Set arena main lobby'
-    - '  &a/sq setwaitinglobby &e<arena> &7- Set arena waiting lobby'
-    - '  &a/sq setspawn &e<arena> <team> &7- Set arena spawn'
-    - '  &a/sq setteamarea &e<arena> <team> &7- Set arena teams area'
-    - '  &a/sq setsheepspawn &e<arena> &7- Set arena sheep spawn'
-    - '  &a/sq check &e<arena> &7- Check is arena fully configured'
-    - '  &a/sq staff &7- Show help page for moderators'
-    - '  &a/sq help &7- Show main help page'
-    - '&m---------------------------------------------------'
-
+    - "&m---------------------------------------------------"
+    - "&9&lSheepquest &7help &c(admin)"
+    - "  &a/sq reload &7- Reload all plugin files"
+    - "  &a/sq create &e<arena> &7- Create arena"
+    - "  &a/sq delete &e<arena> &7- Delete arena"
+    - "  &a/sq setminplayers &e<arena> <min-players> &7- Set min players"
+    - "  &a/sq setmaxplayers &e<arena> <max-players> &7- Set max players"
+    - "  &a/sq setvip &e<arena> <true/false> &7- Set arena as vip or not"
+    - "  &a/sq setmainlobby &e<arena> &7- Set arena main lobby"
+    - "  &a/sq setwaitinglobby &e<arena> &7- Set arena waiting lobby"
+    - "  &a/sq setspawn &e<arena> <team> &7- Set arena spawn"
+    - "  &a/sq setteamarea &e<arena> <team> &7- Set arena teams area"
+    - "  &a/sq setsheepspawn &e<arena> &7- Set arena sheep spawn"
+    - "  &a/sq wand &7- Get selection wand"
+    - "  &a/sq check &e<arena> &7- Check is arena fully configured"
+    - "  &a/sq setupmenu &e<arena> &7- Open arena setup menu"
+    - "  &a/sq help &7- Show main help page"
+    - "  &a/sq staff &7- Show help page for moderators"
+    - "&m---------------------------------------------------"
+bungee:
+  not-on-server: "%prefix% &cYou have to be on the same server as arena to do this!"
+  arena-offline: "%prefix% &cArena &e%arena% &cis offline!"
 game:
-  arena-join-vip: '%prefix% &cThis arena is available only for VIPs!'
-  arena-join-usage: '%prefix% &cWrong use! &7Type: /sheepquest join &e<arena>'
-  arena-join-already-in-game: '%prefix% &cYou are already in game!'
-  arena-join-arena-in-game: '%prefix% &cArena &e%arena% &chas already started!'
-  arena-join-arena-full: '%prefix% &cArena &e%arena% &cis full!'
-  arena-join-not-active: '%prefix% &cArena &e%arena% &cis not active!'
-  arena-join-success: '%prefix% &7Player &e%player% &7joined the game! &7(&e&l&o%count%/%max%&7)'
-  arena-leave-not-in-game: '%prefix% &cYou are not in game!'
-  arena-leave-success: '%prefix% &7Player &e%player% &7left the game! &7(&e&l&o%count%/%max%&7)'
-  arena-leave-reload: '%prefix% &cYou were kicked from the game because of plugin reload!'
-  quick-join-no-games-found: '%prefix% &cThere are no games that you could join now. Please try again later.'
+  arena-join-vip: "%prefix% &cThis arena is available only for VIPs!"
+  arena-join-usage: "%prefix% &cWrong use! &7Type: &e/sq join &d<arena>"
+  arena-join-already-in-game: "%prefix% &cYou are already in game!"
+  arena-join-arena-in-game: "%prefix% &cArena &e%arena% &chas already started!"
+  arena-join-arena-full: "%prefix% &cArena &e%arena% &cis full!"
+  arena-join-not-active: "%prefix% &cArena &e%arena% &cis not active!"
+  arena-join-success: "%prefix% &7Player &e%player% &7joined the game! &7(&e&l&o%count%/%max%&7)"
+  arena-leave-not-in-game: "%prefix% &cYou are not in game!"
+  arena-leave-success: "%prefix% &7Player &e%player% &7left the game! &7(&e&l&o%count%/%max%&7)"
+  quick-join-no-games-found: "%prefix% &cThere are no games that you could join now. Please try again later."
   countdown-started: "%prefix% &7Countdown has started. The game will begin soon."
-  full-countdown: "%prefix% &7Game is full! Waiting time has been reduced to &e%time% seconds&7."
-  countdown-60s-title: '&a&l60'
-  countdown-60s-subtitle: '&7Waiting for more players...'
-  countdown-30s-title: '&a&l30'
-  countdown-30s-subtitle: '&7Waiting for more players...'
-  countdown-10s-title: '&a&l10'
-  countdown-10s-subtitle: '&7Prepare to play!'
-  countdown-5s-title: '&a&l5'
-  countdown-5s-subtitle: '&7Collect sheep from the middle'
-  countdown-4s-title: '&a&l4'
-  countdown-4s-subtitle: '&7Protect your pen'
-  countdown-3s-title: '&a&l3'
-  countdown-3s-subtitle: '&7Kill others to stole their sheep'
-  countdown-2s-title: '&a&l2'
-  countdown-2s-subtitle: '&7Cooperate with your team'
-  countdown-1s-title: '&a&l1'
-  countdown-1s-subtitle: '&7&lHave fun!'
+  full-countdown: "%prefix% &7Arena is full! Waiting time has been reduced to &e%time% seconds&7."
+  countdown-60s-title: "&a&l60"
+  countdown-60s-subtitle: "&7Waiting for more players..."
+  countdown-30s-title: "&a&l30"
+  countdown-30s-subtitle: "&7Waiting for more players..."
+  countdown-10s-title: "&a&l10"
+  countdown-10s-subtitle: "&7Prepare to play!"
+  countdown-5s-title: "&a&l5"
+  countdown-5s-subtitle: "&7Collect sheep from the middle"
+  countdown-4s-title: "&a&l4"
+  countdown-4s-subtitle: "&7Protect your pen"
+  countdown-3s-title: "&a&l3"
+  countdown-3s-subtitle: "&7Kill others to stole their sheep"
+  countdown-2s-title: "&a&l2"
+  countdown-2s-subtitle: "&7Cooperate with your team"
+  countdown-1s-title: "&a&l1"
+  countdown-1s-subtitle: "&7&lHave fun!"
   start-title: "&d&lStart!"
   start-subtitle: "&7You are in team %team%"
   time-left: "&d&l%time% &7seconds left!"
-  team-join-success: '%prefix% &7You have successfully joined team %team%&7!'
-  team-join-random: '%prefix% &7You will be put in random team when the game starts!'
-  already-in-this-team: '%prefix% &cYou are already in team %team%&c!'
+  team-join-success: "%prefix% &7You have successfully joined team %team%&7!"
+  team-join-random: "%prefix% &7You will be put in random team when the game starts!"
+  already-in-this-team: "%prefix% &cYou are already in team %team%&c!"
   bossbar-team: "&7Team: %team%"
-  team-full: '%prefix% &cTeam %team% &cis full!'
-  team-menu-team-red: '&c&lTeam red'
-  team-menu-team-green: '&a&lTeam green'
-  team-menu-team-blue: '&9&lTeam blue'
-  team-menu-team-yellow: '&e&lTeam yellow'
-  team-menu-team-random: '&7&lRandom team'
+  team-full: "%prefix% &cTeam %team% &cis full!"
+  team-menu-team-red: "&c&lTeam red"
+  team-menu-team-green: "&a&lTeam green"
+  team-menu-team-blue: "&9&lTeam blue"
+  team-menu-team-yellow: "&e&lTeam yellow"
+  team-menu-team-random: "&7&lRandom team"
   team-menu-team-random-lore:
-    - '&7Click to join random team'
-    - '&7which will be chosen for you'
-    - '&7when the game starts!'
-  start-cancelled: '%prefix% &7Start cancelled! Not enough players!'
+    - "&7Click to join random team"
+    - "&7which will be chosen for you"
+    - "&7when the game starts!"
+  start-cancelled: "%prefix% &7Start cancelled! Not enough players!"
   team-menu-players:
-    - '&7Players:'
-  team-menu-players-format: '&7- %player%'
+    - "&7Players:"
+  team-menu-players-format: "&7- %player%"
   team-menu-no-players:
-    - '&7Team is empty!'
-  team-menu-name: '&6&lChoose team'
-  team-item-name: '&6&lChoose team'
+    - "&7Team is empty!"
+  team-menu-name: "&6&lChoose team"
+  team-item-name: "&6&lChoose team"
   team-item-lore:
-    - '&7Click to open menu in which '
-    - '&7you can choose your team!'
-  sheep-item-name: '&9&lCarry sheep'
+    - "&7Click to open menu in which "
+    - "&7you can choose your team!"
+  sheep-item-name: "&9&lCarry sheep"
   sheep-item-lore:
-    - '&7Walk close to sheep'
-    - '&7to pick her up!'
-  weapon-item-name: '&7&lDefend your pen'
+    - "&7Walk close to sheep"
+    - "&7to pick her up!"
+  weapon-item-name: "&7&lDefend your pen"
   weapon-item-lore:
-    - '&7Use it to kill enemies'
-    - '&7who want to steal your sheep!'
-  leave-item-name: '&c&lLeave arena'
+    - "&7Use it to kill enemies"
+    - "&7who want to steal your sheep!"
+  leave-item-name: "&c&lLeave arena"
   leave-item-lore:
-    - '&7Click to leave game'
-    - '&7and go back to lobby!'
+    - "&7Click to leave game"
+    - "&7and go back to lobby!"
   kill: "%prefix% &7Player %killerTeam%%killer% &7killed %playerTeam%%player%&7!"
   kill-subtitle: "&7You killed %team-color%%player%"
-  respawn-in-title: '&7Killer: %team-color%%player%'
-  respawn-in-subtitle: '&d&lRespawn in: %time%'
-  respawned-title: '&a&lRespawned!'
-  respawned-subtitle: '&a&lGet back to the game!'
-  win-title: '&a&lVictory'
-  defeat-title: '&c&lDefeat'
-  win-defeat-subtitle: '&7Team %team% &7won the game'
-  chat-format: '%color%%player% &8&l» &r%message%'
-  team-chat-format: '&7[&d&lTEAM&7] %color%%player% &8&l» &r%message%'
-  team-chat-usage: '%prefix% &cWrong use! &7Use /t &e<message>'
+  respawn-in-title: "&7Killer: %team-color%%player%"
+  respawn-in-subtitle: "&d&lRespawn in: %time%"
+  respawned-title: "&a&lRespawned!"
+  respawned-subtitle: "&a&lGet back to the game!"
+  win-title: "&a&lVictory"
+  defeat-title: "&c&lDefeat"
+  win-defeat-subtitle: "&7Team %team% &7won the game"
+  no-win-subtitle: "&7Nobody won the game"
+  chat-format: "%color%%player% &8&l» &r%message%"
+  team-chat-format: "&7[&d&lTEAM&7] %color%%player% &8&l» &r%message%"
+  team-chat-usage: "%prefix% &cWrong use! &7Use &e/t &d<message>"
   chat-not-in-game: "%prefix% &cYou can use team chat command only when playing sheepquest!"
   team-chat-game: "%prefix% &cYou can use team chat only when game started!"
-  command-blocked: '%prefix% &cThis command is not available in game!'
-  scoreboard-title: '   &9&lSheepquest   '
-  scoreboard-arena: '&7Arena: &e%arena%'
-  scoreboard-players: '&7Players: &e%players%'
-  scoreboard-waiting: '&7Waiting...'
-  scoreboard-starting: '&7Starting in: &e%time%'
-  scoreboard-red-sheep: '&f%count% &cRed'
-  scoreboard-green-sheep: '&f%count% &aGreen'
-  scoreboard-blue-sheep: '&f%count% &9Blue'
-  scoreboard-yellow-sheep: '&f%count% &eYellow'
-  scoreboard-next-sheep: '&e&lNext sheep:'
-  scoreboard-time-left: '&e&lTime left:'
-  scoreboard-seconds: '&f%count% &fseconds'
-  scoreboard-second: '&f%count% &fsecond'
-  scoreboard-minutes: '&f%count% &fminutes'
-  scoreboard-minute: '&f%count% &fminute'
-  scoreboard-server: '&espigotmc.org'
-  scoreboard-ending: '&e&lEnding in:'
+  command-blocked: "%prefix% &cThis command is not available in game!"
+  scoreboard-title: "   &9&lSheepQuest   "
+  scoreboard-arena: "&7Arena: &e%arena%"
+  scoreboard-players: "&7Players: &e%players%"
+  scoreboard-waiting: "&7Waiting..."
+  scoreboard-starting: "&7Starting in: &e%time%"
+  scoreboard-red-sheep: "&f%count% &c&lRed"
+  scoreboard-green-sheep: "&f%count% &a&lGreen"
+  scoreboard-blue-sheep: "&f%count% &9&lBlue"
+  scoreboard-yellow-sheep: "&f%count% &e&lYellow"
+  scoreboard-next-sheep: "&e&lNext sheep:"
+  scoreboard-time-left: "&e&lTime left:"
+  scoreboard-seconds: "&f%count% &fseconds"
+  scoreboard-second: "&f%count% &fsecond"
+  scoreboard-minutes: "&f%count% &fminutes"
+  scoreboard-minute: "&f%count% &fminute"
+  scoreboard-server: "&espigotmc.org"
+  scoreboard-ending: "&e&lEnding in:"
   summary:
-    - '&m---------------------------------------------------'
-    - ' &7&l| &c&lRed&7: %red-points% &7&l| &a&lGreen&7: %green-points% &7&l| &9&lBlue&7: %blue-points% &7&l| &e&lYellow&7: %yellow-points% &7&l|'
-    - ''
-    - '   &eGame stats:'
-    - '   &7Kills: &e%kills%'
-    - '   &7Deaths: &e%deaths%'
-    - '   &7Sheep taken: &e%sheep%'
-    - ''
-    - '&d&lThanks for playing!'
-    - '&m---------------------------------------------------'
+    - "&m---------------------------------------------------"
+    - " &7&l| &c&lRed&7: %red-points% &7&l| &a&lGreen&7: %green-points% &7&l| &9&lBlue&7: %blue-points% &7&l| &e&lYellow&7: %yellow-points% &7&l|"
+    - ""
+    - "   &eGame stats:"
+    - "   &7Kills: &e%kills%"
+    - "   &7Deaths: &e%deaths%"
+    - "   &7Sheep taken: &e%sheep%"
+    - ""
+    - "&d&lThanks for playing!"
+    - "&m---------------------------------------------------"
 special-events:
   bonus-sheep-name: "&d&l%points% &f&lPOINTS"
   bonus-sheep-spawn: "%prefix% &7The &d&lBONUS SHEEP &7has spawned!"
 arena-moderate:
-  force-start-usage: '%prefix% &cWrong use! &7Type: /sheepquest forcestart &e<arena>'
-  force-start-already-started: '%prefix% &cArena &e%arena% &chas already started!'
-  force-start-no-players: '%prefix% &cArena &e%arena% &cis empty! (there are not any players)'
-  force-start-success: '%prefix% &aPlayer &e%player% &aforced arena to start!'
-  force-stop-usage: '%prefix% &cWrong use! &7Type: /sheepquest forcestop &e<arena>'
-  force-stop-not-started: '%prefix% &cArena &e%arena% &cdid not started yet!'
-  force-stop-success: '%prefix% &cPlayer &e%player% &cforced arena to stop!'
-  kick-usage: '%prefix% &cWrong use! &7Type: /sheepquest kick &e<player>'
-  kick-player-not-playing: '%prefix% &cPlayer &e%player% &cis not playing sheepquest now!'
-  kick-success: '%prefix% &cPlayer &e%player% &cwas kicked from arena &e%arena%&c!'
-  kick-player: '%prefix% &cYou were kicked from the game by &e%kicker%&c!'
-  kick-players: '%prefix% &cPlayer &e%player% &cwas kicked from arena by &e%kicker%&c!'
-  active-usage: "%prefix% &cWrong use! &7Type: /sheepquest active &e<arena> <true/false>"
+  force-start-usage: "%prefix% &cWrong use! &7Type: &e/sq forcestart &d<arena>"
+  force-start-already-started: "%prefix% &cArena &e%arena% &chas already started!"
+  force-start-no-players: "%prefix% &cArena &e%arena% &cis empty! (there are not any players)"
+  force-start-success: "%prefix% &7Player &e%player% &7forced arena to start!"
+  force-stop-usage: "%prefix% &cWrong use! &7Type: &esq forcestop &d<arena>"
+  force-stop-not-started: "%prefix% &cArena &e%arena% &cdid not started yet!"
+  force-stop-success: "%prefix% &cPlayer &e%player% &cforced arena to stop!"
+  kick-usage: "%prefix% &cWrong use! &7Type: &e/sq kick &d<player>"
+  kick-player-not-playing: "%prefix% &cPlayer &e%player% &cis not playing sheepquest now!"
+  kick-success: "%prefix% &cPlayer &e%player% &cwas kicked from arena &e%arena%&c!"
+  kick-player: "%prefix% &cYou were kicked from the game by &e%kicker%&c!"
+  kick-players: "%prefix% &cPlayer &e%player% &cwas kicked from arena by &e%kicker%&c!"
+  active-usage: "%prefix% &cWrong use! &7Type: &e/sq active &d<arena> <true/false>"
   active-arena-active: "%prefix% &cArena &e%arena% &cis already active!"
   active-arena-not-active: "%prefix% &cArena &e%arena% &cis already not active!"
   active-activate: "%prefix% &7Arena &e%arena% &7is now &a&lACTIVE &7and players can join it."
@@ -246,75 +263,80 @@ arena-moderate:
   active-not-ready: "%prefix% &cArena &e%arena% &cis not ready to play and it cannot be activated!"
 arena-setup:
   active-block: "%prefix% &cThis arena is active so you cannot modify it's settings! &7Deactivate it using staff menu or &e/sq active %arena% false &7command."
-  wand-item-name: '&6&lSetup wand'
+  wand-item-name: "&6&lSetup wand"
   wand-item-lore:
-    - '&7Click LMB to select first pos.'
-    - '&7Click RMB to select second pos.'
-  wand-item-recive: '%prefix% &aYou have recived setup wand! Left click the first area corner and then right click the second area corner.'
+    - "&7Click LMB to select first pos."
+    - "&7Click RMB to select second pos."
+  wand-item-recive: "%prefix% &7You have recived setup wand! Left click the first area corner and then right click the second area corner."
   selection-empty: "%prefix% &cYour selection is empty! &7Before setting team area you have to select it using selection wand."
-  wand-select-min: '%prefix% &aYou have selected min point! Now right click the second area corner.'
-  wand-select-max: '%prefix% &aYou have selected max point! Now you can set teams area!'
-  wand-selection-world: '%prefix% &aYour selection points must be in the same world!'
-  invalid-team: '%prefix% &aWrong team! Available teams are: &c&lred &a&lgreen &9&lblue &e&lyellow'
-  create-success: '%prefix% &aArena &e%arena% &awas created succesfully! Now you can start configuring it!'
-  create-usage: '%prefix% &cWrong use! &7Type: /sheepquest create &e<arena>'
-  create-already-exists: '%prefix% &cArena named &e%arena% &calready exists!'
-  delete-success: '%prefix% &aArena &e%arena% &awas deleted succesfully!'
-  delete-confirm: '%prefix% &cAre you sure you want to delete &e%arena% &carena? &7To confirm type &e/sq confirm &7in the next 20 seconds. &c&lTHIS CANNOT BE UNDONE!'
-  delete-confirm-none: '%prefix% &cThere is nothing you can confirm!'
-  delete-usage: '%prefix% &cWrong use! &7Type: /sheepquest delete &e<arena>'
-  delete-not-exists: '%prefix% &cArena named &e%arena% &cdoes not exists!'
-  set-main-lobby-usage: '%prefix% &cWrong use! &7Type: /sheepquest setmainlobby &e<arena>'
-  set-main-lobby-success: '%prefix% &aMain lobby in arena &e%arena% &awas successfully set!'
-  set-waiting-lobby-usage: '%prefix% &cWrong use! &7Type: /sheepquest setwaitinglobby &e<arena>'
-  set-waiting-lobby-success: '%prefix% &aWaiting lobby in arena &e%arena% &awas successfully set!'
-  set-spawn-usage: '%prefix% &cWrong use! &7Type: /sheepquest setspawn &e<arena> &e<team>'
-  set-spawn-success: '%prefix% &a%team% &ateam spawn in arena &e%arena% &awas successfully set!'
-  set-sheep-spawn-usage: '%prefix% &cWrong use! &7Type: /sheepquest setsheepspawn &e<arena>'
-  set-sheep-spawn-success: '%prefix% &aSheep spawn in arena &e%arena% &awas successfully set!'
-  set-teams-area-usage: '%prefix% &cWrong use! &7Type: /sheepquest setteamsarea &e<arena> <team>'
-  set-teams-area-success: '%prefix% &a%team% &ateam area in arena &e%arena% &awas successfully set!'
-  set-teams-area-no-selection: '%prefix% &cYou have to make a selection first! Use /sq setupwand to recive selection wand!'
-  set-min-players-usage: '%prefix% &cWrong use! &7Type: /sheepquest setminplayers &e<arena> <count>'
-  set-min-players-success: '%prefix% &aMinimum players count in arena &e%arena% &awas successfully set!'
-  set-min-players-too-small: '%prefix% &cMinimum players count must be greater than 1!'
-  set-min-players-invalid-count: '%prefix% &cMinimum players count must be a number!'
-  set-max-players-usage: '%prefix% &cWrong use! &7Type: /sheepquest setmaxplayers &e<arena> <count>'
-  set-max-players-success: '%prefix% &aMaximum players count in arena &e%arena% &awas successfully set!'
-  set-max-players-divisible-by-4: '%prefix% &cDue to the number of teams, maximum players count must be divisible by 4!'
-  set-max-players-bound: '%prefix% &cMaximum players count cannot be greater than 44!'
-  set-max-players-invalid-count: '%prefix% &cMaximum players count must be a number!'
-  check-set: '&aSet!'
-  check-notset: '&cNot set!'
-  check-yes: '&aYes!'
-  check-no: '&cNo!'
-  check-usage: '%prefix% &cWrong use! &7Type /sheepquest check &e<arena>'
-  check-ready: '&a&lArena is configured and it is ready to use!'
-  check-not-ready: '&c&lArena is not ready to play yet!'
-  check-active: '&aArena is active and players can join it!'
-  check-not-active: '&cArena is not active and players cannot join it!'
+  wand-select-min: "%prefix% &7You have selected min point! Now right click the second area corner."
+  wand-select-max: "%prefix% &7You have selected max point! Now you can set teams area!"
+  wand-selection-world: "%prefix% &7Your selection points must be in the same world!"
+  invalid-team: "%prefix% &7Wrong team! Available teams are: &c&lred &a&lgreen &9&lblue &e&lyellow"
+  create-success: "%prefix% &7Arena &e%arena% &7was created succesfully! Now you can start configuring it!"
+  create-usage: "%prefix% &cWrong use! &7Type: &e/sq create &d<arena>"
+  create-already-exists: "%prefix% &cArena named &e%arena% &calready exists!"
+  delete-success: "%prefix% &7Arena &e%arena% &7was deleted succesfully!"
+  delete-confirm: "%prefix% &cAre you sure you want to delete &e%arena% &carena? &7To confirm type &e/sq confirm &7in the next 20 seconds. &c&lTHIS CANNOT BE UNDONE!"
+  delete-confirm-none: "%prefix% &cThere is nothing you can confirm!"
+  delete-usage: "%prefix% &cWrong use! &7Type: &e/sq delete &d<arena>"
+  delete-not-exists: "%prefix% &cArena named &e%arena% &cdoes not exists!"
+  set-main-lobby-usage: "%prefix% &cWrong use! &7Type: &e/sq setmainlobby &d<arena>"
+  set-main-lobby-success: "%prefix% &7Main lobby in arena &e%arena% &7was successfully set!"
+  set-waiting-lobby-usage: "%prefix% &cWrong use! &7Type: &e/sq setwaitinglobby &d<arena>"
+  set-waiting-lobby-success: "%prefix% &7Waiting lobby in arena &e%arena% &7was successfully set!"
+  set-spawn-usage: "%prefix% &cWrong use! &7Type: &e/sq setspawn &d<arena> <team>"
+  set-spawn-success: "%prefix% &7%team% &7team spawn in arena &e%arena% &7was successfully set!"
+  set-sheep-spawn-usage: "%prefix% &cWrong use! &7Type: &e/sq setsheepspawn &d<arena>"
+  set-sheep-spawn-success: "%prefix% &7Sheep spawn in arena &e%arena% &7was successfully set!"
+  set-teams-area-usage: "%prefix% &cWrong use! &7Type: &e/sq setteamsarea &d<arena> <team>"
+  set-teams-area-success: "%prefix% &7%team% &7team area in arena &e%arena% &7was successfully set!"
+  set-teams-area-no-selection: "%prefix% &cYou have to make a selection first! Use &e/sq setupwand &7to recive selection wand!"
+  set-min-players-usage: "%prefix% &cWrong use! &7Type: &e/sq setminplayers &d<arena> <count>"
+  set-min-players-success: "%prefix% &7Minimum players count in arena &e%arena% &7was successfully set!"
+  set-min-players-too-small: "%prefix% &cMinimum players count must be greater than 1!"
+  set-min-players-invalid-count: "%prefix% &cMinimum players count must be a number!"
+  set-max-players-usage: "%prefix% &cWrong use! &7Type: &e/sq setmaxplayers &d<arena> <count>"
+  set-max-players-success: "%prefix% &7Maximum players count in arena &e%arena% &7was successfully set!"
+  set-max-players-divisible-by-4: "%prefix% &cDue to the number of teams, maximum players count must be divisible by 4!"
+  set-max-players-bound: "%prefix% &cMaximum players count cannot be greater than 44!"
+  set-max-players-invalid-count: "%prefix% &cMaximum players count must be a number!"
+  set-vip-usage: "%prefix% &cWrong use! &7Type: &e/sq setvip &d<arena> <true/false>"
+  set-vip-arena-vip: "%prefix% &cArena &e%arena% &cis already vip arena!"
+  set-vip-arena-not-vip: "%prefix% &cArena &e%arena% &cis already regular arena!"
+  set-vip-success-vip: "%prefix% &7Arena &e%arena% &7is now &a&lVIP &7and only vips can join it."
+  set-vip-success-not-vip: "%prefix% &7Arena &e%arena% &7is now &c&lNOT VIP &7and everyone can join it."
+  check-set: "&aSet!"
+  check-notset: "&cNot set!"
+  check-yes: "&aYes!"
+  check-no: "&cNo!"
+  check-usage: "%prefix% &cWrong use! &7Type &e/sq check &d<arena>"
+  check-ready: "&a&lArena is configured and it is ready to use!"
+  check-not-ready: "&c&lArena is not ready to play yet!"
+  check-active: "&aArena is active and players can join it!"
+  check-not-active: "&cArena is not active and players cannot join it!"
 
   check-page:
-    - '&m---------------------------------------------------'
-    - '&e&l%arena% &7arena configuration state:'
-    - '  &7Minimum players: %min-players%'
-    - '  &7Maximum players: %max-players%'
-    - '  &7Main lobby: %main-lobby%'
-    - '  &7Waiting lobby: %waiting-lobby%'
-    - '  &7Sheep spawn: %sheep-spawn%'
-    - '  &7Red team spawn: %red-spawn%'
-    - '  &7Red team area: %red-area%'
-    - '  &7Green team spawn: %green-spawn%'
-    - '  &7Green team area: %green-area%'
-    - '  &7Blue team spawn: %blue-spawn%'
-    - '  &7Blue team area: %blue-area%'
-    - '  &7Yellow team spawn: %yellow-spawn%'
-    - '  &7Yellow team area: %yellow-area%'
-    - '%active%'
-    - '%ready%'
-    - '&m---------------------------------------------------'
+    - "&m---------------------------------------------------"
+    - "&e&l%arena% &7arena configuration state:"
+    - "  &7Minimum players: %min-players%"
+    - "  &7Maximum players: %max-players%"
+    - "  &7Main lobby: %main-lobby%"
+    - "  &7Waiting lobby: %waiting-lobby%"
+    - "  &7Sheep spawn: %sheep-spawn%"
+    - "  &7Red team spawn: %red-spawn%"
+    - "  &7Red team area: %red-area%"
+    - "  &7Green team spawn: %green-spawn%"
+    - "  &7Green team area: %green-area%"
+    - "  &7Blue team spawn: %blue-spawn%"
+    - "  &7Blue team area: %blue-area%"
+    - "  &7Yellow team spawn: %yellow-spawn%"
+    - "  &7Yellow team area: %yellow-area%"
+    - "%active%"
+    - "%ready%"
+    - "&m---------------------------------------------------"
 arenas-menu:
-  command-usage: "%prefix% &cWrong use! &7Type: /sheepquest arenasmenu"
+  command-usage: "%prefix% &cWrong use! &7Type: &e/sq arenasmenu"
   name: "&9&lSheepQuest &7&l| &8Games"
   advanced-menu-name: "&3&l%arena% &8advanced options"
   arena-item-name: "%?vip?%&e%arena%"
@@ -358,7 +380,7 @@ arenas-menu:
   options-menu-back-item-lore:
     - "&7Go back to arenas menu."
 stats-menu:
-  command-usage: "%prefix% &cWrong use! &7Type: /sheepquest statsmenu [player]"
+  command-usage: "%prefix% &cWrong use! &7Type: &e/sq statsmenu &a[player]"
   name: "&3&l%player% &8stats"
   wins: "&eWins: &7%wins%"
   looses: "&eLooses: &7%looses%"
@@ -367,12 +389,15 @@ stats-menu:
   deaths: "&eDeaths: &7%deaths%"
   sheep-taken: "&eSheep taken: &7%sheep%"
   bonus-sheep-taken: "&eBonus sheep taken: &7%bonus-sheep%"
+  playtime: "&ePlaytime: &7%playtime%"
   back-item-name: "&eExit"
   back-item-lore:
     - "&7Go back to arenas menu."
 setup-menu:
-  command-usage: "%prefix% &cWrong use! &7Type: /sheepquest setupmenu <arena>"
+  command-usage: "%prefix% &cWrong use! &7Type: &e/sq setupmenu &d<arena>"
   name: "&3&l%arena% &8setup"
+  arena-vip: "&c&lVIPS"
+  arena-not-vip: "&a&lEVERYONE"
   team-spawn-menu-name: "&3&l%arena% &8setup &7&l| team spawn"
   team-area-menu-name: "&3&l%arena% &8setup &7&l| team area"
   min-players-message: "%prefix% &7Type min players count on chat. To cancel type &ecancel&7."
@@ -391,6 +416,15 @@ setup-menu:
     - "&7It will be permanently removed."
     - "&7"
     - "&c&lWARNING! &7It can't be undone!"
+  vip-item-name: "&eVip"
+  vip-item-lore:
+    - "&7Set arena available only for vips"
+    - "&7or for everyone."
+    - ""
+    - "&7Only players with sheepquest.vip"
+    - "&7permission can join vip arenas."
+    - ""
+    - "&7Arena accessibility: &e%vip%"
   min-players-item-name: "&eSet min players"
   min-players-item-lore:
     - "&7Click to set minimum players"
@@ -547,7 +581,8 @@ setup-menu:
   back-item-lore:
     - "&7Go back to arenas menu."
 staff-menu:
-  command-usage: "%prefix% &cWrong use! &7Type: /sheepquest staffmenu <arena>"
+  command-usage: "%prefix% &cWrong use! &7Type: &e/sq staffmenu &d<arena>"
+  players-command-usage: "%prefix% &cWrong use! &7Type: &e/sq playersmenu &d<arena>"
   name: "&3&l%arena% &8staff menu"
   players-menu-name: "&3&l%arena% &8players"
   state-active: "&a&lACTIVE"

@@ -1,7 +1,7 @@
 name: SheepQuest
 version: ${project.version}
-main: me.cubixor.sheepquest.SheepQuest
-authors: [Cubixor]
+main: me.cubixor.sheepquest.spigot.SheepQuest
+author: Cubixor
 softdepend: [ Vault, Multiverse-Core, PlaceholderAPI ]
 api-version: 1.13
 description: SheepQuest minigame plugin.
@@ -24,7 +24,6 @@ permissions:
       sheepquest.bypass: true
       sheepquest.vip: true
 
-
   sheepquest.setup.*:
     default: op
     description: Gives access to use arena setup commands.
@@ -44,6 +43,7 @@ permissions:
       sheepquest.setup.reload: true
       sheepquest.setup.help: true
       sheepquest.setup.menu: true
+      sheepquest.setup.setvip: true
 
   speepquest.setup.check:
     default: op
@@ -90,7 +90,9 @@ permissions:
   sheepquest.setup.menu:
     default: op
     description: Gives access to setup menu.
-
+  sheepquest.setup.setvip:
+    default: op
+    description: Gives access to /sq setvip command.
 
 
   sheepquest.play.*:
@@ -142,7 +144,6 @@ permissions:
     description: Gives access to arenas menu.
 
 
-
   sheepquest.staff.*:
     default: op
     description: Gives access to moderator plugin commands.
@@ -174,7 +175,6 @@ permissions:
   sheepquest.staff.kick:
     default: op
     description: Gives access to /sq kick command.
-
 
   sheepquest.bypass:
     default: op

@@ -1,37 +1,111 @@
-# SheepQuest plugin configuration file (config.yml) For settings explanation check this page: https://github.com/Cubixor/SheepQuest/wiki/Config-explanation
+# SheepQuest plugin configuration file (config.yml) If there aren't any other comments in this file check this page for explanation: https://github.com/Cubixor/SheepQuest/wiki/Config-explanation
 #
 # Read all comments carefully to do not break plugin
 #
 # You can use /sq reload command to reload modified files without restarting server.
 
 
-
 # Plugin messages language.
 # Available languages are:
 # en - English - default
+# pl - Polish [by Cubixor]
 # zh - Chinese [by Light² (from www.mcbbs.net)]
 #
 # If you have translated the plugin and you would like me to add your translation here, let me know on my discord server:
 # http://discord.gg/AQhUVfm
 language: en
 
-# NOT READY YET!
-#
-#database:
-#  enabled: true
-#  host: "localhost"
-#  port: 3306
-#  username: "root"
-#  password: 12345
-#  database: "sheepquest"
+# Settings related to database.
+# You have to use database if you are using bungee mode.
+database:
 
+  # If true, player stats will be saved in a database.
+  # If false, player stats will be saved in a local file.
+  # WARNING! You have to set it to "true" if you are using bungee mode! [true/false]
+  enabled-stats: false
+
+  # If true, arenas will be saved in a database.
+  # If false, arenas will be saved in a local file.
+  # WARNING! You have to set it to "true" if you are using bungee mode! [true/false]
+  enabled-arenas: false
+
+  # MySQL hostname.
+  # If you have database on the same machine as spigot server, use "localhost".
+  host: "localhost"
+
+  # MySQL port.
+  # Default port for mysql is 3306.
+  port: "3306"
+
+  # MySQL username.
+  # It's not recommended to use root account here for security reasons.
+  username: "user"
+
+  # MySQL password.
+  # If you are not using password just leave it blank, but it's not recommended.
+  password: "12345"
+
+  # MySQL database.
+  # It will be used to store plugin data.
+  database: "sheepquest"
+
+  # MySQL table used for saving player statistics.
+  table-stats: "stats"
+
+  # MySQL table used for saving arenas.
+  table-arenas: "arenas"
+
+  # If you are getting error like:
+  #
+  # "com.mysql.cj.jdbc.exceptions.CommunicationsException: The last packet successfully received from the server was X milliseconds ago.
+  # The last packet sent successfully to the server was X milliseconds ago. is longer than the server configured value of 'wait_timeout'.
+  # You should consider either expiring and/or testing connection validity before use in your application, increasing the server configured values for client timeouts, or using the Connector/J connection property 'autoReconnect=true' to avoid this problem."
+  #
+  # Try to lower this value. [seconds]
+  ping-peroid: 180
+
+# Settings related to the plugin bungee mode.
+bungee:
+
+  # Should plugin be in bungee mode?
+  # If it's set true you will be able to join all arenas in your bungeecord network.
+  #
+  # WARNING! You can use it only if you have enabled saving stats and arenas to database.
+  #
+  # WARNING! If you enable this option remember to upload the plugin to the bungeecord server and
+  # to fill in the connection.yml file with info that is needed to connect to bungeecord server. [true/fallse]
+  bungee-mode: false
+
+  # What should happen to the player who left the game?
+  # Use JOIN_SERVER to put player back to the server from where he had joined the game.
+  # Use LOBBY_SERVER to put player in the lobby server.
+  # USE GAME_SERVER to leave the player in the server that he was playing on.
+  # Use LEAVE_COMMAND to make spigot server console execute custom command when player leaves the game.
+  on-leave: JOIN_SERVER
+
+  # Lobby server.
+  # Use the bungeecord server name that you set in bungeecord config.yml.
+  lobby-server: hub
+
+  # Leave commands.
+  # They are used only when "on-leave" option is set to "LEAVE_COMMAND" and will be executed from the spigot server's console.
+  # You can use %player% placeholder - it will be replaced with the player's name.
+  # Do not put slash (/) at the beginning!
+  leave-commands:
+    - "custom command %player%"
+    - "custom command2"
+
+# Cooldown between commands, sign clicks, menu uses etc.
+# Use bigger values if you server is slow, you are using bungee mode or saving in mysql.
+# You can set it to 0 if you are not using bungee mode and database. [seconds]
+cooldown: 1
 
 # Countdown time.
 # Countdown will start when the arena minimum players count will be reached. [seconds]
 waiting-time: 40
 
 # Countdown time, when game is full and players can no longer join it. [seconds]
-full-waiting-time: 15
+full-waiting-time: 10
 
 # Game time [seconds]
 game-time: 360
@@ -54,26 +128,26 @@ game-chat: true
 # If false, players' team will be chosen randomly. [true/false]
 allow-team-choosing: true
 
-# Speed of the sheep [floating point number]
-sheep-speed: 0.6
+# Speed of the sheep [float]
+sheep-speed: 0.5
 
 # If true, when the arena ends players will be teleported to main lobby location.
 # If false player will be teleported to the place where he was before he joined the arena. [true/false]
 use-main-lobby: true
 
-# If true, player will be teleported to the next arena after the previous ends.
+# If true, player will be put in the next arena after the previous ends.
 # If false, player will be teleported to main lobby or previous location, depending on "use-main-lobby" is set to true or false. [true/false]
 auto-join-on-end: true
 
 # Item types and slots.
-# Type: item type. Full item list on https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html [item name]
-# Slot: slot number. Available slot numbers are 0-8.
+# type - item name. Full item list on https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html [item name]
+# slot - slot number. Available slot numbers are 0-8.
 items:
   team-choose-item:
     type: CHEST
     slot: 0
   leave-item:
-    type: RED_BED
+    type: CLOCK
     slot: 8
   weapon-item:
     type: IRON_SWORD
@@ -82,7 +156,13 @@ items:
     type: SADDLE
     slot: 1
 
-# All particles that occur in game. Full sound list available here: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html [sound]
+# Settings connected to in-game effects. You can enable or disable each of them [true/false]
+effects:
+  sheep-slowness: true
+  kill-blindness: true
+  kill-slowness: true
+
+# All sounds that are played during game. Full sound list available here: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html [sound]
 sounds:
   join: ENTITY_ENDERMAN_TELEPORT
   leave: ENTITY_ENDERMAN_TELEPORT
@@ -114,10 +194,12 @@ particles:
   # WARNING! You can't change blood particles, there is only an option to enable or disable it. [true/false]
   enable-blood: true
 
-# If true, blocks behind signs will be changed depending on game state.
+# If true, blocks behind signs will be changed depending on game state. [true/false]
 color-signs: true
+# Types of blocks behind signs.
 # Full item list on https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html [item name]
 sign-colors:
+  offline: LIGHT_GRAY_STAINED_GLASS
   inactive: BLACK_STAINED_GLASS
   waiting: LIME_STAINED_GLASS
   starting: CYAN_STAINED_GLASS
@@ -134,12 +216,6 @@ command-blocker: BLACKLIST
 command-blocker-list:
   - me
   - spawn
-
-# List of vip-arenas.
-# Only players with permission "sheepquest.vip" can join them!
-# If you don't want to use this feature just leave it empty. (arena name)
-vip-arenas:
-  - test
 
 # If true, when the game ends for each player (depends on which place player took) will be executed right command. [true/false]
 win-rewards: true
@@ -165,7 +241,7 @@ special-events:
   enabled: true
 
   # How often should special game event perform?
-  # For example if set to 40-60, special game event will perform every random amount of time between 40 to 60 seconds. [minSeconds-maxSeconds]
+  # For example if set to 40-60, special game event will perform every random amount of time between 40 and 60 seconds. [minSeconds-maxSeconds]
   rate: 40-60
 
   # Bonus sheep settings
@@ -177,7 +253,7 @@ special-events:
     # Bonus sheep color. List of colors: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/DyeColor.html [color]
     color: PURPLE
 
-    # Bonus sheep speed. [floating point number]
+    # Bonus sheep speed. [float]
     speed: 1.0
 
     # Bonus sheep points
@@ -199,4 +275,4 @@ special-events:
 send-stats: true
 
 # Config version - DO NOT CHANGE IT!
-config-version: 1.5
+config-version: 1.6
