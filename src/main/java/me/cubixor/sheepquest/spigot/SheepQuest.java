@@ -109,7 +109,7 @@ public final class SheepQuest extends JavaPlugin {
             Metrics metrics = new Metrics(this, 9022);
             metrics.addCustomChart(new SimplePie("used_language", () -> getConfig().getString("language", "en")));
             metrics.addCustomChart(new SingleLineChart("games", () -> getAllArenas().size()));
-            metrics.addCustomChart(new SingleLineChart("players", () -> {
+            metrics.addCustomChart(new SingleLineChart("players_arenas", () -> {
                 int players = 0;
                 for (Arena arena : getAllArenas()) {
                     players += arena.getPlayers().size();
