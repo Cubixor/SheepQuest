@@ -9,6 +9,10 @@ import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedList;
+
 public class Scoreboards {
 
     private final SheepQuest plugin;
@@ -18,119 +22,85 @@ public class Scoreboards {
     }
 
     public Scoreboard getWaitingScoreboard(LocalArena localArena) {
+        Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
+        Objective objective = getObjective(scoreboard);
+
         String arenaString = localArena.getName();
         int count = localArena.getPlayerTeam().keySet().size();
 
-        Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
-        Objective objective = scoreboard.registerNewObjective("SheepQuest", "");
-        objective.setDisplayName(plugin.getMessage("game.scoreboard-title"));
-        objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+        LinkedList<String> message = new LinkedList<>(plugin.getMessageList("game.scoreboard-new-waiting"));
+        int rowCount = message.size();
 
-        Score clear1 = objective.getScore("");
-        clear1.setScore(8);
-        Score arenas = objective.getScore(plugin.getMessage("game.scoreboard-arena").replace("%arena%", arenaString));
-        arenas.setScore(7);
-        Score clear2 = objective.getScore(" ");
-        clear2.setScore(6);
-        Score players = objective.getScore(plugin.getMessage("game.scoreboard-players").replace("%players%", Integer.toString(count)));
-        players.setScore(5);
-        Score clear3 = objective.getScore("  ");
-        clear3.setScore(4);
-        Score waiting = objective.getScore(plugin.getMessage("game.scoreboard-waiting"));
-        waiting.setScore(3);
-        Score clear4 = objective.getScore("   ");
-        clear4.setScore(2);
-        Score spigot = objective.getScore(plugin.getMessage("game.scoreboard-server"));
-        spigot.setScore(1);
+        int row = 0;
+        for (int i = rowCount; i > 0; i--) {
+            Score score = objective.getScore(message.get(row)
+                    .replace("%arena%", arenaString)
+                    .replace("%players%", Integer.toString(count))
+                    .replace("%date%", getDate()));
+            score.setScore(i);
+            row++;
+        }
         return scoreboard;
     }
 
     public Scoreboard getStartingScoreboard(LocalArena localArena) {
+        Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
+        Objective objective = getObjective(scoreboard);
+
         String arenaString = localArena.getName();
         int count = localArena.getPlayerTeam().keySet().size();
+        int time = localArena.getTimer();
 
-        Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
-        Objective objective = scoreboard.registerNewObjective("SheepQuest", "");
-        objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-        objective.setDisplayName(plugin.getMessage("game.scoreboard-title"));
+        LinkedList<String> message = new LinkedList<>(plugin.getMessageList("game.scoreboard-new-starting"));
+        int rowCount = message.size();
 
-        Score clear1 = objective.getScore("");
-        clear1.setScore(8);
-        Score arenas = objective.getScore(plugin.getMessage("game.scoreboard-arena").replace("%arena%", arenaString));
-        arenas.setScore(7);
-        Score clear2 = objective.getScore(" ");
-        clear2.setScore(6);
-        Score players = objective.getScore(plugin.getMessage("game.scoreboard-players").replace("%players%", Integer.toString(count)));
-        players.setScore(5);
-        Score clear3 = objective.getScore("  ");
-        clear3.setScore(4);
-        Score waiting = objective.getScore(plugin.getMessage("game.scoreboard-starting").replace("%time%", Integer.toString(localArena.getTimer())));
-        waiting.setScore(3);
-        Score clear4 = objective.getScore("   ");
-        clear4.setScore(2);
-        Score spigot = objective.getScore(plugin.getMessage("game.scoreboard-server"));
-        spigot.setScore(1);
+        int row = 0;
+        for (int i = rowCount; i > 0; i--) {
+            Score score = objective.getScore(message.get(row)
+                    .replace("%arena%", arenaString)
+                    .replace("%players%", Integer.toString(count))
+                    .replace("%time-short%", Integer.toString(time))
+                    .replace("%time-long%", getTimeLong(time))
+                    .replace("%date%", getDate()));
+            score.setScore(i);
+            row++;
+        }
 
         return scoreboard;
     }
 
     public Scoreboard getGameScoreboard(LocalArena localArena) {
         Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
-        Objective objective = scoreboard.registerNewObjective("SheepQuest", "");
-        objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-        objective.setDisplayName(plugin.getMessage("game.scoreboard-title"));
+        Objective objective = getObjective(scoreboard);
 
+        String arenaString = localArena.getName();
+        int count = localArena.getPlayerTeam().keySet().size();
+        int sheepTime = localArena.getSheepTimer();
+        int time = localArena.getTimer();
+        int red = localArena.getPoints().get(Team.RED);
+        int green = localArena.getPoints().get(Team.GREEN);
+        int blue = localArena.getPoints().get(Team.BLUE);
+        int yellow = localArena.getPoints().get(Team.YELLOW);
 
-        Score clear1 = objective.getScore("");
-        clear1.setScore(10);
-        Score red = objective.getScore(plugin.getMessage("game.scoreboard-red-sheep").replace("%count%", localArena.getPoints().get(Team.RED).toString()));
-        red.setScore(9);
-        Score green = objective.getScore(plugin.getMessage("game.scoreboard-green-sheep").replace("%count%", localArena.getPoints().get(Team.GREEN).toString()));
-        green.setScore(8);
-        Score blue = objective.getScore(plugin.getMessage("game.scoreboard-blue-sheep").replace("%count%", localArena.getPoints().get(Team.BLUE).toString()));
-        blue.setScore(7);
-        Score yellow = objective.getScore(plugin.getMessage("game.scoreboard-yellow-sheep").replace("%count%", localArena.getPoints().get(Team.YELLOW).toString()));
-        yellow.setScore(6);
-        Score clear2 = objective.getScore(" ");
-        clear2.setScore(5);
-        Score next = objective.getScore(plugin.getMessage("game.scoreboard-next-sheep"));
-        next.setScore(4);
-        Score nextTime;
-        if (localArena.getSheepTimer() == 1) {
-            nextTime = objective.getScore(plugin.getMessage("game.scoreboard-second").replace("%count%", Integer.toString(localArena.getSheepTimer())) + " ");
-        } else {
-            nextTime = objective.getScore(plugin.getMessage("game.scoreboard-seconds").replace("%count%", Integer.toString(localArena.getSheepTimer())) + " ");
-        }
-        nextTime.setScore(3);
-        Score clear3 = objective.getScore("  ");
-        clear3.setScore(2);
-        Score timeLeftName = objective.getScore(plugin.getMessage("game.scoreboard-time-left"));
-        timeLeftName.setScore(1);
+        LinkedList<String> message = new LinkedList<>(plugin.getMessageList("game.scoreboard-new-game"));
+        int rowCount = message.size();
 
-
-        int time;
-        if (localArena.getTimer() > 60) {
-            time = localArena.getTimer() / 60;
-            String timeString = Integer.toString(time);
-            Score timeLeft;
-            if (time == 1) {
-                timeLeft = objective.getScore(plugin.getMessage("game.scoreboard-minute").replace("%count%", timeString));
-            } else {
-                timeLeft = objective.getScore(plugin.getMessage("game.scoreboard-minutes").replace("%count%", timeString));
-
-            }
-            timeLeft.setScore(0);
-
-        } else {
-            time = localArena.getTimer();
-            String timeString = Integer.toString(time);
-            Score timeLeft;
-            if (time == 1) {
-                timeLeft = objective.getScore(plugin.getMessage("game.scoreboard-second").replace("%count%", timeString));
-            } else {
-                timeLeft = objective.getScore(plugin.getMessage("game.scoreboard-seconds").replace("%count%", timeString));
-            }
-            timeLeft.setScore(0);
+        int row = 0;
+        for (int i = rowCount; i > 0; i--) {
+            Score score = objective.getScore(message.get(row)
+                    .replace("%arena%", arenaString)
+                    .replace("%players%", Integer.toString(count))
+                    .replace("%sheep-long%", getTimeLong(sheepTime))
+                    .replace("%sheep-short%", Integer.toString(sheepTime))
+                    .replace("%time-long%", getTimeLong(time))
+                    .replace("%time-short%", Integer.toString(time))
+                    .replace("%red%", Integer.toString(red))
+                    .replace("%green%", Integer.toString(green))
+                    .replace("%blue%", Integer.toString(blue))
+                    .replace("%yellow%", Integer.toString(yellow))
+                    .replace("%date%", getDate()));
+            score.setScore(i);
+            row++;
         }
 
         return scoreboard;
@@ -138,33 +108,68 @@ public class Scoreboards {
 
     public Scoreboard getEndingScoreboard(LocalArena localArena) {
         Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
+        Objective objective = getObjective(scoreboard);
+
+        String arenaString = localArena.getName();
+        int count = localArena.getPlayerTeam().keySet().size();
+        int time = localArena.getTimer();
+        int red = localArena.getPoints().get(Team.RED);
+        int green = localArena.getPoints().get(Team.GREEN);
+        int blue = localArena.getPoints().get(Team.BLUE);
+        int yellow = localArena.getPoints().get(Team.YELLOW);
+
+        LinkedList<String> message = new LinkedList<>(plugin.getMessageList("game.scoreboard-new-ending"));
+        int rowCount = message.size();
+
+        int row = 0;
+        for (int i = rowCount; i > 0; i--) {
+            Score score = objective.getScore(message.get(row)
+                    .replace("%arena%", arenaString)
+                    .replace("%players%", Integer.toString(count))
+                    .replace("%time-long%", getTimeLong(time))
+                    .replace("%time-short%", Integer.toString(time))
+                    .replace("%red%", Integer.toString(red))
+                    .replace("%green%", Integer.toString(green))
+                    .replace("%blue%", Integer.toString(blue))
+                    .replace("%yellow%", Integer.toString(yellow))
+                    .replace("%date%", getDate()));
+            score.setScore(i);
+            row++;
+        }
+
+        return scoreboard;
+    }
+
+    private String getTimeLong(int time) {
+        String timeLeft;
+        if (time > 60) {
+            int timeParsed = time / 60;
+            if (timeParsed == 1) {
+                timeLeft = plugin.getMessage("game.scoreboard-minute").replace("%count%", Integer.toString(timeParsed));
+            } else {
+                timeLeft = plugin.getMessage("game.scoreboard-minutes").replace("%count%", Integer.toString(timeParsed));
+            }
+        } else {
+            if (time == 1) {
+                timeLeft = plugin.getMessage("game.scoreboard-second").replace("%count%", Integer.toString(time));
+            } else {
+                timeLeft = plugin.getMessage("game.scoreboard-seconds").replace("%count%", Integer.toString(time));
+            }
+        }
+        return timeLeft;
+    }
+
+    private Objective getObjective(Scoreboard scoreboard) {
         Objective objective = scoreboard.registerNewObjective("SheepQuest", "");
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
         objective.setDisplayName(plugin.getMessage("game.scoreboard-title"));
+        return objective;
+    }
 
-
-        Score clear1 = objective.getScore("");
-        clear1.setScore(7);
-        Score red = objective.getScore(plugin.getMessage("game.scoreboard-red-sheep").replace("%count%", localArena.getPoints().get(Team.RED).toString()));
-        red.setScore(6);
-        Score green = objective.getScore(plugin.getMessage("game.scoreboard-green-sheep").replace("%count%", localArena.getPoints().get(Team.GREEN).toString()));
-        green.setScore(5);
-        Score blue = objective.getScore(plugin.getMessage("game.scoreboard-blue-sheep").replace("%count%", localArena.getPoints().get(Team.BLUE).toString()));
-        blue.setScore(4);
-        Score yellow = objective.getScore(plugin.getMessage("game.scoreboard-yellow-sheep").replace("%count%", localArena.getPoints().get(Team.YELLOW).toString()));
-        yellow.setScore(3);
-        Score clear2 = objective.getScore(" ");
-        clear2.setScore(2);
-        Score next = objective.getScore(plugin.getMessage("game.scoreboard-ending"));
-        next.setScore(1);
-        Score nextTime;
-        if (localArena.getTimer() == 1) {
-            nextTime = objective.getScore(plugin.getMessage("game.scoreboard-second").replace("%count%", Integer.toString(localArena.getTimer())) + " ");
-        } else {
-            nextTime = objective.getScore(plugin.getMessage("game.scoreboard-seconds").replace("%count%", Integer.toString(localArena.getTimer())) + " ");
-        }
-        nextTime.setScore(0);
-        return scoreboard;
+    private String getDate() {
+        LocalDateTime localDateTime = LocalDateTime.now();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(plugin.getConfig().getString("date-format"));
+        return localDateTime.format(dateTimeFormatter);
     }
 
 }

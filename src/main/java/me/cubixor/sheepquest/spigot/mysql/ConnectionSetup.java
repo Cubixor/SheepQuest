@@ -28,7 +28,6 @@ public class ConnectionSetup {
             }
 
             synchronized (this) {
-/*
                 try {
                     Class.forName("com.mysql.cj.jdbc.Driver");
                 } catch (ClassNotFoundException e) {
@@ -38,19 +37,12 @@ public class ConnectionSetup {
                         e2.printStackTrace();
                     }
                 }
-*/
-                try {
-                    Class.forName("com.mysql.jdbc.Driver");
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
+
 
                 mysqlConnection.setConnection(DriverManager.getConnection("jdbc:mysql://" + mysqlConnection.getHost() + ":" + mysqlConnection.getPort() + "/" +
                         mysqlConnection.getDatabase() + "?autoReconnect=true&useSSL=false", mysqlConnection.getUsername(), mysqlConnection.getPassword()));
 
-                //if (plugin.getMysqlConnection() == null) {
                 plugin.setMysqlConnection(mysqlConnection);
-                //}
 
                 if (plugin.getConfig().getBoolean("database.enabled-stats")) {
                     PreparedStatement statement1 = mysqlConnection.getConnection()

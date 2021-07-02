@@ -139,6 +139,11 @@ use-main-lobby: true
 # If false, player will be teleported to main lobby or previous location, depending on "use-main-lobby" is set to true or false. [true/false]
 auto-join-on-end: true
 
+# Date format in plugin messages.
+# If you don't know how to create proper date format check this page: https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html
+# (Scroll down to "Patterns for Formatting and Parsing" section)
+date-format: "dd/MM/yyyy"
+
 # Item types and slots.
 # type - item name. Full item list on https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html [item name]
 # slot - slot number. Available slot numbers are 0-8.
@@ -275,4 +280,4 @@ special-events:
 send-stats: true
 
 # Config version - DO NOT CHANGE IT!
-config-version: 1.6
+config-version: 1.7

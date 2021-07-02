@@ -149,8 +149,7 @@ public class TabCompleter implements org.bukkit.command.TabCompleter {
                         (args[0].equalsIgnoreCase("setupmenu") && player.hasPermission("sheepquest.setup.menu")) ||
                         (args[0].equalsIgnoreCase("staffmenu") && player.hasPermission("sheepquest.staff.menu")) ||
                         (args[0].equalsIgnoreCase("playersmenu") && player.hasPermission("sheepquest.staff.menu")) ||
-                        (args[0].equalsIgnoreCase("join") && player.hasPermission("sheepquest.play.join")) ||
-                        (args[0].equalsIgnoreCase("leave") && player.hasPermission("sheepquest.play.leave"))) {
+                        (args[0].equalsIgnoreCase("join") && player.hasPermission("sheepquest.play.join"))) {
 
                     for (String s : arenasList) {
                         if (s.startsWith(args[1])) {
