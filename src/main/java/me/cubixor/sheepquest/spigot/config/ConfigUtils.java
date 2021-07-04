@@ -1,6 +1,7 @@
 package me.cubixor.sheepquest.spigot.config;
 
 import me.cubixor.sheepquest.spigot.SheepQuest;
+import me.cubixor.sheepquest.spigot.gameInfo.Team;
 import me.cubixor.sheepquest.spigot.mysql.MysqlConnection;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -92,6 +93,18 @@ public class ConfigUtils {
         }
     }
 
+    public static List<Team> getTeamList(String arena) {
+        SheepQuest plugin = SheepQuest.getInstance();
+
+        List<String> stringTeams = new ArrayList<>(plugin.getArenasConfig().getStringList("arenas." + arena + "." + ConfigField.TEAMS.getCode()));
+        List<Team> teams = new ArrayList<>();
+        for (Team t : Team.values()) {
+            if (stringTeams.contains(t.getCode())) {
+                teams.add(t);
+            }
+        }
+        return teams;
+    }
 
     public static List<String> getArenas() {
         SheepQuest plugin = SheepQuest.getInstance();

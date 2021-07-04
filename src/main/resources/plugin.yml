@@ -44,6 +44,8 @@ permissions:
       sheepquest.setup.help: true
       sheepquest.setup.menu: true
       sheepquest.setup.setvip: true
+      sheepquest.setup.changeteams: true
+      sheepquest.setup.listteams: true
 
   speepquest.setup.check:
     default: op
@@ -93,6 +95,12 @@ permissions:
   sheepquest.setup.setvip:
     default: op
     description: Gives access to /sq setvip command.
+  sheepquest.setup.changeteams:
+    default: op
+    description: Gives access to /sq addteam and /sq removeteam commands.
+  sheepquest.setup.listteams:
+    default: op
+    description: Gives access to /sq teams command.
 
 
   sheepquest.play.*:

@@ -57,6 +57,12 @@ public class Command implements CommandExecutor {
                 staffCommands.setActive(player, args);
             } else if (args[0].equalsIgnoreCase("setvip")) {
                 setupCommands.setVip(player, args);
+            } else if (args[0].equalsIgnoreCase("addteam")) {
+                setupCommands.addTeam(player, args);
+            } else if (args[0].equalsIgnoreCase("removeteam")) {
+                setupCommands.removeTeam(player, args);
+            } else if (args[0].equalsIgnoreCase("listteams")) {
+                setupCommands.listTeams(player, args);
             } else if (args[0].equalsIgnoreCase("setmainlobby")) {
                 setupCommands.setLocation(player, args, "arena-setup.set-main-lobby", ConfigField.MAIN_LOBBY, "sheepquest.setup.setmainlobby");
             } else if (args[0].equalsIgnoreCase("setwaitinglobby")) {

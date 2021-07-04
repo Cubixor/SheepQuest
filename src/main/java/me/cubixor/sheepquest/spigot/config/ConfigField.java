@@ -56,6 +56,17 @@ public enum ConfigField {
             return true;
         }
     },
+    TEAMS {
+        @Override
+        public String getCode() {
+            return "teams";
+        }
+
+        @Override
+        public boolean savedInDatabase() {
+            return false;
+        }
+    },
     MAIN_LOBBY {
         @Override
         public String getCode() {

@@ -11,6 +11,7 @@ import me.cubixor.sheepquest.spigot.gameInfo.LocalArena;
 import me.cubixor.sheepquest.spigot.gameInfo.Team;
 import me.cubixor.sheepquest.spigot.socket.SocketClientSender;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -118,6 +119,109 @@ public class SetupCommands {
             player.sendMessage(plugin.getMessage(messagesPath + "-success").replace("%arena%", args[1]));
         });
 
+    }
+
+    public void addTeam(Player player, String[] args) {
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+            if (!Utils.checkIfValid(player, args, "sheepquest.setup.changeteams", "arena-setup.add-team", 3, true)) {
+                return;
+            }
+            if (!setupCheckActive(player, args[1])) {
+                return;
+            }
+
+            Team team = Team.NONE;
+            for (Team t : Utils.getTeams()) {
+                if (args[2].equalsIgnoreCase(t.getCode())) {
+                    team = t;
+                    break;
+                }
+            }
+
+            if (team.equals(Team.NONE)) {
+                player.sendMessage(plugin.getMessage("arena-setup.add-team-invalid-team"));
+                return;
+            }
+
+            List<Team> teams = new ArrayList<>(ConfigUtils.getTeamList(args[1]));
+
+            if (teams.contains(team)) {
+                player.sendMessage(plugin.getMessage("arena-setup.add-team-already-added"));
+                return;
+            }
+
+            teams.add(team);
+            List<String> teamsString = new ArrayList<>();
+            for (Team t : teams) {
+                teamsString.add(t.getCode());
+            }
+            ConfigUtils.updateField(args[1], ConfigField.TEAMS, teamsString);
+
+            player.sendMessage(plugin.getMessage("arena-setup.add-team-success").replace("%arena%", args[1]));
+        });
+    }
+
+    public void removeTeam(Player player, String[] args) {
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+            if (!Utils.checkIfValid(player, args, "sheepquest.setup.changeteams", "arena-setup.remove-team", 3, true)) {
+                return;
+            }
+            if (!setupCheckActive(player, args[1])) {
+                return;
+            }
+
+            Team team = Team.NONE;
+            for (Team t : Utils.getTeams()) {
+                if (args[2].equalsIgnoreCase(t.getCode())) {
+                    team = t;
+                    break;
+                }
+            }
+
+            if (team.equals(Team.NONE)) {
+                player.sendMessage(plugin.getMessage("arena-setup.remove-team-invalid-team"));
+                return;
+            }
+
+            List<Team> teams = new ArrayList<>(ConfigUtils.getTeamList(args[1]));
+
+            if (!teams.contains(team)) {
+                player.sendMessage(plugin.getMessage("arena-setup.remove-team-not-added"));
+                return;
+            }
+
+            teams.remove(team);
+            List<String> teamsString = new ArrayList<>();
+            for (Team t : teams) {
+                teamsString.add(t.getCode());
+            }
+            ConfigUtils.updateField(args[1], ConfigField.TEAMS, teamsString);
+
+            player.sendMessage(plugin.getMessage("arena-setup.remove-team-success").replace("%arena%", args[1]));
+        });
+    }
+
+    public void listTeams(Player player, String[] args) {
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+            if (!Utils.checkIfValid(player, args, "sheepquest.setup.listteams", "arena-setup.list-teams", 2, true)) {
+                return;
+            }
+
+            List<Team> teams = new ArrayList<>(ConfigUtils.getTeamList(args[1]));
+            StringBuilder addedTeams = new StringBuilder();
+            StringBuilder otherTeams = new StringBuilder();
+
+            for (Team team : Utils.getTeams()) {
+                if (teams.contains(team)) {
+                    addedTeams.append(plugin.getMessage("general.team-" + team.getCode())).append(ChatColor.translateAlternateColorCodes('&', "&f, "));
+                } else {
+                    otherTeams.append(plugin.getMessage("general.team-" + team.getCode())).append(ChatColor.translateAlternateColorCodes('&', "&f, "));
+                }
+            }
+
+            player.sendMessage(plugin.getMessage("arena-setup.list-teams-success").replace("%arena%", args[1]).replace("%teams%", addedTeams));
+            player.sendMessage(plugin.getMessage("arena-setup.list-teams-success2").replace("%arena%", args[1]).replace("%teams%", otherTeams));
+        });
     }
 
     public void setMaxPlayers(Player player, String[] args) {
@@ -362,25 +466,12 @@ public class SetupCommands {
 
 
     public boolean isTeamValid(String teamString) {
-        Team team;
-        switch (teamString.toLowerCase()) {
-            case "red":
-                team = Team.RED;
-                break;
-            case "green":
-                team = Team.GREEN;
-                break;
-            case "blue":
-                team = Team.BLUE;
-                break;
-            case "yellow":
-                team = Team.YELLOW;
-                break;
-            default:
-                team = Team.NONE;
-                break;
+        for (Team team : Team.values()) {
+            if (teamString.equalsIgnoreCase(team.getCode())) {
+                return true;
+            }
         }
-        return !team.equals(Team.NONE);
+        return false;
     }
 
     private boolean setupCheckActive(Player player, String arena) {

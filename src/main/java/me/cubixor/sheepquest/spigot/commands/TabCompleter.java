@@ -3,6 +3,7 @@ package me.cubixor.sheepquest.spigot.commands;
 import me.cubixor.sheepquest.spigot.SheepQuest;
 import me.cubixor.sheepquest.spigot.api.Utils;
 import me.cubixor.sheepquest.spigot.gameInfo.Arena;
+import me.cubixor.sheepquest.spigot.gameInfo.Team;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -100,6 +101,15 @@ public class TabCompleter implements org.bukkit.command.TabCompleter {
                 if (player.hasPermission("sheepquest.setup.setvip") && "setvip".startsWith(args[0])) {
                     result.add("setvip");
                 }
+                if (player.hasPermission("sheepquest.setup.changeteams") && "addteam".startsWith(args[0])) {
+                    result.add("addteam");
+                }
+                if (player.hasPermission("sheepquest.setup.changeteams") && "removeteam".startsWith(args[0])) {
+                    result.add("removeteam");
+                }
+                if (player.hasPermission("sheepquest.setup.listteams") && "listteams".startsWith(args[0])) {
+                    result.add("listteams");
+                }
                 if (player.hasPermission("sheepquest.setup.wand") && "wand".startsWith(args[0])) {
                     result.add("wand");
                 }
@@ -142,6 +152,9 @@ public class TabCompleter implements org.bukkit.command.TabCompleter {
                         (args[0].equalsIgnoreCase("setmaxplayers") && player.hasPermission("sheepquest.setup.setmaxplayers")) ||
                         (args[0].equalsIgnoreCase("setminplayers") && player.hasPermission("sheepquest.setup.setminplayers")) ||
                         (args[0].equalsIgnoreCase("setvip") && player.hasPermission("sheepquest.setup.setvip")) ||
+                        (args[0].equalsIgnoreCase("addteam") && player.hasPermission("sheepquest.setup.changeteams")) ||
+                        (args[0].equalsIgnoreCase("removeteam") && player.hasPermission("sheepquest.setup.changeteams")) ||
+                        (args[0].equalsIgnoreCase("listteams") && player.hasPermission("sheepquest.setup.listteams")) ||
                         (args[0].equalsIgnoreCase("setteamarea") && player.hasPermission("sheepquest.setup.setteamarea")) ||
                         (args[0].equalsIgnoreCase("forcestart") && player.hasPermission("sheepquest.staff.start")) ||
                         (args[0].equalsIgnoreCase("forcestop") && player.hasPermission("sheepquest.staff.stop")) ||
@@ -178,10 +191,9 @@ public class TabCompleter implements org.bukkit.command.TabCompleter {
                 if ((args[0].equalsIgnoreCase("setspawn") && player.hasPermission("sheepquest.staff.setspawn")) ||
                         (args[0].equalsIgnoreCase("setteamarea") && player.hasPermission("sheepquest.staff.setteamarea"))) {
                     List<String> teams = new ArrayList<>();
-                    teams.add("red");
-                    teams.add("green");
-                    teams.add("blue");
-                    teams.add("yellow");
+                    for (Team team : Utils.getTeams()) {
+                        teams.add(team.getCode());
+                    }
                     for (String s : teams) {
                         if (s.startsWith(args[2])) {
                             result.add(s);

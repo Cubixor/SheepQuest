@@ -9,16 +9,6 @@ import org.bukkit.inventory.ItemStack;
 public enum Team {
     RED {
         @Override
-        public String getCode() {
-            return "red";
-        }
-
-        @Override
-        public Color getColor() {
-            return Color.RED;
-        }
-
-        @Override
         public DyeColor getDyeColor() {
             return DyeColor.RED;
         }
@@ -33,16 +23,6 @@ public enum Team {
             return XMaterial.RED_WOOL.parseItem();
         }
     }, GREEN {
-        @Override
-        public String getCode() {
-            return "green";
-        }
-
-        @Override
-        public Color getColor() {
-            return Color.LIME;
-        }
-
         @Override
         public DyeColor getDyeColor() {
             return DyeColor.LIME;
@@ -59,16 +39,6 @@ public enum Team {
         }
     }, BLUE {
         @Override
-        public String getCode() {
-            return "blue";
-        }
-
-        @Override
-        public Color getColor() {
-            return Color.BLUE;
-        }
-
-        @Override
         public DyeColor getDyeColor() {
             return DyeColor.BLUE;
         }
@@ -83,16 +53,6 @@ public enum Team {
             return XMaterial.BLUE_WOOL.parseItem();
         }
     }, YELLOW {
-        @Override
-        public String getCode() {
-            return "yellow";
-        }
-
-        @Override
-        public Color getColor() {
-            return Color.YELLOW;
-        }
-
         @Override
         public DyeColor getDyeColor() {
             return DyeColor.YELLOW;
@@ -109,16 +69,6 @@ public enum Team {
         }
     }, NONE {
         @Override
-        public String getCode() {
-            return "none";
-        }
-
-        @Override
-        public Color getColor() {
-            return Color.WHITE;
-        }
-
-        @Override
         public DyeColor getDyeColor() {
             return DyeColor.WHITE;
         }
@@ -134,9 +84,13 @@ public enum Team {
         }
     };
 
-    public abstract String getCode();
+    public String getCode() {
+        return this.toString().toLowerCase();
+    }
 
-    public abstract Color getColor();
+    public Color getColor() {
+        return getDyeColor().getColor();
+    }
 
     public abstract DyeColor getDyeColor();
 

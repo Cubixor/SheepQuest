@@ -117,10 +117,6 @@ public class Utils {
         return itemStack;
     }
 
-    public static Team[] getTeams() {
-        return new Team[]{Team.RED, Team.GREEN, Team.BLUE, Team.YELLOW};
-    }
-
     public static LocalArena getLocalArena(Player player) {
         SheepQuest plugin = SheepQuest.getInstance();
 
@@ -183,41 +179,22 @@ public class Utils {
         }
 
         for (Player p : localArena.getPlayerTeam().keySet()) {
-            switch (localArena.getPlayerTeam().get(p)) {
-                case RED:
-                    teamPlayers.replace(Team.RED, teamPlayers.get(Team.RED) + 1);
-                    break;
-                case GREEN:
-                    teamPlayers.replace(Team.GREEN, teamPlayers.get(Team.GREEN) + 1);
-                    break;
-                case BLUE:
-                    teamPlayers.replace(Team.BLUE, teamPlayers.get(Team.BLUE) + 1);
-                    break;
-                case YELLOW:
-                    teamPlayers.replace(Team.YELLOW, teamPlayers.get(Team.YELLOW) + 1);
-                    break;
-            }
-
+            Team team = localArena.getPlayerTeam().get(p);
+            teamPlayers.replace(team, teamPlayers.get(team) + 1);
         }
         return teamPlayers;
     }
 
     public static Team getTeamByWool(ItemStack material) {
-        Team team = null;
         if (material.getType().toString().contains("WOOL")) {
-            if (XMaterial.matchXMaterial(material).equals(XMaterial.RED_WOOL)) {
-                team = Team.RED;
-            } else if (XMaterial.matchXMaterial(material).equals(XMaterial.LIME_WOOL)) {
-                team = Team.GREEN;
-            } else if (XMaterial.matchXMaterial(material).equals(XMaterial.BLUE_WOOL)) {
-                team = Team.BLUE;
-            } else if (XMaterial.matchXMaterial(material).equals(XMaterial.YELLOW_WOOL)) {
-                team = Team.YELLOW;
+            for (Team team : Team.values()) {
+                if (XMaterial.matchXMaterial(material).equals(XMaterial.matchXMaterial(team.getWool()))) {
+                    return team;
+                }
             }
-        } else {
-            team = Team.NONE;
+            return Team.NONE;
         }
-        return team;
+        return null;
     }
 
     public static String getStringState(Arena arena) {
@@ -468,6 +445,12 @@ public class Utils {
             }
         }
         return material;
+    }
+
+    public static List<Team> getTeams() {
+        List<Team> teams = new ArrayList<>(Arrays.asList(Team.values()));
+        teams.remove(Team.NONE);
+        return teams;
     }
 
 }
