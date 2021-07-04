@@ -97,12 +97,12 @@ public class Kill implements Listener {
             player.playSound(player.getLocation(), XSound.matchXSound(plugin.getConfig().getString("sounds.death")).get().parseSound(), 100, 0);
             player.getWorld().spawnParticle(Particle.valueOf(plugin.getConfig().getString("particles.death")), player.getLocation().getX(), player.getLocation().getY() + 1.5, player.getLocation().getZ(), 50, 0.1, 0.1, 0.1, 0.1);
             attacker.sendTitle("", plugin.getMessage("game.kill-subtitle")
-                    .replace("%team-color%", plugin.getMessage("general." + localArena.getPlayerTeam().get(player).getCode() + "-color"))
+                    .replace("%team-color%", localArena.getPlayerTeam().get(player).getChatColor() + "")
                     .replace("%player%", player.getName()), 5, 40, 5);
 
 
-            String killerColor = plugin.getMessage("general." + localArena.getPlayerTeam().get(attacker).getCode() + "-color");
-            String playerColor = plugin.getMessage("general." + localArena.getPlayerTeam().get(player).getCode() + "-color");
+            String killerColor = localArena.getPlayerTeam().get(attacker).getChatColor() + "";
+            String playerColor = localArena.getPlayerTeam().get(player).getChatColor() + "";
             for (Player p : localArena.getPlayerTeam().keySet()) {
                 p.hidePlayer(plugin, player);
                 p.sendMessage(plugin.getMessage("game.kill").replace("%killer%", attacker.getName()).replace("%player%", player.getName())
@@ -134,7 +134,7 @@ public class Kill implements Listener {
 
     private void respawnTimer(Player player, Player killer) {
         String killerName = killer.getName();
-        String killerColor = plugin.getMessage("general." + Utils.getLocalArena(player).getPlayerTeam().get(killer).getCode() + "-color");
+        String killerColor = Utils.getLocalArena(player).getPlayerTeam().get(killer).getChatColor() + "";
         new BukkitRunnable() {
             @Override
             public void run() {

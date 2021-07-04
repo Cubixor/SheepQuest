@@ -213,9 +213,9 @@ public class SetupCommands {
 
             for (Team team : Utils.getTeams()) {
                 if (teams.contains(team)) {
-                    addedTeams.append(plugin.getMessage("general.team-" + team.getCode())).append(ChatColor.translateAlternateColorCodes('&', "&f, "));
+                    addedTeams.append(team.getName()).append(ChatColor.translateAlternateColorCodes('&', "&f, "));
                 } else {
-                    otherTeams.append(plugin.getMessage("general.team-" + team.getCode())).append(ChatColor.translateAlternateColorCodes('&', "&f, "));
+                    otherTeams.append(team.getName()).append(ChatColor.translateAlternateColorCodes('&', "&f, "));
                 }
             }
 
@@ -235,6 +235,7 @@ public class SetupCommands {
 
             try {
                 int max = Integer.parseInt(args[2]);
+                //TODO Remove max 44 limit
                 if (max > 44) {
                     player.sendMessage(plugin.getMessage("arena-setup.set-max-players-bound"));
                     return;
@@ -242,8 +243,6 @@ public class SetupCommands {
                 if (max % 4 == 0) {
                     ConfigUtils.updateField(args[1], ConfigField.MAX_PLAYERS, max);
                     player.sendMessage(plugin.getMessage("arena-setup.set-max-players-success").replace("%arena%", args[1]));
-                } else {
-                    player.sendMessage(plugin.getMessage("arena-setup.set-max-players-divisible-by-4"));
                 }
             } catch (NumberFormatException ex) {
                 player.sendMessage(plugin.getMessage("arena-setup.set-max-players-invalid-count"));

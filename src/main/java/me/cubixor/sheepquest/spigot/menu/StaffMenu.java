@@ -99,7 +99,7 @@ public class StaffMenu implements Listener {
                     List<String> playerItemLore = new ArrayList<>(plugin.getMessageList("staff-menu.player-item-lore"));
                     for (String s : playerItemLore) {
                         PlayerGameStats playerGameStats = localArena.getPlayerStats().get(p);
-                        String replaced = s.replace("%team%", plugin.getMessage("general.team-" + localArena.getPlayerTeam().get(p).getCode()));
+                        String replaced = s.replace("%team%", localArena.getPlayerTeam().get(p).getName());
                         replaced = replaced.replace("%sheep%", playerGameStats == null ? "0" : Integer.toString(localArena.getPlayerStats().get(p).getSheepTaken()));
                         replaced = replaced.replace("%kills%", playerGameStats == null ? "0" : Integer.toString(localArena.getPlayerStats().get(p).getKills()));
                         replaced = replaced.replace("%deaths%", playerGameStats == null ? "0" : Integer.toString(localArena.getPlayerStats().get(p).getDeaths()));

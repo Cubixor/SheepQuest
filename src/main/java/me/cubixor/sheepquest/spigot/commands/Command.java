@@ -146,7 +146,7 @@ public class Command implements CommandExecutor {
             finalMessageBuilder.deleteCharAt(finalMessageBuilder.length() - 1);
             String finalMessage = finalMessageBuilder.toString();
 
-            String teamColor = plugin.getMessage("general." + localArena.getPlayerTeam().get(player).getCode() + "-color");
+            String teamColor = localArena.getPlayerTeam().get(player).getChatColor() + "";
 
             for (Player p : localArena.getPlayerTeam().keySet()) {
                 if (localArena.getPlayerTeam().get(p).equals(localArena.getPlayerTeam().get(player))) {

@@ -172,15 +172,15 @@ public class Utils {
 
     public static HashMap<Team, Integer> getTeamPlayers(LocalArena localArena) {
         HashMap<Team, Integer> teamPlayers = new HashMap<>();
-        for (Team team : Team.values()) {
-            if (!team.equals(Team.NONE)) {
-                teamPlayers.put(team, 0);
-            }
+        for (Team team : ConfigUtils.getTeamList(localArena.getName())) {
+            teamPlayers.put(team, 0);
         }
 
         for (Player p : localArena.getPlayerTeam().keySet()) {
             Team team = localArena.getPlayerTeam().get(p);
-            teamPlayers.replace(team, teamPlayers.get(team) + 1);
+            if (team != Team.NONE) {
+                teamPlayers.replace(team, teamPlayers.get(team) + 1);
+            }
         }
         return teamPlayers;
     }

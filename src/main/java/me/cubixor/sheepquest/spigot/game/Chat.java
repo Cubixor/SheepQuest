@@ -64,7 +64,7 @@ public class Chat implements Listener {
 
         LocalArena localArena = Utils.getLocalArena(evt.getPlayer());
 
-        String team = plugin.getMessage("general." + localArena.getPlayerTeam().get(evt.getPlayer()).getCode() + "-color");
+        String team = localArena.getPlayerTeam().get(evt.getPlayer()).getChatColor() + "";
 
         for (Player p : localArena.getPlayerTeam().keySet()) {
             p.sendMessage(plugin.getMessage("game.chat-format").replace("%player%", evt.getPlayer().getName()).replace("%message%", evt.getMessage()).replace("%color%", team));

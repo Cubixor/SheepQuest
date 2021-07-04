@@ -78,7 +78,7 @@ public class Start {
 
             p.playSound(p.getLocation(), XSound.matchXSound(plugin.getConfig().getString("sounds.start")).get().parseSound(), 1000, 1);
             p.sendTitle(plugin.getMessage("game.start-title"), plugin.getMessage("game.start-subtitle")
-                    .replace("%team%", plugin.getMessage("general.team-" + team.getCode())), 0, 60, 10);
+                    .replace("%team%", team.getName()), 0, 60, 10);
 
         }
 
@@ -91,7 +91,6 @@ public class Start {
 
     private ItemStack setArmorItem(Material armorType, Color color) {
         ItemStack armor = new ItemStack(armorType, 1);
-        //armor = NBTEditor.set(armor, (byte) 1, "Unbreakable");
         LeatherArmorMeta armorMeta = (LeatherArmorMeta) armor.getItemMeta();
         armorMeta.setColor(color);
         armor.setItemMeta(armorMeta);
@@ -99,28 +98,9 @@ public class Start {
     }
 
     private ItemStack setTeamItem(Team team) {
-        ItemStack itemStack = null;
-        switch (team) {
-            case RED: {
-                itemStack = new ItemStack(XMaterial.RED_DYE.parseItem());
-                break;
-            }
-            case GREEN: {
-                itemStack = new ItemStack(XMaterial.LIME_DYE.parseItem());
-                break;
-            }
-            case BLUE: {
-                itemStack = new ItemStack(XMaterial.BLUE_DYE.parseItem());
-                break;
-            }
-            case YELLOW: {
-                itemStack = new ItemStack(XMaterial.YELLOW_DYE.parseItem());
-                break;
-            }
-
-        }
+        ItemStack itemStack = new ItemStack(team.getTeamItem());
         ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.setDisplayName(plugin.getMessage("game.team-menu-team-" + team.getCode()));
+        itemMeta.setDisplayName(team.getName());
         itemStack.setItemMeta(itemMeta);
         return itemStack;
     }

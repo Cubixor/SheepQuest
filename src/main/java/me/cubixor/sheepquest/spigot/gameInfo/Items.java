@@ -14,7 +14,7 @@ public class Items {
     private ItemStack setupWandItem;
     private ItemStack sheepItem;
     private ItemStack weaponItem;
-    private HashMap<Team, ItemStack> teamItems = new HashMap<>();
+    private final HashMap<Team, ItemStack> teamItems = new HashMap<>();
 
     private int teamItemSlot;
     private int leaveItemSlot;
@@ -39,10 +39,8 @@ public class Items {
 
         setSetupWandItem(Utils.setItemStack(XMaterial.BLAZE_ROD.parseMaterial(), "arena-setup.wand-item-name", "arena-setup.wand-item-lore"));
 
-        for (Team team : Team.values()) {
-            if (!team.equals(Team.NONE)) {
-                getTeamItems().put(team, Utils.setItemStack(team.getWool(), "game.team-menu-team-" + team.getCode()));
-            }
+        for (Team team : Utils.getTeams()) {
+            getTeamItems().put(team, Utils.setItemStack(team.getWool(), "game.team-menu-team-" + team.getCode()));
         }
     }
 
@@ -88,10 +86,6 @@ public class Items {
 
     public HashMap<Team, ItemStack> getTeamItems() {
         return teamItems;
-    }
-
-    public void setTeamItems(HashMap<Team, ItemStack> teamItems) {
-        this.teamItems = teamItems;
     }
 
     public int getTeamItemSlot() {

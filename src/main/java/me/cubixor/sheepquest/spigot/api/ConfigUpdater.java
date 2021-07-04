@@ -129,6 +129,23 @@ public class ConfigUpdater {
                 plugin.saveArenas();
             }
 
+            if (Float.parseFloat(plugin.getConfig().getString("config-version")) < 1.7) {
+                for (String arena : plugin.getArenasConfig().getConfigurationSection("arenas").getKeys(false)) {
+                    List<String> classicTeams = new ArrayList<String>() {{
+                        add("red");
+                        add("green");
+                        add("blue");
+                        add("yellow");
+                    }};
+
+                    plugin.getArenasConfig().set(arena + ".teams", classicTeams);
+                }
+
+                if (plugin.getConfig().getString("special-events.bonus-sheep.color").equalsIgnoreCase("PURPLE")) {
+                    plugin.getConfig().set("special-events.bonus-sheep.color", "MAGENTA");
+                }
+            }
+
             plugin.getConfig().set("config-version", Float.parseFloat(plugin.getDescription().getVersion()));
             plugin.saveConfig();
         }

@@ -256,7 +256,7 @@ special-events:
     enabled: true
 
     # Bonus sheep color. List of colors: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/DyeColor.html [color]
-    color: PURPLE
+    color: MAGENTA
 
     # Bonus sheep speed. [float]
     speed: 1.0

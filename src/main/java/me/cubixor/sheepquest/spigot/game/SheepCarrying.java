@@ -244,16 +244,11 @@ public class SheepCarrying implements Listener {
     }
 
     private Team getTeamByColor(DyeColor color) {
-        Team team = Team.NONE;
-        if (color.equals(DyeColor.RED)) {
-            team = Team.RED;
-        } else if (color.equals(DyeColor.LIME)) {
-            team = Team.GREEN;
-        } else if (color.equals(DyeColor.BLUE)) {
-            team = Team.BLUE;
-        } else if (color.equals(DyeColor.YELLOW)) {
-            team = Team.YELLOW;
+        for (Team team : Team.values()) {
+            if (color.equals(team.getDyeColor())) {
+                return team;
+            }
         }
-        return team;
+        return Team.NONE;
     }
 }
