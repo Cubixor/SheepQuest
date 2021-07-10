@@ -170,7 +170,7 @@ public class TabCompleter implements org.bukkit.command.TabCompleter {
                         }
                     }
                 }
-                if (args[0].equalsIgnoreCase("kick") && player.hasPermission("sheepquest.setup.kick")) {
+                if (args[0].equalsIgnoreCase("kick") && player.hasPermission("sheepquest.staff.kick")) {
                     for (String p : Utils.getPlayers()) {
                         if (p.startsWith(args[1])) {
                             result.add(p);
@@ -188,8 +188,10 @@ public class TabCompleter implements org.bukkit.command.TabCompleter {
                 }
                 break;
             case 3:
-                if ((args[0].equalsIgnoreCase("setspawn") && player.hasPermission("sheepquest.staff.setspawn")) ||
-                        (args[0].equalsIgnoreCase("setteamarea") && player.hasPermission("sheepquest.staff.setteamarea"))) {
+                if ((args[0].equalsIgnoreCase("setspawn") && player.hasPermission("sheepquest.setup.setspawn")) ||
+                        (args[0].equalsIgnoreCase("setteamarea") && player.hasPermission("sheepquest.setup.setteamarea")) ||
+                        (args[0].equalsIgnoreCase("addteam") && player.hasPermission("sheepquest.setup.changeteams")) ||
+                        (args[0].equalsIgnoreCase("removeteam") && player.hasPermission("sheepquest.setup.changeteams"))) {
                     List<String> teams = new ArrayList<>();
                     for (Team team : Utils.getTeams()) {
                         teams.add(team.getCode());

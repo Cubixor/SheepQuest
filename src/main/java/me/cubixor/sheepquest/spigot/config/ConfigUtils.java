@@ -125,7 +125,7 @@ public class ConfigUtils {
                 return arenas;
             } catch (SQLException e) {
                 sendErrorMessage(e);
-                return null;
+                return new ArrayList<>();
             }
         } else {
             if (plugin.getArenasConfig().getConfigurationSection("arenas") != null) {
@@ -167,9 +167,18 @@ public class ConfigUtils {
         return stringToLocation(locString);
     }
 
-    public static Location[] getArea(String arena, ConfigField configField) {
+    public static Location getSpawn(String arena, Team team) {
         SheepQuest plugin = SheepQuest.getInstance();
-        String locString = plugin.getArenasConfig().getString("arenas." + arena + "." + configField.getCode());
+        String locString = plugin.getArenasConfig().getString("arenas." + arena + ".spawn." + team.getCode());
+        if (locString == null) {
+            return null;
+        }
+        return stringToLocation(locString);
+    }
+
+    public static Location[] getArea(String arena, Team team) {
+        SheepQuest plugin = SheepQuest.getInstance();
+        String locString = plugin.getArenasConfig().getString("arenas." + arena + ".area." + team.getCode());
         if (locString == null) return null;
 
         String[] splitLoc = splitLocations(locString);
@@ -271,7 +280,7 @@ public class ConfigUtils {
 
     }
 
-    public static void updateField(String arena, ConfigField configField, Object value) {
+    private static void updateField(String arena, ConfigField configField, String fieldCode, Object value) {
         SheepQuest plugin = SheepQuest.getInstance();
 
         if (mysqlEnabled() && configField.savedInDatabase()) {
@@ -290,7 +299,7 @@ public class ConfigUtils {
                     Connection connection = mysqlConnection.getConnection();
                     PreparedStatement statement = connection
                             .prepareStatement("UPDATE " + mysqlConnection.getDatabase() + "." + mysqlConnection.getTableArenas() + " SET `" +
-                                    configField.getCode() + "` = '" + str + "' WHERE `name` = '" + arena + "'");
+                                    fieldCode + "` = '" + str + "' WHERE `name` = '" + arena + "'");
 
                     statement.executeUpdate();
                 } catch (SQLException e) {
@@ -298,9 +307,17 @@ public class ConfigUtils {
                 }
             });
         } else {
-            plugin.getArenasConfig().set("arenas." + arena + "." + configField.getCode(), value);
+            plugin.getArenasConfig().set("arenas." + arena + "." + fieldCode, value);
             plugin.saveArenas();
         }
+    }
+
+    public static void updateField(String arena, ConfigField configField, Object value) {
+        updateField(arena, configField, configField.getCode(), value);
+    }
+
+    public static void updateField(String arena, ConfigField configField, Team team, Object value) {
+        updateField(arena, configField, configField.getCode() + team.getCode(), value);
     }
 
     private static void sendErrorMessage(SQLException e) {

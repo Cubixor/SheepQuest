@@ -16,7 +16,9 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.Inventory;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 public class SetupMenu implements Listener {
 
@@ -60,9 +62,9 @@ public class SetupMenu implements Listener {
                 setupInventory.setItem(7, Utils.setItemStack(XMaterial.SHEARS.parseMaterial(), "setup-menu.sheep-spawn-item-name", "setup-menu.sheep-spawn-item-lore",
                         "%set%", checkString(check.get(ConfigField.SHEEP_SPAWN))));
                 setupInventory.setItem(8, Utils.setItemStack(XMaterial.WHITE_BANNER.parseMaterial(), "setup-menu.team-spawn-item-name", "setup-menu.team-spawn-item-lore",
-                        "%set%", checkString(check.get(ConfigField.RED_SPAWN) && check.get(ConfigField.GREEN_SPAWN) && check.get(ConfigField.BLUE_SPAWN) && check.get(ConfigField.YELLOW_SPAWN))));
+                        "%set%", checkString(check.get(ConfigField.SPAWN))));
                 setupInventory.setItem(9, Utils.setItemStack(XMaterial.WHITE_WOOL.parseMaterial(), "setup-menu.team-area-item-name", "setup-menu.team-area-item-lore",
-                        "%set%", checkString(check.get(ConfigField.RED_AREA) && check.get(ConfigField.GREEN_AREA) && check.get(ConfigField.BLUE_AREA) && check.get(ConfigField.YELLOW_AREA))));
+                        "%set%", checkString(check.get(ConfigField.AREA))));
                 setupInventory.setItem(22, Utils.setItemStack(XMaterial.ARROW.parseMaterial(), "setup-menu.back-item-name", "setup-menu.back-item-lore"));
 
                 plugin.getInventories().get(player).setActiveInventory(setupInventory);
@@ -74,59 +76,44 @@ public class SetupMenu implements Listener {
     }
 
     public void updateSpawnSetupMenu(String arena, Player player) {
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            LinkedHashMap<ConfigField, Boolean> check = new LinkedHashMap<>(Utils.checkIfReady(arena));
+        plugin.putInventories(player, arena);
 
-            Bukkit.getScheduler().runTask(plugin, () -> {
-                plugin.putInventories(player, arena);
-
-                Inventory spawnSetupInventory = Bukkit.createInventory(null, 18, plugin.getMessage("setup-menu.team-spawn-menu-name").replace("%arena%", arena));
-                spawnSetupInventory.setItem(1, Utils.setItemStack(XMaterial.RED_BANNER.parseMaterial(), "setup-menu.red-team-spawn-item-name", "setup-menu.red-team-spawn-item-lore",
-                        "%set%", checkString(check.get(ConfigField.RED_SPAWN))));
-                spawnSetupInventory.setItem(3, Utils.setItemStack(XMaterial.GREEN_BANNER.parseMaterial(), "setup-menu.green-team-spawn-item-name", "setup-menu.green-team-spawn-item-lore",
-                        "%set%", checkString(check.get(ConfigField.GREEN_SPAWN))));
-                spawnSetupInventory.setItem(5, Utils.setItemStack(XMaterial.BLUE_BANNER.parseMaterial(), "setup-menu.blue-team-spawn-item-name", "setup-menu.blue-team-spawn-item-lore",
-                        "%set%", checkString(check.get(ConfigField.BLUE_SPAWN))));
-                spawnSetupInventory.setItem(7, Utils.setItemStack(XMaterial.YELLOW_BANNER.parseMaterial(), "setup-menu.yellow-team-spawn-item-name", "setup-menu.yellow-team-spawn-item-lore",
-                        "%set%", checkString(check.get(ConfigField.YELLOW_SPAWN))));
-                spawnSetupInventory.setItem(13, Utils.setItemStack(XMaterial.ARROW.parseMaterial(), "setup-menu.team-spawn-menu-back-item-name", "setup-menu.team-spawn-menu-back-item-lore"));
+        Inventory spawnSetupInventory = Bukkit.createInventory(null, 27, plugin.getMessage("setup-menu.team-spawn-menu-name").replace("%arena%", arena));
+        List<Team> teams = new ArrayList<>(ConfigUtils.getTeamList(arena));
+        int slot = 0;
+        for (Team team : teams) {
+            spawnSetupInventory.setItem(slot, Utils.setItemStack(team.getBanner(), "setup-menu.specific-team-spawn-item-name",
+                    "setup-menu.specific-team-spawn-item-lore", "%set%", checkString(ConfigUtils.getSpawn(arena, team) != null), team));
+            slot++;
+        }
+        spawnSetupInventory.setItem(22, Utils.setItemStack(XMaterial.ARROW.parseMaterial(), "setup-menu.team-spawn-menu-back-item-name", "setup-menu.team-spawn-menu-back-item-lore"));
 
 
-                plugin.getInventories().get(player).setActiveInventory(spawnSetupInventory);
-                plugin.getInventories().get(player).setInventoryType(MenuType.SPAWN_SETUP);
+        plugin.getInventories().get(player).setActiveInventory(spawnSetupInventory);
+        plugin.getInventories().get(player).setInventoryType(MenuType.SPAWN_SETUP);
 
-                player.openInventory(plugin.getInventories().get(player).getActiveInventory());
-            });
-        });
+        player.openInventory(plugin.getInventories().get(player).getActiveInventory());
     }
 
     public void updateAreaSetupMenu(String arena, Player player) {
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            LinkedHashMap<ConfigField, Boolean> check = new LinkedHashMap<>(Utils.checkIfReady(arena));
+        plugin.putInventories(player, arena);
 
-            Bukkit.getScheduler().runTask(plugin, () -> {
-                plugin.putInventories(player, arena);
-
-                Inventory areaSetupInventory = Bukkit.createInventory(null, 18, plugin.getMessage("setup-menu.team-area-menu-name").replace("%arena%", arena));
-                areaSetupInventory.setItem(1, Utils.setItemStack(Team.RED.getWool(), "setup-menu.red-team-area-item-name", "setup-menu.red-team-area-item-lore",
-                        "%set%", checkString(check.get(ConfigField.RED_AREA))));
-                areaSetupInventory.setItem(3, Utils.setItemStack(Team.GREEN.getWool(), "setup-menu.green-team-area-item-name", "setup-menu.green-team-area-item-lore",
-                        "%set%", checkString(check.get(ConfigField.GREEN_AREA))));
-                areaSetupInventory.setItem(5, Utils.setItemStack(Team.BLUE.getWool(), "setup-menu.blue-team-area-item-name", "setup-menu.blue-team-area-item-lore",
-                        "%set%", checkString(check.get(ConfigField.BLUE_AREA))));
-                areaSetupInventory.setItem(7, Utils.setItemStack(Team.YELLOW.getWool(), "setup-menu.yellow-team-area-item-name", "setup-menu.yellow-team-area-item-lore",
-                        "%set%", checkString(check.get(ConfigField.YELLOW_AREA))));
-                areaSetupInventory.setItem(13, Utils.setItemStack(XMaterial.ARROW.parseMaterial(), "setup-menu.team-area-menu-back-item-name", "setup-menu.team-area-menu-back-item-lore"));
-
-                areaSetupInventory.setItem(12, Utils.setItemStack(XMaterial.BLAZE_ROD.parseMaterial(), "setup-menu.wand-item-name", "setup-menu.wand-item-lore"));
+        Inventory areaSetupInventory = Bukkit.createInventory(null, 27, plugin.getMessage("setup-menu.team-area-menu-name").replace("%arena%", arena));
+        List<Team> teams = new ArrayList<>(ConfigUtils.getTeamList(arena));
+        int slot = 0;
+        for (Team team : teams) {
+            areaSetupInventory.setItem(slot, Utils.setItemStack(team.getWool(), "setup-menu.specific-team-area-item-name",
+                    "setup-menu.specific-team-area-item-lore", "%set%", checkString(ConfigUtils.getArea(arena, team) != null), team));
+            slot++;
+        }
+        areaSetupInventory.setItem(21, Utils.setItemStack(XMaterial.BLAZE_ROD.parseMaterial(), "setup-menu.wand-item-name", "setup-menu.wand-item-lore"));
+        areaSetupInventory.setItem(22, Utils.setItemStack(XMaterial.ARROW.parseMaterial(), "setup-menu.team-area-menu-back-item-name", "setup-menu.team-area-menu-back-item-lore"));
 
 
-                plugin.getInventories().get(player).setActiveInventory(areaSetupInventory);
-                plugin.getInventories().get(player).setInventoryType(MenuType.AREA_SETUP);
+        plugin.getInventories().get(player).setActiveInventory(areaSetupInventory);
+        plugin.getInventories().get(player).setInventoryType(MenuType.AREA_SETUP);
 
-                player.openInventory(plugin.getInventories().get(player).getActiveInventory());
-            });
-        });
+        player.openInventory(plugin.getInventories().get(player).getActiveInventory());
     }
 
     private String checkString(boolean set) {
@@ -231,31 +218,16 @@ public class SetupMenu implements Listener {
                 return;
             }
 
-            String team = null;
-            switch (evt.getSlot()) {
-                case 1:
-                    team = "red";
-                    break;
-                case 3:
-                    team = "green";
-                    break;
-                case 5:
-                    team = "blue";
-                    break;
-                case 7:
-                    team = "yellow";
-                    break;
-            }
-            if (evt.getSlot() == 13) {
+            if (evt.getSlot() == 22) {
                 updateSetupMenu(arena, player);
             } else {
                 if (plugin.getInventories().get(player).getInventoryType().equals(MenuType.SPAWN_SETUP)) {
-                    setupCommands.setTeamSpawn(player, new String[]{"setspawn", arena, team});
+                    setupCommands.setTeamSpawn(player, new String[]{"setspawn", arena, Utils.getTeamByBanner(evt.getCurrentItem()).getCode()});
                 } else if (plugin.getInventories().get(player).getInventoryType().equals(MenuType.AREA_SETUP)) {
-                    if (evt.getSlot() == 12) {
+                    if (evt.getSlot() == 21) {
                         setupCommands.giveWand(player);
                     } else {
-                        setupCommands.setTeamArea(player, new String[]{"setteamarea", arena, team});
+                        setupCommands.setTeamArea(player, new String[]{"setteamarea", arena, Utils.getTeamByWool(evt.getCurrentItem()).getCode()});
                     }
                 }
 

@@ -101,10 +101,10 @@ public enum ConfigField {
         }
 
     },
-    RED_SPAWN {
+    SPAWN {
         @Override
         public String getCode() {
-            return "red-spawn";
+            return "spawn.";
         }
 
         @Override
@@ -113,82 +113,10 @@ public enum ConfigField {
         }
 
     },
-    GREEN_SPAWN {
+    AREA {
         @Override
         public String getCode() {
-            return "green-spawn";
-        }
-
-        @Override
-        public boolean savedInDatabase() {
-            return false;
-        }
-
-    },
-    BLUE_SPAWN {
-        @Override
-        public String getCode() {
-            return "blue-spawn";
-        }
-
-        @Override
-        public boolean savedInDatabase() {
-            return false;
-        }
-
-    },
-    YELLOW_SPAWN {
-        @Override
-        public String getCode() {
-            return "yellow-spawn";
-        }
-
-        @Override
-        public boolean savedInDatabase() {
-            return false;
-        }
-
-    },
-    RED_AREA {
-        @Override
-        public String getCode() {
-            return "red-area";
-        }
-
-        @Override
-        public boolean savedInDatabase() {
-            return false;
-        }
-
-    },
-    GREEN_AREA {
-        @Override
-        public String getCode() {
-            return "green-area";
-        }
-
-        @Override
-        public boolean savedInDatabase() {
-            return false;
-        }
-
-    },
-    BLUE_AREA {
-        @Override
-        public String getCode() {
-            return "blue-area";
-        }
-
-        @Override
-        public boolean savedInDatabase() {
-            return false;
-        }
-
-    },
-    YELLOW_AREA {
-        @Override
-        public String getCode() {
-            return "yellow-area";
+            return "area.";
         }
 
         @Override

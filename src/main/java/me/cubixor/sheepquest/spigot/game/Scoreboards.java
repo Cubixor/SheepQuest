@@ -1,6 +1,7 @@
 package me.cubixor.sheepquest.spigot.game;
 
 import me.cubixor.sheepquest.spigot.SheepQuest;
+import me.cubixor.sheepquest.spigot.config.ConfigUtils;
 import me.cubixor.sheepquest.spigot.gameInfo.LocalArena;
 import me.cubixor.sheepquest.spigot.gameInfo.Team;
 import org.bukkit.Bukkit;
@@ -11,7 +12,9 @@ import org.bukkit.scoreboard.Scoreboard;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 public class Scoreboards {
 
@@ -77,16 +80,26 @@ public class Scoreboards {
         int count = localArena.getPlayerTeam().keySet().size();
         int sheepTime = localArena.getSheepTimer();
         int time = localArena.getTimer();
-        int red = localArena.getPoints().get(Team.RED);
-        int green = localArena.getPoints().get(Team.GREEN);
-        int blue = localArena.getPoints().get(Team.BLUE);
-        int yellow = localArena.getPoints().get(Team.YELLOW);
 
-        LinkedList<String> message = new LinkedList<>(plugin.getMessageList("game.scoreboard-new-game"));
-        int rowCount = message.size();
+        List<String> teamPoints = new ArrayList<>();
+        for (Team team : ConfigUtils.getTeamList(arenaString)) {
+            teamPoints.add(plugin.getMessage("game.scoreboard-team")
+                    .replace("%team%", team.getName())
+                    .replace("%points%", Integer.toString(localArena.getPoints().get(team))));
+        }
+
+        List<String> message = new ArrayList<>(plugin.getMessageList("game.scoreboard-new-game"));
+        for (int i = 0; i < message.size(); i++) {
+            String line = message.get(i);
+            if (line.contains("%teams%")) {
+                message.remove(line);
+                message.addAll(i, teamPoints);
+                break;
+            }
+        }
 
         int row = 0;
-        for (int i = rowCount; i > 0; i--) {
+        for (int i = message.size(); i > 0; i--) {
             Score score = objective.getScore(message.get(row)
                     .replace("%arena%", arenaString)
                     .replace("%players%", Integer.toString(count))
@@ -94,10 +107,6 @@ public class Scoreboards {
                     .replace("%sheep-short%", Integer.toString(sheepTime))
                     .replace("%time-long%", getTimeLong(time))
                     .replace("%time-short%", Integer.toString(time))
-                    .replace("%red%", Integer.toString(red))
-                    .replace("%green%", Integer.toString(green))
-                    .replace("%blue%", Integer.toString(blue))
-                    .replace("%yellow%", Integer.toString(yellow))
                     .replace("%date%", getDate()));
             score.setScore(i);
             row++;
@@ -113,25 +122,31 @@ public class Scoreboards {
         String arenaString = localArena.getName();
         int count = localArena.getPlayerTeam().keySet().size();
         int time = localArena.getTimer();
-        int red = localArena.getPoints().get(Team.RED);
-        int green = localArena.getPoints().get(Team.GREEN);
-        int blue = localArena.getPoints().get(Team.BLUE);
-        int yellow = localArena.getPoints().get(Team.YELLOW);
 
-        LinkedList<String> message = new LinkedList<>(plugin.getMessageList("game.scoreboard-new-ending"));
-        int rowCount = message.size();
+        List<String> teamPoints = new ArrayList<>();
+        for (Team team : ConfigUtils.getTeamList(arenaString)) {
+            teamPoints.add(plugin.getMessage("game.scoreboard-team")
+                    .replace("%team%", team.getName())
+                    .replace("%points%", Integer.toString(localArena.getPoints().get(team))));
+        }
+
+        List<String> message = new ArrayList<>(plugin.getMessageList("game.scoreboard-new-ending"));
+        for (int i = 0; i < message.size(); i++) {
+            String line = message.get(i);
+            if (line.contains("%teams%")) {
+                message.remove(line);
+                message.addAll(i, teamPoints);
+                break;
+            }
+        }
 
         int row = 0;
-        for (int i = rowCount; i > 0; i--) {
+        for (int i = message.size(); i > 0; i--) {
             Score score = objective.getScore(message.get(row)
                     .replace("%arena%", arenaString)
                     .replace("%players%", Integer.toString(count))
                     .replace("%time-long%", getTimeLong(time))
                     .replace("%time-short%", Integer.toString(time))
-                    .replace("%red%", Integer.toString(red))
-                    .replace("%green%", Integer.toString(green))
-                    .replace("%blue%", Integer.toString(blue))
-                    .replace("%yellow%", Integer.toString(yellow))
                     .replace("%date%", getDate()));
             score.setScore(i);
             row++;

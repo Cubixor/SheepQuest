@@ -4,6 +4,7 @@ import com.cryptomorin.xseries.XSound;
 import me.cubixor.sheepquest.spigot.SheepQuest;
 import me.cubixor.sheepquest.spigot.api.Utils;
 import me.cubixor.sheepquest.spigot.commands.PlayCommands;
+import me.cubixor.sheepquest.spigot.config.ConfigUtils;
 import me.cubixor.sheepquest.spigot.config.StatsField;
 import me.cubixor.sheepquest.spigot.config.StatsUtils;
 import me.cubixor.sheepquest.spigot.game.events.SpecialEvents;
@@ -23,9 +24,7 @@ import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Scoreboard;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 
 public class End {
 
@@ -49,7 +48,13 @@ public class End {
         }
         boolean noWin = checkNoWin(winner);
 
-        LinkedHashMap<Team, Integer> winnerSorted = Utils.sortTeams(winner);
+        LinkedHashMap<Team, Integer> winnerSorted = new LinkedHashMap<>();
+        winner.entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .forEachOrdered(x -> winnerSorted.put(x.getKey(), x.getValue()));
+        List<Team> teamsSorted = new ArrayList<>(winnerSorted.keySet());
+
         if (noWin) {
             winnerTeam = Team.NONE;
         } else {
@@ -58,6 +63,13 @@ public class End {
         String winnerTeamString = winnerTeam.getCode();
 
         int stay = 20 * plugin.getConfig().getInt("ending-time");
+
+        StringBuilder teamPoints = new StringBuilder();
+        for (Team team : ConfigUtils.getTeamList(localArena.getName())) {
+            teamPoints.append(plugin.getMessage("game.summary-points")
+                    .replace("%team%", team.getName())
+                    .replace("%points%", Integer.toString(localArena.getPoints().get(team))));
+        }
 
         for (Player p : localArena.getPlayerTeam().keySet()) {
             if (localArena.getRespawnTimer().containsKey(p)) {
@@ -92,28 +104,19 @@ public class End {
                     plugin.getMessage("game." + (noWin ? "no-win" : "win-defeat") + "-subtitle")
                             .replace("%team%", plugin.getMessage("general.team-" + winnerTeamString)), 10, stay - 20, 20);
 
+
             for (String s : plugin.getMessageList("game.summary")) {
-                s = s.replace("%red-points%", localArena.getPoints().get(Team.RED).toString())
-                        .replace("%green-points%", localArena.getPoints().get(Team.GREEN).toString())
-                        .replace("%blue-points%", localArena.getPoints().get(Team.BLUE).toString())
-                        .replace("%yellow-points%", localArena.getPoints().get(Team.YELLOW).toString())
+                s = s.replace("%teams%", teamPoints.toString())
                         .replace("%kills%", Integer.toString(playerStats.getKills()))
                         .replace("%deaths%", Integer.toString(playerStats.getDeaths()))
                         .replace("%sheep%", Integer.toString(playerStats.getSheepTaken()));
                 p.sendMessage(s);
             }
 
+            Team playerTeam = localArena.getPlayerTeam().get(p);
+
             if (plugin.getConfig().getBoolean("win-rewards") && !noWin) {
-                String place = null;
-                if (won) {
-                    place = "1";
-                } else if (winnerSorted.size() - 2 > 0 && localArena.getPlayerTeam().get(p).equals((new ArrayList<>(winnerSorted.keySet())).get(winnerSorted.size() - 2))) {
-                    place = "2";
-                } else if (winnerSorted.size() - 3 > 0 && localArena.getPlayerTeam().get(p).equals((new ArrayList<>(winnerSorted.keySet())).get(winnerSorted.size() - 3))) {
-                    place = "3";
-                } else if (winnerSorted.size() - 4 > 0 && localArena.getPlayerTeam().get(p).equals((new ArrayList<>(winnerSorted.keySet())).get(winnerSorted.size() - 4))) {
-                    place = "4";
-                }
+                String place = Integer.toString(teamsSorted.indexOf(playerTeam) + 1);
                 if (!plugin.getConfig().getStringList("rewards." + place).isEmpty()) {
                     for (String s : plugin.getConfig().getStringList("rewards." + place)) {
                         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), s.replace("%player%", p.getName()));

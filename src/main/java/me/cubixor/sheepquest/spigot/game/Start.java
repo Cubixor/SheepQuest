@@ -4,7 +4,6 @@ import com.cryptomorin.xseries.XMaterial;
 import com.cryptomorin.xseries.XSound;
 import me.cubixor.sheepquest.spigot.SheepQuest;
 import me.cubixor.sheepquest.spigot.api.Utils;
-import me.cubixor.sheepquest.spigot.config.ConfigField;
 import me.cubixor.sheepquest.spigot.config.ConfigUtils;
 import me.cubixor.sheepquest.spigot.game.events.SpecialEvents;
 import me.cubixor.sheepquest.spigot.gameInfo.*;
@@ -20,6 +19,7 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class Start {
 
@@ -36,10 +36,8 @@ public class Start {
         localArena.setTimer(plugin.getConfig().getInt("game-time"));
         localArena.setSheepTimer(plugin.getConfig().getInt("sheep-time"));
 
-        for (Team t : Team.values()) {
-            if (!t.equals(Team.NONE)) {
-                localArena.getPoints().put(t, 0);
-            }
+        for (Team t : ConfigUtils.getTeamList(arenaName)) {
+            localArena.getPoints().put(t, 0);
         }
 
         GameTimer gameTimer = new GameTimer();
@@ -64,17 +62,19 @@ public class Start {
             Team team = localArena.getPlayerTeam().get(p);
 
             if (team.equals(Team.NONE)) {
-                LinkedHashMap<Team, Integer> teamSort = Utils.sortTeams(Utils.getTeamPlayers(localArena));
-                team = (new ArrayList<>(teamSort.keySet())).get(0);
+                LinkedHashMap<Team, Integer> teamSorted = new LinkedHashMap<>();
+                Utils.getTeamPlayers(localArena).entrySet()
+                        .stream()
+                        .sorted(Map.Entry.comparingByValue())
+                        .forEachOrdered(x -> teamSorted.put(x.getKey(), x.getValue()));
+                team = (new ArrayList<>(teamSorted.keySet())).get(0);
 
                 localArena.getPlayerTeam().replace(p, team);
             }
 
-            ConfigField configField = Utils.getTeamSpawn(team.getCode());
-
             setArmor(p, localArena.getPlayerTeam().get(p));
             p.getInventory().setItem(8, setTeamItem(team));
-            p.teleport(ConfigUtils.getLocation(arenaName, configField));
+            p.teleport(ConfigUtils.getSpawn(arenaName, team));
 
             p.playSound(p.getLocation(), XSound.matchXSound(plugin.getConfig().getString("sounds.start")).get().parseSound(), 1000, 1);
             p.sendTitle(plugin.getMessage("game.start-title"), plugin.getMessage("game.start-subtitle")

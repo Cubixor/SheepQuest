@@ -234,8 +234,14 @@ public class PlayCommands {
                 }
             }
             if (found) {
-                LinkedHashMap<String, Integer> maxPlayers = Utils.sortByValue(playersCount);
-                String toJoin = (new ArrayList<>(maxPlayers.keySet())).get(maxPlayers.size() - 1);
+                LinkedHashMap<String, Integer> maxPlayers = new LinkedHashMap<>();
+
+                playersCount.entrySet()
+                        .stream()
+                        .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                        .forEachOrdered(x -> maxPlayers.put(x.getKey(), x.getValue()));
+
+                String toJoin = (new ArrayList<>(maxPlayers.keySet())).get(0);
 
                 putInSpecifiedArena(player, toJoin, firstJoin);
             }

@@ -18,7 +18,7 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -94,7 +94,8 @@ public class StaffMenu implements Listener {
             if (!localArena.getPlayerTeam().keySet().isEmpty()) {
                 for (Player p : playerList) {
                     ItemStack playerItem = new ItemStack(XMaterial.PLAYER_HEAD.parseMaterial());
-                    ItemMeta skullMeta = playerItem.getItemMeta();
+                    SkullMeta skullMeta = (SkullMeta) playerItem.getItemMeta();
+                    skullMeta.setOwningPlayer(p);
                     skullMeta.setDisplayName(plugin.getMessage("staff-menu.player-item-name").replace("%nick%", p.getName()));
                     List<String> playerItemLore = new ArrayList<>(plugin.getMessageList("staff-menu.player-item-lore"));
                     for (String s : playerItemLore) {
@@ -110,6 +111,9 @@ public class StaffMenu implements Listener {
                     playersInventory.setItem(slot, playerItem);
                     plugin.getInventories().get(player).getPlayerSlot().put(slot, p);
                     slot++;
+                    if (slot > 43) {
+                        break;
+                    }
                 }
             }
 

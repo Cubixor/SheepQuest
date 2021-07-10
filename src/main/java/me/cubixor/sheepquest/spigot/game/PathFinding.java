@@ -26,7 +26,7 @@ public class PathFinding {
     }
 
     public static Location getMiddleArea(String arena, Team team) {
-        Location[] loc = ConfigUtils.getArea(arena, Utils.getTeamArea(team.getCode()));
+        Location[] loc = ConfigUtils.getArea(arena, team);
         double x = (loc[0].getX() + loc[1].getX()) / 2;
         double y = (loc[0].getY() + loc[1].getY()) / 2;
         double z = (loc[0].getZ() + loc[1].getZ()) / 2;

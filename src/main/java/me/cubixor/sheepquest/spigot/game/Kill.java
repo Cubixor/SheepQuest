@@ -174,7 +174,7 @@ public class Kill implements Listener {
     }
 
     public void respawn(LocalArena localArena, Player player) {
-        player.teleport(ConfigUtils.getLocation(localArena.getName(), Utils.getTeamSpawn(localArena.getPlayerTeam().get(player).getCode())));
+        player.teleport(ConfigUtils.getSpawn(localArena.getName(), localArena.getPlayerTeam().get(player)));
 
         player.setAllowFlight(false);
         player.setFlying(false);

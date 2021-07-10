@@ -21,30 +21,6 @@ import java.util.*;
 
 public class Utils {
 
-    public static LinkedHashMap<Team, Integer> sortTeams(HashMap<Team, Integer> hm) {
-        List<Map.Entry<Team, Integer>> list = new LinkedList<>(hm.entrySet());
-
-        list.sort(Map.Entry.comparingByValue());
-
-        LinkedHashMap<Team, Integer> temp = new LinkedHashMap<>();
-        for (Map.Entry<Team, Integer> aa : list) {
-            temp.put(aa.getKey(), aa.getValue());
-        }
-        return temp;
-    }
-
-    public static LinkedHashMap<String, Integer> sortByValue(HashMap<String, Integer> hm) {
-        List<Map.Entry<String, Integer>> list = new LinkedList<>(hm.entrySet());
-
-        list.sort(Map.Entry.comparingByValue());
-
-        LinkedHashMap<String, Integer> temp = new LinkedHashMap<>();
-        for (Map.Entry<String, Integer> aa : list) {
-            temp.put(aa.getKey(), aa.getValue());
-        }
-        return temp;
-    }
-
     public static ItemStack setItemStack(String materialPath, String namePath, String lorePath) {
         SheepQuest plugin = SheepQuest.getInstance();
 
@@ -102,14 +78,15 @@ public class Utils {
         return itemStack;
     }
 
-    public static ItemStack setItemStack(ItemStack itemStack, String namePath, String lorePath, String toReplace, String replaceMessage) {
+    public static ItemStack setItemStack(ItemStack itemStack, String namePath, String lorePath, String toReplace, String replaceMessage, Team team) {
         SheepQuest plugin = SheepQuest.getInstance();
 
         ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.setDisplayName(plugin.getMessage(namePath));
+        itemMeta.setDisplayName(plugin.getMessage(namePath).replace("%team%", team.getCode()));
         List<String> lore = plugin.getMessageList(lorePath);
         for (String s : lore) {
             Collections.replaceAll(lore, s, s.replace(toReplace, replaceMessage));
+            Collections.replaceAll(lore, s, s.replace("%team%", team.getCode()));
         }
         itemStack.setAmount(1);
         itemMeta.setLore(lore);
@@ -192,9 +169,19 @@ public class Utils {
                     return team;
                 }
             }
-            return Team.NONE;
         }
-        return null;
+        return Team.NONE;
+    }
+
+    public static Team getTeamByBanner(ItemStack material) {
+        if (material.getType().toString().contains("BANNER")) {
+            for (Team team : Team.values()) {
+                if (XMaterial.matchXMaterial(material).equals(XMaterial.matchXMaterial(team.getBanner()))) {
+                    return team;
+                }
+            }
+        }
+        return Team.NONE;
     }
 
     public static String getStringState(Arena arena) {
@@ -234,21 +221,34 @@ public class Utils {
 
         ready.put(ConfigField.MIN_PLAYERS, ConfigUtils.getInt(arena, ConfigField.MIN_PLAYERS) != 0);
         ready.put(ConfigField.MAX_PLAYERS, ConfigUtils.getInt(arena, ConfigField.MAX_PLAYERS) != 0);
+        ready.put(ConfigField.TEAMS, ConfigUtils.getTeamList(arena).size() >= 2);
         ready.put(ConfigField.MAIN_LOBBY, ConfigUtils.getLocation(arena, ConfigField.MAIN_LOBBY) != null);
         ready.put(ConfigField.WAITING_LOBBY, ConfigUtils.getLocation(arena, ConfigField.WAITING_LOBBY) != null);
         ready.put(ConfigField.SHEEP_SPAWN, ConfigUtils.getLocation(arena, ConfigField.SHEEP_SPAWN) != null);
-        ready.put(ConfigField.RED_SPAWN, ConfigUtils.getLocation(arena, ConfigField.RED_SPAWN) != null);
-        ready.put(ConfigField.GREEN_SPAWN, ConfigUtils.getLocation(arena, ConfigField.GREEN_SPAWN) != null);
-        ready.put(ConfigField.BLUE_SPAWN, ConfigUtils.getLocation(arena, ConfigField.BLUE_SPAWN) != null);
-        ready.put(ConfigField.YELLOW_SPAWN, ConfigUtils.getLocation(arena, ConfigField.YELLOW_SPAWN) != null);
-        ready.put(ConfigField.RED_AREA, ConfigUtils.getArea(arena, ConfigField.RED_AREA) != null);
-        ready.put(ConfigField.GREEN_AREA, ConfigUtils.getArea(arena, ConfigField.GREEN_AREA) != null);
-        ready.put(ConfigField.BLUE_AREA, ConfigUtils.getArea(arena, ConfigField.BLUE_AREA) != null);
-        ready.put(ConfigField.YELLOW_AREA, ConfigUtils.getArea(arena, ConfigField.YELLOW_AREA) != null);
+        ready.put(ConfigField.SPAWN, checkSpawns(arena));
+        ready.put(ConfigField.AREA, checkAreas(arena));
+
 
         return ready;
     }
 
+    public static boolean checkSpawns(String arena) {
+        for (Team team : ConfigUtils.getTeamList(arena)) {
+            if (ConfigUtils.getSpawn(arena, team) == null) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean checkAreas(String arena) {
+        for (Team team : ConfigUtils.getTeamList(arena)) {
+            if (ConfigUtils.getArea(arena, team) == null) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     public static boolean checkIfValid(Player player, String[] args, String permission, String messagesPath, int argsLength, boolean requireInServer) {
         SheepQuest plugin = SheepQuest.getInstance();
@@ -294,51 +294,6 @@ public class Utils {
         }
     }
 
-    public static ConfigField getTeamSpawn(String team) {
-        ConfigField configField = null;
-        switch (team) {
-            case "red": {
-                configField = ConfigField.RED_SPAWN;
-                break;
-            }
-            case "green": {
-                configField = ConfigField.GREEN_SPAWN;
-                break;
-            }
-            case "blue": {
-                configField = ConfigField.BLUE_SPAWN;
-                break;
-            }
-            case "yellow": {
-                configField = ConfigField.YELLOW_SPAWN;
-                break;
-            }
-        }
-        return configField;
-    }
-
-    public static ConfigField getTeamArea(String team) {
-        ConfigField configField = null;
-        switch (team) {
-            case "red": {
-                configField = ConfigField.RED_AREA;
-                break;
-            }
-            case "green": {
-                configField = ConfigField.GREEN_AREA;
-                break;
-            }
-            case "blue": {
-                configField = ConfigField.BLUE_AREA;
-                break;
-            }
-            case "yellow": {
-                configField = ConfigField.YELLOW_AREA;
-                break;
-            }
-        }
-        return configField;
-    }
 
     public static void removeSheep(Player player) {
         SheepQuest plugin = SheepQuest.getInstance();
@@ -364,9 +319,7 @@ public class Utils {
             return entity.getLocation().distance(ConfigUtils.getLocation(arena, ConfigField.SHEEP_SPAWN)) < 10;
         }
 
-        String teamString = team.getCode();
-
-        Location[] area = ConfigUtils.getArea(arena, getTeamArea(teamString));
+        Location[] area = ConfigUtils.getArea(arena, team);
 
         Location min = area[0];
         Location max = area[1];

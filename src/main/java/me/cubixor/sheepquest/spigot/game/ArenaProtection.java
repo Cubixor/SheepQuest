@@ -87,7 +87,7 @@ public class ArenaProtection implements Listener {
                 if (localArena.getState().equals(GameState.WAITING) || localArena.getState().equals(GameState.STARTING)) {
                     evt.getPlayer().teleport(ConfigUtils.getLocation(arenaString, ConfigField.WAITING_LOBBY));
                 } else {
-                    evt.getPlayer().teleport(ConfigUtils.getLocation(localArena.getName(), Utils.getTeamSpawn(localArena.getPlayerTeam().get(evt.getPlayer()).getCode())));
+                    evt.getPlayer().teleport(ConfigUtils.getSpawn(localArena.getName(), localArena.getPlayerTeam().get(evt.getPlayer())));
                 }
             }
         }

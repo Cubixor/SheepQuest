@@ -3,6 +3,7 @@ package me.cubixor.sheepquest.spigot.api;
 import me.cubixor.sheepquest.spigot.SheepQuest;
 import me.cubixor.sheepquest.spigot.config.ConfigField;
 import me.cubixor.sheepquest.spigot.config.ConfigUtils;
+import me.cubixor.sheepquest.spigot.gameInfo.Team;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -93,28 +94,28 @@ public class ConfigUpdater {
                         ConfigUtils.updateField(name, ConfigField.SHEEP_SPAWN, ConfigUtils.locationToString(oldArena.getSheepSpawn()));
                     }
                     if (oldArena.getRedSpawn() != null) {
-                        ConfigUtils.updateField(name, ConfigField.RED_SPAWN, ConfigUtils.locationToString(oldArena.getRedSpawn()));
+                        ConfigUtils.updateField(name, ConfigField.SPAWN, Team.RED, ConfigUtils.locationToString(oldArena.getRedSpawn()));
                     }
                     if (oldArena.getGreenSpawn() != null) {
-                        ConfigUtils.updateField(name, ConfigField.GREEN_SPAWN, ConfigUtils.locationToString(oldArena.getGreenSpawn()));
+                        ConfigUtils.updateField(name, ConfigField.SPAWN, Team.GREEN, ConfigUtils.locationToString(oldArena.getGreenSpawn()));
                     }
                     if (oldArena.getBlueSpawn() != null) {
-                        ConfigUtils.updateField(name, ConfigField.BLUE_SPAWN, ConfigUtils.locationToString(oldArena.getBlueSpawn()));
+                        ConfigUtils.updateField(name, ConfigField.SPAWN, Team.BLUE, ConfigUtils.locationToString(oldArena.getBlueSpawn()));
                     }
                     if (oldArena.getYellowSpawn() != null) {
-                        ConfigUtils.updateField(name, ConfigField.YELLOW_SPAWN, ConfigUtils.locationToString(oldArena.getYellowSpawn()));
+                        ConfigUtils.updateField(name, ConfigField.SPAWN, Team.YELLOW, ConfigUtils.locationToString(oldArena.getYellowSpawn()));
                     }
                     if (oldArena.getRedAreaMin() != null) {
-                        ConfigUtils.updateField(name, ConfigField.RED_AREA, ConfigUtils.joinLocations(oldArena.getRedAreaMin(), oldArena.getRedAreaMax()));
+                        ConfigUtils.updateField(name, ConfigField.AREA, Team.RED, ConfigUtils.joinLocations(oldArena.getRedAreaMin(), oldArena.getRedAreaMax()));
                     }
                     if (oldArena.getGreenAreaMin() != null) {
-                        ConfigUtils.updateField(name, ConfigField.GREEN_AREA, ConfigUtils.joinLocations(oldArena.getGreenAreaMin(), oldArena.getGreenAreaMax()));
+                        ConfigUtils.updateField(name, ConfigField.AREA, Team.GREEN, ConfigUtils.joinLocations(oldArena.getGreenAreaMin(), oldArena.getGreenAreaMax()));
                     }
                     if (oldArena.getBlueAreaMin() != null) {
-                        ConfigUtils.updateField(name, ConfigField.BLUE_AREA, ConfigUtils.joinLocations(oldArena.getBlueAreaMin(), oldArena.getBlueAreaMax()));
+                        ConfigUtils.updateField(name, ConfigField.AREA, Team.BLUE, ConfigUtils.joinLocations(oldArena.getBlueAreaMin(), oldArena.getBlueAreaMax()));
                     }
                     if (oldArena.getYellowAreaMin() != null) {
-                        ConfigUtils.updateField(name, ConfigField.YELLOW_AREA, ConfigUtils.joinLocations(oldArena.getYellowAreaMin(), oldArena.getYellowAreaMax()));
+                        ConfigUtils.updateField(name, ConfigField.AREA, Team.YELLOW, ConfigUtils.joinLocations(oldArena.getYellowAreaMin(), oldArena.getYellowAreaMax()));
                     }
 
                 }
@@ -138,8 +139,16 @@ public class ConfigUpdater {
                         add("yellow");
                     }};
 
-                    plugin.getArenasConfig().set(arena + ".teams", classicTeams);
+                    plugin.getArenasConfig().set("arenas." + arena + ".teams", classicTeams);
+
+                    for (String t : classicTeams) {
+                        plugin.getArenasConfig().set("arenas." + arena + ".spawn." + t, plugin.getArenasConfig().getString("arenas." + arena + "." + t + "-spawn"));
+                        plugin.getArenasConfig().set("arenas." + arena + "." + t + "-spawn", null);
+                        plugin.getArenasConfig().set("arenas." + arena + ".area." + t, plugin.getArenasConfig().getString("arenas." + arena + "." + t + "-area"));
+                        plugin.getArenasConfig().set("arenas." + arena + "." + t + "-area", null);
+                    }
                 }
+                plugin.saveArenas();
 
                 if (plugin.getConfig().getString("special-events.bonus-sheep.color").equalsIgnoreCase("PURPLE")) {
                     plugin.getConfig().set("special-events.bonus-sheep.color", "MAGENTA");

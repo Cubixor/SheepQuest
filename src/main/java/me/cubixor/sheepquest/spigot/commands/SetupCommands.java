@@ -235,15 +235,10 @@ public class SetupCommands {
 
             try {
                 int max = Integer.parseInt(args[2]);
-                //TODO Remove max 44 limit
-                if (max > 44) {
-                    player.sendMessage(plugin.getMessage("arena-setup.set-max-players-bound"));
-                    return;
-                }
-                if (max % 4 == 0) {
+                //if (max % 4 == 0) {
                     ConfigUtils.updateField(args[1], ConfigField.MAX_PLAYERS, max);
                     player.sendMessage(plugin.getMessage("arena-setup.set-max-players-success").replace("%arena%", args[1]));
-                }
+                //}
             } catch (NumberFormatException ex) {
                 player.sendMessage(plugin.getMessage("arena-setup.set-max-players-invalid-count"));
             }
@@ -282,15 +277,15 @@ public class SetupCommands {
                 return;
             }
 
-            String team = args[2];
-            if (!isTeamValid(team)) {
+            String teamStr = args[2];
+            Team team = getTeam(teamStr);
+            if (getTeam(teamStr) == null) {
                 player.sendMessage(plugin.getMessage("arena-setup.invalid-team"));
                 return;
             }
-            ConfigField configField = Utils.getTeamSpawn(team);
 
-            ConfigUtils.updateField(args[1], configField, ConfigUtils.locationToString(player.getLocation()));
-            player.sendMessage(plugin.getMessage("arena-setup.set-spawn-success").replace("%arena%", args[1]).replace("%team%", plugin.getMessage("general.team-" + team)));
+            ConfigUtils.updateField(args[1], ConfigField.SPAWN, team, ConfigUtils.locationToString(player.getLocation()));
+            player.sendMessage(plugin.getMessage("arena-setup.set-spawn-success").replace("%arena%", args[1]).replace("%team%", plugin.getMessage("general.team-" + team.getCode())));
         });
     }
 
@@ -303,8 +298,9 @@ public class SetupCommands {
                 return;
             }
 
-            String team = args[2];
-            if (!isTeamValid(team)) {
+            String teamStr = args[2];
+            Team team = getTeam(teamStr);
+            if (team == null) {
                 player.sendMessage(plugin.getMessage("arena-setup.invalid-team"));
                 return;
             }
@@ -312,31 +308,13 @@ public class SetupCommands {
                 player.sendMessage(plugin.getMessage("arena-setup.selection-empty"));
                 return;
             }
-            ConfigField configField = null;
-            switch (team) {
-                case "red": {
-                    configField = ConfigField.RED_AREA;
-                    break;
-                }
-                case "green": {
-                    configField = ConfigField.GREEN_AREA;
-                    break;
-                }
-                case "blue": {
-                    configField = ConfigField.BLUE_AREA;
-                    break;
-                }
-                case "yellow": {
-                    configField = ConfigField.YELLOW_AREA;
-                    break;
-                }
-            }
+
             Location loc1 = plugin.getPlayerInfo().get(player).getSelMin().getLocation();
             Location loc2 = plugin.getPlayerInfo().get(player).getSelMax().getLocation();
 
-            ConfigUtils.updateField(args[1], configField, ConfigUtils.joinLocations(loc1, loc2));
+            ConfigUtils.updateField(args[1], ConfigField.AREA, team, ConfigUtils.joinLocations(loc1, loc2));
 
-            player.sendMessage(plugin.getMessage("arena-setup.set-teams-area-success").replace("%arena%", args[1]).replace("%team%", plugin.getMessage("general.team-" + team)));
+            player.sendMessage(plugin.getMessage("arena-setup.set-teams-area-success").replace("%arena%", args[1]).replace("%team%", plugin.getMessage("general.team-" + team.getCode())));
         });
     }
 
@@ -421,7 +399,7 @@ public class SetupCommands {
             for (ConfigField configField : checkReady.keySet()) {
                 boolean isSet = checkReady.get(configField);
 
-                String toReplace = "%" + configField.getCode() + "%";
+                String toReplace = "%" + configField.getCode().replace(".", "") + "%";
                 for (String line : checkPage) {
                     Collections.replaceAll(checkPage, line, line.replace(toReplace, isSet ? set : notSet));
                 }
@@ -434,6 +412,7 @@ public class SetupCommands {
                 Collections.replaceAll(checkPage, line, line.replace("%active%", active ? plugin.getMessage("arena-setup.check-active") : plugin.getMessage("arena-setup.check-not-active")));
                 Collections.replaceAll(checkPage, line, line.replace("%ready%", ready ? plugin.getMessage("arena-setup.check-ready") : plugin.getMessage("arena-setup.check-not-ready")));
                 Collections.replaceAll(checkPage, line, line.replace("%arena%", args[1]));
+                Collections.replaceAll(checkPage, line, line.replace("%team%", Integer.toString(ConfigUtils.getTeamList(args[1]).size())));
             }
 
 
@@ -464,13 +443,13 @@ public class SetupCommands {
     }
 
 
-    public boolean isTeamValid(String teamString) {
+    public Team getTeam(String teamString) {
         for (Team team : Team.values()) {
             if (teamString.equalsIgnoreCase(team.getCode())) {
-                return true;
+                return team;
             }
         }
-        return false;
+        return null;
     }
 
     private boolean setupCheckActive(Player player, String arena) {
