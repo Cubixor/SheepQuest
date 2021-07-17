@@ -21,6 +21,7 @@ permissions:
       sheepquest.setup.*: true
       sheepquest.play.*: true
       sheepquest.staff.*: true
+      sheepquest.kits.*: true
       sheepquest.bypass: true
       sheepquest.vip: true
 
@@ -40,6 +41,7 @@ permissions:
       sheepquest.setup.setspawn: true
       sheepquest.setup.setteamarea: true
       sheepquest.setup.signs: true
+      sheepquest.setup.joinsheep: true
       sheepquest.setup.reload: true
       sheepquest.setup.help: true
       sheepquest.setup.menu: true
@@ -83,6 +85,9 @@ permissions:
   speepquest.setup.signs:
     default: op
     description: Allows to create and remove signs.
+  speepquest.setup.joinsheep:
+    default: op
+    description: Allows to create and remove join sheep.
   speepquest.setup.reload:
     default: op
     description: Gives access to /sq reload command.
@@ -151,6 +156,23 @@ permissions:
     default: true
     description: Gives access to arenas menu.
 
+  sheepquest.kits.*:
+    default: op
+    description: Gives access to all game kits.
+    children:
+      sheepquest.kits.standard: true
+      sheepquest.kits.archer: true
+      sheepquest.kits.athlete: true
+
+  sheepquest.kits.standard:
+    default: true
+    description: Gives access to standard kit.
+  sheepquest.kits.archer:
+    default: op
+    description: Gives access to archer kit.
+  sheepquest.kits.athlete:
+    default: op
+    description: Gives access to athlete kit.
 
   sheepquest.staff.*:
     default: op

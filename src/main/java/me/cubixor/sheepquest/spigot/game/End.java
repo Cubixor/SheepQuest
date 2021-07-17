@@ -1,6 +1,7 @@
 package me.cubixor.sheepquest.spigot.game;
 
 import com.cryptomorin.xseries.XSound;
+import com.cryptomorin.xseries.particles.XParticle;
 import me.cubixor.sheepquest.spigot.SheepQuest;
 import me.cubixor.sheepquest.spigot.api.Utils;
 import me.cubixor.sheepquest.spigot.commands.PlayCommands;
@@ -15,7 +16,6 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
-import org.bukkit.Particle;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
@@ -163,7 +163,7 @@ public class End {
                             fwm.setPower(1);
                             firework.setFireworkMeta(fwm);
 
-                            p.getWorld().spawnParticle(Particle.valueOf(plugin.getConfig().getString("particles.win")), p.getLocation().getX(), p.getLocation().getY() + 3, p.getLocation().getZ(), 30, 0.5, 0.5, 0.5, 0.1);
+                            p.getWorld().spawnParticle(XParticle.getParticle(plugin.getConfig().getString("particles.win")), p.getLocation().getX(), p.getLocation().getY() + 3, p.getLocation().getZ(), 30, 0.5, 0.5, 0.5, 0.1);
                         }
                     }
 
@@ -196,7 +196,8 @@ public class End {
             } else {
                 playCommands.kickFromLocalArenaSynchronized(p, localArena, true, true);
             }
-            Utils.removeBossBars(p, localArena);
+            Utils.removeTeamBossBars(p, localArena);
+            Utils.removeKitBossBars(p, localArena);
             if (localArena.getPlayerStats().get(p) != null && localArena.getPlayerStats().get(p).getSheepCooldown() != null) {
                 localArena.getPlayerStats().get(p).getSheepCooldown().cancel();
             }

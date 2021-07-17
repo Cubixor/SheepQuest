@@ -6,6 +6,9 @@ import me.cubixor.sheepquest.spigot.SheepQuest;
 import me.cubixor.sheepquest.spigot.api.Utils;
 import me.cubixor.sheepquest.spigot.config.ConfigUtils;
 import me.cubixor.sheepquest.spigot.game.events.SpecialEvents;
+import me.cubixor.sheepquest.spigot.game.kits.KitArcher;
+import me.cubixor.sheepquest.spigot.game.kits.KitType;
+import me.cubixor.sheepquest.spigot.game.kits.Kits;
 import me.cubixor.sheepquest.spigot.gameInfo.*;
 import me.cubixor.sheepquest.spigot.socket.SocketClientSender;
 import net.md_5.bungee.api.ChatMessageType;
@@ -35,6 +38,7 @@ public class Start {
         localArena.setState(GameState.GAME);
         localArena.setTimer(plugin.getConfig().getInt("game-time"));
         localArena.setSheepTimer(plugin.getConfig().getInt("sheep-time"));
+        ((KitArcher) Kits.getByType(KitType.ARCHER)).arrowTimer(localArena);
 
         for (Team t : ConfigUtils.getTeamList(arenaName)) {
             localArena.getPoints().put(t, 0);
@@ -50,11 +54,12 @@ public class Start {
         for (Player p : localArena.getPlayerTeam().keySet()) {
 
             p.getInventory().setItem(plugin.getItems().getSheepItemSlot(), plugin.getItems().getSheepItem());
-            p.getInventory().setItem(plugin.getItems().getWeaponItemSlot(), plugin.getItems().getWeaponItem());
+            Kits.getPlayerKit(p).giveKit(p);
             p.setExp(0);
             p.setLevel(0);
             plugin.getPlayerInfo().get(p).getTipTask().cancel();
-            Utils.removeBossBars(p, localArena);
+            Utils.removeTeamBossBars(p, localArena);
+            Utils.removeKitBossBars(p, localArena);
             p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(" "));
             localArena.getPlayerStats().put(p, new PlayerGameStats());
 

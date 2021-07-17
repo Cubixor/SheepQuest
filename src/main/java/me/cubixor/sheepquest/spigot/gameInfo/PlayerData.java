@@ -18,8 +18,9 @@ public class PlayerData {
     private final int food;
     private final float exp;
     private final int level;
+    private final boolean fly;
 
-    public PlayerData(ItemStack[] inventory, Location location, Collection<PotionEffect> potionEffects, GameMode gameMode, double health, int food, float exp, int level) {
+    public PlayerData(ItemStack[] inventory, Location location, Collection<PotionEffect> potionEffects, GameMode gameMode, double health, int food, float exp, int level, boolean fly) {
         this.inventory = inventory;
         this.location = location;
         this.potionEffects = potionEffects;
@@ -28,6 +29,7 @@ public class PlayerData {
         this.food = food;
         this.exp = exp;
         this.level = level;
+        this.fly = fly;
     }
 
     @Override
@@ -74,5 +76,9 @@ public class PlayerData {
 
     public int getLevel() {
         return level;
+    }
+
+    public boolean isFly() {
+        return fly;
     }
 }

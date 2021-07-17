@@ -4,6 +4,7 @@ import me.cubixor.sheepquest.spigot.SheepQuest;
 import me.cubixor.sheepquest.spigot.api.Utils;
 import me.cubixor.sheepquest.spigot.config.ConfigField;
 import me.cubixor.sheepquest.spigot.config.ConfigUtils;
+import me.cubixor.sheepquest.spigot.game.JoinSheep;
 import me.cubixor.sheepquest.spigot.game.Signs;
 import me.cubixor.sheepquest.spigot.gameInfo.Arena;
 import me.cubixor.sheepquest.spigot.gameInfo.ArenaInventories;
@@ -13,7 +14,10 @@ import me.cubixor.sheepquest.spigot.socket.SocketClientSender;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Sheep;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -59,6 +63,8 @@ public class SetupCommands {
                 Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> new SocketClientSender().sendUpdateArenaPacket(arenaObj));
             }
 
+            new Signs().updateSigns("quickjoin");
+
             player.sendMessage(plugin.getMessage("arena-setup.create-success").replace("%arena%", args[1]));
         });
     }
@@ -98,11 +104,50 @@ public class SetupCommands {
                 }
 
                 plugin.getPlayerInfo().get(player).setDelete(null);
+
+                new Signs().updateSigns("quickjoin");
+
                 player.sendMessage(plugin.getMessage("arena-setup.delete-success").replace("%arena%", arena));
             } else {
                 player.sendMessage(plugin.getMessage("arena-setup.delete-confirm-none"));
             }
         });
+    }
+
+    public void createJoinSheep(Player player) {
+        if (!player.hasPermission("sheepquest.setup.joinsheep")) {
+            player.sendMessage(plugin.getMessage("general.no-permission"));
+            return;
+        }
+        new JoinSheep().spawnSheep(player.getLocation());
+
+        player.sendMessage(plugin.getMessage("arena-setup.spawn-join-sheep"));
+    }
+
+    public void removeJoinSheep(Player player) {
+        if (!player.hasPermission("sheepquest.setup.joinsheep")) {
+            player.sendMessage(plugin.getMessage("general.no-permission"));
+            return;
+        }
+
+        List<Entity> entities = new ArrayList<>(player.getWorld().getNearbyEntities(player.getLocation(), 1, 1, 1));
+        for (Entity entity : entities) {
+            if (entity.getType().equals(EntityType.SHEEP)) {
+                Sheep sheep = (Sheep) entity;
+
+                List<String> signList = new ArrayList<>(plugin.getArenasConfig().getStringList("join-sheep"));
+                signList.remove(ConfigUtils.locationToString(sheep.getLocation()));
+                plugin.getArenasConfig().set("join-sheep", signList);
+                plugin.saveArenas();
+
+                sheep.remove();
+
+                player.sendMessage(plugin.getMessage("arena-setup.remove-join-sheep-success"));
+                return;
+            }
+        }
+
+        player.sendMessage(plugin.getMessage("arena-setup.remove-join-sheep-no-sheep"));
     }
 
     public void setLocation(Player player, String[] args, String messagesPath, ConfigField configField, String permission) {
@@ -236,8 +281,8 @@ public class SetupCommands {
             try {
                 int max = Integer.parseInt(args[2]);
                 //if (max % 4 == 0) {
-                    ConfigUtils.updateField(args[1], ConfigField.MAX_PLAYERS, max);
-                    player.sendMessage(plugin.getMessage("arena-setup.set-max-players-success").replace("%arena%", args[1]));
+                ConfigUtils.updateField(args[1], ConfigField.MAX_PLAYERS, max);
+                player.sendMessage(plugin.getMessage("arena-setup.set-max-players-success").replace("%arena%", args[1]));
                 //}
             } catch (NumberFormatException ex) {
                 player.sendMessage(plugin.getMessage("arena-setup.set-max-players-invalid-count"));
@@ -428,18 +473,11 @@ public class SetupCommands {
             @Override
             public void run() {
                 if (plugin.getPlayerInfo().get(player) == null) {
-                    this.cancel();
                     return;
                 }
-                if (plugin.getPlayerInfo().get(player).getConfirmTimer() == 0) {
-                    plugin.getPlayerInfo().get(player).setDelete(null);
-                    plugin.getPlayerInfo().get(player).setConfirmTimer(20);
-                    this.cancel();
-                } else {
-                    plugin.getPlayerInfo().get(player).setConfirmTimer(plugin.getPlayerInfo().get(player).getConfirmTimer() - 1);
-                }
+                plugin.getPlayerInfo().get(player).setDelete(null);
             }
-        }.runTaskTimer(plugin, 0, 20);
+        }.runTaskLater(plugin, 400);
     }
 
 

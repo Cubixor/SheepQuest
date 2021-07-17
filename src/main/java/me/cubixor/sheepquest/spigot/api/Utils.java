@@ -204,8 +204,14 @@ public class Utils {
         return gameState;
     }
 
-    public static void removeBossBars(Player player, LocalArena localArena) {
+    public static void removeTeamBossBars(Player player, LocalArena localArena) {
         for (BossBar bossBar : localArena.getTeamBossBars().values()) {
+            bossBar.removePlayer(player);
+        }
+    }
+
+    public static void removeKitBossBars(Player player, LocalArena localArena) {
+        for (BossBar bossBar : localArena.getKitBossBars().values()) {
             bossBar.removePlayer(player);
         }
     }
@@ -295,23 +301,27 @@ public class Utils {
     }
 
 
-    public static void removeSheep(Player player) {
+    public static List<Entity> removeSheep(Player player) {
         SheepQuest plugin = SheepQuest.getInstance();
+        List<Entity> sheep = new ArrayList<>();
 
         if (player.getPassenger() != null) {
             if (player.getPassenger().getPassenger() != null) {
                 if (player.getPassenger().getPassenger().getPassenger() != null) {
-
+                    sheep.add(player.getPassenger().getPassenger().getPassenger());
                     player.getPassenger().getPassenger().eject();
 
                 }
+                sheep.add(player.getPassenger().getPassenger());
                 player.getPassenger().eject();
             }
+            sheep.add(player.getPassenger());
             player.eject();
 
             player.playSound(player.getLocation(), XSound.matchXSound(plugin.getConfig().getString("sounds.sheep-drop")).get().parseSound(), 100, 1);
             player.removePotionEffect(PotionEffectType.SLOW);
         }
+        return sheep;
     }
 
     public static boolean isInRegion(Entity entity, String arena, Team team) {

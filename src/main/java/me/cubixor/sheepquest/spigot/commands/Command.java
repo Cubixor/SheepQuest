@@ -93,6 +93,10 @@ public class Command implements CommandExecutor {
                 setupCommands.reload(player);
             } else if (args[0].equalsIgnoreCase("quickjoin")) {
                 playCommands.quickJoin(player);
+            } else if (args[0].equalsIgnoreCase("spawnjoinsheep")) {
+                setupCommands.createJoinSheep(player);
+            } else if (args[0].equalsIgnoreCase("removejoinsheep")) {
+                setupCommands.removeJoinSheep(player);
             } else if (args[0].equalsIgnoreCase("stats")) {
                 playCommands.stats(player, args);
             } else if (args[0].equalsIgnoreCase("list")) {

@@ -16,10 +16,10 @@ public class PlayerInfo {
     private String minPlayersChat;
     private String maxPlayersChat;
     private String delete;
-    private int confirmTimer = 20;
     private BukkitTask tipTask;
     private final HashMap<StatsField, Integer> stats = new HashMap<>();
     private boolean cooldown;
+    private boolean athleteCooldown;
 
     public PlayerInfo(String player) {
         Bukkit.getScheduler().runTaskAsynchronously(SheepQuest.getInstance(), () -> {
@@ -69,14 +69,6 @@ public class PlayerInfo {
         this.delete = delete;
     }
 
-    public int getConfirmTimer() {
-        return confirmTimer;
-    }
-
-    public void setConfirmTimer(int confirmTimer) {
-        this.confirmTimer = confirmTimer;
-    }
-
     public BukkitTask getTipTask() {
         return tipTask;
     }
@@ -95,5 +87,13 @@ public class PlayerInfo {
 
     public HashMap<StatsField, Integer> getStats() {
         return stats;
+    }
+
+    public boolean isAthleteCooldown() {
+        return athleteCooldown;
+    }
+
+    public void setAthleteCooldown(boolean athleteCooldown) {
+        this.athleteCooldown = athleteCooldown;
     }
 }

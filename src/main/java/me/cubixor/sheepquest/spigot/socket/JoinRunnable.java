@@ -22,9 +22,7 @@ public class JoinRunnable {
             public void run() {
                 Player player = Bukkit.getPlayerExact(playerName);
                 if (player != null && Bukkit.getOnlinePlayers().contains(player)) {
-                    Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-                        new PlayCommands().putInLocalArena(player, plugin.getLocalArenas().get(arena.getName()));
-                    });
+                    Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> new PlayCommands().putInLocalArena(player, plugin.getLocalArenas().get(arena.getName())));
                     this.cancel();
                 } else if (timesChecked > 0) {
                     timesChecked--;

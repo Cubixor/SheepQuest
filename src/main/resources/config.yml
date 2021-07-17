@@ -144,6 +144,9 @@ auto-join-on-end: true
 # (Scroll down to "Patterns for Formatting and Parsing" section)
 date-format: "dd/MM/yyyy"
 
+# Color of join sheep (which you can spawn using /sq spawnjoinsheep) used for quick joining.
+join-sheep-color: MAGENTA
+
 # Item types and slots.
 # type - item name. Full item list on https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html [item name]
 # slot - slot number. Available slot numbers are 0-8.
@@ -151,15 +154,14 @@ items:
   team-choose-item:
     type: CHEST
     slot: 0
+  kit-choose-item:
+    type: STONE_SWORD
+    slot: 1
   leave-item:
     type: CLOCK
     slot: 8
-  weapon-item:
-    type: IRON_SWORD
-    slot: 0
   sheep-item:
     type: SADDLE
-    slot: 1
 
 # Settings connected to in-game effects. You can enable or disable each of them [true/false]
 effects:
@@ -185,6 +187,9 @@ sounds:
   ending-countdown: BLOCK_NOTE_BLOCK_HAT
   win: ENTITY_ENDER_DRAGON_DEATH
   defeat: ENTITY_WITHER_SPAWN
+  dash: ENTITY_GHAST_SHOOT
+  throw-sheep: ENTITY_GHAST_SHOOT
+  launch-players: ENTITY_GHAST_SHOOT
 
 # All particles that appear in game. Full particle list available here: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Particle.html [particle]
 particles:
@@ -195,6 +200,9 @@ particles:
   death: END_ROD
   respawn: CLOUD
   win: HEART
+  dash: CLOUD
+  throw-sheep: CLOUD
+  launch-players: CLOUD
 
   # WARNING! You can't change blood particles, there is only an option to enable or disable it. [true/false]
   enable-blood: true
@@ -238,6 +246,127 @@ rewards:
     - eco give %player% 25
   4:
     - eco give %player% 0
+
+
+# Kits' settings
+# Full item list on https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
+kits:
+
+  # Standard kit settings
+  standard:
+
+    # Should this kit be enabled? [true/false]
+    enabled: true
+
+    # Item that represents this kit in kits menu [item name]
+    menu-icon: IRON_SWORD
+
+    # Primary weapon for this kit. [item name]
+    primary-weapon: IRON_SWORD
+
+    # Secondary weapon for this kit
+    # By default it's disabled (null) in standard kit [item name]
+    secondary-weapon: null
+
+    # Should players with this kit receive shields? [true/false]
+    shield: false
+
+    # Should dash effect (double jump) be enabled for this kit? [true/false]
+    dash: true
+
+    # Dash power
+    # The higher this number is, the further player will be launched. [float]
+    dash-power: 1.2
+
+    # Dash power in Y axis
+    # The higher this number is, the higher player will be launched. [float]
+    dash-power-y: 0.3
+
+    # Dash use cooldown [seconds]
+    dash-cooldown: 3
+
+  # Archer kit settings
+  archer:
+
+    # Should this kit be enabled? [true/false]
+    enabled: true
+
+    # Item that represents this kit in kits menu [item name]
+    menu-icon: BOW
+
+    # Primary weapon for this kit. [item name]
+    primary-weapon: WOODEN_SWORD
+
+    # Secondary weapon for this kit
+    # You can choose bow or crossbow in archer kit. [item name]
+    secondary-weapon: BOW
+
+    # Should players with this kit receive shields? [true/false]
+    shield: false
+
+    # Arrow type for this kit.
+    # You can choose between arrows, spectral arrows and tipped arrows. [item name]
+    arrow-type: ARROW
+
+    # Number of seconds every which player will receive an arrow. [seconds]
+    arrow-interval: 5
+
+    # Should arrows be removed from ground? [true/false]
+    remove-arrows: true
+
+  # Athlete kit settings
+  athlete:
+
+    # Should this kit be enabled? [true/false]
+    enabled: true
+
+    # Item that represents this kit in kits menu [item name]
+    menu-icon: FEATHER
+
+    # Primary weapon for this kit. [item name]
+    primary-weapon: WOODEN_AXE
+
+    # Secondary weapon for this kit
+    # It's an item which is used for launch other players up. [item name]
+    secondary-weapon: FEATHER
+
+    # Should players with this kit receive shields? [true/false]
+    shield: false
+
+    # Should ability to throw sheep be enabled for this kit? [true/false]
+    throw-sheep: true
+
+    # Sheep throw power
+    # The higher this number is, the further sheep will be launched. [float]
+    throw-sheep-power: 1.2
+
+    # Sheep throw power in Y axis
+    # The higher this number is, the higher sheep will be launched. [float]
+    throw-sheep-power-y: 0.4
+
+    # Damage that thrown sheep causes. [float]
+    throw-sheep-damage: 4
+
+    # Should ability to launch nearby players be enabled for this kit? [true/false]
+    launch-players: true
+
+    # Range in which item for launching players will work.
+    launch-players-range: 3
+
+    # Players launch power
+    # The higher this number is, the further players will be launched. [float]
+    launch-players-power: 1.6
+
+    # Players launch power in Y axis
+    # The higher this number is, the higher players will be launched. [float]
+    launch-players-power-y: 0.8
+
+    # Damage that nearby players will receive when launched.
+    launch-players-damage: 5
+
+    # Cooldown for launching nearby players up.
+    launch-players-cooldown: 10
+
 
 # All special game events' settings
 special-events:

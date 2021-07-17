@@ -3,7 +3,9 @@ package me.cubixor.sheepquest.spigot.gameInfo;
 import me.cubixor.sheepquest.spigot.SheepQuest;
 import me.cubixor.sheepquest.spigot.config.ConfigUtils;
 import me.cubixor.sheepquest.spigot.game.events.SpecialEventsData;
+import me.cubixor.sheepquest.spigot.game.kits.KitType;
 import org.bukkit.Bukkit;
+import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
@@ -21,11 +23,13 @@ public class LocalArena extends Arena implements Serializable {
     private Inventory teamChooseInv;
     private SpecialEventsData specialEventsData;
     private final HashMap<Player, Team> playerTeam = new HashMap<>();
+    private final HashMap<Player, KitType> playerKit = new HashMap<>();
     private final HashMap<Team, Integer> points = new HashMap<>();
     private final HashMap<Sheep, BukkitTask> sheep = new HashMap<>();
     private final HashMap<Player, Integer> respawnTimer = new HashMap<>();
     private final HashMap<Player, PlayerGameStats> playerStats = new HashMap<>();
     private final HashMap<Team, BossBar> teamBossBars = new HashMap<>();
+    private final HashMap<KitType, BossBar> kitBossBars = new HashMap<>();
     private final HashMap<Player, PlayerData> playerData = new HashMap<>();
 
     public LocalArena(String name) {
@@ -43,6 +47,9 @@ public class LocalArena extends Arena implements Serializable {
 
         for (Team team : Team.values()) {
             getTeamBossBars().put(team, Bukkit.createBossBar(plugin.getMessage("game.bossbar-team").replace("%team%", team.getName()), team.getBarColor(), BarStyle.SOLID));
+        }
+        for (KitType kitType : KitType.values()) {
+            getKitBossBars().put(kitType, Bukkit.createBossBar(plugin.getMessage("kits.bossbar-kit").replace("%kit%", kitType.getName()), BarColor.WHITE, BarStyle.SOLID));
         }
     }
 
@@ -111,6 +118,10 @@ public class LocalArena extends Arena implements Serializable {
         return teamBossBars;
     }
 
+    public HashMap<KitType, BossBar> getKitBossBars() {
+        return kitBossBars;
+    }
+
     public SpecialEventsData getSpecialEventsData() {
         return specialEventsData;
     }
@@ -121,5 +132,9 @@ public class LocalArena extends Arena implements Serializable {
 
     public HashMap<Player, PlayerData> getPlayerData() {
         return playerData;
+    }
+
+    public HashMap<Player, KitType> getPlayerKit() {
+        return playerKit;
     }
 }

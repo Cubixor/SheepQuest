@@ -1,6 +1,7 @@
 package me.cubixor.sheepquest.spigot.game;
 
 import com.cryptomorin.xseries.XSound;
+import com.cryptomorin.xseries.particles.XParticle;
 import me.cubixor.sheepquest.spigot.SheepQuest;
 import me.cubixor.sheepquest.spigot.api.Utils;
 import me.cubixor.sheepquest.spigot.game.events.BonusSheep;
@@ -10,7 +11,6 @@ import me.cubixor.sheepquest.spigot.gameInfo.Team;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.FireworkEffect;
-import org.bukkit.Particle;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -122,7 +122,7 @@ public class SheepCarrying implements Listener {
         }
 
 
-        if (player.getPassenger() != null) {
+        if (player.getPassenger() != null && player.getPassenger().getType().equals(EntityType.SHEEP)) {
             if (Utils.isInRegion(player, localArena.getName(), team)) {
                 regionEnter(player);
             }
@@ -189,7 +189,7 @@ public class SheepCarrying implements Listener {
         }.runTaskLater(plugin, 10);
     }
 
-    private void sheepBring(Player player, Sheep sheep) {
+    public void sheepBring(Player player, Sheep sheep) {
         LocalArena localArena = Utils.getLocalArena(player);
         Team team = localArena.getPlayerTeam().get(player);
         boolean specialSheep = sheep.getColor().equals(DyeColor.valueOf(plugin.getConfig().getString("special-events.bonus-sheep.color")));
@@ -197,7 +197,7 @@ public class SheepCarrying implements Listener {
         localArena.getPlayerStats().get(player).setSheepTaken(localArena.getPlayerStats().get(player).getSheepTaken() + 1);
         player.removePotionEffect(PotionEffectType.SLOW);
 
-        Firework firework = (Firework) player.getWorld().spawnEntity(player.getLocation(), EntityType.FIREWORK);
+        Firework firework = (Firework) sheep.getWorld().spawnEntity(sheep.getLocation(), EntityType.FIREWORK);
         FireworkMeta fwm = firework.getFireworkMeta();
         FireworkEffect.Type type = FireworkEffect.Type.BALL;
         Color color = specialSheep ? DyeColor.valueOf(plugin.getConfig().getString("special-events.bonus-sheep.color")).getColor() : team.getColor();
@@ -229,8 +229,8 @@ public class SheepCarrying implements Listener {
 
         sheep.setColor(team.getDyeColor());
 
-        Utils.playSound(localArena, player.getLocation(), XSound.matchXSound(plugin.getConfig().getString("sounds.sheep-bring")).get().parseSound(), 1, 1);
-        player.getWorld().spawnParticle(Particle.valueOf(plugin.getConfig().getString("particles.sheep-bring")), player.getLocation().getX(), player.getLocation().getY() + 1.5, player.getLocation().getZ(), 50, 1, 1, 1, 0.1);
+        Utils.playSound(localArena, sheep.getLocation(), XSound.matchXSound(plugin.getConfig().getString("sounds.sheep-bring")).get().parseSound(), 1, 1);
+        sheep.getWorld().spawnParticle(XParticle.getParticle(plugin.getConfig().getString("particles.sheep-bring")), sheep.getLocation().getX(), sheep.getLocation().getY() + 1.5, sheep.getLocation().getZ(), 50, 1, 1, 1, 0.1);
     }
 
     @EventHandler

@@ -42,7 +42,7 @@ public class Signs implements Listener {
             return;
         }
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            if (!ConfigUtils.getArenas().contains(evt.getLine(1))) {
+            if (!ConfigUtils.getArenas().contains(evt.getLine(1)) && !evt.getLine(1).equalsIgnoreCase("quickjoin")) {
                 return;
             }
 
@@ -130,8 +130,9 @@ public class Signs implements Listener {
         }
 
         Sign sign = (Sign) evt.getClickedBlock().getState();
+        String arena = arenaSign(sign);
 
-        if (arenaSign(sign) == null) {
+        if (arena == null) {
             return;
         }
 
@@ -147,9 +148,10 @@ public class Signs implements Listener {
         }
         evt.setCancelled(true);
 
-        new PlayCommands().join(evt.getPlayer(), new String[]{"join", arenaSign(sign)});
-        if (Utils.getLocalArena(evt.getPlayer()) != null) {
-            evt.getPlayer().getInventory().setHeldItemSlot(4);
+        if (arena.equals("quickjoin")) {
+            new PlayCommands().quickJoin(evt.getPlayer());
+        } else {
+            new PlayCommands().join(evt.getPlayer(), new String[]{"join", arena});
         }
     }
 
@@ -163,6 +165,32 @@ public class Signs implements Listener {
     }
 
     private void updateSign(Location location, String arenaString) {
+        if (arenaString.equals("quickjoin")) {
+            Bukkit.getScheduler().runTask(plugin, () -> {
+                Sign sign;
+                Block block;
+
+                try {
+                    block = location.getBlock();
+                    sign = (Sign) block.getState();
+                    if (!block.getType().toString().contains("SIGN")) {
+                        removeSign(arenaString, location);
+                        return;
+                    }
+                } catch (Exception e) {
+                    removeSign(arenaString, location);
+                    return;
+                }
+                sign.setLine(0, plugin.getMessage("other.sign-quickjoin-first-line").replace("%count%", Integer.toString(plugin.getAllArenas().size())));
+                sign.setLine(1, plugin.getMessage("other.sign-quickjoin-second-line").replace("%count%", Integer.toString(plugin.getAllArenas().size())));
+                sign.setLine(2, plugin.getMessage("other.sign-quickjoin-third-line").replace("%count%", Integer.toString(plugin.getAllArenas().size())));
+                sign.setLine(3, plugin.getMessage("other.sign-quickjoin-fourth-line").replace("%count%", Integer.toString(plugin.getAllArenas().size())));
+                sign.update(true);
+            });
+            return;
+        }
+
+
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
 
             Arena arena = plugin.getArena(arenaString);

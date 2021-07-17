@@ -1,17 +1,19 @@
 package me.cubixor.sheepquest.spigot.game;
 
 import com.cryptomorin.xseries.XSound;
+import com.cryptomorin.xseries.particles.XParticle;
 import me.cubixor.sheepquest.spigot.SheepQuest;
 import me.cubixor.sheepquest.spigot.api.Utils;
 import me.cubixor.sheepquest.spigot.config.ConfigUtils;
+import me.cubixor.sheepquest.spigot.game.kits.Kits;
 import me.cubixor.sheepquest.spigot.gameInfo.GameState;
 import me.cubixor.sheepquest.spigot.gameInfo.LocalArena;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Particle;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -35,38 +37,38 @@ public class Kill implements Listener {
     @EventHandler
     public void onItemDamage(PlayerItemDamageEvent evt) {
         if (Utils.getLocalArena(evt.getPlayer()) != null) {
-/*
-            if(evt.getItem().equals(plugin.getItems().getWeaponItem())) {
-                evt.setCancelled(true);
-            }
-            if(Arrays.asList(evt.getPlayer().getInventory().getArmorContents()).contains(evt.getItem())){
-
-            }
-*/
             evt.setCancelled(true);
         }
     }
 
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent evt) {
-        if (!(evt.getEntity().getType().equals(EntityType.PLAYER) && evt.getDamager().getType().equals(EntityType.PLAYER))) {
+        if (!(evt.getEntity().getType().equals(EntityType.PLAYER) && (evt.getDamager().getType().equals(EntityType.PLAYER))
+                || (evt.getDamager() instanceof Projectile && ((Projectile) evt.getDamager()).getShooter() instanceof Player))) {
             return;
         }
 
-        if (evt.getEntity().getType().equals(EntityType.PLAYER) && !evt.getDamager().getType().equals(EntityType.PLAYER)) {
-            evt.setDamage(0.0F);
-            evt.setCancelled(true);
-        }
-
         Player player = (Player) evt.getEntity();
-        Player attacker = (Player) evt.getDamager();
         LocalArena localArena = Utils.getLocalArena(player);
+        Player attacker;
+        if (evt.getDamager() instanceof Player) {
+            attacker = (Player) evt.getDamager();
+        } else {
+            Projectile projectile = (Projectile) evt.getDamager();
+            attacker = (Player) projectile.getShooter();
+        }
 
         if (localArena == null) {
             return;
         }
 
-        if (!(localArena.getState().equals(GameState.GAME) && attacker.getInventory().getItemInMainHand().equals(plugin.getItems().getWeaponItem()) && !localArena.getRespawnTimer().containsKey(attacker) && !localArena.getRespawnTimer().containsKey(player))) {
+        if (!(localArena.getState().equals(GameState.GAME) && !localArena.getRespawnTimer().containsKey(player) && !localArena.getRespawnTimer().containsKey(attacker))) {
+            evt.setCancelled(true);
+            return;
+        }
+
+        if (!(attacker.getInventory().getItemInMainHand().equals(Kits.getPlayerKit(attacker).getPrimaryWeapon())
+                || attacker.getInventory().getItemInMainHand().equals(Kits.getPlayerKit(attacker).getSecondaryWeapon()))) {
             evt.setCancelled(true);
             return;
         }
@@ -74,9 +76,10 @@ public class Kill implements Listener {
             evt.setCancelled(true);
             return;
         }
+        damagePlayer(player, attacker, localArena, evt.getFinalDamage());
+    }
 
-        //attacker.getInventory().getItemInMainHand().
-
+    public void damagePlayer(Player player, Player attacker, LocalArena localArena, double damage) {
         sheepCooldown(player);
         Utils.removeSheep(player);
 
@@ -88,15 +91,15 @@ public class Kill implements Listener {
         }
 
 
-        if (((player.getHealth() - evt.getFinalDamage()) <= 0)) {
+        if (((player.getHealth() - damage) <= 0)) {
             player.setHealth(20);
             player.setAllowFlight(true);
 
             Utils.playSound(localArena, player.getLocation(), XSound.ENTITY_PLAYER_DEATH.parseSound(), 1, 1);
             attacker.playSound(attacker.getLocation(), XSound.matchXSound(plugin.getConfig().getString("sounds.kill")).get().parseSound(), 100, 2);
             player.playSound(player.getLocation(), XSound.matchXSound(plugin.getConfig().getString("sounds.death")).get().parseSound(), 100, 0);
-            player.getWorld().spawnParticle(Particle.valueOf(plugin.getConfig().getString("particles.death")), player.getLocation().getX(), player.getLocation().getY() + 1.5, player.getLocation().getZ(), 50, 0.1, 0.1, 0.1, 0.1);
-            attacker.sendTitle("", plugin.getMessage("game.kill-subtitle")
+            player.getWorld().spawnParticle(XParticle.getParticle(plugin.getConfig().getString("particles.death")), player.getLocation().getX(), player.getLocation().getY() + 1.5, player.getLocation().getZ(), 50, 0.1, 0.1, 0.1, 0.1);
+            attacker.sendTitle(" ", plugin.getMessage("game.kill-subtitle")
                     .replace("%team-color%", localArena.getPlayerTeam().get(player).getChatColor() + "")
                     .replace("%player%", player.getName()), 5, 40, 5);
 
@@ -111,6 +114,8 @@ public class Kill implements Listener {
 
             player.getInventory().setItem(0, new ItemStack(Material.AIR));
             player.getInventory().setItem(1, new ItemStack(Material.AIR));
+            player.getInventory().setItem(2, new ItemStack(Material.AIR));
+            player.getInventory().setItem(7, new ItemStack(Material.AIR));
             player.setFlying(true);
             Location killLoc = player.getLocation();
             killLoc.setY(killLoc.getY() + 3);
@@ -130,6 +135,7 @@ public class Kill implements Listener {
 
             respawnTimer(player, attacker);
         }
+
     }
 
     private void respawnTimer(Player player, Player killer) {
@@ -178,8 +184,7 @@ public class Kill implements Listener {
 
         player.setAllowFlight(false);
         player.setFlying(false);
-        player.getInventory().setItem(0, plugin.getItems().getWeaponItem());
-        player.getInventory().setItem(1, plugin.getItems().getSheepItem());
+        Kits.getPlayerKit(player).giveKit(player);
         for (PotionEffect potionEffect : player.getActivePotionEffects()) {
             player.removePotionEffect(potionEffect.getType());
         }
@@ -190,7 +195,7 @@ public class Kill implements Listener {
 
         player.sendTitle(plugin.getMessage("game.respawned-title"), plugin.getMessage("game.respawned-subtitle"), 0, 40, 10);
         Utils.playSound(localArena, player.getLocation(), XSound.matchXSound(plugin.getConfig().getString("sounds.respawn")).get().parseSound(), 1, 1);
-        player.getWorld().spawnParticle(Particle.valueOf(plugin.getConfig().getString("particles.respawn")), player.getLocation().getX(), player.getLocation().getY() + 1.5, player.getLocation().getZ(), 50, 1, 1, 1, 0.1);
+        player.getWorld().spawnParticle(XParticle.getParticle(plugin.getConfig().getString("particles.respawn")), player.getLocation().getX(), player.getLocation().getY() + 1.5, player.getLocation().getZ(), 50, 1, 1, 1, 0.1);
 
 
         localArena.getRespawnTimer().remove(player);

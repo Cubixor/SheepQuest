@@ -1,6 +1,7 @@
 package me.cubixor.sheepquest.spigot.game;
 
 import com.cryptomorin.xseries.XSound;
+import com.cryptomorin.xseries.particles.XParticle;
 import me.cubixor.sheepquest.spigot.SheepQuest;
 import me.cubixor.sheepquest.spigot.api.Utils;
 import me.cubixor.sheepquest.spigot.config.ConfigField;
@@ -12,7 +13,6 @@ import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
-import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Sheep;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -96,7 +96,7 @@ public class GameTimer {
         sheep.setInvulnerable(true);
 
         Utils.playSound(localArena, loc, XSound.matchXSound(plugin.getConfig().getString("sounds.sheep-spawn")).get().parseSound(), 1, 1);
-        loc.getWorld().spawnParticle(Particle.valueOf(plugin.getConfig().getString("particles.sheep-spawn")), loc.getX(), loc.getY() + 1, loc.getZ(), 50, 1, 1, 1, 0.1);
+        loc.getWorld().spawnParticle(XParticle.getParticle(plugin.getConfig().getString("particles.sheep-spawn")), loc.getX(), loc.getY() + 1, loc.getZ(), 50, 1, 1, 1, 0.1);
 
         PathFinding.walkToLocation(sheep, loc, plugin.getConfig().getDouble("sheep-speed"), localArena, Team.NONE);
     }

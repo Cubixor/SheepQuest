@@ -113,6 +113,12 @@ public class TabCompleter implements org.bukkit.command.TabCompleter {
                 if (player.hasPermission("sheepquest.setup.wand") && "wand".startsWith(args[0])) {
                     result.add("wand");
                 }
+                if (player.hasPermission("sheepquest.setup.joinsheep") && "spawnjoinsheep".startsWith(args[0])) {
+                    result.add("spawnjoinsheep");
+                }
+                if (player.hasPermission("sheepquest.setup.joinsheep") && "removejoinsheep".startsWith(args[0])) {
+                    result.add("removejoinsheep");
+                }
                 if (player.hasPermission("sheepquest.setup.reload") && "reload".startsWith(args[0])) {
                     result.add("reload");
                 }

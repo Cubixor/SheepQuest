@@ -36,19 +36,20 @@ public class Teams implements Listener {
     public void onClick(PlayerInteractEvent evt) {
         LocalArena localArena = Utils.getLocalArena(evt.getPlayer());
         if (localArena != null && evt.getItem() != null && evt.getHand().equals(EquipmentSlot.HAND)) {
-            evt.setCancelled(true);
             if (evt.getItem().equals(plugin.getItems().getTeamItem())) {
-
                 evt.getPlayer().openInventory(localArena.getTeamChooseInv());
-                if (localArena.getTeamChooseInv().getItem(1) == null) {
+                if (localArena.getTeamChooseInv().getItem(0) == null) {
                     menuUpdate(localArena);
                 }
-
-
+                evt.setCancelled(true);
             } else if (evt.getItem().equals(plugin.getItems().getLeaveItem())) {
                 PlayCommands playCommands = new PlayCommands();
                 playCommands.sendKickMessage(evt.getPlayer(), localArena);
                 playCommands.kickFromLocalArena(evt.getPlayer(), localArena, false, false);
+                evt.setCancelled(true);
+            } else if (evt.getItem().equals(plugin.getItems().getKitsItem())) {
+                evt.getPlayer().openInventory(plugin.getItems().getKitsInventory());
+                evt.setCancelled(true);
             }
         }
     }
@@ -71,7 +72,7 @@ public class Teams implements Listener {
                     if (team.equals(Team.NONE)) {
                         localArena.getPlayerTeam().replace(player, Team.NONE);
                         player.sendMessage(plugin.getMessage("game.team-join-random"));
-                        Utils.removeBossBars(player, localArena);
+                        Utils.removeTeamBossBars(player, localArena);
                         localArena.getTeamBossBars().get(Team.NONE).addPlayer(player);
                         player.getInventory().setHelmet(new ItemStack(Material.AIR));
                     }
@@ -84,7 +85,7 @@ public class Teams implements Listener {
                         if (teamPlayers.get(team) < (max / ConfigUtils.getTeamList(arenaString).size())) {
                             if (!localArena.getPlayerTeam().get(player).equals(team)) {
                                 localArena.getPlayerTeam().replace(player, team);
-                                Utils.removeBossBars(player, localArena);
+                                Utils.removeTeamBossBars(player, localArena);
                                 localArena.getTeamBossBars().get(team).addPlayer(player);
                                 player.getInventory().setHelmet(team.getBanner());
                                 player.sendMessage(plugin.getMessage("game.team-join-success").replace("%team%", teamMessage));

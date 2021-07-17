@@ -1,6 +1,7 @@
 package me.cubixor.sheepquest.spigot.game.events;
 
 import com.cryptomorin.xseries.XSound;
+import com.cryptomorin.xseries.particles.XParticle;
 import me.cubixor.sheepquest.spigot.SheepQuest;
 import me.cubixor.sheepquest.spigot.api.Utils;
 import me.cubixor.sheepquest.spigot.config.ConfigField;
@@ -10,7 +11,6 @@ import me.cubixor.sheepquest.spigot.gameInfo.LocalArena;
 import me.cubixor.sheepquest.spigot.gameInfo.Team;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
-import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Sheep;
 import org.bukkit.potion.PotionEffect;
@@ -36,7 +36,7 @@ public class BonusSheep {
         localArena.getSpecialEventsData().getBonusSheepTeam().put(sheep, Team.NONE);
 
         Utils.playSound(localArena, loc, XSound.matchXSound(plugin.getConfig().getString("special-events.bonus-sheep.sounds.spawn")).get().parseSound(), 1, 0.9f);
-        loc.getWorld().spawnParticle(Particle.valueOf(plugin.getConfig().getString("special-events.bonus-sheep.particles.spawn")), loc.getX(), loc.getY() + 1, loc.getZ(), 1, 0, 0, 0, 0.1);
+        loc.getWorld().spawnParticle(XParticle.getParticle(plugin.getConfig().getString("special-events.bonus-sheep.particles.spawn")), loc.getX(), loc.getY() + 1, loc.getZ(), 1, 0, 0, 0, 0.1);
 
         PathFinding.walkToLocation(sheep, loc, plugin.getConfig().getDouble("special-events.bonus-sheep.speed"), localArena, Team.NONE);
 
@@ -69,7 +69,7 @@ public class BonusSheep {
         localArena.getPlayerStats().get(player).setBonusSheepTaken(localArena.getPlayerStats().get(player).getBonusSheepTaken() + 1);
 
         Utils.playSound(localArena, player.getLocation(), XSound.matchXSound(plugin.getConfig().getString("special-events.bonus-sheep.sounds.bring")).get().parseSound(), 1, 0);
-        player.getWorld().spawnParticle(Particle.valueOf(plugin.getConfig().getString("special-events.bonus-sheep.particles.bring")), player.getLocation().getX(), player.getLocation().getY() + 1.5, player.getLocation().getZ(), 70, 1, 1, 1, 0.1);
+        player.getWorld().spawnParticle(XParticle.getParticle(plugin.getConfig().getString("special-events.bonus-sheep.particles.bring")), player.getLocation().getX(), player.getLocation().getY() + 1.5, player.getLocation().getZ(), 70, 1, 1, 1, 0.1);
 
     }
 
@@ -107,7 +107,7 @@ public class BonusSheep {
                     return;
                 }
 
-                player.getWorld().spawnParticle(Particle.valueOf(plugin.getConfig().getString("special-events.bonus-sheep.particles.carrying")),
+                player.getWorld().spawnParticle(XParticle.getParticle(plugin.getConfig().getString("special-events.bonus-sheep.particles.carrying")),
                         player.getLocation().getX(), player.getLocation().getY() + 3.5, player.getLocation().getZ(), 50, 0.1, 0.1, 0.1, 0.1);
 
             }

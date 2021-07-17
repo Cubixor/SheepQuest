@@ -118,9 +118,7 @@ public class StaffCommands {
                 p.sendMessage(plugin.getMessage("arena-moderate.force-start-success").replace("%player%", playerName));
             }
 
-            Bukkit.getScheduler().runTask(plugin, () -> {
-                new Start().start(localArena);
-            });
+            Bukkit.getScheduler().runTask(plugin, () -> new Start().start(localArena));
         });
     }
 

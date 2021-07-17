@@ -16,10 +16,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.*;
 
 public class ArenaProtection implements Listener {
 
@@ -35,7 +32,9 @@ public class ArenaProtection implements Listener {
             return;
         }
         if (Utils.getLocalArena((Player) evt.getEntity()) != null) {
-            if (!evt.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK)) {
+            if (!evt.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK)
+                    && !evt.getCause().equals(EntityDamageEvent.DamageCause.PROJECTILE)
+                    && !evt.getCause().equals(EntityDamageEvent.DamageCause.CUSTOM)) {
                 evt.setDamage(0.0F);
                 evt.setCancelled(true);
             }
@@ -54,7 +53,13 @@ public class ArenaProtection implements Listener {
         if (evt.getEntityType().equals(EntityType.PLAYER) && Utils.getLocalArena((Player) evt.getEntity()) != null) {
             evt.setCancelled(true);
         }
+    }
 
+    @EventHandler
+    public void onArrowPickup(PlayerPickupArrowEvent evt) {
+        if (Utils.getLocalArena(evt.getPlayer()) != null) {
+            evt.setCancelled(true);
+        }
     }
 
     @EventHandler

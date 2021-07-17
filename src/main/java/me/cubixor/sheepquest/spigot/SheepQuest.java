@@ -12,6 +12,7 @@ import me.cubixor.sheepquest.spigot.commands.TabCompleter;
 import me.cubixor.sheepquest.spigot.config.ConfigField;
 import me.cubixor.sheepquest.spigot.config.ConfigUtils;
 import me.cubixor.sheepquest.spigot.game.*;
+import me.cubixor.sheepquest.spigot.game.kits.*;
 import me.cubixor.sheepquest.spigot.gameInfo.*;
 import me.cubixor.sheepquest.spigot.menu.*;
 import me.cubixor.sheepquest.spigot.mysql.ConnectionSetup;
@@ -56,6 +57,7 @@ public final class SheepQuest extends JavaPlugin {
     private FileConfiguration connectionConfig;
     private HashMap<String, Arena> arenas = new HashMap<>();
     private Items items;
+    private final List<Kit> kits = new ArrayList<>();
     private boolean enabled = false;
 
     private MysqlConnection mysqlConnection;
@@ -77,6 +79,10 @@ public final class SheepQuest extends JavaPlugin {
         //Legacy material initialization
         XMaterial.matchXMaterial("BLACK_STAINED_GLASS").get().parseItem().getData();
 
+        kits.add(new KitStandard());
+        kits.add(new KitArcher());
+        kits.add(new KitAthlete());
+
         loadConfigs();
         if (!getServer().getPluginManager().isPluginEnabled(this)) {
             return;
@@ -97,6 +103,11 @@ public final class SheepQuest extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new ArenasMenu(), this);
         getServer().getPluginManager().registerEvents(new StatsMenu(), this);
         getServer().getPluginManager().registerEvents(new MenuUtils(), this);
+        getServer().getPluginManager().registerEvents(new JoinSheep(), this);
+        getServer().getPluginManager().registerEvents(new KitMenu(), this);
+        for (Kit kit : kits) {
+            getServer().getPluginManager().registerEvents(kit, this);
+        }
 
 
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
@@ -109,13 +120,6 @@ public final class SheepQuest extends JavaPlugin {
             Metrics metrics = new Metrics(this, 9022);
             metrics.addCustomChart(new SimplePie("used_language", () -> getConfig().getString("language", "en")));
             metrics.addCustomChart(new SingleLineChart("games", () -> getAllArenas().size()));
-            metrics.addCustomChart(new SingleLineChart("players_arenas", () -> {
-                int players = 0;
-                for (Arena arena : getAllArenas()) {
-                    players += arena.getPlayers().size();
-                }
-                return players;
-            }));
         }
     }
 
@@ -238,6 +242,7 @@ public final class SheepQuest extends JavaPlugin {
                     getLocalArenas().put(arena, new LocalArena(arena));
                 }
             }
+            getSigns().put("quickjoin", new ArrayList<>());
             for (Player p : Bukkit.getOnlinePlayers()) {
                 getPlayerInfo().replace(p, new PlayerInfo(p.getName()));
             }
@@ -247,6 +252,10 @@ public final class SheepQuest extends JavaPlugin {
                 new SocketClient().clientSetup(getConnectionConfig().getString("host"),
                         getConnectionConfig().getInt("port"),
                         getConnectionConfig().getString("server-name"));
+            }
+
+            for (Kit kit : kits) {
+                kit.loadItems();
             }
 
             setItems(new Items());
@@ -382,6 +391,10 @@ public final class SheepQuest extends JavaPlugin {
 
     public void setBungeeSocket(SocketConnection bungeeSocket) {
         this.bungeeSocket = bungeeSocket;
+    }
+
+    public List<Kit> getKits() {
+        return kits;
     }
 
     public boolean isDisabled() {
