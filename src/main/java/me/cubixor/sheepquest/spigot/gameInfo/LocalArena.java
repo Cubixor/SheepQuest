@@ -1,13 +1,11 @@
 package me.cubixor.sheepquest.spigot.gameInfo;
 
 import me.cubixor.sheepquest.spigot.SheepQuest;
+import me.cubixor.sheepquest.spigot.api.BossBar;
 import me.cubixor.sheepquest.spigot.config.ConfigUtils;
 import me.cubixor.sheepquest.spigot.game.events.SpecialEventsData;
 import me.cubixor.sheepquest.spigot.game.kits.KitType;
 import org.bukkit.Bukkit;
-import org.bukkit.boss.BarColor;
-import org.bukkit.boss.BarStyle;
-import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Sheep;
 import org.bukkit.inventory.Inventory;
@@ -29,7 +27,6 @@ public class LocalArena extends Arena implements Serializable {
     private final HashMap<Player, Integer> respawnTimer = new HashMap<>();
     private final HashMap<Player, PlayerGameStats> playerStats = new HashMap<>();
     private final HashMap<Team, BossBar> teamBossBars = new HashMap<>();
-    private final HashMap<KitType, BossBar> kitBossBars = new HashMap<>();
     private final HashMap<Player, PlayerData> playerData = new HashMap<>();
 
     public LocalArena(String name) {
@@ -46,10 +43,7 @@ public class LocalArena extends Arena implements Serializable {
         setTeamChooseInv(Bukkit.createInventory(null, invSlots, plugin.getMessage("game.team-menu-name")));
 
         for (Team team : Team.values()) {
-            getTeamBossBars().put(team, Bukkit.createBossBar(plugin.getMessage("game.bossbar-team").replace("%team%", team.getName()), team.getBarColor(), BarStyle.SOLID));
-        }
-        for (KitType kitType : KitType.values()) {
-            getKitBossBars().put(kitType, Bukkit.createBossBar(plugin.getMessage("kits.bossbar-kit").replace("%kit%", kitType.getName()), BarColor.WHITE, BarStyle.SOLID));
+            getTeamBossBars().put(team, new BossBar(plugin.getMessage("game.bossbar-team").replace("%team%", team.getName()), team));
         }
     }
 
@@ -116,10 +110,6 @@ public class LocalArena extends Arena implements Serializable {
 
     public HashMap<Team, BossBar> getTeamBossBars() {
         return teamBossBars;
-    }
-
-    public HashMap<KitType, BossBar> getKitBossBars() {
-        return kitBossBars;
     }
 
     public SpecialEventsData getSpecialEventsData() {

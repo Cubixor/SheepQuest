@@ -29,9 +29,12 @@ public class JoinSheep implements Listener {
 
     @EventHandler
     public void sheepClickEvent(PlayerInteractEntityEvent evt) {
-        if (!(evt.getHand() != null && evt.getHand().equals(EquipmentSlot.HAND))) {
-            return;
+        if (!plugin.isBefore9()) {
+            if (!evt.getHand().equals(EquipmentSlot.HAND)) {
+                return;
+            }
         }
+
 
         if (!evt.getRightClicked().getType().equals(EntityType.SHEEP)) {
             return;
@@ -69,13 +72,20 @@ public class JoinSheep implements Listener {
         return true;
     }
 
-    public void spawnSheep(Location location) {
+    public void spawnSheep(Player player) {
+        if (plugin.isBefore9()) {
+            player.sendMessage(plugin.getMessage("general.version-not-supported"));
+            return;
+        }
+
+        Location location = player.getLocation();
+
         Sheep sheep = (Sheep) location.getWorld().spawnEntity(location, EntityType.SHEEP);
         sheep.setAI(false);
         sheep.setInvulnerable(true);
         sheep.setCollidable(false);
         sheep.setColor(DyeColor.valueOf(plugin.getConfig().getString("join-sheep-color")));
-        sheep.setGravity(false);
+        //sheep.setGravity(false);
         sheep.setSilent(true);
         sheep.setRemoveWhenFarAway(false);
         sheep.setCustomName(plugin.getMessage("other.join-sheep-name"));
@@ -85,5 +95,7 @@ public class JoinSheep implements Listener {
         configSheep.add(ConfigUtils.locationToString(location));
         plugin.getArenasConfig().set("join-sheep", configSheep);
         plugin.saveArenas();
+
+        player.sendMessage(plugin.getMessage("arena-setup.spawn-join-sheep"));
     }
 }

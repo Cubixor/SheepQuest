@@ -2,7 +2,7 @@ package me.cubixor.sheepquest.spigot.menu;
 
 import com.cryptomorin.xseries.XMaterial;
 import me.cubixor.sheepquest.spigot.SheepQuest;
-import me.cubixor.sheepquest.spigot.api.Utils;
+import me.cubixor.sheepquest.spigot.Utils;
 import me.cubixor.sheepquest.spigot.commands.StaffCommands;
 import me.cubixor.sheepquest.spigot.config.ConfigField;
 import me.cubixor.sheepquest.spigot.config.ConfigUtils;
@@ -95,7 +95,7 @@ public class StaffMenu implements Listener {
                 for (Player p : playerList) {
                     ItemStack playerItem = new ItemStack(XMaterial.PLAYER_HEAD.parseMaterial());
                     SkullMeta skullMeta = (SkullMeta) playerItem.getItemMeta();
-                    skullMeta.setOwningPlayer(p);
+                    skullMeta.setOwner(p.getName());
                     skullMeta.setDisplayName(plugin.getMessage("staff-menu.player-item-name").replace("%nick%", p.getName()));
                     List<String> playerItemLore = new ArrayList<>(plugin.getMessageList("staff-menu.player-item-lore"));
                     for (String s : playerItemLore) {

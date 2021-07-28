@@ -2,7 +2,7 @@ package me.cubixor.sheepquest.spigot.game.kits;
 
 import com.cryptomorin.xseries.XMaterial;
 import me.cubixor.sheepquest.spigot.SheepQuest;
-import me.cubixor.sheepquest.spigot.api.Utils;
+import me.cubixor.sheepquest.spigot.Utils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
@@ -27,7 +27,9 @@ public abstract class Kit implements Listener {
             secondaryWeapon = Utils.setItemStack("kits." + kitType.getCode() + ".secondary-weapon",
                     "kits." + kitType.getCode() + "-secondary-weapon-name", "kits." + kitType.getCode() + "-secondary-weapon-lore");
         }
-        shield = Utils.setItemStack(XMaterial.SHIELD.parseMaterial(), "kits.shield-name", "kits.shield-lore");
+        if (plugin.getConfig().getBoolean("kits." + kitType.getCode() + ".shield") && !plugin.isBefore9()) {
+            shield = Utils.setItemStack(XMaterial.SHIELD.parseMaterial(), "kits.shield-name", "kits.shield-lore");
+        }
     }
 
     public abstract void giveKit(Player player);
@@ -40,7 +42,7 @@ public abstract class Kit implements Listener {
             sheepItemSlot = 2;
         }
         player.getInventory().setItem(sheepItemSlot, plugin.getItems().getSheepItem());
-        if (plugin.getConfig().getBoolean("kits." + kitType.getCode() + ".shield")) {
+        if (getShield() != null) {
             player.getInventory().setItemInOffHand(getShield());
         }
     }

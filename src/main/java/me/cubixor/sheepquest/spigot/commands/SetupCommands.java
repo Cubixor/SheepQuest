@@ -1,7 +1,7 @@
 package me.cubixor.sheepquest.spigot.commands;
 
 import me.cubixor.sheepquest.spigot.SheepQuest;
-import me.cubixor.sheepquest.spigot.api.Utils;
+import me.cubixor.sheepquest.spigot.Utils;
 import me.cubixor.sheepquest.spigot.config.ConfigField;
 import me.cubixor.sheepquest.spigot.config.ConfigUtils;
 import me.cubixor.sheepquest.spigot.game.JoinSheep;
@@ -119,9 +119,7 @@ public class SetupCommands {
             player.sendMessage(plugin.getMessage("general.no-permission"));
             return;
         }
-        new JoinSheep().spawnSheep(player.getLocation());
-
-        player.sendMessage(plugin.getMessage("arena-setup.spawn-join-sheep"));
+        new JoinSheep().spawnSheep(player);
     }
 
     public void removeJoinSheep(Player player) {

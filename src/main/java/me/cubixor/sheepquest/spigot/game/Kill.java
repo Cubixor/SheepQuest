@@ -1,9 +1,11 @@
 package me.cubixor.sheepquest.spigot.game;
 
 import com.cryptomorin.xseries.XSound;
-import com.cryptomorin.xseries.particles.XParticle;
+import com.cryptomorin.xseries.messages.Titles;
 import me.cubixor.sheepquest.spigot.SheepQuest;
-import me.cubixor.sheepquest.spigot.api.Utils;
+import me.cubixor.sheepquest.spigot.Utils;
+import me.cubixor.sheepquest.spigot.api.Particles;
+import me.cubixor.sheepquest.spigot.api.Sounds;
 import me.cubixor.sheepquest.spigot.config.ConfigUtils;
 import me.cubixor.sheepquest.spigot.game.kits.Kits;
 import me.cubixor.sheepquest.spigot.gameInfo.GameState;
@@ -38,6 +40,7 @@ public class Kill implements Listener {
     public void onItemDamage(PlayerItemDamageEvent evt) {
         if (Utils.getLocalArena(evt.getPlayer()) != null) {
             evt.setCancelled(true);
+            evt.getPlayer().updateInventory();
         }
     }
 
@@ -67,8 +70,8 @@ public class Kill implements Listener {
             return;
         }
 
-        if (!(attacker.getInventory().getItemInMainHand().equals(Kits.getPlayerKit(attacker).getPrimaryWeapon())
-                || attacker.getInventory().getItemInMainHand().equals(Kits.getPlayerKit(attacker).getSecondaryWeapon()))) {
+        if (!(attacker.getInventory().getItemInHand().equals(Kits.getPlayerKit(attacker).getPrimaryWeapon())
+                || attacker.getInventory().getItemInHand().equals(Kits.getPlayerKit(attacker).getSecondaryWeapon()))) {
             evt.setCancelled(true);
             return;
         }
@@ -95,19 +98,22 @@ public class Kill implements Listener {
             player.setHealth(20);
             player.setAllowFlight(true);
 
-            Utils.playSound(localArena, player.getLocation(), XSound.ENTITY_PLAYER_DEATH.parseSound(), 1, 1);
-            attacker.playSound(attacker.getLocation(), XSound.matchXSound(plugin.getConfig().getString("sounds.kill")).get().parseSound(), 100, 2);
-            player.playSound(player.getLocation(), XSound.matchXSound(plugin.getConfig().getString("sounds.death")).get().parseSound(), 100, 0);
-            player.getWorld().spawnParticle(XParticle.getParticle(plugin.getConfig().getString("particles.death")), player.getLocation().getX(), player.getLocation().getY() + 1.5, player.getLocation().getZ(), 50, 0.1, 0.1, 0.1, 0.1);
-            attacker.sendTitle(" ", plugin.getMessage("game.kill-subtitle")
-                    .replace("%team-color%", localArena.getPlayerTeam().get(player).getChatColor() + "")
-                    .replace("%player%", player.getName()), 5, 40, 5);
+            for (Player p : localArena.getPlayerTeam().keySet()) {
+                p.playSound(player.getLocation(), XSound.ENTITY_PLAYER_DEATH.parseSound(), 1, 1);
+            }
 
+            Sounds.playSound(attacker, attacker.getLocation(), "kill");
+            Sounds.playSound(player, player.getLocation(), "death");
+            Particles.spawnParticle(localArena, player.getLocation().add(0, 1.5, 0), "death");
+
+            Titles.sendTitle(attacker, 5, 40, 5, " ", plugin.getMessage("game.kill-subtitle")
+                    .replace("%team-color%", localArena.getPlayerTeam().get(player).getChatColor() + "")
+                    .replace("%player%", player.getName()));
 
             String killerColor = localArena.getPlayerTeam().get(attacker).getChatColor() + "";
             String playerColor = localArena.getPlayerTeam().get(player).getChatColor() + "";
             for (Player p : localArena.getPlayerTeam().keySet()) {
-                p.hidePlayer(plugin, player);
+                p.hidePlayer(player);
                 p.sendMessage(plugin.getMessage("game.kill").replace("%killer%", attacker.getName()).replace("%player%", player.getName())
                         .replace("%killerTeam%", killerColor).replace("%playerTeam%", playerColor));
             }
@@ -149,11 +155,10 @@ public class Kill implements Listener {
                     int time = localArena.getRespawnTimer().get(player);
                     if (time > 0 && localArena.getState().equals(GameState.GAME)) {
 
-                        player.sendTitle(
-                                plugin.getMessage("game.respawn-in-title")
+                        Titles.sendTitle(player, 0, 30, 0, plugin.getMessage("game.respawn-in-title")
                                         .replace("%team-color%", killerColor)
                                         .replace("%player%", killerName),
-                                plugin.getMessage("game.respawn-in-subtitle").replace("%time%", Integer.toString(time)), 0, 30, 0);
+                                plugin.getMessage("game.respawn-in-subtitle").replace("%time%", Integer.toString(time)));
 
                         List<Integer> timeStamps = new ArrayList<Integer>() {{
                             add(5);
@@ -163,7 +168,7 @@ public class Kill implements Listener {
                             add(1);
                         }};
                         if (timeStamps.contains(time)) {
-                            player.playSound(player.getLocation(), XSound.matchXSound(plugin.getConfig().getString("sounds.respawn-countdown")).get().parseSound(), 100, 1);
+                            Sounds.playSound(player, player.getLocation(), "respawn-countdown");
                         }
 
                         localArena.getRespawnTimer().replace(player, time - 1);
@@ -190,12 +195,12 @@ public class Kill implements Listener {
         }
 
         for (Player p : localArena.getPlayerTeam().keySet()) {
-            p.showPlayer(plugin, player);
+            p.showPlayer(player);
         }
 
-        player.sendTitle(plugin.getMessage("game.respawned-title"), plugin.getMessage("game.respawned-subtitle"), 0, 40, 10);
-        Utils.playSound(localArena, player.getLocation(), XSound.matchXSound(plugin.getConfig().getString("sounds.respawn")).get().parseSound(), 1, 1);
-        player.getWorld().spawnParticle(XParticle.getParticle(plugin.getConfig().getString("particles.respawn")), player.getLocation().getX(), player.getLocation().getY() + 1.5, player.getLocation().getZ(), 50, 1, 1, 1, 0.1);
+        Titles.sendTitle(player, 0, 40, 10, plugin.getMessage("game.respawned-title"), plugin.getMessage("game.respawned-subtitle"));
+        Sounds.playSound(localArena, player.getLocation(), "respawn");
+        Particles.spawnParticle(localArena, player.getLocation().add(0, 1.5, 0), "respawn");
 
 
         localArena.getRespawnTimer().remove(player);

@@ -1,11 +1,10 @@
 package me.cubixor.sheepquest.spigot.game;
 
+import com.cryptomorin.xseries.messages.ActionBar;
 import me.cubixor.sheepquest.spigot.SheepQuest;
-import me.cubixor.sheepquest.spigot.api.Utils;
+import me.cubixor.sheepquest.spigot.Utils;
 import me.cubixor.sheepquest.spigot.gameInfo.GameState;
 import me.cubixor.sheepquest.spigot.gameInfo.LocalArena;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -41,7 +40,7 @@ public class WaitingTips {
                 List<String> tips = new ArrayList<>(plugin.getMessageList("other.tips"));
                 Random random = new Random();
                 String tip = tips.get(random.nextInt(tips.size())).replace("%tip-prefix%", plugin.getMessage("other.tip-prefix"));
-                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(tip));
+                ActionBar.sendActionBar(player, tip);
 
                 new BukkitRunnable() {
                     private int period = 0;
@@ -55,7 +54,7 @@ public class WaitingTips {
                         }
                         if (period < 100) {
                             period += 20;
-                            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(tip));
+                            ActionBar.sendActionBar(player, tip);
                         } else {
                             period = 0;
                             this.cancel();

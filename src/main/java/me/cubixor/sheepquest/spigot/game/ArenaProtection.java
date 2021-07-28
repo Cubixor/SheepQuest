@@ -1,7 +1,7 @@
 package me.cubixor.sheepquest.spigot.game;
 
 import me.cubixor.sheepquest.spigot.SheepQuest;
-import me.cubixor.sheepquest.spigot.api.Utils;
+import me.cubixor.sheepquest.spigot.Utils;
 import me.cubixor.sheepquest.spigot.commands.PlayCommands;
 import me.cubixor.sheepquest.spigot.config.ConfigField;
 import me.cubixor.sheepquest.spigot.config.ConfigUtils;
@@ -10,10 +10,10 @@ import me.cubixor.sheepquest.spigot.gameInfo.LocalArena;
 import me.cubixor.sheepquest.spigot.gameInfo.PlayerInfo;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Sheep;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
@@ -42,6 +42,19 @@ public class ArenaProtection implements Listener {
     }
 
     @EventHandler
+    public void onSheepHurt(EntityDamageEvent evt) {
+        if (!evt.getEntityType().equals(EntityType.SHEEP)) {
+            return;
+        }
+        Sheep sheep = (Sheep) evt.getEntity();
+        for (LocalArena localArena : plugin.getLocalArenas().values()) {
+            if (localArena.getSheep().containsKey(sheep)) {
+                evt.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler
     public void onDrop(PlayerDropItemEvent evt) {
         if (Utils.getLocalArena(evt.getPlayer()) != null) {
             evt.setCancelled(true);
@@ -49,18 +62,12 @@ public class ArenaProtection implements Listener {
     }
 
     @EventHandler
-    public void onPickup(EntityPickupItemEvent evt) {
-        if (evt.getEntityType().equals(EntityType.PLAYER) && Utils.getLocalArena((Player) evt.getEntity()) != null) {
-            evt.setCancelled(true);
-        }
-    }
-
-    @EventHandler
-    public void onArrowPickup(PlayerPickupArrowEvent evt) {
+    public void onPickup(PlayerPickupItemEvent evt) {
         if (Utils.getLocalArena(evt.getPlayer()) != null) {
             evt.setCancelled(true);
         }
     }
+
 
     @EventHandler
     public void onLeave(PlayerQuitEvent evt) {

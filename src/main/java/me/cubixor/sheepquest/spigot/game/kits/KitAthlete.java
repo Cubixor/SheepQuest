@@ -1,8 +1,8 @@
 package me.cubixor.sheepquest.spigot.game.kits;
 
-import com.cryptomorin.xseries.XSound;
-import com.cryptomorin.xseries.particles.XParticle;
-import me.cubixor.sheepquest.spigot.api.Utils;
+import me.cubixor.sheepquest.spigot.Utils;
+import me.cubixor.sheepquest.spigot.api.Particles;
+import me.cubixor.sheepquest.spigot.api.Sounds;
 import me.cubixor.sheepquest.spigot.game.Kill;
 import me.cubixor.sheepquest.spigot.game.SheepCarrying;
 import me.cubixor.sheepquest.spigot.gameInfo.GameState;
@@ -16,6 +16,7 @@ import org.bukkit.entity.Sheep;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
@@ -37,7 +38,14 @@ public class KitAthlete extends Kit implements Listener {
     public void onThrow(PlayerInteractEvent evt) {
         Player player = evt.getPlayer();
         LocalArena localArena = Utils.getLocalArena(player);
-        if (evt.getItem() != null && evt.getHand() != null && localArena != null && localArena.getState().equals(GameState.GAME)
+
+        if (!plugin.isBefore9()) {
+            if (!evt.getHand().equals(EquipmentSlot.HAND)) {
+                return;
+            }
+        }
+
+        if (evt.getItem() != null && localArena != null && localArena.getState().equals(GameState.GAME)
                 && localArena.getPlayerKit().get(player).equals(KitType.ATHLETE)) {
             if (plugin.getConfig().getBoolean("kits.athlete.throw-sheep") &&
                     evt.getItem().equals(plugin.getItems().getSheepItem()) && player.getPassenger() != null && player.getPassenger().getType().equals(EntityType.SHEEP)) {
@@ -55,9 +63,8 @@ public class KitAthlete extends Kit implements Listener {
     private void throwSheep(LocalArena localArena, List<Entity> entityList, Player player) {
         Entity firstEntity = entityList.get(0);
         Team team = localArena.getPlayerTeam().get(player);
-        Utils.playSound(localArena, firstEntity.getLocation(), XSound.matchXSound(plugin.getConfig().getString("sounds.throw-sheep")).get().parseSound(), 1, 1);
-        firstEntity.getWorld().spawnParticle(XParticle.getParticle(plugin.getConfig().getString("particles.throw-sheep")),
-                firstEntity.getLocation().getX(), firstEntity.getLocation().getY() + 1.5, firstEntity.getLocation().getZ(), 50, 1, 1, 1, 0.1);
+        Sounds.playSound(localArena, firstEntity.getLocation(), "throw-sheep");
+        Particles.spawnParticle(localArena, firstEntity.getLocation().add(0, 1.5, 0), "throw-sheep");
         for (Entity e : entityList) {
             e.setVelocity(player.getLocation().getDirection().add(new Vector(0, plugin.getConfig().getDouble("kits.athlete.throw-sheep-power-y"), 0)).multiply(plugin.getConfig().getDouble("kits.athlete.throw-sheep-power")));
             new BukkitRunnable() {
@@ -89,8 +96,8 @@ public class KitAthlete extends Kit implements Listener {
         double damage = plugin.getConfig().getDouble("kits.athlete.launch-players-damage");
         double cooldown = plugin.getConfig().getDouble("kits.athlete.launch-players-cooldown");
 
-        Utils.playSound(localArena, player.getLocation(), XSound.matchXSound(plugin.getConfig().getString("sounds.launch-players")).get().parseSound(), 1, 1);
-        player.getWorld().spawnParticle(XParticle.getParticle(plugin.getConfig().getString("particles.launch-players")), player.getLocation().getX(), player.getLocation().getY() + 1.5, player.getLocation().getZ(), 50, 0.1, 0.1, 0.1, 0.1);
+        Sounds.playSound(localArena, player.getLocation(), "launch-players");
+        Particles.spawnParticle(localArena, player.getLocation().add(0, 1.5, 0), "launch-players");
 
         for (Entity targetEntity : player.getNearbyEntities(range, range, range)) {
             if (!targetEntity.getType().equals(EntityType.PLAYER)) {

@@ -1,16 +1,19 @@
-package me.cubixor.sheepquest.spigot.api;
+package me.cubixor.sheepquest.spigot;
 
 import com.cryptomorin.xseries.XMaterial;
-import com.cryptomorin.xseries.XSound;
-import me.cubixor.sheepquest.spigot.SheepQuest;
+import me.cubixor.sheepquest.spigot.api.BossBar;
+import me.cubixor.sheepquest.spigot.api.PassengerFix;
+import me.cubixor.sheepquest.spigot.api.Sounds;
 import me.cubixor.sheepquest.spigot.config.ConfigField;
 import me.cubixor.sheepquest.spigot.config.ConfigUtils;
 import me.cubixor.sheepquest.spigot.gameInfo.Arena;
 import me.cubixor.sheepquest.spigot.gameInfo.GameState;
 import me.cubixor.sheepquest.spigot.gameInfo.LocalArena;
 import me.cubixor.sheepquest.spigot.gameInfo.Team;
-import org.bukkit.*;
-import org.bukkit.boss.BossBar;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -204,24 +207,6 @@ public class Utils {
         return gameState;
     }
 
-    public static void removeTeamBossBars(Player player, LocalArena localArena) {
-        for (BossBar bossBar : localArena.getTeamBossBars().values()) {
-            bossBar.removePlayer(player);
-        }
-    }
-
-    public static void removeKitBossBars(Player player, LocalArena localArena) {
-        for (BossBar bossBar : localArena.getKitBossBars().values()) {
-            bossBar.removePlayer(player);
-        }
-    }
-
-    public static void playSound(LocalArena localArena, Location loc, Sound sound, float volume, float pitch) {
-        for (Player p : localArena.getPlayerTeam().keySet()) {
-            p.playSound(loc, sound, volume, pitch);
-        }
-    }
-
     public static LinkedHashMap<ConfigField, Boolean> checkIfReady(String arena) {
         LinkedHashMap<ConfigField, Boolean> ready = new LinkedHashMap<>();
 
@@ -302,7 +287,6 @@ public class Utils {
 
 
     public static List<Entity> removeSheep(Player player) {
-        SheepQuest plugin = SheepQuest.getInstance();
         List<Entity> sheep = new ArrayList<>();
 
         if (player.getPassenger() != null) {
@@ -318,9 +302,12 @@ public class Utils {
             sheep.add(player.getPassenger());
             player.eject();
 
-            player.playSound(player.getLocation(), XSound.matchXSound(plugin.getConfig().getString("sounds.sheep-drop")).get().parseSound(), 100, 1);
+            Sounds.playSound(player, player.getLocation(), "sheep-drop");
             player.removePotionEffect(PotionEffectType.SLOW);
         }
+
+        PassengerFix.updatePassengers(player);
+
         return sheep;
     }
 
@@ -416,4 +403,9 @@ public class Utils {
         return teams;
     }
 
+    public static void removeTeamBossBars(Player player, LocalArena localArena) {
+        for (BossBar bossBar : localArena.getTeamBossBars().values()) {
+            bossBar.removePlayer(player);
+        }
+    }
 }

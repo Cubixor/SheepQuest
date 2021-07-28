@@ -3,6 +3,7 @@ package me.cubixor.sheepquest.spigot;
 import com.cryptomorin.xseries.XMaterial;
 import com.google.common.base.Charsets;
 import me.cubixor.sheepquest.spigot.api.ConfigUpdater;
+import me.cubixor.sheepquest.spigot.api.PassengerFix;
 import me.cubixor.sheepquest.spigot.api.PlaceholderExpansion;
 import me.cubixor.sheepquest.spigot.api.Updater;
 import me.cubixor.sheepquest.spigot.commands.Command;
@@ -25,11 +26,14 @@ import org.bstats.charts.SingleLineChart;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.boss.BarColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
+import org.inventivetalent.apihelper.APIManager;
+import org.inventivetalent.bossbar.BossBarAPI;
 
 import java.io.File;
 import java.io.IOException;
@@ -59,6 +63,8 @@ public final class SheepQuest extends JavaPlugin {
     private Items items;
     private final List<Kit> kits = new ArrayList<>();
     private boolean enabled = false;
+    private boolean before9 = false;
+    private boolean passengerFix = false;
 
     private MysqlConnection mysqlConnection;
     private boolean bungee;
@@ -76,8 +82,21 @@ public final class SheepQuest extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
+        //Check if server is 1.8
+        // If true register bossbar api
+        try {
+            BarColor.WHITE.name();
+        } catch (NoClassDefFoundError e) {
+            before9 = true;
+            APIManager.require(BossBarAPI.class, this);
+            APIManager.initAPI(BossBarAPI.class);
+        }
+
         //Legacy material initialization
         XMaterial.matchXMaterial("BLACK_STAINED_GLASS").get().parseItem().getData();
+
+        //1.9 and 1.10 passenger fix
+        new PassengerFix().setupPassengerFix();
 
         kits.add(new KitStandard());
         kits.add(new KitArcher());
@@ -399,5 +418,17 @@ public final class SheepQuest extends JavaPlugin {
 
     public boolean isDisabled() {
         return !enabled;
+    }
+
+    public boolean isBefore9() {
+        return before9;
+    }
+
+    public boolean isPassengerFix() {
+        return passengerFix;
+    }
+
+    public void setPassengerFix(boolean passengerFix) {
+        this.passengerFix = passengerFix;
     }
 }

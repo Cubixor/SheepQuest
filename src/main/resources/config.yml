@@ -73,7 +73,7 @@ bungee:
   # WARNING! You can use it only if you have enabled saving stats and arenas to database.
   #
   # WARNING! If you enable this option remember to upload the plugin to the bungeecord server and
-  # to fill in the connection.yml file with info that is needed to connect to bungeecord server. [true/fallse]
+  # to fill in the connection.yml file with info that is needed to connect to bungeecord server. [true/false]
   bungee-mode: false
 
   # What should happen to the player who left the game?
@@ -169,43 +169,219 @@ effects:
   kill-blindness: true
   kill-slowness: true
 
-# All sounds that are played during game. Full sound list available here: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html [sound]
-sounds:
-  join: ENTITY_ENDERMAN_TELEPORT
-  leave: ENTITY_ENDERMAN_TELEPORT
-  team-choose: UI_BUTTON_CLICK
-  countdown: BLOCK_NOTE_BLOCK_PLING
-  start: ENTITY_ENDERDRAGON_AMBIENT
-  sheep-pick: ENTITY_HORSE_SADDLE
-  sheep-drop: ITEM_ARMOR_EQUIP_LEATHER
-  sheep-bring: ENTITY_PLAYER_LEVELUP
-  sheep-spawn: ENTITY_CHICKEN_EGG
-  death: BLOCK_ANVIL_LAND
-  kill: ENTITY_ELDER_GUARDIAN_CURSE
-  respawn-countdown: ENTITY_EXPERIENCE_ORB_PICKUP
-  respawn: ENTITY_ENDERMAN_TELEPORT
-  ending-countdown: BLOCK_NOTE_BLOCK_HAT
-  win: ENTITY_ENDER_DRAGON_DEATH
-  defeat: ENTITY_WITHER_SPAWN
-  dash: ENTITY_GHAST_SHOOT
-  throw-sheep: ENTITY_GHAST_SHOOT
-  launch-players: ENTITY_GHAST_SHOOT
+# All sounds that are played during game.
+#
+# Full sound list available here: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html [sound]
+#
+# How to configure:
+# name: - sound name, do not change it
+#   enabled: true - enable or disable the sound [true/false]
+#   sound: UI_BUTTON_CLICK - sound type, choose one from the list mentioned above [sound]
+#   volume: 1 - sound volume [float]
+#   pitch: 1 - sound pitch [float]
 
-# All particles that appear in game. Full particle list available here: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Particle.html [particle]
+sounds:
+  join:
+    enabled: true
+    sound: ENTITY_ENDERMAN_TELEPORT
+    volume: 1
+    pitch: 1
+  leave:
+    enabled: true
+    sound: ENTITY_ENDERMAN_TELEPORT
+    volume: 1
+    pitch: 1
+  click:
+    enabled: true
+    sound: UI_BUTTON_CLICK
+    volume: 1
+    pitch: 1
+  countdown:
+    enabled: true
+    sound: BLOCK_NOTE_BLOCK_PLING
+    volume: 100
+  start:
+    enabled: true
+    sound: ENTITY_ENDER_DRAGON_GROWL
+    volume: 100
+    pitch: 1
+  sheep-pick:
+    enabled: true
+    sound: ENTITY_HORSE_SADDLE
+    volume: 100
+    pitch: 1
+  sheep-drop:
+    enabled: true
+    sound: ITEM_ARMOR_EQUIP_LEATHER
+    volume: 100
+    pitch: 1
+  sheep-bring:
+    enabled: true
+    sound: ENTITY_PLAYER_LEVELUP
+    volume: 1
+    pitch: 1
+  sheep-spawn:
+    enabled: true
+    sound: ENTITY_CHICKEN_EGG
+    volume: 1
+    pitch: 1
+  death:
+    enabled: true
+    sound: BLOCK_ANVIL_LAND
+    volume: 100
+    pitch: 0
+  kill:
+    enabled: true
+    sound: ENTITY_ELDER_GUARDIAN_CURSE
+    volume: 100
+    pitch: 2
+  respawn-countdown:
+    enabled: true
+    sound: ENTITY_EXPERIENCE_ORB_PICKUP
+    volume: 100
+    pitch: 1
+  respawn:
+    enabled: true
+    sound: ENTITY_ENDERMAN_TELEPORT
+    volume: 1
+    pitch: 1
+  ending-countdown:
+    enabled: true
+    sound: BLOCK_NOTE_BLOCK_HAT
+    volume: 100
+    pitch: 1
+  win:
+    enabled: true
+    sound: ENTITY_ENDER_DRAGON_DEATH
+    volume: 100
+    pitch: 1
+  defeat:
+    enabled: true
+    sound: ENTITY_WITHER_SPAWN
+    volume: 100
+    pitch: 1
+  dash:
+    enabled: true
+    sound: ENTITY_GHAST_SHOOT
+    volume: 1
+    pitch: 1
+  throw-sheep:
+    enabled: true
+    sound: ENTITY_GHAST_SHOOT
+    volume: 1
+    pitch: 1
+  launch-players:
+    enabled: true
+    sound: ENTITY_GHAST_SHOOT
+    volume: 1
+    pitch: 1
+  bonus-sheep-spawn:
+    enabled: true
+    sound: ENTITY_GENERIC_EXPLODE
+    volume: 1
+    pitch: 0.9
+  bonus-sheep-bring:
+    enabled: true
+    sound: ENTITY_PLAYER_LEVELUP
+    volume: 1
+    pitch: 0
+
+# All particles that appear in game.
+#
+# Full particle list for versions from 1.9 up to latest available here: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Particle.html
+# Full particle list for version 1.8 available here: https://hastebin.com/uyebofosen.less
+# WARNING! Remember to use proper particle list while editing this section!!!
+#
+# How to configure:
+# name: - particle name, do not change it
+#   enabled: true - enable or disable the particle [true/false]
+#   particle: CLOUD - particle type, choose one from the list mentioned above [particle]
+#   count: 50 - the number of particles [number]
+#   offset: 1 - the maximum random offset on all the axis [float]
+#   speed: 1 - particle speed [float]
 particles:
-  join: CLOUD
-  leave: CLOUD
-  sheep-bring: VILLAGER_HAPPY
-  sheep-spawn: SPELL_WITCH
-  death: END_ROD
-  respawn: CLOUD
-  win: HEART
-  dash: CLOUD
-  throw-sheep: CLOUD
-  launch-players: CLOUD
+  join:
+    enabled: true
+    particle: CLOUD
+    count: 50
+    offset: 1
+    speed: 0.1
+  leave:
+    enabled: true
+    particle: CLOUD
+    count: 50
+    offset: 1
+    speed: 0.1
+  sheep-bring:
+    enabled: true
+    particle: VILLAGER_HAPPY
+    count: 50
+    offset: 1
+    speed: 0.1
+  sheep-spawn:
+    enabled: true
+    particle: SPELL_WITCH
+    count: 50
+    offset: 1
+    speed: 0.1
+  death:
+    enabled: true
+    particle: DRIP_LAVA
+    count: 50
+    offset: 0.1
+    speed: 0.1
+  respawn:
+    enabled: true
+    particle: CLOUD
+    count: 50
+    offset: 1
+    speed: 0.1
+  win:
+    enabled: true
+    particle: HEART
+    count: 30
+    offset: 0.5
+    speed: 0.1
+  dash:
+    enabled: true
+    particle: CLOUD
+    count: 50
+    offset: 1
+    speed: 0.1
+  throw-sheep:
+    enabled: true
+    particle: CLOUD
+    count: 50
+    offset: 1
+    speed: 0.1
+  launch-players:
+    enabled: true
+    particle: CLOUD
+    count: 50
+    offset: 1
+    speed: 0.1
+  bonus-sheep-spawn:
+    enabled: true
+    particle: EXPLOSION_HUGE
+    count: 1
+    offset: 0
+    speed: 0.1
+  bonus-sheep-bring:
+    enabled: true
+    particle: PORTAL
+    count: 70
+    offset: 1
+    speed: 0.1
+  bonus-sheep-carrying:
+    enabled: true
+    particle: FLAME
+    count: 50
+    offset: 0.1
+    speed: 0.1
 
   # WARNING! You can't change blood particles, there is only an option to enable or disable it. [true/false]
   enable-blood: true
+
 
 # If true, blocks behind signs will be changed depending on game state. [true/false]
 color-signs: true
@@ -311,9 +487,6 @@ kits:
     # Number of seconds every which player will receive an arrow. [seconds]
     arrow-interval: 5
 
-    # Should arrows be removed from ground? [true/false]
-    remove-arrows: true
-
   # Athlete kit settings
   athlete:
 
@@ -390,22 +563,11 @@ special-events:
     # Bonus sheep speed. [float]
     speed: 1.0
 
-    # Bonus sheep points
+    # Bonus sheep points [number]
     points: 3
 
-    # Bonus sheep particles
-    particles:
-      spawn: EXPLOSION_HUGE
-      bring: DRAGON_BREATH
-      carrying: FLAME
-
-    # Bonus sheep sounds
-    sounds:
-      spawn: ENTITY_GENERIC_EXPLODE
-      bring: ENTITY_PLAYER_LEVELUP
-
 # Can plugin send usage statistics to the author using bStats software?
-# Please, leave it enabled if you want to help me working on the plugin.
+# Please, leave it enabled if you want to help me working on the plugin. [true/false]
 send-stats: true
 
 # Config version - DO NOT CHANGE IT!

@@ -1,9 +1,10 @@
 package me.cubixor.sheepquest.spigot.commands;
 
-import com.cryptomorin.xseries.XSound;
-import com.cryptomorin.xseries.particles.XParticle;
+import com.cryptomorin.xseries.messages.ActionBar;
 import me.cubixor.sheepquest.spigot.SheepQuest;
-import me.cubixor.sheepquest.spigot.api.Utils;
+import me.cubixor.sheepquest.spigot.Utils;
+import me.cubixor.sheepquest.spigot.api.Particles;
+import me.cubixor.sheepquest.spigot.api.Sounds;
 import me.cubixor.sheepquest.spigot.config.ConfigField;
 import me.cubixor.sheepquest.spigot.config.ConfigUtils;
 import me.cubixor.sheepquest.spigot.config.StatsField;
@@ -14,7 +15,6 @@ import me.cubixor.sheepquest.spigot.game.kits.Kits;
 import me.cubixor.sheepquest.spigot.gameInfo.*;
 import me.cubixor.sheepquest.spigot.socket.BungeeUtils;
 import me.cubixor.sheepquest.spigot.socket.SocketClientSender;
-import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -23,6 +23,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -136,14 +137,14 @@ public class PlayCommands {
             localArena.getPlayerTeam().put(player, Team.NONE);
             localArena.getPlayerKit().put(player, KitType.STANDARD);
             localArena.getTeamBossBars().get(Team.NONE).addPlayer(player);
-            localArena.getKitBossBars().get(KitType.STANDARD).addPlayer(player);
             int count = localArena.getPlayers().size() - 1;
 
             PlayerData playerData = new PlayerData(
-                    player.getInventory().getContents(), player.getLocation(), player.getActivePotionEffects(),
+                    player.getInventory().getContents(), player.getInventory().getArmorContents(), player.getLocation(), player.getActivePotionEffects(),
                     player.getGameMode(), player.getHealth(), player.getFoodLevel(), player.getExp(), player.getLevel(), player.getAllowFlight());
             localArena.getPlayerData().put(player, playerData);
             player.getInventory().clear();
+            player.getInventory().setArmorContents(new ItemStack[4]);
             player.setGameMode(GameMode.ADVENTURE);
             player.setHealth(20);
             player.setFoodLevel(20);
@@ -167,8 +168,8 @@ public class PlayCommands {
             String maxString = Integer.toString(max);
             String countString = Integer.toString(count);
 
-            Utils.playSound(localArena, player.getLocation(), XSound.matchXSound(plugin.getConfig().getString("sounds.join")).get().parseSound(), 1, 1);
-            waitingLobby.getWorld().spawnParticle(XParticle.getParticle(plugin.getConfig().getString("particles.join")), waitingLobby.getX(), waitingLobby.getY() + 1.5, waitingLobby.getZ(), 50, 1, 1, 1, 0.1);
+            Sounds.playSound(localArena, player.getLocation(), "join");
+            Particles.spawnParticle(localArena, waitingLobby.add(0, 1.5, 0), "join");
             for (Player p : localArena.getPlayerTeam().keySet()) {
                 p.sendMessage(plugin.getMessage("game.arena-join-success").replace("%player%", player.getName()).replace("%count%", countString).replace("%max%", maxString));
             }
@@ -193,7 +194,7 @@ public class PlayCommands {
             } else {
                 Scoreboards scoreboards = new Scoreboards();
                 for (Player p : localArena.getPlayerTeam().keySet()) {
-                    p.setScoreboard(scoreboards.getWaitingScoreboard(localArena));
+                    p.setScoreboard(scoreboards.getWaitingScoreboard(localArena, p));
                 }
             }
 
@@ -302,12 +303,13 @@ public class PlayCommands {
         localArena.getPlayers().remove(player.getName());
         PlayerData playerData = localArena.getPlayerData().get(player);
         player.getInventory().setContents(playerData.getInventory());
+        player.getInventory().setArmorContents(playerData.getArmorContents());
         player.updateInventory();
         player.removePotionEffect(PotionEffectType.SLOW);
         for (PotionEffect potionEffect : playerData.getPotionEffects()) {
             player.addPotionEffect(potionEffect);
         }
-        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(" "));
+        ActionBar.clearActionBar(player);
         if (plugin.getPlayerInfo().get(player) != null)
             plugin.getPlayerInfo().get(player).getTipTask().cancel();
         player.setGameMode(playerData.getGameMode());
@@ -318,13 +320,10 @@ public class PlayCommands {
         player.setAllowFlight(playerData.isFly());
         player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
         localArena.getPlayerData().remove(player);
-
-        KitType playerKit = localArena.getPlayerKit().get(player);
-
         localArena.getPlayerKit().remove(player);
 
-        Utils.playSound(localArena, player.getLocation(), XSound.matchXSound(plugin.getConfig().getString("sounds.leave")).get().parseSound(), 1, 1);
-        player.getWorld().spawnParticle(XParticle.getParticle(plugin.getConfig().getString("particles.join")), player.getLocation().getX(), player.getLocation().getY() + 1.5, player.getLocation().getZ(), 50, 1, 1, 1, 0.1);
+        Sounds.playSound(localArena, player.getLocation(), "leave");
+        Particles.spawnParticle(localArena, player.getLocation().add(0, 1.5, 0), "leave");
 
         if (plugin.isEnabled()) {
             if (localArena.getState().equals(GameState.ENDING)) {
@@ -339,7 +338,6 @@ public class PlayCommands {
 
         if (localArena.getPlayerTeam().containsKey(player)) {
             localArena.getTeamBossBars().get(localArena.getPlayerTeam().get(player)).removePlayer(player);
-            localArena.getKitBossBars().get(playerKit).removePlayer(player);
             if (localArena.getPlayerStats().get(player) != null && localArena.getPlayerStats().get(player).getSheepCooldown() != null) {
                 localArena.getPlayerStats().get(player).getSheepCooldown().cancel();
             }
@@ -359,7 +357,7 @@ public class PlayCommands {
 
                                 Scoreboards scoreboards = new Scoreboards();
                                 for (Player p : localArena.getPlayerTeam().keySet()) {
-                                    p.setScoreboard(scoreboards.getWaitingScoreboard(localArena));
+                                    p.setScoreboard(scoreboards.getWaitingScoreboard(localArena, p));
                                     p.sendMessage(plugin.getMessage("game.start-cancelled"));
                                     p.setLevel(0);
                                     p.setExp(0);
@@ -389,7 +387,7 @@ public class PlayCommands {
         } else {
             player.teleport(playerData.getLocation());
         }
-        player.playSound(player.getLocation(), XSound.matchXSound(plugin.getConfig().getString("sounds.leave")).get().parseSound(), 100, 1);
+        Sounds.playSound(player, player.getLocation(), "leave");
 
         if (plugin.isEnabled()) {
             new Teams().menuUpdate(localArena);

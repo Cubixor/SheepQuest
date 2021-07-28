@@ -1,7 +1,7 @@
 package me.cubixor.sheepquest.spigot.game.kits;
 
 import me.cubixor.sheepquest.spigot.SheepQuest;
-import me.cubixor.sheepquest.spigot.api.Utils;
+import me.cubixor.sheepquest.spigot.Utils;
 import me.cubixor.sheepquest.spigot.gameInfo.LocalArena;
 import org.bukkit.entity.Player;
 

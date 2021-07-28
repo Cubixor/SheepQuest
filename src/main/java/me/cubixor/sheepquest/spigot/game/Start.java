@@ -1,9 +1,11 @@
 package me.cubixor.sheepquest.spigot.game;
 
 import com.cryptomorin.xseries.XMaterial;
-import com.cryptomorin.xseries.XSound;
+import com.cryptomorin.xseries.messages.ActionBar;
+import com.cryptomorin.xseries.messages.Titles;
 import me.cubixor.sheepquest.spigot.SheepQuest;
-import me.cubixor.sheepquest.spigot.api.Utils;
+import me.cubixor.sheepquest.spigot.Utils;
+import me.cubixor.sheepquest.spigot.api.Sounds;
 import me.cubixor.sheepquest.spigot.config.ConfigUtils;
 import me.cubixor.sheepquest.spigot.game.events.SpecialEvents;
 import me.cubixor.sheepquest.spigot.game.kits.KitArcher;
@@ -11,8 +13,6 @@ import me.cubixor.sheepquest.spigot.game.kits.KitType;
 import me.cubixor.sheepquest.spigot.game.kits.Kits;
 import me.cubixor.sheepquest.spigot.gameInfo.*;
 import me.cubixor.sheepquest.spigot.socket.SocketClientSender;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -59,8 +59,7 @@ public class Start {
             p.setLevel(0);
             plugin.getPlayerInfo().get(p).getTipTask().cancel();
             Utils.removeTeamBossBars(p, localArena);
-            Utils.removeKitBossBars(p, localArena);
-            p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(" "));
+            ActionBar.clearActionBar(p);
             localArena.getPlayerStats().put(p, new PlayerGameStats());
 
 
@@ -81,9 +80,9 @@ public class Start {
             p.getInventory().setItem(8, setTeamItem(team));
             p.teleport(ConfigUtils.getSpawn(arenaName, team));
 
-            p.playSound(p.getLocation(), XSound.matchXSound(plugin.getConfig().getString("sounds.start")).get().parseSound(), 1000, 1);
-            p.sendTitle(plugin.getMessage("game.start-title"), plugin.getMessage("game.start-subtitle")
-                    .replace("%team%", team.getName()), 0, 60, 10);
+            Sounds.playSound(p, p.getLocation(), "start");
+            Titles.sendTitle(p, 0, 60, 10, plugin.getMessage("game.start-title"), plugin.getMessage("game.start-subtitle")
+                    .replace("%team%", team.getName()));
 
         }
 

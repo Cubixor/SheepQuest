@@ -36,6 +36,7 @@ general:
   vip-prefix: "&7[&6&lVIP&7] "
   too-fast: "%prefix% &cToo fast!"
   invalid-player: "%prefix% &cThis player has never played SheepQuest before!"
+  version-not-supported: "%prefix% &cThis feature is not available on spigot 1.8! Upgrade to the newer version to use it!"
 other:
   stats-command-usage: "%prefix% &cWrong use! &7Type: &e/sq stats &a[player]"
   stats:
@@ -236,8 +237,11 @@ game:
     - " "
     - "&7Players: &e%players%"
     - "   "
-    - "&7Waiting..."
+    - "&7Team: %team%"
+    - "&7Kit: %kit%"
     - "    "
+    - "&7Waiting..."
+    - "     "
     - "&7%date%"
   scoreboard-new-starting:
     - ""
@@ -245,8 +249,11 @@ game:
     - " "
     - "&7Players: &e%players%"
     - "   "
-    - "&7Starting in: &e%time-short%"
+    - "&7Team: %team%"
+    - "&7Kit: %kit%"
     - "    "
+    - "&7Starting in: &e%time-short%"
+    - "     "
     - "&7%date%"
   scoreboard-new-game:
     - ""

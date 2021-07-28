@@ -2,7 +2,7 @@ package me.cubixor.sheepquest.spigot.menu;
 
 import com.cryptomorin.xseries.XMaterial;
 import me.cubixor.sheepquest.spigot.SheepQuest;
-import me.cubixor.sheepquest.spigot.api.Utils;
+import me.cubixor.sheepquest.spigot.Utils;
 import me.cubixor.sheepquest.spigot.commands.PlayCommands;
 import me.cubixor.sheepquest.spigot.config.ConfigField;
 import me.cubixor.sheepquest.spigot.config.ConfigUtils;

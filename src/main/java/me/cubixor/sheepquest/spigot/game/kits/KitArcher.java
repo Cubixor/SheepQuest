@@ -1,6 +1,6 @@
 package me.cubixor.sheepquest.spigot.game.kits;
 
-import me.cubixor.sheepquest.spigot.api.Utils;
+import me.cubixor.sheepquest.spigot.Utils;
 import me.cubixor.sheepquest.spigot.gameInfo.GameState;
 import me.cubixor.sheepquest.spigot.gameInfo.LocalArena;
 import org.bukkit.entity.Player;
@@ -63,9 +63,7 @@ public class KitArcher extends Kit implements Listener {
         if (!(evt.getEntity().getShooter() instanceof Player && Utils.getLocalArena((Player) evt.getEntity().getShooter()) != null)) {
             return;
         }
-        if (plugin.getConfig().getBoolean("kits.archer.remove-arrows")) {
-            evt.getEntity().remove();
-        }
+        evt.getEntity().remove();
 
     }
 }

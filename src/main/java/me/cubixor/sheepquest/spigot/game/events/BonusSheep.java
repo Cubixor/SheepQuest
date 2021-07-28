@@ -1,9 +1,10 @@
 package me.cubixor.sheepquest.spigot.game.events;
 
-import com.cryptomorin.xseries.XSound;
-import com.cryptomorin.xseries.particles.XParticle;
 import me.cubixor.sheepquest.spigot.SheepQuest;
-import me.cubixor.sheepquest.spigot.api.Utils;
+import me.cubixor.sheepquest.spigot.Utils;
+import me.cubixor.sheepquest.spigot.api.Particles;
+import me.cubixor.sheepquest.spigot.api.PassengerFix;
+import me.cubixor.sheepquest.spigot.api.Sounds;
 import me.cubixor.sheepquest.spigot.config.ConfigField;
 import me.cubixor.sheepquest.spigot.config.ConfigUtils;
 import me.cubixor.sheepquest.spigot.game.PathFinding;
@@ -31,12 +32,12 @@ public class BonusSheep {
         Location loc = ConfigUtils.getLocation(arenaString, ConfigField.SHEEP_SPAWN);
         Sheep sheep = loc.getWorld().spawn(loc, Sheep.class);
         sheep.setColor(DyeColor.valueOf(plugin.getConfig().getString("special-events.bonus-sheep.color")));
-        sheep.setInvulnerable(true);
+        //sheep.setInvulnerable(true);
         sheep.setCustomName(plugin.getMessage("special-events.bonus-sheep-name").replace("%points%", plugin.getConfig().getString("special-events.bonus-sheep.points")));
         localArena.getSpecialEventsData().getBonusSheepTeam().put(sheep, Team.NONE);
 
-        Utils.playSound(localArena, loc, XSound.matchXSound(plugin.getConfig().getString("special-events.bonus-sheep.sounds.spawn")).get().parseSound(), 1, 0.9f);
-        loc.getWorld().spawnParticle(XParticle.getParticle(plugin.getConfig().getString("special-events.bonus-sheep.particles.spawn")), loc.getX(), loc.getY() + 1, loc.getZ(), 1, 0, 0, 0, 0.1);
+        Sounds.playSound(localArena, loc, "bonus-sheep-spawn");
+        Particles.spawnParticle(localArena, loc.add(0, 1.5, 0), "bonus-sheep-spawn");
 
         PathFinding.walkToLocation(sheep, loc, plugin.getConfig().getDouble("special-events.bonus-sheep.speed"), localArena, Team.NONE);
 
@@ -68,8 +69,8 @@ public class BonusSheep {
 
         localArena.getPlayerStats().get(player).setBonusSheepTaken(localArena.getPlayerStats().get(player).getBonusSheepTaken() + 1);
 
-        Utils.playSound(localArena, player.getLocation(), XSound.matchXSound(plugin.getConfig().getString("special-events.bonus-sheep.sounds.bring")).get().parseSound(), 1, 0);
-        player.getWorld().spawnParticle(XParticle.getParticle(plugin.getConfig().getString("special-events.bonus-sheep.particles.bring")), player.getLocation().getX(), player.getLocation().getY() + 1.5, player.getLocation().getZ(), 70, 1, 1, 1, 0.1);
+        Sounds.playSound(localArena, player.getLocation(), "bonus-sheep-bring");
+        Particles.spawnParticle(localArena, player.getLocation().add(0, 1.5, 0), "bonus-sheep-bring");
 
     }
 
@@ -80,12 +81,14 @@ public class BonusSheep {
                 if (player.getPassenger() == null) {
                     player.setPassenger(sheep);
                     if (player.getPassenger() != null) {
-                        player.playSound(player.getLocation(), XSound.matchXSound(plugin.getConfig().getString("sounds.sheep-pick")).get().parseSound(), 100, 1);
+                        Sounds.playSound(player, player.getLocation(), "sheep-pick");
                         if (plugin.getConfig().getBoolean("effects.sheep-slowness")) {
                             player.removePotionEffect(PotionEffectType.SLOW);
                             player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 9999999, 2, false, false));
                         }
                         carryingParticles(player, sheep);
+
+                        PassengerFix.updatePassengers(player);
                     }
                 }
             }
@@ -107,8 +110,7 @@ public class BonusSheep {
                     return;
                 }
 
-                player.getWorld().spawnParticle(XParticle.getParticle(plugin.getConfig().getString("special-events.bonus-sheep.particles.carrying")),
-                        player.getLocation().getX(), player.getLocation().getY() + 3.5, player.getLocation().getZ(), 50, 0.1, 0.1, 0.1, 0.1);
+                Particles.spawnParticle(Utils.getLocalArena(player), player.getLocation().add(0, 3.5, 0), "bonus-sheep-carrying");
 
             }
         }.runTaskTimer(plugin, 0, 10);

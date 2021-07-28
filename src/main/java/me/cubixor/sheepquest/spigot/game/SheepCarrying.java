@@ -1,9 +1,10 @@
 package me.cubixor.sheepquest.spigot.game;
 
-import com.cryptomorin.xseries.XSound;
-import com.cryptomorin.xseries.particles.XParticle;
 import me.cubixor.sheepquest.spigot.SheepQuest;
-import me.cubixor.sheepquest.spigot.api.Utils;
+import me.cubixor.sheepquest.spigot.Utils;
+import me.cubixor.sheepquest.spigot.api.Particles;
+import me.cubixor.sheepquest.spigot.api.PassengerFix;
+import me.cubixor.sheepquest.spigot.api.Sounds;
 import me.cubixor.sheepquest.spigot.game.events.BonusSheep;
 import me.cubixor.sheepquest.spigot.gameInfo.GameState;
 import me.cubixor.sheepquest.spigot.gameInfo.LocalArena;
@@ -50,9 +51,10 @@ public class SheepCarrying implements Listener {
         for (Entity e : evt.getPlayer().getNearbyEntities(1, 1, 1)) {
 
             if (e.getType().equals(EntityType.SHEEP) &&
-                    evt.getPlayer().getInventory().getItemInMainHand().equals(plugin.getItems().getSheepItem()) &&
+                    evt.getPlayer().getInventory().getItemInHand().equals(plugin.getItems().getSheepItem()) &&
                     !localArena.getRespawnTimer().containsKey(evt.getPlayer()) &&
-                    !isSheepCarried(e, localArena)) {
+                    !isSheepCarried(e, localArena) &&
+                    e.isOnGround()) {
                 Sheep sheep = (Sheep) e;
                 if (sheep.getColor().equals(DyeColor.WHITE) || !team.equals(getTeamByColor(sheep.getColor()))) {
                     boolean pas1Exists = player.getPassenger() != null;
@@ -83,7 +85,7 @@ public class SheepCarrying implements Listener {
                     if (evt.getPlayer().getPassenger() == null) {
                         player.setPassenger(e);
                         if (player.getPassenger() != null) {
-                            player.playSound(player.getLocation(), XSound.matchXSound(plugin.getConfig().getString("sounds.sheep-pick")).get().parseSound(), 100, 1);
+                            Sounds.playSound(player, player.getLocation(), "sheep-pick");
                             if (plugin.getConfig().getBoolean("effects.sheep-slowness")) {
                                 player.removePotionEffect(PotionEffectType.SLOW);
                                 evt.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 9999999, 0, false, false));
@@ -97,7 +99,7 @@ public class SheepCarrying implements Listener {
                         if (pas1.getPassenger() == null) {
                             pas1.setPassenger(e);
                             if (pas1.getPassenger() != null) {
-                                player.playSound(player.getLocation(), XSound.matchXSound(plugin.getConfig().getString("sounds.sheep-pick")).get().parseSound(), 100, 1);
+                                Sounds.playSound(player, player.getLocation(), "sheep-pick");
                                 if (plugin.getConfig().getBoolean("effects.sheep-slowness")) {
                                     player.removePotionEffect(PotionEffectType.SLOW);
                                     evt.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 9999999, 1, false, false));
@@ -108,7 +110,7 @@ public class SheepCarrying implements Listener {
                             if (pas2.getPassenger() == null) {
                                 pas2.setPassenger(e);
                                 if (pas2.getPassenger() != null) {
-                                    player.playSound(player.getLocation(), XSound.matchXSound(plugin.getConfig().getString("sounds.sheep-pick")).get().parseSound(), 100, 1);
+                                    Sounds.playSound(player, player.getLocation(), "sheep-pick");
                                     if (plugin.getConfig().getBoolean("effects.sheep-slowness")) {
                                         player.removePotionEffect(PotionEffectType.SLOW);
                                         evt.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 9999999, 2, false, false));
@@ -117,6 +119,7 @@ public class SheepCarrying implements Listener {
                             }
                         }
                     }
+                    PassengerFix.updatePassengers(player);
                 }
             }
         }
@@ -181,6 +184,8 @@ public class SheepCarrying implements Listener {
 
                         player.eject();
 
+                        PassengerFix.updatePassengers(player);
+
                     }
 
                 }
@@ -229,8 +234,8 @@ public class SheepCarrying implements Listener {
 
         sheep.setColor(team.getDyeColor());
 
-        Utils.playSound(localArena, sheep.getLocation(), XSound.matchXSound(plugin.getConfig().getString("sounds.sheep-bring")).get().parseSound(), 1, 1);
-        sheep.getWorld().spawnParticle(XParticle.getParticle(plugin.getConfig().getString("particles.sheep-bring")), sheep.getLocation().getX(), sheep.getLocation().getY() + 1.5, sheep.getLocation().getZ(), 50, 1, 1, 1, 0.1);
+        Sounds.playSound(localArena, sheep.getLocation(), "sheep-bring");
+        Particles.spawnParticle(localArena, player.getLocation().add(0, 1.5, 0), "sheep-bring");
     }
 
     @EventHandler

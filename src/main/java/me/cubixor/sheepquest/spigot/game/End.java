@@ -1,9 +1,11 @@
 package me.cubixor.sheepquest.spigot.game;
 
-import com.cryptomorin.xseries.XSound;
-import com.cryptomorin.xseries.particles.XParticle;
+import com.cryptomorin.xseries.messages.ActionBar;
+import com.cryptomorin.xseries.messages.Titles;
 import me.cubixor.sheepquest.spigot.SheepQuest;
-import me.cubixor.sheepquest.spigot.api.Utils;
+import me.cubixor.sheepquest.spigot.Utils;
+import me.cubixor.sheepquest.spigot.api.Particles;
+import me.cubixor.sheepquest.spigot.api.Sounds;
 import me.cubixor.sheepquest.spigot.commands.PlayCommands;
 import me.cubixor.sheepquest.spigot.config.ConfigUtils;
 import me.cubixor.sheepquest.spigot.config.StatsField;
@@ -11,8 +13,6 @@ import me.cubixor.sheepquest.spigot.config.StatsUtils;
 import me.cubixor.sheepquest.spigot.game.events.SpecialEvents;
 import me.cubixor.sheepquest.spigot.gameInfo.*;
 import me.cubixor.sheepquest.spigot.socket.SocketClientSender;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
@@ -22,7 +22,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Sheep;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.*;
 
@@ -58,7 +57,7 @@ public class End {
         if (noWin) {
             winnerTeam = Team.NONE;
         } else {
-            winnerTeam = (new ArrayList<>(winnerSorted.keySet())).get(winnerSorted.size() - 1);
+            winnerTeam = (new ArrayList<>(winnerSorted.keySet())).get(0);
         }
         String winnerTeamString = winnerTeam.getCode();
 
@@ -75,7 +74,7 @@ public class End {
             if (localArena.getRespawnTimer().containsKey(p)) {
                 new Kill().respawn(localArena, p);
             }
-            p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(" "));
+            ActionBar.clearActionBar(p);
 
             Utils.removeSheep(p);
 
@@ -92,17 +91,17 @@ public class End {
             StatsUtils.addStats(playerName, StatsField.SHEEP_TAKEN, playerStats.getSheepTaken());
             StatsUtils.addStats(playerName, StatsField.BONUS_SHEEP_TAKEN, playerStats.getBonusSheepTaken());
 
-            boolean won = !noWin && localArena.getPlayerTeam().get(p).equals((new ArrayList<>(winnerSorted.keySet())).get(winnerSorted.size() - 1));
+            boolean won = !noWin && localArena.getPlayerTeam().get(p).equals(winnerTeam);
 
             if (won) {
-                p.playSound(p.getLocation(), XSound.matchXSound(plugin.getConfig().getString("sounds.win")).get().parseSound(), 100, 1);
+                Sounds.playSound(p, p.getLocation(), "win");
             } else {
-                p.playSound(p.getLocation(), XSound.matchXSound(plugin.getConfig().getString("sounds.defeat")).get().parseSound(), 100, 1);
+                Sounds.playSound(p, p.getLocation(), "defeat");
             }
 
-            p.sendTitle(plugin.getMessage("game." + (won ? "win" : "defeat") + "-title"),
+            Titles.sendTitle(p, 10, stay - 20, 20, plugin.getMessage("game." + (won ? "win" : "defeat") + "-title"),
                     plugin.getMessage("game." + (noWin ? "no-win" : "win-defeat") + "-subtitle")
-                            .replace("%team%", plugin.getMessage("general.team-" + winnerTeamString)), 10, stay - 20, 20);
+                            .replace("%team%", plugin.getMessage("general.team-" + winnerTeamString)));
 
 
             for (String s : plugin.getMessageList("game.summary")) {
@@ -150,9 +149,8 @@ public class End {
                 }
 
                 if (localArena.getTimer() > 0) {
-                    Scoreboard scoreboard = new Scoreboards().getEndingScoreboard(localArena);
                     for (Player p : localArena.getPlayerTeam().keySet()) {
-                        p.setScoreboard(scoreboard);
+                        p.setScoreboard(new Scoreboards().getEndingScoreboard(localArena, p));
                         if (localArena.getPlayerTeam().get(p).equals(winnerTeam)) {
                             Firework firework = (Firework) p.getWorld().spawnEntity(p.getLocation(), EntityType.FIREWORK);
                             FireworkMeta fwm = firework.getFireworkMeta();
@@ -163,7 +161,7 @@ public class End {
                             fwm.setPower(1);
                             firework.setFireworkMeta(fwm);
 
-                            p.getWorld().spawnParticle(XParticle.getParticle(plugin.getConfig().getString("particles.win")), p.getLocation().getX(), p.getLocation().getY() + 3, p.getLocation().getZ(), 30, 0.5, 0.5, 0.5, 0.1);
+                            Particles.spawnParticle(localArena, p.getLocation().add(0, 3, 0), "win");
                         }
                     }
 
@@ -197,7 +195,6 @@ public class End {
                 playCommands.kickFromLocalArenaSynchronized(p, localArena, true, true);
             }
             Utils.removeTeamBossBars(p, localArena);
-            Utils.removeKitBossBars(p, localArena);
             if (localArena.getPlayerStats().get(p) != null && localArena.getPlayerStats().get(p).getSheepCooldown() != null) {
                 localArena.getPlayerStats().get(p).getSheepCooldown().cancel();
             }

@@ -5,6 +5,7 @@ import me.cubixor.sheepquest.spigot.config.ConfigUtils;
 import me.cubixor.sheepquest.spigot.gameInfo.LocalArena;
 import me.cubixor.sheepquest.spigot.gameInfo.Team;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
@@ -24,7 +25,7 @@ public class Scoreboards {
         plugin = SheepQuest.getInstance();
     }
 
-    public Scoreboard getWaitingScoreboard(LocalArena localArena) {
+    public Scoreboard getWaitingScoreboard(LocalArena localArena, Player player) {
         Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
         Objective objective = getObjective(scoreboard);
 
@@ -34,11 +35,16 @@ public class Scoreboards {
         LinkedList<String> message = new LinkedList<>(plugin.getMessageList("game.scoreboard-new-waiting"));
         int rowCount = message.size();
 
+        String teamName = localArena.getPlayerTeam().get(player).getName();
+        String kitName = localArena.getPlayerKit().get(player).getName();
+
         int row = 0;
         for (int i = rowCount; i > 0; i--) {
             Score score = objective.getScore(message.get(row)
                     .replace("%arena%", arenaString)
                     .replace("%players%", Integer.toString(count))
+                    .replace("%team%", teamName)
+                    .replace("%kit%", kitName)
                     .replace("%date%", getDate()));
             score.setScore(i);
             row++;
@@ -46,7 +52,7 @@ public class Scoreboards {
         return scoreboard;
     }
 
-    public Scoreboard getStartingScoreboard(LocalArena localArena) {
+    public Scoreboard getStartingScoreboard(LocalArena localArena, Player player) {
         Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
         Objective objective = getObjective(scoreboard);
 
@@ -62,6 +68,8 @@ public class Scoreboards {
             Score score = objective.getScore(message.get(row)
                     .replace("%arena%", arenaString)
                     .replace("%players%", Integer.toString(count))
+                    .replace("%team%", localArena.getPlayerTeam().get(player).getName())
+                    .replace("%kit%", localArena.getPlayerKit().get(player).getName())
                     .replace("%time-short%", Integer.toString(time))
                     .replace("%time-long%", getTimeLong(time))
                     .replace("%date%", getDate()));
@@ -72,7 +80,7 @@ public class Scoreboards {
         return scoreboard;
     }
 
-    public Scoreboard getGameScoreboard(LocalArena localArena) {
+    public Scoreboard getGameScoreboard(LocalArena localArena, Player player) {
         Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
         Objective objective = getObjective(scoreboard);
 
@@ -103,6 +111,8 @@ public class Scoreboards {
             Score score = objective.getScore(message.get(row)
                     .replace("%arena%", arenaString)
                     .replace("%players%", Integer.toString(count))
+                    .replace("%team%", localArena.getPlayerTeam().get(player).getName())
+                    .replace("%kit%", localArena.getPlayerKit().get(player).getName())
                     .replace("%sheep-long%", getTimeLong(sheepTime))
                     .replace("%sheep-short%", Integer.toString(sheepTime))
                     .replace("%time-long%", getTimeLong(time))
@@ -115,7 +125,7 @@ public class Scoreboards {
         return scoreboard;
     }
 
-    public Scoreboard getEndingScoreboard(LocalArena localArena) {
+    public Scoreboard getEndingScoreboard(LocalArena localArena, Player player) {
         Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
         Objective objective = getObjective(scoreboard);
 
@@ -145,6 +155,8 @@ public class Scoreboards {
             Score score = objective.getScore(message.get(row)
                     .replace("%arena%", arenaString)
                     .replace("%players%", Integer.toString(count))
+                    .replace("%team%", localArena.getPlayerTeam().get(player).getName())
+                    .replace("%kit%", localArena.getPlayerKit().get(player).getName())
                     .replace("%time-long%", getTimeLong(time))
                     .replace("%time-short%", Integer.toString(time))
                     .replace("%date%", getDate()));

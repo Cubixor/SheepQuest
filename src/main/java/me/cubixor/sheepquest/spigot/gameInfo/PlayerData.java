@@ -11,6 +11,7 @@ import java.util.Collection;
 public class PlayerData {
 
     private final ItemStack[] inventory;
+    private final ItemStack[] armorContents;
     private final Location location;
     private final Collection<PotionEffect> potionEffects;
     private final GameMode gameMode;
@@ -20,8 +21,9 @@ public class PlayerData {
     private final int level;
     private final boolean fly;
 
-    public PlayerData(ItemStack[] inventory, Location location, Collection<PotionEffect> potionEffects, GameMode gameMode, double health, int food, float exp, int level, boolean fly) {
+    public PlayerData(ItemStack[] inventory, ItemStack[] armorContents, Location location, Collection<PotionEffect> potionEffects, GameMode gameMode, double health, int food, float exp, int level, boolean fly) {
         this.inventory = inventory;
+        this.armorContents = armorContents;
         this.location = location;
         this.potionEffects = potionEffects;
         this.gameMode = gameMode;
@@ -48,6 +50,10 @@ public class PlayerData {
 
     public ItemStack[] getInventory() {
         return inventory;
+    }
+
+    public ItemStack[] getArmorContents() {
+        return armorContents;
     }
 
     public Location getLocation() {

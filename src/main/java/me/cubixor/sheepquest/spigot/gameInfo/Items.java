@@ -2,7 +2,7 @@ package me.cubixor.sheepquest.spigot.gameInfo;
 
 import com.cryptomorin.xseries.XMaterial;
 import me.cubixor.sheepquest.spigot.SheepQuest;
-import me.cubixor.sheepquest.spigot.api.Utils;
+import me.cubixor.sheepquest.spigot.Utils;
 import me.cubixor.sheepquest.spigot.game.kits.KitType;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;

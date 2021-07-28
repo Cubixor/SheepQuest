@@ -1,9 +1,9 @@
 package me.cubixor.sheepquest.spigot.game.kits;
 
-import com.cryptomorin.xseries.XSound;
-import com.cryptomorin.xseries.particles.XParticle;
 import me.cubixor.sheepquest.spigot.SheepQuest;
-import me.cubixor.sheepquest.spigot.api.Utils;
+import me.cubixor.sheepquest.spigot.Utils;
+import me.cubixor.sheepquest.spigot.api.Particles;
+import me.cubixor.sheepquest.spigot.api.Sounds;
 import me.cubixor.sheepquest.spigot.gameInfo.LocalArena;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -50,9 +50,9 @@ public class KitStandard extends Kit implements Listener {
     }
 
     private void useDash(Player player, LocalArena localArena) {
-        Utils.playSound(localArena, player.getLocation(), XSound.matchXSound(plugin.getConfig().getString("sounds.dash")).get().parseSound(), 1, 1);
-        player.getWorld().spawnParticle(XParticle.getParticle(plugin.getConfig().getString("particles.dash")),
-                player.getLocation().getX(), player.getLocation().getY() + 1.5, player.getLocation().getZ(), 50, 1, 1, 1, 0.1);
+        Sounds.playSound(localArena, player.getLocation(), "dash");
+        Particles.spawnParticle(localArena, player.getLocation().add(0, 1.5, 0), "dash");
+
         addCooldown(player);
         player.setVelocity(player.getLocation().getDirection().add(new Vector(0, plugin.getConfig().getDouble("kits.standard.dash-power-y"), 0)).multiply(plugin.getConfig().getDouble("kits.standard.dash-power")));
     }

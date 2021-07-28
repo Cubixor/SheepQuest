@@ -1,13 +1,14 @@
 package me.cubixor.sheepquest.spigot.game;
 
 import com.cryptomorin.xseries.XSound;
+import com.cryptomorin.xseries.messages.Titles;
 import com.google.common.collect.Iterables;
 import me.cubixor.sheepquest.spigot.SheepQuest;
 import me.cubixor.sheepquest.spigot.gameInfo.GameState;
 import me.cubixor.sheepquest.spigot.gameInfo.LocalArena;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,20 @@ public class Countdown {
         for (Player p : plugin.getLocalArenas().get(arenaString).getPlayerTeam().keySet()) {
             p.sendMessage(plugin.getMessage("game.countdown-started"));
         }
+
+        List<Integer> t1 = new ArrayList<Integer>() {{
+            add(60);
+            add(30);
+            add(10);
+        }};
+        List<Integer> t2 = new ArrayList<Integer>() {{
+            add(5);
+            add(4);
+            add(3);
+            add(2);
+            add(1);
+        }};
+
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -40,20 +55,6 @@ public class Countdown {
 
                 if (localArena.getTimer() > 0) {
 
-                    Scoreboard scoreboard = new Scoreboards().getStartingScoreboard(localArena);
-
-                    List<Integer> t1 = new ArrayList<Integer>() {{
-                        add(60);
-                        add(30);
-                        add(10);
-                    }};
-                    List<Integer> t2 = new ArrayList<Integer>() {{
-                        add(5);
-                        add(4);
-                        add(3);
-                        add(2);
-                        add(1);
-                    }};
 
                     int msgTitle = localArena.getTimer();
                     float pitch = 0;
@@ -61,12 +62,12 @@ public class Countdown {
                     if (t1.contains(msgTitle)) {
                         pitch = 0.5f;
                         for (Player p : localArena.getPlayerTeam().keySet()) {
-                            p.sendTitle(plugin.getMessage("game.countdown-" + msgTitle + "s-title"), plugin.getMessage("game.countdown-" + msgTitle + "s-subtitle"), 10, 50, 10);
+                            Titles.sendTitle(p, 10, 50, 10, plugin.getMessage("game.countdown-" + msgTitle + "s-title"), plugin.getMessage("game.countdown-" + msgTitle + "s-subtitle"));
                         }
                     } else if (t2.contains(msgTitle)) {
                         pitch = 1;
                         for (Player p : localArena.getPlayerTeam().keySet()) {
-                            p.sendTitle(plugin.getMessage("game.countdown-" + msgTitle + "s-title"), plugin.getMessage("game.countdown-" + msgTitle + "s-subtitle"), 0, 50, 0);
+                            Titles.sendTitle(p, 0, 50, 0, plugin.getMessage("game.countdown-" + msgTitle + "s-title"), plugin.getMessage("game.countdown-" + msgTitle + "s-subtitle"));
                         }
                         if (msgTitle == 1) {
                             pitch = 2;
@@ -74,10 +75,17 @@ public class Countdown {
                     }
 
                     for (Player p : localArena.getPlayerTeam().keySet()) {
-                        p.setScoreboard(scoreboard);
+                        p.setScoreboard(new Scoreboards().getStartingScoreboard(localArena, p));
                         p.setLevel(localArena.getTimer());
                         if (pitch != 0) {
-                            p.playSound(p.getLocation(), XSound.matchXSound(plugin.getConfig().getString("sounds.countdown")).get().parseSound(), 100, pitch);
+                            if (!plugin.getConfig().getBoolean("sounds.countdown.enabled")) {
+                                continue;
+                            }
+
+                            Sound sound = XSound.matchXSound(plugin.getConfig().getString("sounds.countdown.sound")).get().parseSound();
+                            float volume = (float) plugin.getConfig().getDouble("sounds.countdown.volume");
+
+                            p.playSound(p.getLocation(), sound, volume, pitch);
                         }
                     }
 

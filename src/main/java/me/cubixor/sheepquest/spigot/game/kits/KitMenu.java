@@ -1,7 +1,10 @@
 package me.cubixor.sheepquest.spigot.game.kits;
 
 import me.cubixor.sheepquest.spigot.SheepQuest;
-import me.cubixor.sheepquest.spigot.api.Utils;
+import me.cubixor.sheepquest.spigot.Utils;
+import me.cubixor.sheepquest.spigot.api.Sounds;
+import me.cubixor.sheepquest.spigot.game.Scoreboards;
+import me.cubixor.sheepquest.spigot.gameInfo.GameState;
 import me.cubixor.sheepquest.spigot.gameInfo.LocalArena;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -39,9 +42,14 @@ public class KitMenu implements Listener {
                 }
 
                 localArena.getPlayerKit().replace(player, kitType);
-                Utils.removeKitBossBars(player, localArena);
-                localArena.getKitBossBars().get(kitType).addPlayer(player);
                 player.closeInventory();
+
+                if (localArena.getState().equals(GameState.WAITING)) {
+                    player.setScoreboard(new Scoreboards().getWaitingScoreboard(localArena, player));
+                }
+
+                Sounds.playSound(player, player.getLocation(), "click");
+
                 player.sendMessage(plugin.getMessage("kits.choose-success").replace("%kit%", kitType.getName()));
             }
         }

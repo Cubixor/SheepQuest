@@ -2,7 +2,7 @@ package me.cubixor.sheepquest.spigot.game;
 
 import com.cryptomorin.xseries.XBlock;
 import me.cubixor.sheepquest.spigot.SheepQuest;
-import me.cubixor.sheepquest.spigot.api.Utils;
+import me.cubixor.sheepquest.spigot.Utils;
 import me.cubixor.sheepquest.spigot.commands.PlayCommands;
 import me.cubixor.sheepquest.spigot.config.ConfigField;
 import me.cubixor.sheepquest.spigot.config.ConfigUtils;
@@ -119,7 +119,13 @@ public class Signs implements Listener {
 
     @EventHandler
     public void signClick(PlayerInteractEvent evt) {
-        if (!(evt.getHand() != null && evt.getHand().equals(EquipmentSlot.HAND) && evt.getClickedBlock() != null)) {
+        if (!plugin.isBefore9()) {
+            if (!evt.getHand().equals(EquipmentSlot.HAND)) {
+                return;
+            }
+        }
+
+        if (evt.getClickedBlock() == null) {
             return;
         }
         if (!(evt.getClickedBlock() != null && !evt.getPlayer().isSneaking())) {

@@ -1,12 +1,13 @@
 package me.cubixor.sheepquest.spigot.game;
 
 import com.cryptomorin.xseries.XMaterial;
-import com.cryptomorin.xseries.XSound;
 import me.cubixor.sheepquest.spigot.SheepQuest;
-import me.cubixor.sheepquest.spigot.api.Utils;
+import me.cubixor.sheepquest.spigot.Utils;
+import me.cubixor.sheepquest.spigot.api.Sounds;
 import me.cubixor.sheepquest.spigot.commands.PlayCommands;
 import me.cubixor.sheepquest.spigot.config.ConfigField;
 import me.cubixor.sheepquest.spigot.config.ConfigUtils;
+import me.cubixor.sheepquest.spigot.gameInfo.GameState;
 import me.cubixor.sheepquest.spigot.gameInfo.LocalArena;
 import me.cubixor.sheepquest.spigot.gameInfo.Team;
 import org.bukkit.Bukkit;
@@ -35,12 +36,19 @@ public class Teams implements Listener {
     @EventHandler
     public void onClick(PlayerInteractEvent evt) {
         LocalArena localArena = Utils.getLocalArena(evt.getPlayer());
-        if (localArena != null && evt.getItem() != null && evt.getHand().equals(EquipmentSlot.HAND)) {
+        if (localArena != null && evt.getItem() != null) {
+
+            if (!plugin.isBefore9()) {
+                if (!evt.getHand().equals(EquipmentSlot.HAND)) {
+                    return;
+                }
+            }
+
             if (evt.getItem().equals(plugin.getItems().getTeamItem())) {
-                evt.getPlayer().openInventory(localArena.getTeamChooseInv());
-                if (localArena.getTeamChooseInv().getItem(0) == null) {
+                if (localArena.getTeamChooseInv().getItem(0) == null || localArena.getTeamChooseInv().getItem(0).getType().equals(Material.AIR)) {
                     menuUpdate(localArena);
                 }
+                evt.getPlayer().openInventory(localArena.getTeamChooseInv());
                 evt.setCancelled(true);
             } else if (evt.getItem().equals(plugin.getItems().getLeaveItem())) {
                 PlayCommands playCommands = new PlayCommands();
@@ -75,10 +83,7 @@ public class Teams implements Listener {
                         Utils.removeTeamBossBars(player, localArena);
                         localArena.getTeamBossBars().get(Team.NONE).addPlayer(player);
                         player.getInventory().setHelmet(new ItemStack(Material.AIR));
-                    }
-
-                    if (evt.getCurrentItem().getType().toString().contains("WOOL")) {
-
+                    } else {
                         HashMap<Team, Integer> teamPlayers = new HashMap<>(Utils.getTeamPlayers(localArena));
                         String teamMessage = team.getName();
 
@@ -88,6 +93,9 @@ public class Teams implements Listener {
                                 Utils.removeTeamBossBars(player, localArena);
                                 localArena.getTeamBossBars().get(team).addPlayer(player);
                                 player.getInventory().setHelmet(team.getBanner());
+                                if (localArena.getState().equals(GameState.WAITING)) {
+                                    player.setScoreboard(new Scoreboards().getWaitingScoreboard(localArena, player));
+                                }
                                 player.sendMessage(plugin.getMessage("game.team-join-success").replace("%team%", teamMessage));
                             } else {
                                 player.sendMessage(plugin.getMessage("game.already-in-this-team").replace("%team%", teamMessage));
@@ -95,11 +103,10 @@ public class Teams implements Listener {
                         } else {
                             player.sendMessage(plugin.getMessage("game.team-full").replace("%team%", teamMessage));
                         }
-
-                        menuUpdate(localArena);
                     }
 
-                    player.playSound(player.getLocation(), XSound.matchXSound(plugin.getConfig().getString("sounds.team-choose")).get().parseSound(), 100, 1);
+                    menuUpdate(localArena);
+                    Sounds.playSound(player, player.getLocation(), "click");
                     player.getOpenInventory().close();
                 });
             });
