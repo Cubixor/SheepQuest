@@ -2,7 +2,6 @@ package me.cubixor.sheepquest.spigot.game;
 
 import com.cryptomorin.xseries.XSound;
 import com.cryptomorin.xseries.messages.Titles;
-import com.google.common.collect.Iterables;
 import me.cubixor.sheepquest.spigot.SheepQuest;
 import me.cubixor.sheepquest.spigot.gameInfo.GameState;
 import me.cubixor.sheepquest.spigot.gameInfo.LocalArena;
@@ -114,7 +113,7 @@ public class Countdown {
 
 
                 if (localArena.getTimer() >= 0) {
-                    float exp = Iterables.getFirst(localArena.getPlayerTeam().keySet(), null).getExp();
+                    float exp = (new ArrayList<>(localArena.getPlayerTeam().keySet()).get(0)).getExp();
                     if (exp <= 0) {
                         exp = 0.94F;
                     } else {

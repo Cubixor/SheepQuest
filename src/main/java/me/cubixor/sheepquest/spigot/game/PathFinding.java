@@ -60,7 +60,7 @@ public class PathFinding {
                 entity.getWorld().getBlockAt(entity.getLocation().add(-1, 0, 0)).getType().isSolid() ||
                 entity.getWorld().getBlockAt(entity.getLocation().add(0, 0, 1)).getType().isSolid() ||
                 entity.getWorld().getBlockAt(entity.getLocation().add(0, 0, -1)).getType().isSolid()) {
-            direction.setY(0.45);
+            direction.setY(0.5);
         }
         if (entity.isOnGround()) {
             entity.setVelocity(direction);

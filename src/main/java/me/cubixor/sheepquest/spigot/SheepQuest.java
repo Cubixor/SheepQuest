@@ -1,7 +1,6 @@
 package me.cubixor.sheepquest.spigot;
 
 import com.cryptomorin.xseries.XMaterial;
-import com.google.common.base.Charsets;
 import me.cubixor.sheepquest.spigot.api.ConfigUpdater;
 import me.cubixor.sheepquest.spigot.api.PassengerFix;
 import me.cubixor.sheepquest.spigot.api.PlaceholderExpansion;
@@ -39,6 +38,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -96,7 +96,7 @@ public final class SheepQuest extends JavaPlugin {
         XMaterial.matchXMaterial("BLACK_STAINED_GLASS").get().parseItem().getData();
 
         //1.9 and 1.10 passenger fix
-        new PassengerFix().setupPassengerFix();
+        PassengerFix.setupPassengerFix();
 
         kits.add(new KitStandard());
         kits.add(new KitArcher());
@@ -106,7 +106,6 @@ public final class SheepQuest extends JavaPlugin {
         if (!getServer().getPluginManager().isPluginEnabled(this)) {
             return;
         }
-
         getCommand("sheepquest").setExecutor(new Command());
         getCommand("t").setExecutor(new Command());
         getCommand("sheepquest").setTabCompleter(new TabCompleter());
@@ -212,7 +211,7 @@ public final class SheepQuest extends JavaPlugin {
                 if (!getConfig().getString("config-version").equals(getDescription().getVersion())) {
                     final InputStream defConfigStream = getResource(fileName);
                     if (defConfigStream != null) {
-                        msgConf.setDefaults(YamlConfiguration.loadConfiguration(new InputStreamReader(defConfigStream, Charsets.UTF_8)));
+                        msgConf.setDefaults(YamlConfiguration.loadConfiguration(new InputStreamReader(defConfigStream, StandardCharsets.UTF_8)));
                     }
                     msgConf.options().copyDefaults(true);
                     try {

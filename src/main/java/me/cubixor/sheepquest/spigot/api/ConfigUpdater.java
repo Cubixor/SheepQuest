@@ -150,9 +150,10 @@ public class ConfigUpdater {
                 }
                 plugin.saveArenas();
 
-                if (plugin.getConfig().getString("special-events.bonus-sheep.color").equalsIgnoreCase("PURPLE")) {
-                    plugin.getConfig().set("special-events.bonus-sheep.color", "MAGENTA");
-                }
+                plugin.getConfig().set("special-events.bonus-sheep.color", "MAGENTA");
+                plugin.getConfig().set("sounds", plugin.getConfig().getDefaults().getConfigurationSection("sounds"));
+                plugin.getConfig().set("particles", plugin.getConfig().getDefaults().getConfigurationSection("particles"));
+
             }
 
             plugin.getConfig().set("config-version", Float.parseFloat(plugin.getDescription().getVersion()));

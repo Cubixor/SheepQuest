@@ -5,6 +5,7 @@ import me.cubixor.sheepquest.spigot.api.Particles;
 import me.cubixor.sheepquest.spigot.api.Sounds;
 import me.cubixor.sheepquest.spigot.game.Kill;
 import me.cubixor.sheepquest.spigot.game.SheepCarrying;
+import me.cubixor.sheepquest.spigot.game.events.BonusSheep;
 import me.cubixor.sheepquest.spigot.gameInfo.GameState;
 import me.cubixor.sheepquest.spigot.gameInfo.LocalArena;
 import me.cubixor.sheepquest.spigot.gameInfo.Team;
@@ -48,7 +49,8 @@ public class KitAthlete extends Kit implements Listener {
         if (evt.getItem() != null && localArena != null && localArena.getState().equals(GameState.GAME)
                 && localArena.getPlayerKit().get(player).equals(KitType.ATHLETE)) {
             if (plugin.getConfig().getBoolean("kits.athlete.throw-sheep") &&
-                    evt.getItem().equals(plugin.getItems().getSheepItem()) && player.getPassenger() != null && player.getPassenger().getType().equals(EntityType.SHEEP)) {
+                    evt.getItem().equals(plugin.getItems().getSheepItem()) && player.getPassenger() != null && player.getPassenger().getType().equals(EntityType.SHEEP)
+                    && !new BonusSheep().carryingSheep((Sheep) player.getPassenger())) {
 
                 List<Entity> sheep = Utils.removeSheep(player);
                 throwSheep(localArena, sheep, player);
@@ -70,6 +72,10 @@ public class KitAthlete extends Kit implements Listener {
             new BukkitRunnable() {
                 @Override
                 public void run() {
+                    if (!localArena.getState().equals(GameState.GAME)) {
+                        this.cancel();
+                        return;
+                    }
                     if (e.isOnGround()) {
                         if (Utils.isInRegion(e, localArena.getName(), team)) {
                             new SheepCarrying().sheepBring(player, (Sheep) e);

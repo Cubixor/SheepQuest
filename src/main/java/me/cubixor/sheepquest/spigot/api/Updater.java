@@ -30,7 +30,7 @@ public class Updater {
                 plugin.getLogger().warning("There is a new update of SheepQuest available!");
                 plugin.getLogger().warning("Your version: " + plugin.getDescription().getVersion());
                 plugin.getLogger().warning("New version: " + version);
-                plugin.getLogger().warning("Go to spigotmc.org and download it!");
+                plugin.getLogger().warning("Go to https://www.spigotmc.org/resources/83005/ and download it!");
             }
         });
     }

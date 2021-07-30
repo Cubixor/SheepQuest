@@ -1,5 +1,6 @@
 package me.cubixor.sheepquest.spigot.game;
 
+import com.cryptomorin.xseries.messages.Titles;
 import me.cubixor.sheepquest.spigot.SheepQuest;
 import me.cubixor.sheepquest.spigot.Utils;
 import me.cubixor.sheepquest.spigot.commands.PlayCommands;
@@ -74,6 +75,7 @@ public class ArenaProtection implements Listener {
         LocalArena localArena = Utils.getLocalArena(evt.getPlayer());
         if (localArena != null) {
             PlayCommands playCommands = new PlayCommands();
+            Titles.clearTitle(evt.getPlayer());
             playCommands.sendKickMessage(evt.getPlayer(), Utils.getLocalArena(evt.getPlayer()));
             playCommands.kickFromLocalArenaSynchronized(evt.getPlayer(), localArena, false, false);
         }

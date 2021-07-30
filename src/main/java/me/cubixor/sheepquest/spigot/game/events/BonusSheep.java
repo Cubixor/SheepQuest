@@ -34,6 +34,7 @@ public class BonusSheep {
         sheep.setColor(DyeColor.valueOf(plugin.getConfig().getString("special-events.bonus-sheep.color")));
         //sheep.setInvulnerable(true);
         sheep.setCustomName(plugin.getMessage("special-events.bonus-sheep-name").replace("%points%", plugin.getConfig().getString("special-events.bonus-sheep.points")));
+        sheep.setCustomNameVisible(true);
         localArena.getSpecialEventsData().getBonusSheepTeam().put(sheep, Team.NONE);
 
         Sounds.playSound(localArena, loc, "bonus-sheep-spawn");

@@ -240,6 +240,9 @@ public class SetupCommands {
             }
             ConfigUtils.updateField(args[1], ConfigField.TEAMS, teamsString);
 
+            ConfigUtils.updateField(args[1], ConfigField.SPAWN, team, null);
+            ConfigUtils.updateField(args[1], ConfigField.AREA, team, null);
+
             player.sendMessage(plugin.getMessage("arena-setup.remove-team-success").replace("%arena%", args[1]));
         });
     }
@@ -432,7 +435,7 @@ public class SetupCommands {
             String set = plugin.getMessage("arena-setup.check-set");
             String notSet = plugin.getMessage("arena-setup.check-notset");
 
-            List<String> checkPage = plugin.getMessageList("arena-setup.check-page");
+            List<String> checkPage = plugin.getMessageList("arena-setup.check-page-new");
 
             LinkedHashMap<ConfigField, Boolean> checkReady = new LinkedHashMap<>(Utils.checkIfReady(args[1]));
 

@@ -103,7 +103,7 @@ help:
     - "  &a/sq forcestop &e<arena> &7- Force arena stop"
     - "  &a/sq active &e<arena> <true/false> &7- Set arena active or not."
     - "  &a/sq kick &e<player> &7- Kick player from arena."
-    - "  &a/sq stats &e<player> &7- Show player stats in menu"
+    - "  &a/sq stats &e<player> &7- Show player stats"
     - "  &a/sq statsmenu &e<player> &7- Show player stats in menu"
     - "  &a/sq staffmenu &e<arena> &7- Open arena staff menu"
     - "  &a/sq playersmenu &e<arena> &7- Open arena players menu"
@@ -345,9 +345,7 @@ kits:
     - "&eDouble jump to use dash."
   standard-secondary-weapon-name: "&7&lYour item"
   standard-secondary-weapon-lore:
-    - "&7Use this item to defend"
-    - "&7your pen and kill"
-    - "&7the enemies!"
+    - "&7Disabled by default"
   archer-primary-weapon-name: "&7&lWooden sword"
   archer-primary-weapon-lore:
     - "&7Use this item to defend"
@@ -466,7 +464,7 @@ arena-setup:
   check-not-ready: "&c&lArena is not ready to play yet!"
   check-active: "&aArena is active and players can join it!"
   check-not-active: "&cArena is not active and players cannot join it!"
-  check-page:
+  check-page-new:
     - "&m---------------------------------------------------"
     - "&e&l%arena% &7arena configuration state:"
     - "  &7Minimum players: %min-players%"
@@ -677,13 +675,12 @@ setup-menu:
     - "&7Click to open menu"
     - "&7in which you can add or remove"
     - "&7teams from the arena."
-    - "&7team in the next menu."
     - ""
     - "&7Added teams: &e&l%count%"
   specific-team-add-item-name: "&eAdd %team% team"
   specific-team-add-item-lore:
     - "&7Click to add %team% &7team"
-    - "&7to your arena."
+    - "&7to the arena."
     - ""
     - "&7You can have from 2 up to"
     - "&712 teams in one arena."
@@ -692,7 +689,7 @@ setup-menu:
   specific-team-remove-item-name: "&eRemove %team% team"
   specific-team-remove-item-lore:
     - "&7Click to remove %team% team"
-    - "&7from your arena."
+    - "&7from the arena."
     - ""
     - "&7You can have from 2 up to"
     - "&712 teams in one arena."

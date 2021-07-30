@@ -53,7 +53,7 @@ public class ArenasMenu implements Listener {
                 if (plugin.getConfig().getBoolean("color-signs")) {
                     material = Utils.setGlassColor(arenaObj);
                 } else {
-                    material = new ItemStack(XMaterial.NETHER_STAR.parseMaterial());
+                    material = XMaterial.NETHER_STAR.parseItem();
                 }
 
                 ItemStack arenaItem = arenaItemStack(material, arena, "arenas-menu.arena-item-name", "arenas-menu.arena-item-lore");
@@ -88,7 +88,7 @@ public class ArenasMenu implements Listener {
     public void updateOptionsMenu(String arena, Player player, int slot) {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
 
-            ItemStack arenaItemStack = arenaItemStack(new ItemStack(XMaterial.NETHER_STAR.parseMaterial()), arena, "arenas-menu.play-item-name", "arenas-menu.play-item-lore");
+            ItemStack arenaItemStack = arenaItemStack(XMaterial.NETHER_STAR.parseItem(), arena, "arenas-menu.play-item-name", "arenas-menu.play-item-lore");
 
             Bukkit.getScheduler().runTask(plugin, () -> {
                 plugin.putInventories(player, arena);

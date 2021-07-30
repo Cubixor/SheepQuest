@@ -232,9 +232,9 @@ sounds:
     pitch: 0
   kill:
     enabled: true
-    sound: ENTITY_ELDER_GUARDIAN_CURSE
+    sound: ENTITY_IRON_GOLEM_DEATH
     volume: 100
-    pitch: 2
+    pitch: 1.2
   respawn-countdown:
     enabled: true
     sound: ENTITY_EXPERIENCE_ORB_PICKUP
@@ -326,7 +326,7 @@ particles:
     speed: 0.1
   death:
     enabled: true
-    particle: DRIP_LAVA
+    particle: SPELL_INSTANT
     count: 50
     offset: 0.1
     speed: 0.1

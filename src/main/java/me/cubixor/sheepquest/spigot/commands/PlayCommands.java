@@ -1,6 +1,7 @@
 package me.cubixor.sheepquest.spigot.commands;
 
 import com.cryptomorin.xseries.messages.ActionBar;
+import com.cryptomorin.xseries.messages.Titles;
 import me.cubixor.sheepquest.spigot.SheepQuest;
 import me.cubixor.sheepquest.spigot.Utils;
 import me.cubixor.sheepquest.spigot.api.Particles;
@@ -319,6 +320,7 @@ public class PlayCommands {
         player.setLevel(playerData.getLevel());
         player.setAllowFlight(playerData.isFly());
         player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
+        Titles.clearTitle(player);
         localArena.getPlayerData().remove(player);
         localArena.getPlayerKit().remove(player);
 
@@ -361,6 +363,7 @@ public class PlayCommands {
                                     p.sendMessage(plugin.getMessage("game.start-cancelled"));
                                     p.setLevel(0);
                                     p.setExp(0);
+                                    Titles.clearTitle(p);
                                 }
 
                                 new Teams().menuUpdate(localArena);

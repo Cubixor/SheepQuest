@@ -10,9 +10,11 @@ import me.cubixor.sheepquest.spigot.config.ConfigUtils;
 import me.cubixor.sheepquest.spigot.game.kits.Kits;
 import me.cubixor.sheepquest.spigot.gameInfo.GameState;
 import me.cubixor.sheepquest.spigot.gameInfo.LocalArena;
-import org.bukkit.Effect;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Particle;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -21,9 +23,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.MaterialData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.inventivetalent.particle.ParticleEffect;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,9 +50,13 @@ public class Kill implements Listener {
 
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent evt) {
-        if (!(evt.getEntity().getType().equals(EntityType.PLAYER) && (evt.getDamager().getType().equals(EntityType.PLAYER))
-                || (evt.getDamager() instanceof Projectile && ((Projectile) evt.getDamager()).getShooter() instanceof Player))) {
+        if (!evt.getEntity().getType().equals(EntityType.PLAYER)) {
             return;
+        }
+        if (!evt.getDamager().getType().equals(EntityType.PLAYER)) {
+            if (!(evt.getDamager() instanceof Projectile && ((Projectile) evt.getDamager()).getShooter() instanceof Player)) {
+                return;
+            }
         }
 
         Player player = (Player) evt.getEntity();
@@ -90,7 +98,19 @@ public class Kill implements Listener {
         loc.setY(loc.getY() + 1);
 
         if (plugin.getConfig().getBoolean("particles.enable-blood")) {
-            attacker.playEffect(loc, Effect.STEP_SOUND, (Object) Material.REDSTONE_BLOCK);
+            if (plugin.isBefore9()) {
+                ParticleEffect.BLOCK_CRACK.sendData(localArena.getPlayerTeam().keySet(), loc.getX(), loc.getY(), loc.getZ(),
+                        0.1, 0.1, 0.1, 0.1, 50, new ItemStack(Material.REDSTONE_BLOCK));
+            } else {
+                try {
+                    BlockData blockData = Bukkit.createBlockData(Material.REDSTONE_BLOCK);
+                    attacker.getWorld().spawnParticle(Particle.BLOCK_CRACK, loc, 50, (Object) blockData);
+                } catch (Exception e) {
+                    attacker.getWorld().spawnParticle(Particle.BLOCK_CRACK, loc, 50, (Object) new MaterialData(Material.REDSTONE_BLOCK));
+                }
+            }
+
+            //attacker.playEffect(loc, Effect.STEP_SOUND, (Object) Material.REDSTONE_BLOCK);
         }
 
 

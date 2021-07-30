@@ -23,7 +23,9 @@ public class KitMenu implements Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent evt) {
         LocalArena localArena = Utils.getLocalArena((Player) evt.getWhoClicked());
-        if (localArena != null && evt.getClickedInventory().equals(plugin.getItems().getKitsInventory()) && evt.getCurrentItem() != null && !evt.getCurrentItem().getType().equals(Material.AIR)) {
+        if (localArena != null && evt.getClickedInventory() != null
+                && evt.getClickedInventory().equals(plugin.getItems().getKitsInventory()) && evt.getCurrentItem() != null
+                && !evt.getCurrentItem().getType().equals(Material.AIR)) {
             evt.setCancelled(true);
 
             Player player = (Player) evt.getWhoClicked();

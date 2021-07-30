@@ -1,5 +1,6 @@
 package me.cubixor.sheepquest.spigot.menu;
 
+import com.cryptomorin.xseries.SkullUtils;
 import com.cryptomorin.xseries.XMaterial;
 import me.cubixor.sheepquest.spigot.SheepQuest;
 import me.cubixor.sheepquest.spigot.Utils;
@@ -18,7 +19,7 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -93,9 +94,9 @@ public class StaffMenu implements Listener {
             plugin.getInventories().get(player).setPlayerSlot(new HashMap<>());
             if (!localArena.getPlayerTeam().keySet().isEmpty()) {
                 for (Player p : playerList) {
-                    ItemStack playerItem = new ItemStack(XMaterial.PLAYER_HEAD.parseMaterial());
-                    SkullMeta skullMeta = (SkullMeta) playerItem.getItemMeta();
-                    skullMeta.setOwner(p.getName());
+                    ItemStack playerItem = SkullUtils.getSkull(p.getUniqueId());
+                    ItemMeta skullMeta = playerItem.getItemMeta();
+                    //skullMeta.setOwner(p.getName());
                     skullMeta.setDisplayName(plugin.getMessage("staff-menu.player-item-name").replace("%nick%", p.getName()));
                     List<String> playerItemLore = new ArrayList<>(plugin.getMessageList("staff-menu.player-item-lore"));
                     for (String s : playerItemLore) {

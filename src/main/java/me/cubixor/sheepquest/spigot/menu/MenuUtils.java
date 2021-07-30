@@ -23,6 +23,7 @@ public class MenuUtils implements Listener {
 
         return plugin.getInventories().containsKey(player)
                 && evt.getCurrentItem() != null
+                && evt.getClickedInventory() != null
                 && plugin.getInventories().get(player).getActiveInventory() != null
                 && evt.getClickedInventory().equals(plugin.getInventories().get(player).getActiveInventory());
     }
