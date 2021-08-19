@@ -3,6 +3,7 @@ package me.cubixor.sheepquest.spigot.game.kits;
 import com.cryptomorin.xseries.XMaterial;
 import me.cubixor.sheepquest.spigot.SheepQuest;
 import me.cubixor.sheepquest.spigot.Utils;
+import me.cubixor.sheepquest.spigot.api.VersionUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
@@ -27,7 +28,7 @@ public abstract class Kit implements Listener {
             secondaryWeapon = Utils.setItemStack("kits." + kitType.getCode() + ".secondary-weapon",
                     "kits." + kitType.getCode() + "-secondary-weapon-name", "kits." + kitType.getCode() + "-secondary-weapon-lore");
         }
-        if (plugin.getConfig().getBoolean("kits." + kitType.getCode() + ".shield") && !plugin.isBefore9()) {
+        if (plugin.getConfig().getBoolean("kits." + kitType.getCode() + ".shield") && !VersionUtils.is18()) {
             shield = Utils.setItemStack(XMaterial.SHIELD.parseMaterial(), "kits.shield-name", "kits.shield-lore");
         }
     }

@@ -11,9 +11,7 @@ import me.cubixor.sheepquest.spigot.gameInfo.GameState;
 import me.cubixor.sheepquest.spigot.gameInfo.LocalArena;
 import me.cubixor.sheepquest.spigot.gameInfo.Team;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -100,9 +98,9 @@ public class Utils {
     public static LocalArena getLocalArena(Player player) {
         SheepQuest plugin = SheepQuest.getInstance();
 
-        for (String arena : plugin.getLocalArenas().keySet()) {
-            if (plugin.getLocalArenas().get(arena).getPlayerTeam().containsKey(player)) {
-                return plugin.getLocalArenas().get(arena);
+        for (LocalArena localArena : plugin.getLocalArenas().values()) {
+            if (localArena.getPlayers().contains(player.getName())) {
+                return localArena;
             }
         }
         return null;
@@ -311,11 +309,14 @@ public class Utils {
         return sheep;
     }
 
-    public static boolean isInRegion(Entity entity, String arena, Team team) {
+    public static boolean isInRegion(Entity entity, LocalArena arena, Team team) {
         if (team.equals(Team.NONE)) {
-            return entity.getLocation().distance(ConfigUtils.getLocation(arena, ConfigField.SHEEP_SPAWN)) < 10;
+            return entity.getLocation().distance(arena.getTeamRegions().get(team).getLoc()) < 10;
+        } else {
+            return arena.getTeamRegions().get(team).isInRegion(entity);
         }
 
+/*
         Location[] area = ConfigUtils.getArea(arena, team);
 
         Location min = area[0];
@@ -372,6 +373,7 @@ public class Utils {
         }
 
         return inRegion;
+*/
     }
 
     public static ItemStack setGlassColor(Arena arena) {

@@ -156,6 +156,14 @@ public class ConfigUpdater {
 
             }
 
+            if (Float.parseFloat(plugin.getConfig().getString("config-version")) < 1.8) {
+                plugin.getConfig().set("database.ping-peroid", null);
+                plugin.getConfig().set("sheep-speed", 2.0);
+                plugin.getConfig().set("special-events.bonus-sheep.speed", 3.0);
+                plugin.getConfig().set("send-stats", null);
+
+            }
+
             plugin.getConfig().set("config-version", Float.parseFloat(plugin.getDescription().getVersion()));
             plugin.saveConfig();
         }

@@ -16,10 +16,10 @@ import me.cubixor.sheepquest.spigot.socket.SocketClientSender;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Sheep;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -74,6 +74,9 @@ public class End {
             if (localArena.getRespawnTimer().containsKey(p)) {
                 new Kill().respawn(localArena, p);
             }
+            p.setFlying(false);
+            p.setAllowFlight(false);
+
             ActionBar.clearActionBar(p);
 
             Utils.removeSheep(p);
@@ -181,9 +184,9 @@ public class End {
         plugin.getLocalArenas().replace(arenaString, new LocalArena(arenaString));
 
 
-        for (Sheep s : localArena.getSheep().keySet()) {
-            localArena.getSheep().get(s).cancel();
-            s.remove();
+        for (Entity e : localArena.getSheep().keySet()) {
+            localArena.getSheep().get(e).cancel();
+            e.remove();
         }
         new SpecialEvents().reset(localArena);
 

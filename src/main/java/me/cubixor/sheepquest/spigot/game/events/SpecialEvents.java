@@ -18,6 +18,16 @@ public class SpecialEvents {
 
     public void setupSpecialEvents(String arenaString) {
         if (plugin.getConfig().getBoolean("special-events.enabled")) {
+            boolean cancel = true;
+            for (SpecialEvent evt : SpecialEvent.values()) {
+                if (evt.isEnabled()) {
+                    cancel = false;
+                    break;
+                }
+            }
+            if (cancel) {
+                return;
+            }
             LocalArena localArena = plugin.getLocalArenas().get(arenaString);
             localArena.setSpecialEventsData(new SpecialEventsData());
 

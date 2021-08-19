@@ -10,6 +10,9 @@ import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class KitArcher extends Kit implements Listener {
 
     private ItemStack arrow;
@@ -40,17 +43,28 @@ public class KitArcher extends Kit implements Listener {
         player.getInventory().setItem(7, itemStack);
     }
 
-    public void arrowTimer(LocalArena localArena) {
+    public void arrowTimer(String arena) {
+        LocalArena localArena = plugin.getLocalArenas().get(arena);
+        List<Player> archers = new ArrayList<>();
+        for (Player player : localArena.getPlayerKit().keySet()) {
+            if (localArena.getPlayerKit().get(player).equals(KitType.ARCHER)) {
+                archers.add(player);
+            }
+        }
+        if (archers.isEmpty()) {
+            return;
+        }
         new BukkitRunnable() {
             @Override
             public void run() {
-                if (localArena == null || !localArena.getState().equals(GameState.GAME)) {
+                LocalArena localArena = plugin.getLocalArenas().get(arena);
+
+                if (!localArena.getState().equals(GameState.GAME)) {
                     this.cancel();
                     return;
                 }
-                for (Player player : localArena.getPlayerKit().keySet()) {
-                    if (localArena.getPlayerKit().get(player).equals(KitType.ARCHER) &&
-                            (localArena.getRespawnTimer().get(player) == null || localArena.getRespawnTimer().get(player) == 0)) {
+                for (Player player : archers) {
+                    if ((localArena.getRespawnTimer().get(player) == null || localArena.getRespawnTimer().get(player) == 0)) {
                         addArrow(player);
                     }
                 }

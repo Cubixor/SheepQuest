@@ -151,6 +151,8 @@ public class PlayCommands {
             player.setFoodLevel(20);
             player.setExp(0);
             player.setLevel(0);
+            player.setAllowFlight(false);
+            player.setFlying(false);
             for (PotionEffect potionEffect : player.getActivePotionEffects()) {
                 player.removePotionEffect(potionEffect.getType());
             }
@@ -162,7 +164,6 @@ public class PlayCommands {
                 player.getInventory().setItem(plugin.getItems().getKitsItemSlot(), plugin.getItems().getKitsItem());
             }
             player.getInventory().setItem(plugin.getItems().getLeaveItemSlot(), plugin.getItems().getLeaveItem());
-            new WaitingTips().playerTips(player);
             player.getInventory().setHeldItemSlot(4);
             count++;
 
@@ -280,12 +281,12 @@ public class PlayCommands {
     }
 
     public void sendKickMessage(Player player, LocalArena localArena) {
+        List<Player> players = new ArrayList<>(localArena.getPlayerTeam().keySet());
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-
             String arenaString = localArena.getName();
             String count = Integer.toString(localArena.getPlayers().contains(player.getName()) ? localArena.getPlayers().size() - 1 : localArena.getPlayers().size());
             String max = Integer.toString(ConfigUtils.getInt(arenaString, ConfigField.MAX_PLAYERS));
-            for (Player p : localArena.getPlayerTeam().keySet()) {
+            for (Player p : players) {
                 p.sendMessage(plugin.getMessage("game.arena-leave-success").replace("%player%", player.getName()).replace("%count%", count).replace("%max%", max));
             }
         });
@@ -311,8 +312,6 @@ public class PlayCommands {
             player.addPotionEffect(potionEffect);
         }
         ActionBar.clearActionBar(player);
-        if (plugin.getPlayerInfo().get(player) != null)
-            plugin.getPlayerInfo().get(player).getTipTask().cancel();
         player.setGameMode(playerData.getGameMode());
         player.setHealth(playerData.getHealth());
         player.setFoodLevel(playerData.getFood());
@@ -339,6 +338,16 @@ public class PlayCommands {
         boolean resetSent = false;
 
         if (localArena.getPlayerTeam().containsKey(player)) {
+            if (localArena.getRespawnTimer().containsKey(player)) {
+                for (Player p : localArena.getPlayerTeam().keySet()) {
+                    p.showPlayer(player);
+                }
+                localArena.getRespawnTimer().remove(player);
+            }
+            for (Player p : localArena.getRespawnTimer().keySet()) {
+                player.showPlayer(p);
+            }
+
             localArena.getTeamBossBars().get(localArena.getPlayerTeam().get(player)).removePlayer(player);
             if (localArena.getPlayerStats().get(player) != null && localArena.getPlayerStats().get(player).getSheepCooldown() != null) {
                 localArena.getPlayerStats().get(player).getSheepCooldown().cancel();
@@ -382,6 +391,14 @@ public class PlayCommands {
                     new End().resetArena(localArena, end);
                     resetSent = true;
                 }
+            } else if (localArena.getState().equals(GameState.GAME) && count == 1 && plugin.getConfig().getBoolean("stop-game-one-player")) {
+                Utils.removeSheep(player);
+                if (!reset && plugin.isEnabled()) {
+                    new ArrayList<>(localArena.getPlayerTeam().keySet()).get(0).sendMessage(plugin.getMessage("game.stopped-one-player"));
+                    new End().resetArena(localArena, end);
+                    resetSent = true;
+                }
+
             }
         }
 

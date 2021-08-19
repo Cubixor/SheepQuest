@@ -1,10 +1,7 @@
 package me.cubixor.sheepquest.spigot;
 
 import com.cryptomorin.xseries.XMaterial;
-import me.cubixor.sheepquest.spigot.api.ConfigUpdater;
-import me.cubixor.sheepquest.spigot.api.PassengerFix;
-import me.cubixor.sheepquest.spigot.api.PlaceholderExpansion;
-import me.cubixor.sheepquest.spigot.api.Updater;
+import me.cubixor.sheepquest.spigot.api.*;
 import me.cubixor.sheepquest.spigot.commands.Command;
 import me.cubixor.sheepquest.spigot.commands.PlayCommands;
 import me.cubixor.sheepquest.spigot.commands.SetupWand;
@@ -25,7 +22,6 @@ import org.bstats.charts.SingleLineChart;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.boss.BarColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -63,8 +59,8 @@ public final class SheepQuest extends JavaPlugin {
     private Items items;
     private final List<Kit> kits = new ArrayList<>();
     private boolean enabled = false;
-    private boolean before9 = false;
     private boolean passengerFix = false;
+    private BukkitTask tipTask;
 
     private MysqlConnection mysqlConnection;
     private boolean bungee;
@@ -82,12 +78,8 @@ public final class SheepQuest extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
-        //Check if server is 1.8
-        // If true register bossbar api
-        try {
-            BarColor.WHITE.name();
-        } catch (NoClassDefFoundError e) {
-            before9 = true;
+        VersionUtils.initialize();
+        if (VersionUtils.is18()) {
             APIManager.require(BossBarAPI.class, this);
             APIManager.initAPI(BossBarAPI.class);
         }
@@ -134,11 +126,10 @@ public final class SheepQuest extends JavaPlugin {
 
         new Updater(this, 83005).runUpdaterTask();
 
-        if (getConfig().getBoolean("send-stats")) {
-            Metrics metrics = new Metrics(this, 9022);
-            metrics.addCustomChart(new SimplePie("used_language", () -> getConfig().getString("language", "en")));
-            metrics.addCustomChart(new SingleLineChart("games", () -> getAllArenas().size()));
-        }
+        Metrics metrics = new Metrics(this, 9022);
+        metrics.addCustomChart(new SimplePie("used_language", () -> getConfig().getString("language", "en")));
+        metrics.addCustomChart(new SingleLineChart("games", () -> getAllArenas().size()));
+        metrics.addCustomChart(new SimplePie("bungee", () -> Boolean.toString(getConfig().getBoolean("bungee.bungee-mode", false))));
     }
 
     @Override
@@ -276,6 +267,7 @@ public final class SheepQuest extends JavaPlugin {
                 kit.loadItems();
             }
 
+            new WaitingTips().runTipTask();
             setItems(new Items());
             new Signs().loadSigns();
             enabled = true;
@@ -419,15 +411,19 @@ public final class SheepQuest extends JavaPlugin {
         return !enabled;
     }
 
-    public boolean isBefore9() {
-        return before9;
-    }
-
     public boolean isPassengerFix() {
         return passengerFix;
     }
 
     public void setPassengerFix(boolean passengerFix) {
         this.passengerFix = passengerFix;
+    }
+
+    public BukkitTask getTipTask() {
+        return tipTask;
+    }
+
+    public void setTipTask(BukkitTask tipTask) {
+        this.tipTask = tipTask;
     }
 }

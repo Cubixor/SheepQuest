@@ -44,7 +44,9 @@ public class PlaceholderExpansion extends me.clip.placeholderapi.expansion.Place
             return null;
         }
         String param1 = paramsSplit[1];
-
+        if (param1.equalsIgnoreCase("{player-name}")) {
+            param1 = player.getName();
+        }
 
         switch (paramsSplit[0]) {
             case "status": {

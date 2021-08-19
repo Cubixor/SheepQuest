@@ -1,6 +1,7 @@
 package me.cubixor.sheepquest.spigot.game;
 
 import me.cubixor.sheepquest.spigot.SheepQuest;
+import me.cubixor.sheepquest.spigot.api.VersionUtils;
 import me.cubixor.sheepquest.spigot.commands.PlayCommands;
 import me.cubixor.sheepquest.spigot.config.ConfigUtils;
 import org.bukkit.DyeColor;
@@ -29,7 +30,7 @@ public class JoinSheep implements Listener {
 
     @EventHandler
     public void sheepClickEvent(PlayerInteractEntityEvent evt) {
-        if (!plugin.isBefore9()) {
+        if (!VersionUtils.is18()) {
             if (!evt.getHand().equals(EquipmentSlot.HAND)) {
                 return;
             }
@@ -73,7 +74,7 @@ public class JoinSheep implements Listener {
     }
 
     public void spawnSheep(Player player) {
-        if (plugin.isBefore9()) {
+        if (VersionUtils.is18()) {
             player.sendMessage(plugin.getMessage("general.version-not-supported"));
             return;
         }

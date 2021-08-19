@@ -4,8 +4,11 @@ import me.cubixor.sheepquest.spigot.SheepQuest;
 import me.cubixor.sheepquest.spigot.Utils;
 import me.cubixor.sheepquest.spigot.api.Particles;
 import me.cubixor.sheepquest.spigot.api.Sounds;
+import me.cubixor.sheepquest.spigot.game.events.BonusEntity;
+import me.cubixor.sheepquest.spigot.gameInfo.GameState;
 import me.cubixor.sheepquest.spigot.gameInfo.LocalArena;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -41,11 +44,14 @@ public class KitStandard extends Kit implements Listener {
         LocalArena localArena = Utils.getLocalArena(player);
         if (localArena != null && plugin.getConfig().getBoolean("kits.standard.dash")
                 && Kits.getPlayerKit(player).getKitType().equals(KitType.STANDARD)
-                && !localArena.getRespawnTimer().containsKey(player)) {
+                && !localArena.getRespawnTimer().containsKey(player)
+                && localArena.getState().equals(GameState.GAME)) {
             evt.setCancelled(true);
             player.setFlying(false);
             player.setAllowFlight(false);
-            useDash(player, localArena);
+            if ((player.getPassenger() == null || !BonusEntity.isCarrying((LivingEntity) player.getPassenger()))) {
+                useDash(player, localArena);
+            }
         }
     }
 
@@ -54,7 +60,8 @@ public class KitStandard extends Kit implements Listener {
         Particles.spawnParticle(localArena, player.getLocation().add(0, 1.5, 0), "dash");
 
         addCooldown(player);
-        player.setVelocity(player.getLocation().getDirection().add(new Vector(0, plugin.getConfig().getDouble("kits.standard.dash-power-y"), 0)).multiply(plugin.getConfig().getDouble("kits.standard.dash-power")));
+        player.setVelocity(player.getLocation().getDirection().add(
+                new Vector(0, plugin.getConfig().getDouble("kits.standard.dash-power-y"), 0)).multiply(plugin.getConfig().getDouble("kits.standard.dash-power")));
     }
 
 }

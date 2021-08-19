@@ -8,7 +8,7 @@
 # 插件汉化 by Light²(www.mcbbs.net内用户)
 # Translated by Light² (from www.mcbbs.net)
 
-prefix: "&7[&9&l抢羊乱战&7]"
+prefix: "&8&l| &9&l抢羊乱战 &8&l|&r"
 
 general:
   arena-invalid: "%prefix% &c竞技场不存在！"
@@ -169,8 +169,10 @@ game:
   countdown-2s-subtitle: "&7与你的团队合作"
   countdown-1s-title: "&a&l1"
   countdown-1s-subtitle: "&7&l玩的开心！"
+  countdown-chat: "%prefix% &7Starting in: &e%time%"
   start-title: "&d&l游戏开始！"
   start-subtitle: "&7你被分配至 %team%"
+  start-chat: "%prefix% &7The game has started!"
   time-left: "&7还有&d&l%time%秒！"
   team-join-success: "%prefix% &7你成功加入了 %team%&7!"
   team-join-random: "%prefix% &7游戏开始，你被加入了随机的队伍！"
@@ -285,6 +287,7 @@ game:
     - "&d&lThanks for playing!"
     - "&m---------------------------------------------------"
   summary-points: "&7&l| %team%&7: %points% &7&l| "
+  stopped-one-player: "%prefix% &cThe game was stopped because everyone except you left!"
 kits:
   already-selected: "%prefix% &cYou have this kit already selected!"
   choose-success: "%prefix% &7You have selected kit %kit%!"
@@ -298,7 +301,7 @@ kits:
     - "&7Click to open menu in which "
     - "&7you can choose your kit!"
   standard-name: "&e&lStandard kit"
-  standrad-lore:
+  standard-lore:
     - "&7Free, basic kit"
     - ""
     - "&7Contains:"

@@ -6,7 +6,7 @@
 #
 # You can use /sq reload command to reload modified files without restarting server.
 
-prefix: "&8&l| &9&lSQ &8&l|"
+prefix: "&8&l| &9&lSQ &8&l|&r"
 
 general:
   arena-invalid: "%prefix% &cThis arena does not exist!"
@@ -167,8 +167,10 @@ game:
   countdown-2s-subtitle: "&7Cooperate with your team"
   countdown-1s-title: "&a&l1"
   countdown-1s-subtitle: "&7&lHave fun!"
+  countdown-chat: "%prefix% &7Starting in: &e%time%"
   start-title: "&d&lStart!"
   start-subtitle: "&7You are in team %team%"
+  start-chat: "%prefix% &7The game has started!"
   time-left: "&d&l%time% &7seconds left!"
   team-join-success: "%prefix% &7You have successfully joined team %team%&7!"
   team-join-random: "%prefix% &7You will be put in random team when the game starts!"
@@ -288,6 +290,7 @@ game:
     - "&d&lThanks for playing!"
     - "&m---------------------------------------------------"
   summary-points: "&7&l| %team%&7: %points% &7&l| "
+  stopped-one-player: "%prefix% &cThe game was stopped because everyone except you left!"
 kits:
   already-selected: "%prefix% &cYou have this kit already selected!"
   choose-success: "%prefix% &7You have selected kit %kit%!"
@@ -301,7 +304,7 @@ kits:
     - "&7Click to open menu in which "
     - "&7you can choose your kit!"
   standard-name: "&e&lStandard kit"
-  standrad-lore:
+  standard-lore:
     - "&7Free, basic kit"
     - ""
     - "&7Contains:"

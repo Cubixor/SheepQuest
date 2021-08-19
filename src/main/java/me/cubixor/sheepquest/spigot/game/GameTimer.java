@@ -95,7 +95,7 @@ public class GameTimer {
 
         Particles.spawnParticle(localArena, loc.add(0, 1, 0), "sheep-spawn");
 
-        PathFinding.walkToLocation(sheep, loc, plugin.getConfig().getDouble("sheep-speed"), localArena, Team.NONE);
+        Pathfinding.walkToLocation(sheep, loc, plugin.getConfig().getDouble("sheep-speed"), localArena, Team.NONE);
     }
 
 }

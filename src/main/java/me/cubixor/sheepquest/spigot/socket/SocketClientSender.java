@@ -44,25 +44,6 @@ public class SocketClientSender {
         });
     }
 
-/*
-    public void sendLeavePacket(Arena arena, String player) {
-        try {
-            ObjectOutputStream out = getOutputStream();
-            if (out == null) return;
-
-            ArenaPlayerPacket arenaPlayerPacket = new ArenaPlayerPacket(PacketType.ARENA_LEAVE, arena, player);
-
-            out.writeObject(arenaPlayerPacket);
-            out.flush();
-            out.reset();
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-*/
-
 
     public void sendArenasPacket(String server, List<Arena> arenas) {
         Bukkit.getScheduler().runTask(plugin, () -> {

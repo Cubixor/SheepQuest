@@ -6,7 +6,9 @@ import me.cubixor.sheepquest.spigot.SheepQuest;
 import me.cubixor.sheepquest.spigot.Utils;
 import me.cubixor.sheepquest.spigot.api.Particles;
 import me.cubixor.sheepquest.spigot.api.Sounds;
+import me.cubixor.sheepquest.spigot.api.VersionUtils;
 import me.cubixor.sheepquest.spigot.config.ConfigUtils;
+import me.cubixor.sheepquest.spigot.game.kits.KitType;
 import me.cubixor.sheepquest.spigot.game.kits.Kits;
 import me.cubixor.sheepquest.spigot.gameInfo.GameState;
 import me.cubixor.sheepquest.spigot.gameInfo.LocalArena;
@@ -79,7 +81,8 @@ public class Kill implements Listener {
         }
 
         if (!(attacker.getInventory().getItemInHand().equals(Kits.getPlayerKit(attacker).getPrimaryWeapon())
-                || attacker.getInventory().getItemInHand().equals(Kits.getPlayerKit(attacker).getSecondaryWeapon()))) {
+                || (!localArena.getPlayerKit().get(attacker).equals(KitType.ATHLETE)
+                && attacker.getInventory().getItemInHand().equals(Kits.getPlayerKit(attacker).getSecondaryWeapon())))) {
             evt.setCancelled(true);
             return;
         }
@@ -87,10 +90,12 @@ public class Kill implements Listener {
             evt.setCancelled(true);
             return;
         }
-        damagePlayer(player, attacker, localArena, evt.getFinalDamage());
+        if (damagePlayer(player, attacker, localArena, evt.getFinalDamage())) {
+            evt.setDamage(0);
+        }
     }
 
-    public void damagePlayer(Player player, Player attacker, LocalArena localArena, double damage) {
+    public boolean damagePlayer(Player player, Player attacker, LocalArena localArena, double damage) {
         sheepCooldown(player);
         Utils.removeSheep(player);
 
@@ -98,14 +103,14 @@ public class Kill implements Listener {
         loc.setY(loc.getY() + 1);
 
         if (plugin.getConfig().getBoolean("particles.enable-blood")) {
-            if (plugin.isBefore9()) {
+            if (VersionUtils.is18()) {
                 ParticleEffect.BLOCK_CRACK.sendData(localArena.getPlayerTeam().keySet(), loc.getX(), loc.getY(), loc.getZ(),
                         0.1, 0.1, 0.1, 0.1, 50, new ItemStack(Material.REDSTONE_BLOCK));
             } else {
                 try {
                     BlockData blockData = Bukkit.createBlockData(Material.REDSTONE_BLOCK);
                     attacker.getWorld().spawnParticle(Particle.BLOCK_CRACK, loc, 50, (Object) blockData);
-                } catch (Exception e) {
+                } catch (Error | Exception e) {
                     attacker.getWorld().spawnParticle(Particle.BLOCK_CRACK, loc, 50, (Object) new MaterialData(Material.REDSTONE_BLOCK));
                 }
             }
@@ -160,8 +165,9 @@ public class Kill implements Listener {
             localArena.getRespawnTimer().put(player, plugin.getConfig().getInt("respawn-time"));
 
             respawnTimer(player, attacker);
+            return true;
         }
-
+        return false;
     }
 
     private void respawnTimer(Player player, Player killer) {

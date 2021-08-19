@@ -5,7 +5,9 @@ import me.cubixor.sheepquest.spigot.Utils;
 import me.cubixor.sheepquest.spigot.api.Particles;
 import me.cubixor.sheepquest.spigot.api.PassengerFix;
 import me.cubixor.sheepquest.spigot.api.Sounds;
-import me.cubixor.sheepquest.spigot.game.events.BonusSheep;
+import me.cubixor.sheepquest.spigot.config.ConfigField;
+import me.cubixor.sheepquest.spigot.config.ConfigUtils;
+import me.cubixor.sheepquest.spigot.game.events.BonusEntity;
 import me.cubixor.sheepquest.spigot.gameInfo.GameState;
 import me.cubixor.sheepquest.spigot.gameInfo.LocalArena;
 import me.cubixor.sheepquest.spigot.gameInfo.Team;
@@ -31,6 +33,7 @@ public class SheepCarrying implements Listener {
     }
 
 
+    @SuppressWarnings("deprecation")
     @EventHandler
     public void onMove(PlayerMoveEvent evt) {
         Player player = evt.getPlayer();
@@ -38,6 +41,15 @@ public class SheepCarrying implements Listener {
         if (localArena == null) {
             return;
         }
+
+        if (evt.getTo().getY() < 0) {
+            if (localArena.getState().equals(GameState.WAITING) || localArena.getState().equals(GameState.STARTING)) {
+                evt.getPlayer().teleport(ConfigUtils.getLocation(localArena.getName(), ConfigField.WAITING_LOBBY));
+            } else {
+                evt.getPlayer().teleport(ConfigUtils.getSpawn(localArena.getName(), localArena.getPlayerTeam().get(evt.getPlayer())));
+            }
+        }
+
         if (!localArena.getState().equals(GameState.GAME)) {
             return;
         }
@@ -48,91 +60,100 @@ public class SheepCarrying implements Listener {
 
         Team team = localArena.getPlayerTeam().get(player);
 
+        if (player.getPassenger() != null) {
+            if (Utils.isInRegion(player, localArena, team)) {
+                regionEnter(player);
+            }
+        }
+
+        if (localArena.getRespawnTimer().containsKey(evt.getPlayer())) {
+            return;
+        }
+
+        if (!evt.getPlayer().getInventory().getItemInHand().equals(plugin.getItems().getSheepItem())) {
+            return;
+        }
+
         for (Entity e : evt.getPlayer().getNearbyEntities(1, 1, 1)) {
-
-            if (e.getType().equals(EntityType.SHEEP) &&
-                    evt.getPlayer().getInventory().getItemInHand().equals(plugin.getItems().getSheepItem()) &&
-                    !localArena.getRespawnTimer().containsKey(evt.getPlayer()) &&
-                    !isSheepCarried(e, localArena) &&
+            if (e instanceof LivingEntity &&
+                    !isCarried(e, localArena) &&
                     e.isOnGround()) {
-                Sheep sheep = (Sheep) e;
-                if (sheep.getColor().equals(DyeColor.WHITE) || !team.equals(getTeamByColor(sheep.getColor()))) {
-                    boolean pas1Exists = player.getPassenger() != null;
-                    boolean pas2Exists;
-                    boolean pas3Exists;
 
-                    if (pas1Exists) {
-                        if (player.getPassenger().equals(e)) {
-                            continue;
-                        }
-                        pas2Exists = player.getPassenger().getPassenger() != null;
-                        if (pas2Exists) {
-                            if (player.getPassenger().getPassenger().equals(e)) {
+                BonusEntity bonusEntity = new BonusEntity();
+                if (bonusEntity.pickupEntity(player, (LivingEntity) e)) {
+                    continue;
+                }
+                if (player.getPassenger() != null && BonusEntity.isCarrying((LivingEntity) player.getPassenger())) {
+                    return;
+                }
+
+                if (e.getType().equals(EntityType.SHEEP)) {
+                    Sheep sheep = (Sheep) e;
+                    if (sheep.getColor().equals(DyeColor.WHITE) || !team.equals(getTeamByColor(sheep.getColor()))) {
+                        boolean pas1Exists = player.getPassenger() != null;
+                        boolean pas2Exists;
+                        boolean pas3Exists;
+
+                        if (pas1Exists) {
+                            if (player.getPassenger().equals(e)) {
                                 continue;
                             }
-                            pas3Exists = player.getPassenger().getPassenger().getPassenger() != null;
-                            if (pas3Exists) {
-                                break;
+                            pas2Exists = player.getPassenger().getPassenger() != null;
+                            if (pas2Exists) {
+                                if (player.getPassenger().getPassenger().equals(e)) {
+                                    continue;
+                                }
+                                pas3Exists = player.getPassenger().getPassenger().getPassenger() != null;
+                                if (pas3Exists) {
+                                    break;
+                                }
                             }
                         }
-                    }
 
-                    BonusSheep bonusSheep = new BonusSheep();
-                    if (bonusSheep.pickupSheep(player, sheep)) {
-                        continue;
-                    }
 
-                    if (evt.getPlayer().getPassenger() == null) {
-                        player.setPassenger(e);
-                        if (player.getPassenger() != null) {
-                            Sounds.playSound(player, player.getLocation(), "sheep-pick");
-                            if (plugin.getConfig().getBoolean("effects.sheep-slowness")) {
-                                player.removePotionEffect(PotionEffectType.SLOW);
-                                evt.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 9999999, 0, false, false));
-                            }
-                        }
-                    } else {
-                        Entity pas1 = evt.getPlayer().getPassenger();
-                        if (bonusSheep.carryingSheep((Sheep) pas1)) {
-                            return;
-                        }
-                        if (pas1.getPassenger() == null) {
-                            pas1.setPassenger(e);
-                            if (pas1.getPassenger() != null) {
+                        if (evt.getPlayer().getPassenger() == null) {
+                            player.setPassenger(e);
+                            if (player.getPassenger() != null) {
                                 Sounds.playSound(player, player.getLocation(), "sheep-pick");
                                 if (plugin.getConfig().getBoolean("effects.sheep-slowness")) {
                                     player.removePotionEffect(PotionEffectType.SLOW);
-                                    evt.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 9999999, 1, false, false));
+                                    evt.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 9999999, 0, false, false));
                                 }
                             }
-                        } else if (pas1.getPassenger() != null && !pas1.getPassenger().equals(e)) {
-                            Entity pas2 = pas1.getPassenger();
-                            if (pas2.getPassenger() == null) {
-                                pas2.setPassenger(e);
-                                if (pas2.getPassenger() != null) {
+                        } else {
+                            Entity pas1 = evt.getPlayer().getPassenger();
+                            if (pas1.getPassenger() == null) {
+                                pas1.setPassenger(e);
+                                if (pas1.getPassenger() != null) {
                                     Sounds.playSound(player, player.getLocation(), "sheep-pick");
                                     if (plugin.getConfig().getBoolean("effects.sheep-slowness")) {
                                         player.removePotionEffect(PotionEffectType.SLOW);
-                                        evt.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 9999999, 2, false, false));
+                                        evt.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 9999999, 1, false, false));
+                                    }
+                                }
+                            } else if (pas1.getPassenger() != null && !pas1.getPassenger().equals(e)) {
+                                Entity pas2 = pas1.getPassenger();
+                                if (pas2.getPassenger() == null) {
+                                    pas2.setPassenger(e);
+                                    if (pas2.getPassenger() != null) {
+                                        Sounds.playSound(player, player.getLocation(), "sheep-pick");
+                                        if (plugin.getConfig().getBoolean("effects.sheep-slowness")) {
+                                            player.removePotionEffect(PotionEffectType.SLOW);
+                                            evt.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 9999999, 2, false, false));
+                                        }
                                     }
                                 }
                             }
                         }
+                        PassengerFix.updatePassengers(player);
                     }
-                    PassengerFix.updatePassengers(player);
                 }
-            }
-        }
-
-
-        if (player.getPassenger() != null && player.getPassenger().getType().equals(EntityType.SHEEP)) {
-            if (Utils.isInRegion(player, localArena.getName(), team)) {
-                regionEnter(player);
             }
         }
     }
 
-    private boolean isSheepCarried(Entity entity, LocalArena localArena) {
+    @SuppressWarnings("deprecation")
+    private boolean isCarried(Entity entity, LocalArena localArena) {
         if (entity.getPassenger() != null) {
             return true;
         }
@@ -156,6 +177,7 @@ public class SheepCarrying implements Listener {
         return false;
     }
 
+    @SuppressWarnings("deprecation")
     private void regionEnter(Player player) {
         new BukkitRunnable() {
             @Override
@@ -164,7 +186,7 @@ public class SheepCarrying implements Listener {
                 if (localArena == null) {
                     return;
                 }
-                if (Utils.isInRegion(player, localArena.getName(), localArena.getPlayerTeam().get(player))) {
+                if (Utils.isInRegion(player, localArena, localArena.getPlayerTeam().get(player))) {
                     if (player.getPassenger() != null) {
                         if (player.getPassenger().getPassenger() != null) {
                             if (player.getPassenger().getPassenger().getPassenger() != null) {
@@ -194,15 +216,15 @@ public class SheepCarrying implements Listener {
         }.runTaskLater(plugin, 10);
     }
 
-    public void sheepBring(Player player, Sheep sheep) {
+    public void sheepBring(Player player, LivingEntity entity) {
         LocalArena localArena = Utils.getLocalArena(player);
         Team team = localArena.getPlayerTeam().get(player);
-        boolean specialSheep = sheep.getColor().equals(DyeColor.valueOf(plugin.getConfig().getString("special-events.bonus-sheep.color")));
+        boolean specialSheep = BonusEntity.isCarrying(entity);
 
         localArena.getPlayerStats().get(player).setSheepTaken(localArena.getPlayerStats().get(player).getSheepTaken() + 1);
         player.removePotionEffect(PotionEffectType.SLOW);
 
-        Firework firework = (Firework) sheep.getWorld().spawnEntity(sheep.getLocation(), EntityType.FIREWORK);
+        Firework firework = (Firework) entity.getWorld().spawnEntity(entity.getLocation(), EntityType.FIREWORK);
         FireworkMeta fwm = firework.getFireworkMeta();
         FireworkEffect.Type type = FireworkEffect.Type.BALL;
         Color color = specialSheep ? DyeColor.valueOf(plugin.getConfig().getString("special-events.bonus-sheep.color")).getColor() : team.getColor();
@@ -212,9 +234,9 @@ public class SheepCarrying implements Listener {
         firework.setFireworkMeta(fwm);
 
         if (specialSheep) {
-            new BonusSheep().bringSheep(player, sheep);
+            new BonusEntity().bringEntity(player, entity);
         } else {
-            addPoint(player, sheep);
+            addPoint(player, (Sheep) entity);
         }
     }
 
@@ -223,7 +245,7 @@ public class SheepCarrying implements Listener {
         Team team = localArena.getPlayerTeam().get(player);
 
         //Location path = ConfigUtils.getLocation(localArena.getName(), Utils.getTeamSpawn(team.getCode()));
-        PathFinding.walkToLocation(sheep, PathFinding.getMiddleArea(localArena.getName(), team), plugin.getConfig().getDouble("sheep-speed"), localArena, team);
+        Pathfinding.walkToLocation(sheep, Pathfinding.getMiddleArea(localArena.getName(), team), plugin.getConfig().getDouble("sheep-speed"), localArena, team);
 
         for (Team t : Utils.getTeams()) {
             if (sheep.getColor().equals(t.getDyeColor()) && !team.equals(t)) {

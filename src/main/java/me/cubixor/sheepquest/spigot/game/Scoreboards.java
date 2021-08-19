@@ -35,17 +35,20 @@ public class Scoreboards {
         LinkedList<String> message = new LinkedList<>(plugin.getMessageList("game.scoreboard-new-waiting"));
         int rowCount = message.size();
 
+        String countString = Integer.toString(count);
         String teamName = localArena.getPlayerTeam().get(player).getName();
         String kitName = localArena.getPlayerKit().get(player).getName();
+        String date = getDate();
+
 
         int row = 0;
         for (int i = rowCount; i > 0; i--) {
             Score score = objective.getScore(message.get(row)
                     .replace("%arena%", arenaString)
-                    .replace("%players%", Integer.toString(count))
+                    .replace("%players%", countString)
                     .replace("%team%", teamName)
                     .replace("%kit%", kitName)
-                    .replace("%date%", getDate()));
+                    .replace("%date%", date));
             score.setScore(i);
             row++;
         }
@@ -63,16 +66,24 @@ public class Scoreboards {
         LinkedList<String> message = new LinkedList<>(plugin.getMessageList("game.scoreboard-new-starting"));
         int rowCount = message.size();
 
+        String countString = Integer.toString(count);
+        String teamName = localArena.getPlayerTeam().get(player).getName();
+        String kitName = localArena.getPlayerKit().get(player).getName();
+        String timeLongTime = getTimeLong(time);
+        String timeShortTime = Integer.toString(time);
+        String date = getDate();
+
+
         int row = 0;
         for (int i = rowCount; i > 0; i--) {
             Score score = objective.getScore(message.get(row)
                     .replace("%arena%", arenaString)
-                    .replace("%players%", Integer.toString(count))
-                    .replace("%team%", localArena.getPlayerTeam().get(player).getName())
-                    .replace("%kit%", localArena.getPlayerKit().get(player).getName())
-                    .replace("%time-short%", Integer.toString(time))
-                    .replace("%time-long%", getTimeLong(time))
-                    .replace("%date%", getDate()));
+                    .replace("%players%", countString)
+                    .replace("%team%", teamName)
+                    .replace("%kit%", kitName)
+                    .replace("%time-long%", timeLongTime)
+                    .replace("%time-short%", timeShortTime)
+                    .replace("%date%", date));
             score.setScore(i);
             row++;
         }
@@ -106,18 +117,27 @@ public class Scoreboards {
             }
         }
 
+        String countString = Integer.toString(count);
+        String teamName = localArena.getPlayerTeam().get(player).getName();
+        String kitName = localArena.getPlayerKit().get(player).getName();
+        String timeLongSheep = getTimeLong(sheepTime);
+        String timeShortSheep = Integer.toString(sheepTime);
+        String timeLongTime = getTimeLong(time);
+        String timeShortTime = Integer.toString(time);
+        String date = getDate();
+
         int row = 0;
         for (int i = message.size(); i > 0; i--) {
             Score score = objective.getScore(message.get(row)
                     .replace("%arena%", arenaString)
-                    .replace("%players%", Integer.toString(count))
-                    .replace("%team%", localArena.getPlayerTeam().get(player).getName())
-                    .replace("%kit%", localArena.getPlayerKit().get(player).getName())
-                    .replace("%sheep-long%", getTimeLong(sheepTime))
-                    .replace("%sheep-short%", Integer.toString(sheepTime))
-                    .replace("%time-long%", getTimeLong(time))
-                    .replace("%time-short%", Integer.toString(time))
-                    .replace("%date%", getDate()));
+                    .replace("%players%", countString)
+                    .replace("%team%", teamName)
+                    .replace("%kit%", kitName)
+                    .replace("%sheep-long%", timeLongSheep)
+                    .replace("%sheep-short%", timeShortSheep)
+                    .replace("%time-long%", timeLongTime)
+                    .replace("%time-short%", timeShortTime)
+                    .replace("%date%", date));
             score.setScore(i);
             row++;
         }
@@ -150,16 +170,24 @@ public class Scoreboards {
             }
         }
 
+        String countString = Integer.toString(count);
+        String teamName = localArena.getPlayerTeam().get(player).getName();
+        String kitName = localArena.getPlayerKit().get(player).getName();
+        String timeLongTime = getTimeLong(time);
+        String timeShortTime = Integer.toString(time);
+        String date = getDate();
+
+
         int row = 0;
         for (int i = message.size(); i > 0; i--) {
             Score score = objective.getScore(message.get(row)
                     .replace("%arena%", arenaString)
-                    .replace("%players%", Integer.toString(count))
-                    .replace("%team%", localArena.getPlayerTeam().get(player).getName())
-                    .replace("%kit%", localArena.getPlayerKit().get(player).getName())
-                    .replace("%time-long%", getTimeLong(time))
-                    .replace("%time-short%", Integer.toString(time))
-                    .replace("%date%", getDate()));
+                    .replace("%players%", countString)
+                    .replace("%team%", teamName)
+                    .replace("%kit%", kitName)
+                    .replace("%time-long%", timeLongTime)
+                    .replace("%time-short%", timeShortTime)
+                    .replace("%date%", date));
             score.setScore(i);
             row++;
         }

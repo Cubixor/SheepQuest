@@ -1,6 +1,7 @@
 package me.cubixor.sheepquest.spigot.commands;
 
 import me.cubixor.sheepquest.spigot.SheepQuest;
+import me.cubixor.sheepquest.spigot.api.VersionUtils;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -23,8 +24,8 @@ public class SetupWand implements Listener {
         if (!(evt.getPlayer().getInventory().getItemInHand().equals(plugin.getItems().getSetupWandItem()) && evt.getPlayer().hasPermission("sheepquest.setup"))) {
             return;
         }
-        if (!plugin.isBefore9()) {
-            if (!evt.getHand().equals(EquipmentSlot.HAND)) {
+        if (!VersionUtils.is18()) {
+            if (evt.getHand() == null || !evt.getHand().equals(EquipmentSlot.HAND)) {
                 return;
             }
         }

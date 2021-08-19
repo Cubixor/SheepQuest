@@ -4,9 +4,6 @@ import com.cryptomorin.xseries.messages.Titles;
 import me.cubixor.sheepquest.spigot.SheepQuest;
 import me.cubixor.sheepquest.spigot.Utils;
 import me.cubixor.sheepquest.spigot.commands.PlayCommands;
-import me.cubixor.sheepquest.spigot.config.ConfigField;
-import me.cubixor.sheepquest.spigot.config.ConfigUtils;
-import me.cubixor.sheepquest.spigot.gameInfo.GameState;
 import me.cubixor.sheepquest.spigot.gameInfo.LocalArena;
 import me.cubixor.sheepquest.spigot.gameInfo.PlayerInfo;
 import org.bukkit.entity.EntityType;
@@ -17,7 +14,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.*;
+import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 public class ArenaProtection implements Listener {
 
@@ -89,21 +89,6 @@ public class ArenaProtection implements Listener {
         }
         if (Utils.getLocalArena((Player) evt.getEntity()) != null) {
             evt.setCancelled(true);
-        }
-    }
-
-    @EventHandler
-    public void onMove(PlayerMoveEvent evt) {
-        LocalArena localArena = Utils.getLocalArena(evt.getPlayer());
-        if (localArena != null) {
-            String arenaString = localArena.getName();
-            if (evt.getTo().getY() < 0) {
-                if (localArena.getState().equals(GameState.WAITING) || localArena.getState().equals(GameState.STARTING)) {
-                    evt.getPlayer().teleport(ConfigUtils.getLocation(arenaString, ConfigField.WAITING_LOBBY));
-                } else {
-                    evt.getPlayer().teleport(ConfigUtils.getSpawn(localArena.getName(), localArena.getPlayerTeam().get(evt.getPlayer())));
-                }
-            }
         }
     }
 

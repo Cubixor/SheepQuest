@@ -2,7 +2,6 @@ package me.cubixor.sheepquest.spigot.game;
 
 import com.cryptomorin.xseries.messages.ActionBar;
 import me.cubixor.sheepquest.spigot.SheepQuest;
-import me.cubixor.sheepquest.spigot.Utils;
 import me.cubixor.sheepquest.spigot.gameInfo.GameState;
 import me.cubixor.sheepquest.spigot.gameInfo.LocalArena;
 import org.bukkit.entity.Player;
@@ -20,49 +19,35 @@ public class WaitingTips {
         plugin = SheepQuest.getInstance();
     }
 
-    public void playerTips(Player player) {
-        if (!plugin.getPlayerInfo().containsKey(player)) {
-            return;
+    public void runTipTask() {
+        if (plugin.getTipTask() != null) {
+            plugin.getTipTask().cancel();
         }
-        if (plugin.getPlayerInfo().get(player).getTipTask() != null) {
-            plugin.getPlayerInfo().get(player).getTipTask().cancel();
-            plugin.getPlayerInfo().get(player).setTipTask(null);
+
+        List<String> tips = new ArrayList<>(plugin.getMessageList("other.tips"));
+        List<String> tipsReplaced = new ArrayList<>();
+        for (String tip : tips) {
+            tipsReplaced.add(tip.replace("%tip-prefix%", plugin.getMessage("other.tip-prefix")));
         }
-        plugin.getPlayerInfo().get(player).setTipTask(new BukkitRunnable() {
+
+        Random random = new Random();
+
+        plugin.setTipTask(new BukkitRunnable() {
             @Override
             public void run() {
-                LocalArena localArena = Utils.getLocalArena(player);
-                if (localArena == null || !(localArena.getState().equals(GameState.WAITING) || localArena.getState().equals(GameState.STARTING))) {
-                    this.cancel();
-                    return;
-                }
+                String tip = tipsReplaced.get(random.nextInt(tipsReplaced.size()));
 
-                List<String> tips = new ArrayList<>(plugin.getMessageList("other.tips"));
-                Random random = new Random();
-                String tip = tips.get(random.nextInt(tips.size())).replace("%tip-prefix%", plugin.getMessage("other.tip-prefix"));
-                ActionBar.sendActionBar(player, tip);
-
-                new BukkitRunnable() {
-                    private int period = 0;
-
-                    @Override
-                    public void run() {
-                        LocalArena localArena1 = Utils.getLocalArena(player);
-                        if (localArena1 == null || !(localArena1.getState().equals(GameState.WAITING) || localArena1.getState().equals(GameState.STARTING))) {
-                            this.cancel();
-                            return;
-                        }
-                        if (period < 100) {
-                            period += 20;
-                            ActionBar.sendActionBar(player, tip);
-                        } else {
-                            period = 0;
-                            this.cancel();
-                        }
+                for (LocalArena localArena : plugin.getLocalArenas().values()) {
+                    if (!(localArena.getState().equals(GameState.WAITING) || localArena.getState().equals(GameState.STARTING))) {
+                        continue;
                     }
-                }.runTaskTimer(plugin, 0, 20);
+
+                    for (Player player : localArena.getPlayerTeam().keySet()) {
+                        ActionBar.sendActionBar(plugin, player, tip, 100);
+                    }
+                }
             }
-        }.runTaskTimer(plugin, 0, 100));
+        }.runTaskTimer(plugin, 0, Math.round(plugin.getConfig().getDouble("tip-rate") * 20)));
     }
 
 }

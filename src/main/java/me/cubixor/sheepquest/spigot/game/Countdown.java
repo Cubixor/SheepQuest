@@ -51,24 +51,24 @@ public class Countdown {
                     this.cancel();
                     return;
                 }
+                int time = localArena.getTimer();
 
-                if (localArena.getTimer() > 0) {
-
-
-                    int msgTitle = localArena.getTimer();
+                if (time > 0) {
                     float pitch = 0;
 
-                    if (t1.contains(msgTitle)) {
+                    if (t1.contains(time)) {
                         pitch = 0.5f;
                         for (Player p : localArena.getPlayerTeam().keySet()) {
-                            Titles.sendTitle(p, 10, 50, 10, plugin.getMessage("game.countdown-" + msgTitle + "s-title"), plugin.getMessage("game.countdown-" + msgTitle + "s-subtitle"));
+                            Titles.sendTitle(p, 10, 50, 10, plugin.getMessage("game.countdown-" + time + "s-title"), plugin.getMessage("game.countdown-" + time + "s-subtitle"));
+                            p.sendMessage(plugin.getMessage("game.countdown-chat").replace("%time%", Integer.toString(time)));
                         }
-                    } else if (t2.contains(msgTitle)) {
+                    } else if (t2.contains(time)) {
                         pitch = 1;
                         for (Player p : localArena.getPlayerTeam().keySet()) {
-                            Titles.sendTitle(p, 0, 50, 0, plugin.getMessage("game.countdown-" + msgTitle + "s-title"), plugin.getMessage("game.countdown-" + msgTitle + "s-subtitle"));
+                            Titles.sendTitle(p, 0, 50, 0, plugin.getMessage("game.countdown-" + time + "s-title"), plugin.getMessage("game.countdown-" + time + "s-subtitle"));
+                            p.sendMessage(plugin.getMessage("game.countdown-chat").replace("%time%", Integer.toString(time)));
                         }
-                        if (msgTitle == 1) {
+                        if (time == 1) {
                             pitch = 2;
                         }
                     }
@@ -107,6 +107,10 @@ public class Countdown {
                     return;
                 }
                 if (!localArena.getState().equals(GameState.STARTING)) {
+                    this.cancel();
+                    return;
+                }
+                if (localArena.getPlayerTeam().size() == 0) {
                     this.cancel();
                     return;
                 }

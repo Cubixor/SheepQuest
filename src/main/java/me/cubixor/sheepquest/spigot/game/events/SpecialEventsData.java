@@ -1,7 +1,7 @@
 package me.cubixor.sheepquest.spigot.game.events;
 
 import me.cubixor.sheepquest.spigot.gameInfo.Team;
-import org.bukkit.entity.Sheep;
+import org.bukkit.entity.Entity;
 
 import java.util.HashMap;
 
@@ -9,7 +9,7 @@ public class SpecialEventsData {
 
     private int specialEventsTimer = -1;
 
-    private HashMap<Sheep, Team> bonusSheepTeam = new HashMap<>();
+    private final HashMap<Entity, Team> bonusEntityTeam = new HashMap<>();
 
     public int getSpecialEventsTimer() {
         return specialEventsTimer;
@@ -19,11 +19,7 @@ public class SpecialEventsData {
         this.specialEventsTimer = specialEventsTimer;
     }
 
-    public HashMap<Sheep, Team> getBonusSheepTeam() {
-        return bonusSheepTeam;
-    }
-
-    public void setBonusSheepTeam(HashMap<Sheep, Team> bonusSheepTeam) {
-        this.bonusSheepTeam = bonusSheepTeam;
+    public HashMap<Entity, Team> getBonusEntityTeam() {
+        return bonusEntityTeam;
     }
 }

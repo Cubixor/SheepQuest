@@ -1,7 +1,6 @@
 package me.cubixor.sheepquest.spigot.mysql;
 
 import me.cubixor.sheepquest.spigot.SheepQuest;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -103,26 +102,20 @@ public class ConnectionSetup {
                         this.cancel();
                         return;
                     }
-                } catch (SQLException e) {
+
+
+                    MysqlConnection mysqlConnection = plugin.getMysqlConnection();
+                    Connection connection = mysqlConnection.getConnection();
+                    PreparedStatement statement;
+                    statement = connection.prepareStatement("/* ping */ SELECT 1");
+                    statement.execute();
+
+                } catch (Exception e) {
                     e.printStackTrace();
                     this.cancel();
-                    return;
                 }
-
-                Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-                    try {
-                        MysqlConnection mysqlConnection = plugin.getMysqlConnection();
-                        Connection connection = mysqlConnection.getConnection();
-                        PreparedStatement statement;
-                        statement = connection.prepareStatement("SELECT 1");
-                        statement.executeQuery();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        this.cancel();
-                    }
-                });
             }
-        }.runTaskTimer(plugin, 0, period);
+        }.runTaskTimerAsynchronously(plugin, 0, period * 20L);
     }
 
 }

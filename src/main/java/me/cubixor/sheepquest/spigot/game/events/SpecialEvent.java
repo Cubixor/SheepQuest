@@ -4,10 +4,10 @@ import me.cubixor.sheepquest.spigot.SheepQuest;
 import me.cubixor.sheepquest.spigot.gameInfo.LocalArena;
 
 public enum SpecialEvent {
-    BONUS_SHEEP {
+    BONUS_ENTITY {
         @Override
         public void runEvent(LocalArena localArena) {
-            new BonusSheep().spawnSheep(localArena);
+            new BonusEntity().spawnEntity(localArena);
         }
 
         @Override

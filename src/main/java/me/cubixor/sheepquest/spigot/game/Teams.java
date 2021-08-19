@@ -4,13 +4,12 @@ import com.cryptomorin.xseries.XMaterial;
 import me.cubixor.sheepquest.spigot.SheepQuest;
 import me.cubixor.sheepquest.spigot.Utils;
 import me.cubixor.sheepquest.spigot.api.Sounds;
+import me.cubixor.sheepquest.spigot.api.VersionUtils;
 import me.cubixor.sheepquest.spigot.commands.PlayCommands;
-import me.cubixor.sheepquest.spigot.config.ConfigField;
 import me.cubixor.sheepquest.spigot.config.ConfigUtils;
 import me.cubixor.sheepquest.spigot.gameInfo.GameState;
 import me.cubixor.sheepquest.spigot.gameInfo.LocalArena;
 import me.cubixor.sheepquest.spigot.gameInfo.Team;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -38,8 +37,8 @@ public class Teams implements Listener {
         LocalArena localArena = Utils.getLocalArena(evt.getPlayer());
         if (localArena != null && evt.getItem() != null) {
 
-            if (!plugin.isBefore9()) {
-                if (!evt.getHand().equals(EquipmentSlot.HAND)) {
+            if (!VersionUtils.is18()) {
+                if (evt.getHand() == null || !evt.getHand().equals(EquipmentSlot.HAND)) {
                     return;
                 }
             }
@@ -73,43 +72,37 @@ public class Teams implements Listener {
             Team team = Utils.getTeamByWool(evt.getCurrentItem());
             String arenaString = localArena.getName();
 
-            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-                int max = ConfigUtils.getInt(arenaString, ConfigField.MAX_PLAYERS);
+            if (team.equals(Team.NONE)) {
+                localArena.getPlayerTeam().replace(player, Team.NONE);
+                player.sendMessage(plugin.getMessage("game.team-join-random"));
+                Utils.removeTeamBossBars(player, localArena);
+                localArena.getTeamBossBars().get(Team.NONE).addPlayer(player);
+                player.getInventory().setHelmet(new ItemStack(Material.AIR));
+            } else {
+                HashMap<Team, Integer> teamPlayers = new HashMap<>(Utils.getTeamPlayers(localArena));
+                String teamMessage = team.getName();
 
-                Bukkit.getScheduler().runTask(plugin, () -> {
-                    if (team.equals(Team.NONE)) {
-                        localArena.getPlayerTeam().replace(player, Team.NONE);
-                        player.sendMessage(plugin.getMessage("game.team-join-random"));
+                if (teamPlayers.get(team) < ((float) localArena.getPlayers().size() / (float) ConfigUtils.getTeamList(arenaString).size())) {
+                    if (!localArena.getPlayerTeam().get(player).equals(team)) {
+                        localArena.getPlayerTeam().replace(player, team);
                         Utils.removeTeamBossBars(player, localArena);
-                        localArena.getTeamBossBars().get(Team.NONE).addPlayer(player);
-                        player.getInventory().setHelmet(new ItemStack(Material.AIR));
-                    } else {
-                        HashMap<Team, Integer> teamPlayers = new HashMap<>(Utils.getTeamPlayers(localArena));
-                        String teamMessage = team.getName();
-
-                        if (teamPlayers.get(team) < (max / ConfigUtils.getTeamList(arenaString).size())) {
-                            if (!localArena.getPlayerTeam().get(player).equals(team)) {
-                                localArena.getPlayerTeam().replace(player, team);
-                                Utils.removeTeamBossBars(player, localArena);
-                                localArena.getTeamBossBars().get(team).addPlayer(player);
-                                player.getInventory().setHelmet(team.getBanner());
-                                if (localArena.getState().equals(GameState.WAITING)) {
-                                    player.setScoreboard(new Scoreboards().getWaitingScoreboard(localArena, player));
-                                }
-                                player.sendMessage(plugin.getMessage("game.team-join-success").replace("%team%", teamMessage));
-                            } else {
-                                player.sendMessage(plugin.getMessage("game.already-in-this-team").replace("%team%", teamMessage));
-                            }
-                        } else {
-                            player.sendMessage(plugin.getMessage("game.team-full").replace("%team%", teamMessage));
+                        localArena.getTeamBossBars().get(team).addPlayer(player);
+                        player.getInventory().setHelmet(team.getBanner());
+                        if (localArena.getState().equals(GameState.WAITING)) {
+                            player.setScoreboard(new Scoreboards().getWaitingScoreboard(localArena, player));
                         }
+                        player.sendMessage(plugin.getMessage("game.team-join-success").replace("%team%", teamMessage));
+                    } else {
+                        player.sendMessage(plugin.getMessage("game.already-in-this-team").replace("%team%", teamMessage));
                     }
+                } else {
+                    player.sendMessage(plugin.getMessage("game.team-full").replace("%team%", teamMessage));
+                }
+            }
 
-                    menuUpdate(localArena);
-                    Sounds.playSound(player, player.getLocation(), "click");
-                    player.getOpenInventory().close();
-                });
-            });
+            menuUpdate(localArena);
+            Sounds.playSound(player, player.getLocation(), "click");
+            player.getOpenInventory().close();
         }
     }
 

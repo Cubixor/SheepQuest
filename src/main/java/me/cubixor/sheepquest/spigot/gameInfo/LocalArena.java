@@ -6,8 +6,8 @@ import me.cubixor.sheepquest.spigot.config.ConfigUtils;
 import me.cubixor.sheepquest.spigot.game.events.SpecialEventsData;
 import me.cubixor.sheepquest.spigot.game.kits.KitType;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Sheep;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -23,11 +23,12 @@ public class LocalArena extends Arena implements Serializable {
     private final HashMap<Player, Team> playerTeam = new HashMap<>();
     private final HashMap<Player, KitType> playerKit = new HashMap<>();
     private final HashMap<Team, Integer> points = new HashMap<>();
-    private final HashMap<Sheep, BukkitTask> sheep = new HashMap<>();
+    private final HashMap<Entity, BukkitTask> sheep = new HashMap<>();
     private final HashMap<Player, Integer> respawnTimer = new HashMap<>();
     private final HashMap<Player, PlayerGameStats> playerStats = new HashMap<>();
     private final HashMap<Team, BossBar> teamBossBars = new HashMap<>();
     private final HashMap<Player, PlayerData> playerData = new HashMap<>();
+    private final HashMap<Team, TeamRegion> teamRegions = new HashMap<>();
 
     public LocalArena(String name) {
         super(name, SheepQuest.getInstance().getServerName());
@@ -42,26 +43,13 @@ public class LocalArena extends Arena implements Serializable {
         }
         setTeamChooseInv(Bukkit.createInventory(null, invSlots, plugin.getMessage("game.team-menu-name")));
 
-        for (Team team : Team.values()) {
+        for (Team team : ConfigUtils.getTeamList(name)) {
             getTeamBossBars().put(team, new BossBar(plugin.getMessage("game.bossbar-team").replace("%team%", team.getName()), team));
+            getTeamRegions().put(team, new TeamRegion(name, team));
         }
-    }
+        getTeamBossBars().put(Team.NONE, new BossBar(plugin.getMessage("game.bossbar-team").replace("%team%", Team.NONE.getName()), Team.NONE));
+        getTeamRegions().put(Team.NONE, new TeamRegion(name, Team.NONE));
 
-    @Override
-    public String toString() {
-        return "LocalArena{" +
-                "playerTeam=" + playerTeam +
-                ", timer=" + timer +
-                ", sheepTimer=" + sheepTimer +
-                ", teamChooseInv=" + teamChooseInv +
-                ", points=" + points +
-                ", sheep=" + sheep +
-                ", respawnTimer=" + respawnTimer +
-                ", playerStats=" + playerStats +
-                ", teamBossBars=" + teamBossBars +
-                ", specialEventsData=" + specialEventsData +
-                ", playerData=" + playerData +
-                '}';
     }
 
     public HashMap<Player, Team> getPlayerTeam() {
@@ -96,7 +84,7 @@ public class LocalArena extends Arena implements Serializable {
         return points;
     }
 
-    public HashMap<Sheep, BukkitTask> getSheep() {
+    public HashMap<Entity, BukkitTask> getSheep() {
         return sheep;
     }
 
@@ -126,5 +114,9 @@ public class LocalArena extends Arena implements Serializable {
 
     public HashMap<Player, KitType> getPlayerKit() {
         return playerKit;
+    }
+
+    public HashMap<Team, TeamRegion> getTeamRegions() {
+        return teamRegions;
     }
 }

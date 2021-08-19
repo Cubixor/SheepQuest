@@ -20,9 +20,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Start {
 
@@ -38,7 +36,7 @@ public class Start {
         localArena.setState(GameState.GAME);
         localArena.setTimer(plugin.getConfig().getInt("game-time"));
         localArena.setSheepTimer(plugin.getConfig().getInt("sheep-time"));
-        ((KitArcher) Kits.getByType(KitType.ARCHER)).arrowTimer(localArena);
+        ((KitArcher) Kits.getByType(KitType.ARCHER)).arrowTimer(arenaName);
 
         for (Team t : ConfigUtils.getTeamList(arenaName)) {
             localArena.getPoints().put(t, 0);
@@ -51,17 +49,18 @@ public class Start {
         SpecialEvents specialEvents = new SpecialEvents();
         specialEvents.setupSpecialEvents(arenaName);
 
-        for (Player p : localArena.getPlayerTeam().keySet()) {
+        List<Player> players = new ArrayList<>(localArena.getPlayerTeam().keySet());
+        Collections.shuffle(players);
 
+        for (Player p : players) {
             p.getInventory().setItem(plugin.getItems().getSheepItemSlot(), plugin.getItems().getSheepItem());
             Kits.getPlayerKit(p).giveKit(p);
             p.setExp(0);
             p.setLevel(0);
-            plugin.getPlayerInfo().get(p).getTipTask().cancel();
             Utils.removeTeamBossBars(p, localArena);
             ActionBar.clearActionBar(p);
             localArena.getPlayerStats().put(p, new PlayerGameStats());
-
+            p.sendMessage(plugin.getMessage("game.start-chat"));
 
             Team team = localArena.getPlayerTeam().get(p);
 

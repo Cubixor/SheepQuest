@@ -3,6 +3,7 @@ package me.cubixor.sheepquest.spigot.config;
 import me.cubixor.sheepquest.spigot.SheepQuest;
 import me.cubixor.sheepquest.spigot.mysql.MysqlConnection;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.ConfigurationSection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -51,6 +52,7 @@ public class StatsUtils {
                 new StatsUtils().updateSqlStats(player, statsField, count);
             } else {
                 plugin.getStats().set("players." + player + "." + statsField.getCode(), statsCount);
+                plugin.savePlayers();
             }
 
             if (plugin.getPlayerInfo().get(Bukkit.getPlayerExact(player)) != null) {
@@ -64,7 +66,12 @@ public class StatsUtils {
         if (mysqlEnabled()) {
             return new StatsUtils().getSqlPlayers();
         } else {
-            return new ArrayList<>(plugin.getStats().getConfigurationSection("players").getKeys(false));
+            ConfigurationSection configurationSection = plugin.getStats().getConfigurationSection("players");
+            if (configurationSection != null) {
+                return new ArrayList<>(configurationSection.getKeys(false));
+            } else {
+                return new ArrayList<>();
+            }
         }
     }
 

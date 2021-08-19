@@ -62,7 +62,7 @@ database:
   # You should consider either expiring and/or testing connection validity before use in your application, increasing the server configured values for client timeouts, or using the Connector/J connection property 'autoReconnect=true' to avoid this problem."
   #
   # Try to lower this value. [seconds]
-  ping-peroid: 180
+  ping-period: 180
 
 # Settings related to the plugin bungee mode.
 bungee:
@@ -129,7 +129,7 @@ game-chat: true
 allow-team-choosing: true
 
 # Speed of the sheep [float]
-sheep-speed: 0.5
+sheep-speed: 2
 
 # If true, when the arena ends players will be teleported to main lobby location.
 # If false player will be teleported to the place where he was before he joined the arena. [true/false]
@@ -139,10 +139,17 @@ use-main-lobby: true
 # If false, player will be teleported to main lobby or previous location, depending on "use-main-lobby" is set to true or false. [true/false]
 auto-join-on-end: true
 
+# If true game will be stopped when only one player is on the arena (because others left).
+# If false game will it will continue even if there is only one player on it.
+stop-game-one-player: true
+
 # Date format in plugin messages.
 # If you don't know how to create proper date format check this page: https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html
 # (Scroll down to "Patterns for Formatting and Parsing" section)
 date-format: "dd/MM/yyyy"
+
+# Set how often the tip in waiting lobby will change. [seconds]
+tip-rate: 5
 
 # Color of join sheep (which you can spawn using /sq spawnjoinsheep) used for quick joining.
 join-sheep-color: MAGENTA
@@ -557,18 +564,20 @@ special-events:
     # Should it be enabled? [true/false]
     enabled: true
 
+    # Bonus entity type. List of entity types: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/entity/EntityType.html [entity type]
+    entity-type: SHEEP
+
     # Bonus sheep color. List of colors: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/DyeColor.html [color]
+    # It's also the bonus entity firework color.
+    # Obviously will affect entity only when it's a sheep.
     color: MAGENTA
 
     # Bonus sheep speed. [float]
-    speed: 1.0
+    speed: 3.0
 
     # Bonus sheep points [number]
     points: 3
 
-# Can plugin send usage statistics to the author using bStats software?
-# Please, leave it enabled if you want to help me working on the plugin. [true/false]
-send-stats: true
 
 # Config version - DO NOT CHANGE IT!
-config-version: 1.7
+config-version: 1.8

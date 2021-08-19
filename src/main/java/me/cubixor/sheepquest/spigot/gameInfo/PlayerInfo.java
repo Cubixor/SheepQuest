@@ -5,7 +5,6 @@ import me.cubixor.sheepquest.spigot.config.StatsField;
 import me.cubixor.sheepquest.spigot.config.StatsUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashMap;
 
@@ -16,7 +15,6 @@ public class PlayerInfo {
     private String minPlayersChat;
     private String maxPlayersChat;
     private String delete;
-    private BukkitTask tipTask;
     private final HashMap<StatsField, Integer> stats = new HashMap<>();
     private boolean cooldown;
     private boolean athleteCooldown;
@@ -67,14 +65,6 @@ public class PlayerInfo {
 
     public void setDelete(String delete) {
         this.delete = delete;
-    }
-
-    public BukkitTask getTipTask() {
-        return tipTask;
-    }
-
-    public void setTipTask(BukkitTask tipTask) {
-        this.tipTask = tipTask;
     }
 
     public boolean isCooldown() {

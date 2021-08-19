@@ -20,7 +20,6 @@ public class Updater {
     }
 
     public void runUpdaterTask() {
-        runUpdater();
         Bukkit.getScheduler().runTaskTimer(plugin, this::runUpdater, 0, 1728000);
     }
 

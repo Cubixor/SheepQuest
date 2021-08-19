@@ -2,14 +2,12 @@ package me.cubixor.sheepquest.spigot.commands;
 
 import me.cubixor.sheepquest.spigot.SheepQuest;
 import me.cubixor.sheepquest.spigot.Utils;
+import me.cubixor.sheepquest.spigot.api.BossBar;
 import me.cubixor.sheepquest.spigot.config.ConfigField;
 import me.cubixor.sheepquest.spigot.config.ConfigUtils;
 import me.cubixor.sheepquest.spigot.game.JoinSheep;
 import me.cubixor.sheepquest.spigot.game.Signs;
-import me.cubixor.sheepquest.spigot.gameInfo.Arena;
-import me.cubixor.sheepquest.spigot.gameInfo.ArenaInventories;
-import me.cubixor.sheepquest.spigot.gameInfo.LocalArena;
-import me.cubixor.sheepquest.spigot.gameInfo.Team;
+import me.cubixor.sheepquest.spigot.gameInfo.*;
 import me.cubixor.sheepquest.spigot.socket.SocketClientSender;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -199,6 +197,10 @@ public class SetupCommands {
                 teamsString.add(t.getCode());
             }
             ConfigUtils.updateField(args[1], ConfigField.TEAMS, teamsString);
+
+            plugin.getLocalArenas().get(args[1]).getTeamBossBars().put(team, new BossBar(plugin.getMessage("game.bossbar-team").replace("%team%", team.getName()), team));
+            plugin.getLocalArenas().get(args[1]).getTeamRegions().put(team, new TeamRegion(args[1], team));
+
 
             player.sendMessage(plugin.getMessage("arena-setup.add-team-success").replace("%arena%", args[1]));
         });
