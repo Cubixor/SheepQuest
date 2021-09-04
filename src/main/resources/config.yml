@@ -10,8 +10,9 @@
 # en - English - default
 # pl - Polish [by Cubixor]
 # zh - Chinese [by Light² (from www.mcbbs.net)]
+# ru - Russian [by Pupok (@Pupok#1755 on discord)]
 #
-# If you have translated the plugin and you would like me to add your translation here, let me know on my discord server:
+# If you have translated the plugin and would like me to add your translation here, let me know on my discord server:
 # http://discord.gg/AQhUVfm
 language: en
 
@@ -96,7 +97,7 @@ bungee:
     - "custom command2"
 
 # Cooldown between commands, sign clicks, menu uses etc.
-# Use bigger values if you server is slow, you are using bungee mode or saving in mysql.
+# Use bigger values if your server is slow, you are using bungee mode or saving in mysql.
 # You can set it to 0 if you are not using bungee mode and database. [seconds]
 cooldown: 1
 
@@ -120,7 +121,7 @@ ending-time: 12
 respawn-time: 7
 
 # Should game use private game chat?
-# PLayer messages will be send only to players in the same arena if true. [true/false]
+# Player messages will be sent only to players in the same arena if true. [true/false]
 game-chat: true
 
 # Should players be able to choose teams?
@@ -295,7 +296,7 @@ sounds:
 
 # All particles that appear in game.
 #
-# Full particle list for versions from 1.9 up to latest available here: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Particle.html
+# Full particle list for versions from 1.9 up to the latest available here: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Particle.html
 # Full particle list for version 1.8 available here: https://hastebin.com/uyebofosen.less
 # WARNING! Remember to use proper particle list while editing this section!!!
 #

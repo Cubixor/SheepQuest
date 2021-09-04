@@ -18,6 +18,12 @@ public enum Language {
         public String getLanguageCode() {
             return "pl";
         }
+    },
+    RU {
+        @Override
+        public String getLanguageCode() {
+            return "ru";
+        }
     };
 
     public abstract String getLanguageCode();
