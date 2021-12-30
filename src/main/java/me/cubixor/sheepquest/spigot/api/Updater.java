@@ -25,7 +25,7 @@ public class Updater {
 
     public void runUpdater() {
         getVersion(version -> {
-            if (Float.parseFloat(plugin.getDescription().getVersion()) < Float.parseFloat(version)) {
+            if (!plugin.getDescription().getVersion().equals(version)) {
                 plugin.getLogger().warning("There is a new update of SheepQuest available!");
                 plugin.getLogger().warning("Your version: " + plugin.getDescription().getVersion());
                 plugin.getLogger().warning("New version: " + version);

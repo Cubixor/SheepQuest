@@ -120,7 +120,7 @@ public class Signs implements Listener {
 
     @EventHandler
     public void signClick(PlayerInteractEvent evt) {
-        if (!VersionUtils.is18()) {
+        if (!VersionUtils.is1_8()) {
             if (evt.getHand() == null || !evt.getHand().equals(EquipmentSlot.HAND)) {
                 return;
             }

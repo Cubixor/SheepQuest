@@ -164,7 +164,7 @@ public class ConfigUpdater {
 
             }
 
-            plugin.getConfig().set("config-version", Float.parseFloat(plugin.getDescription().getVersion()));
+            plugin.getConfig().set("config-version", 1.8);
             plugin.saveConfig();
         }
 

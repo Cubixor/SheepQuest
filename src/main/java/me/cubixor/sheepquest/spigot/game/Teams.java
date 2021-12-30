@@ -37,7 +37,7 @@ public class Teams implements Listener {
         LocalArena localArena = Utils.getLocalArena(evt.getPlayer());
         if (localArena != null && evt.getItem() != null) {
 
-            if (!VersionUtils.is18()) {
+            if (!VersionUtils.is1_8()) {
                 if (evt.getHand() == null || !evt.getHand().equals(EquipmentSlot.HAND)) {
                     return;
                 }

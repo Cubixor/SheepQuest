@@ -38,7 +38,7 @@ public class KitAthlete extends Kit implements Listener {
         Player player = evt.getPlayer();
         LocalArena localArena = Utils.getLocalArena(player);
 
-        if (!VersionUtils.is18()) {
+        if (!VersionUtils.is1_8()) {
             if (evt.getHand() == null || !evt.getHand().equals(EquipmentSlot.HAND)) {
                 return;
             }

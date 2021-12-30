@@ -30,7 +30,7 @@ public class JoinSheep implements Listener {
 
     @EventHandler
     public void sheepClickEvent(PlayerInteractEntityEvent evt) {
-        if (!VersionUtils.is18()) {
+        if (!VersionUtils.is1_8()) {
             if (!evt.getHand().equals(EquipmentSlot.HAND)) {
                 return;
             }
@@ -74,7 +74,7 @@ public class JoinSheep implements Listener {
     }
 
     public void spawnSheep(Player player) {
-        if (VersionUtils.is18()) {
+        if (VersionUtils.is1_8()) {
             player.sendMessage(plugin.getMessage("general.version-not-supported"));
             return;
         }

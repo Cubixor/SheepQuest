@@ -18,13 +18,13 @@ public class BossBar {
         plugin = SheepQuest.getInstance();
         this.name = name;
 
-        if (!VersionUtils.is18()) {
+        if (!VersionUtils.is1_8()) {
             bukkitBossBar = Bukkit.createBossBar(name, color.getBarColor(), BarStyle.SOLID);
         }
     }
 
     public void addPlayer(Player player) {
-        if (VersionUtils.is18()) {
+        if (VersionUtils.is1_8()) {
             BossBarAPI.addBar(player, new TextComponent(name), BossBarAPI.Color.PURPLE, BossBarAPI.Style.PROGRESS, 1);
         } else {
             bukkitBossBar.addPlayer(player);
@@ -32,7 +32,7 @@ public class BossBar {
     }
 
     public void removePlayer(Player player) {
-        if (VersionUtils.is18()) {
+        if (VersionUtils.is1_8()) {
             BossBarAPI.removeAllBars(player);
         } else {
             bukkitBossBar.removePlayer(player);

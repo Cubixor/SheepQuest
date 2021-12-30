@@ -24,7 +24,7 @@ public class SetupWand implements Listener {
         if (!(evt.getPlayer().getInventory().getItemInHand().equals(plugin.getItems().getSetupWandItem()) && evt.getPlayer().hasPermission("sheepquest.setup"))) {
             return;
         }
-        if (!VersionUtils.is18()) {
+        if (!VersionUtils.is1_8()) {
             if (evt.getHand() == null || !evt.getHand().equals(EquipmentSlot.HAND)) {
                 return;
             }

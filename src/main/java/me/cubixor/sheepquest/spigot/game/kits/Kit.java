@@ -28,7 +28,7 @@ public abstract class Kit implements Listener {
             secondaryWeapon = Utils.setItemStack("kits." + kitType.getCode() + ".secondary-weapon",
                     "kits." + kitType.getCode() + "-secondary-weapon-name", "kits." + kitType.getCode() + "-secondary-weapon-lore");
         }
-        if (plugin.getConfig().getBoolean("kits." + kitType.getCode() + ".shield") && !VersionUtils.is18()) {
+        if (plugin.getConfig().getBoolean("kits." + kitType.getCode() + ".shield") && !VersionUtils.is1_8()) {
             shield = Utils.setItemStack(XMaterial.SHIELD.parseMaterial(), "kits.shield-name", "kits.shield-lore");
         }
     }

@@ -79,7 +79,7 @@ public final class SheepQuest extends JavaPlugin {
         instance = this;
 
         VersionUtils.initialize();
-        if (VersionUtils.is18()) {
+        if (VersionUtils.is1_8()) {
             APIManager.require(BossBarAPI.class, this);
             APIManager.initAPI(BossBarAPI.class);
         }

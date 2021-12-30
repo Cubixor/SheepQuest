@@ -103,7 +103,7 @@ public class Kill implements Listener {
         loc.setY(loc.getY() + 1);
 
         if (plugin.getConfig().getBoolean("particles.enable-blood")) {
-            if (VersionUtils.is18()) {
+            if (VersionUtils.is1_8()) {
                 ParticleEffect.BLOCK_CRACK.sendData(localArena.getPlayerTeam().keySet(), loc.getX(), loc.getY(), loc.getZ(),
                         0.1, 0.1, 0.1, 0.1, 50, new ItemStack(Material.REDSTONE_BLOCK));
             } else {

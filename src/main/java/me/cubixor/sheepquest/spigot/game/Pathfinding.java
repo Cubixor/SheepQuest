@@ -39,30 +39,34 @@ public class Pathfinding {
             Field f3 = pathfinderGoalSelectorClass.getDeclaredField("d");
             f3.setAccessible(true);
 
-            if (VersionUtils.isBefore17()) {
-                Field f1 = pathfinderGoalSelectorClass.getDeclaredField("b");
-                Field f2 = pathfinderGoalSelectorClass.getDeclaredField("c");
-                f1.setAccessible(true);
-                f2.setAccessible(true);
-
-
-                if (VersionUtils.is18()) {
-                    Class<?> unsafeListClass = ReflectionUtils.getCraftClass("util.UnsafeList");
-
-                    Method m = unsafeListClass.getMethod("clear");
-                    m.invoke(f1.get(entityInsentientClass.getField("goalSelector").get(entityInsentient)));
-                    m.invoke(f2.get(entityInsentientClass.getField("goalSelector").get(entityInsentient)));
-                    m.invoke(f2.get(entityInsentientClass.getField("targetSelector").get(entityInsentient)));
-                    m.invoke(f1.get(entityInsentientClass.getField("targetSelector").get(entityInsentient)));
-                } else if (VersionUtils.is1416()) {
-                    f3.set(entityInsentientClass.getField("goalSelector").get(entityInsentient), Sets.newLinkedHashSet());
-                    f3.set(entityInsentientClass.getField("targetSelector").get(entityInsentient), Sets.newLinkedHashSet());
-                } else {
-                    f1.set(entityInsentientClass.getField("goalSelector").get(entityInsentient), Sets.newLinkedHashSet());
-                    f2.set(entityInsentientClass.getField("targetSelector").get(entityInsentient), Sets.newLinkedHashSet());
-                }
+            if (!VersionUtils.isBefore18()) {
+                f3.set(entityInsentientClass.getField("bR").get(entityInsentient), Sets.newLinkedHashSet());
             } else {
-                f3.set(entityInsentientClass.getField("bP").get(entityInsentient), Sets.newLinkedHashSet());
+                if (VersionUtils.isBefore17()) {
+                    Field f1 = pathfinderGoalSelectorClass.getDeclaredField("b");
+                    Field f2 = pathfinderGoalSelectorClass.getDeclaredField("c");
+                    f1.setAccessible(true);
+                    f2.setAccessible(true);
+
+
+                    if (VersionUtils.is1_8()) {
+                        Class<?> unsafeListClass = ReflectionUtils.getCraftClass("util.UnsafeList");
+
+                        Method m = unsafeListClass.getMethod("clear");
+                        m.invoke(f1.get(entityInsentientClass.getField("goalSelector").get(entityInsentient)));
+                        m.invoke(f2.get(entityInsentientClass.getField("goalSelector").get(entityInsentient)));
+                        m.invoke(f2.get(entityInsentientClass.getField("targetSelector").get(entityInsentient)));
+                        m.invoke(f1.get(entityInsentientClass.getField("targetSelector").get(entityInsentient)));
+                    } else if (VersionUtils.is1416()) {
+                        f3.set(entityInsentientClass.getField("goalSelector").get(entityInsentient), Sets.newLinkedHashSet());
+                        f3.set(entityInsentientClass.getField("targetSelector").get(entityInsentient), Sets.newLinkedHashSet());
+                    } else {
+                        f1.set(entityInsentientClass.getField("goalSelector").get(entityInsentient), Sets.newLinkedHashSet());
+                        f2.set(entityInsentientClass.getField("targetSelector").get(entityInsentient), Sets.newLinkedHashSet());
+                    }
+                } else {
+                    f3.set(entityInsentientClass.getField("bP").get(entityInsentient), Sets.newLinkedHashSet());
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -78,9 +82,9 @@ public class Pathfinding {
                 f = ReflectionUtils.getNMSClass("world.entity.ai.attributes", "GenericAttributes").getField("b");
             }
             Class<?> c = VersionUtils.isBefore16() ? ReflectionUtils.getNMSClass("IAttribute") : ReflectionUtils.getNMSClass("world.entity.ai.attributes", "AttributeBase");
-            Method m = ReflectionUtils.getNMSClass("world.entity", "EntityInsentient").getMethod("getAttributeInstance", c);
+            Method m = VersionUtils.isBefore18() ? ReflectionUtils.getNMSClass("world.entity", "EntityInsentient").getMethod("getAttributeInstance", c) : ReflectionUtils.getNMSClass("world.entity", "EntityInsentient").getMethod("a", c);
             Object ai = m.invoke(entityInsentient, f.get(null));
-            Method m2 = ReflectionUtils.getNMSClass("world.entity.ai.attributes", "AttributeModifiable").getMethod("setValue", double.class);
+            Method m2 = VersionUtils.isBefore18() ? ReflectionUtils.getNMSClass("world.entity.ai.attributes", "AttributeModifiable").getMethod("setValue", double.class) : ReflectionUtils.getNMSClass("world.entity.ai.attributes", "AttributeModifiable").getMethod("a", double.class);
             m2.invoke(ai, 1000);
         } catch (Exception e) {
             e.printStackTrace();
@@ -89,7 +93,7 @@ public class Pathfinding {
 
     public static void addWalkToLocationGoal(Object entityInsentient, Location loc, double speed) {
         try {
-            Object a = ReflectionUtils.getNMSClass("world.entity", "EntityInsentient").getMethod("getNavigation").invoke(entityInsentient);
+            Object a = VersionUtils.isBefore18() ? ReflectionUtils.getNMSClass("world.entity", "EntityInsentient").getMethod("getNavigation").invoke(entityInsentient) : ReflectionUtils.getNMSClass("world.entity", "EntityInsentient").getMethod("D").invoke(entityInsentient);
             Method method = ReflectionUtils.getNMSClass("world.entity.ai.navigation", "NavigationAbstract")
                     .getMethod("a", double.class, double.class, double.class, double.class);
             method.invoke(a, loc.getX(), loc.getY(), loc.getZ(), speed);
@@ -104,7 +108,14 @@ public class Pathfinding {
 
             Class<?> entityInsentientClass = ReflectionUtils.getNMSClass("world.entity", "EntityInsentient");
             Class<?> entityCreatureClass = ReflectionUtils.getNMSClass("world.entity", "EntityCreature");
-            Field f = VersionUtils.isBefore17() ? entityInsentientClass.getField("goalSelector") : entityInsentientClass.getField("bP");
+            Field f;
+            if (!VersionUtils.isBefore18()) {
+                f = entityInsentientClass.getField("bR");
+            } else if (!VersionUtils.isBefore17()) {
+                f = entityInsentientClass.getField("bP");
+            } else {
+                f = entityInsentientClass.getField("goalSelector");
+            }
             Object a = f.get(entityInsentient);
             Object goal1 = ReflectionUtils.getNMSClass("world.entity.ai.goal", "PathfinderGoalRandomLookaround").getConstructor(entityInsentientClass).newInstance(entityInsentient);
             Object goal2 = ReflectionUtils.getNMSClass("world.entity.ai.goal", "PathfinderGoalRandomStroll").getConstructor(entityCreatureClass, double.class).newInstance(entityInsentient, 1);

@@ -1,5 +1,6 @@
 name: SheepQuest
-version: ${project.version}
+# version: ${project.version}
+version: 1.10.0
 main: me.cubixor.sheepquest.spigot.SheepQuest
 author: Cubixor
 softdepend: [ Vault, Multiverse-Core, PlaceholderAPI ]
