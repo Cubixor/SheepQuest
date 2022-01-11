@@ -68,6 +68,7 @@ public final class SheepQuest extends JavaPlugin {
     private SocketConnection bungeeSocket;
 
     private static SheepQuest instance;
+    public static final String CONFIG_VERSION = "1.8";
 
     public static SheepQuest getInstance() {
         return instance;
@@ -183,7 +184,7 @@ public final class SheepQuest extends JavaPlugin {
 
             getConfig().options().copyDefaults(true);
             saveDefaultConfig();
-            if (!getConfig().getString("config-version").equals(getDescription().getVersion())) {
+            if (!getConfig().getString("config-version").equals(SheepQuest.CONFIG_VERSION)) {
                 saveConfig();
             }
             reloadConfig();
@@ -199,7 +200,7 @@ public final class SheepQuest extends JavaPlugin {
                 }
                 FileConfiguration msgConf = YamlConfiguration.loadConfiguration(messagesFile);
 
-                if (!getConfig().getString("config-version").equals(getDescription().getVersion())) {
+                if (!getConfig().getString("config-version").equals(SheepQuest.CONFIG_VERSION)) {
                     final InputStream defConfigStream = getResource(fileName);
                     if (defConfigStream != null) {
                         msgConf.setDefaults(YamlConfiguration.loadConfiguration(new InputStreamReader(defConfigStream, StandardCharsets.UTF_8)));

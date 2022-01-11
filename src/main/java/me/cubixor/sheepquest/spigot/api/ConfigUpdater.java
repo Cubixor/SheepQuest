@@ -26,7 +26,7 @@ public class ConfigUpdater {
     }
 
     public void updateConfigs() {
-        if (!plugin.getConfig().getString("config-version").equals(plugin.getDescription().getVersion())) {
+        if (!plugin.getConfig().getString("config-version").equals(SheepQuest.CONFIG_VERSION)) {
             if (Float.parseFloat(plugin.getConfig().getString("config-version")) < 1.4) {
                 plugin.getArenasConfig().set("Signs", null);
             }
