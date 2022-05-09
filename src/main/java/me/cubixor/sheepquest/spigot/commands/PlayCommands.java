@@ -138,6 +138,7 @@ public class PlayCommands {
             localArena.getPlayerTeam().put(player, Team.NONE);
             localArena.getPlayerKit().put(player, KitType.STANDARD);
             localArena.getTeamBossBars().get(Team.NONE).addPlayer(player);
+            new Scoreboards().createScoreboard(localArena, player);
             int count = localArena.getPlayers().size() - 1;
 
             PlayerData playerData = new PlayerData(
@@ -147,7 +148,7 @@ public class PlayCommands {
             player.getInventory().clear();
             player.getInventory().setArmorContents(new ItemStack[4]);
             player.setGameMode(GameMode.ADVENTURE);
-            player.setHealth(20);
+            player.setHealth(player.getMaxHealth());
             player.setFoodLevel(20);
             player.setExp(0);
             player.setLevel(0);
@@ -322,6 +323,7 @@ public class PlayCommands {
         Titles.clearTitle(player);
         localArena.getPlayerData().remove(player);
         localArena.getPlayerKit().remove(player);
+        localArena.getPlayerScoreboards().remove(player);
 
         Sounds.playSound(localArena, player.getLocation(), "leave");
         Particles.spawnParticle(localArena, player.getLocation().add(0, 1.5, 0), "leave");
@@ -333,6 +335,7 @@ public class PlayCommands {
                 int time = plugin.getConfig().getInt("game-time") - localArena.getTimer();
                 StatsUtils.addStats(player.getName(), StatsField.PLAYTIME, time);
             }
+            plugin.savePlayers();
         }
 
         boolean resetSent = false;

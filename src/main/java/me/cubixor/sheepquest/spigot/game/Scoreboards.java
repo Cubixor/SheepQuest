@@ -1,10 +1,13 @@
 package me.cubixor.sheepquest.spigot.game;
 
 import me.cubixor.sheepquest.spigot.SheepQuest;
+import me.cubixor.sheepquest.spigot.api.VersionUtils;
 import me.cubixor.sheepquest.spigot.config.ConfigUtils;
+import me.cubixor.sheepquest.spigot.gameInfo.GameState;
 import me.cubixor.sheepquest.spigot.gameInfo.LocalArena;
 import me.cubixor.sheepquest.spigot.gameInfo.Team;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
@@ -19,6 +22,25 @@ import java.util.List;
 
 public class Scoreboards {
 
+    private static final String[] lineNames = new String[]{
+            ChatColor.BLACK.toString(), ChatColor.BLACK.toString() + ChatColor.WHITE,
+            ChatColor.DARK_BLUE.toString(), ChatColor.DARK_BLUE.toString() + ChatColor.WHITE,
+            ChatColor.DARK_GREEN.toString(), ChatColor.DARK_GREEN.toString() + ChatColor.WHITE,
+            ChatColor.DARK_AQUA.toString(), ChatColor.DARK_AQUA.toString() + ChatColor.WHITE,
+            ChatColor.DARK_RED.toString(), ChatColor.DARK_RED.toString() + ChatColor.WHITE,
+            ChatColor.DARK_PURPLE.toString(), ChatColor.DARK_PURPLE.toString() + ChatColor.WHITE,
+            ChatColor.GOLD.toString(), ChatColor.GOLD.toString() + ChatColor.WHITE,
+            ChatColor.GRAY.toString(), ChatColor.GRAY.toString() + ChatColor.WHITE,
+            ChatColor.DARK_GRAY.toString(), ChatColor.DARK_GRAY.toString() + ChatColor.WHITE,
+            ChatColor.BLUE.toString(), ChatColor.BLUE.toString() + ChatColor.WHITE,
+            ChatColor.GREEN.toString(), ChatColor.GREEN.toString() + ChatColor.WHITE,
+            ChatColor.AQUA.toString(), ChatColor.AQUA.toString() + ChatColor.WHITE,
+            ChatColor.RED.toString(), ChatColor.RED.toString() + ChatColor.WHITE,
+            ChatColor.LIGHT_PURPLE.toString(), ChatColor.LIGHT_PURPLE.toString() + ChatColor.WHITE,
+            ChatColor.YELLOW.toString(), ChatColor.YELLOW.toString() + ChatColor.WHITE,
+            ChatColor.WHITE.toString(), ChatColor.WHITE.toString() + ChatColor.BLACK
+    };
+
     private final SheepQuest plugin;
 
     public Scoreboards() {
@@ -26,14 +48,12 @@ public class Scoreboards {
     }
 
     public Scoreboard getWaitingScoreboard(LocalArena localArena, Player player) {
-        Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
-        Objective objective = getObjective(scoreboard);
+        Scoreboard scoreboard = localArena.getPlayerScoreboards().get(player);
 
         String arenaString = localArena.getName();
         int count = localArena.getPlayerTeam().keySet().size();
 
         LinkedList<String> message = new LinkedList<>(plugin.getMessageList("game.scoreboard-new-waiting"));
-        int rowCount = message.size();
 
         String countString = Integer.toString(count);
         String teamName = localArena.getPlayerTeam().get(player).getName();
@@ -41,30 +61,30 @@ public class Scoreboards {
         String date = getDate();
 
 
-        int row = 0;
-        for (int i = rowCount; i > 0; i--) {
-            Score score = objective.getScore(message.get(row)
+        String[] msg = new String[message.size()];
+
+        for (int i = 0; i < message.size(); i++) {
+            msg[i] = message.get(i)
                     .replace("%arena%", arenaString)
                     .replace("%players%", countString)
                     .replace("%team%", teamName)
                     .replace("%kit%", kitName)
-                    .replace("%date%", date));
-            score.setScore(i);
-            row++;
+                    .replace("%date%", date);
         }
+
+        setMsg(scoreboard, msg);
+
         return scoreboard;
     }
 
     public Scoreboard getStartingScoreboard(LocalArena localArena, Player player) {
-        Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
-        Objective objective = getObjective(scoreboard);
+        Scoreboard scoreboard = localArena.getPlayerScoreboards().get(player);
 
         String arenaString = localArena.getName();
         int count = localArena.getPlayerTeam().keySet().size();
         int time = localArena.getTimer();
 
         LinkedList<String> message = new LinkedList<>(plugin.getMessageList("game.scoreboard-new-starting"));
-        int rowCount = message.size();
 
         String countString = Integer.toString(count);
         String teamName = localArena.getPlayerTeam().get(player).getName();
@@ -74,26 +94,26 @@ public class Scoreboards {
         String date = getDate();
 
 
-        int row = 0;
-        for (int i = rowCount; i > 0; i--) {
-            Score score = objective.getScore(message.get(row)
+        String[] msg = new String[message.size()];
+
+        for (int i = 0; i < message.size(); i++) {
+            msg[i] = message.get(i)
                     .replace("%arena%", arenaString)
                     .replace("%players%", countString)
                     .replace("%team%", teamName)
                     .replace("%kit%", kitName)
                     .replace("%time-long%", timeLongTime)
                     .replace("%time-short%", timeShortTime)
-                    .replace("%date%", date));
-            score.setScore(i);
-            row++;
+                    .replace("%date%", date);
         }
+
+        setMsg(scoreboard, msg);
 
         return scoreboard;
     }
 
     public Scoreboard getGameScoreboard(LocalArena localArena, Player player) {
-        Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
-        Objective objective = getObjective(scoreboard);
+        Scoreboard scoreboard = localArena.getPlayerScoreboards().get(player);
 
         String arenaString = localArena.getName();
         int count = localArena.getPlayerTeam().keySet().size();
@@ -126,9 +146,10 @@ public class Scoreboards {
         String timeShortTime = Integer.toString(time);
         String date = getDate();
 
-        int row = 0;
-        for (int i = message.size(); i > 0; i--) {
-            Score score = objective.getScore(message.get(row)
+        String[] msg = new String[message.size()];
+
+        for (int i = 0; i < message.size(); i++) {
+            msg[i] = message.get(i)
                     .replace("%arena%", arenaString)
                     .replace("%players%", countString)
                     .replace("%team%", teamName)
@@ -137,17 +158,16 @@ public class Scoreboards {
                     .replace("%sheep-short%", timeShortSheep)
                     .replace("%time-long%", timeLongTime)
                     .replace("%time-short%", timeShortTime)
-                    .replace("%date%", date));
-            score.setScore(i);
-            row++;
+                    .replace("%date%", date);
         }
+
+        setMsg(scoreboard, msg);
 
         return scoreboard;
     }
 
     public Scoreboard getEndingScoreboard(LocalArena localArena, Player player) {
-        Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
-        Objective objective = getObjective(scoreboard);
+        Scoreboard scoreboard = localArena.getPlayerScoreboards().get(player);
 
         String arenaString = localArena.getName();
         int count = localArena.getPlayerTeam().keySet().size();
@@ -177,20 +197,20 @@ public class Scoreboards {
         String timeShortTime = Integer.toString(time);
         String date = getDate();
 
+        String[] msg = new String[message.size()];
 
-        int row = 0;
-        for (int i = message.size(); i > 0; i--) {
-            Score score = objective.getScore(message.get(row)
+        for (int i = 0; i < message.size(); i++) {
+            msg[i] = message.get(i)
                     .replace("%arena%", arenaString)
                     .replace("%players%", countString)
                     .replace("%team%", teamName)
                     .replace("%kit%", kitName)
                     .replace("%time-long%", timeLongTime)
                     .replace("%time-short%", timeShortTime)
-                    .replace("%date%", date));
-            score.setScore(i);
-            row++;
+                    .replace("%date%", date);
         }
+
+        setMsg(scoreboard, msg);
 
         return scoreboard;
     }
@@ -214,17 +234,77 @@ public class Scoreboards {
         return timeLeft;
     }
 
-    private Objective getObjective(Scoreboard scoreboard) {
-        Objective objective = scoreboard.registerNewObjective("SheepQuest", "");
-        objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-        objective.setDisplayName(plugin.getMessage("game.scoreboard-title"));
-        return objective;
-    }
-
     private String getDate() {
         LocalDateTime localDateTime = LocalDateTime.now();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(plugin.getConfig().getString("date-format"));
         return localDateTime.format(dateTimeFormatter);
+    }
+
+    private void setMsg(Scoreboard scoreboard, String[] text) {
+        for (int j = 0; j < text.length; j++) {
+            org.bukkit.scoreboard.Team team = scoreboard.getTeam(Integer.toString(j));
+
+            int i = text.length - 1 - j;
+
+            if (!VersionUtils.isBefore13() || text[i].length() <= 16) {
+                team.setPrefix(text[i]);
+                continue;
+            }
+
+
+            if (text[i].length() > 32) {
+                text[i] = text[i].substring(0, 32);
+            }
+
+            String str1 = text[i].substring(0, 16);
+            String str2 = text[i].substring(16);
+
+            team.setPrefix(str1);
+            team.setSuffix(ChatColor.RESET + ChatColor.getLastColors(str1) + str2);
+        }
+    }
+
+    public void createScoreboard(LocalArena localArena, Player player) {
+        Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
+        Objective objective = scoreboard.registerNewObjective(player.getName(), "");
+        objective.setDisplayName(plugin.getMessage("game.scoreboard-title"));
+        objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+
+        localArena.getPlayerScoreboards().put(player, scoreboard);
+
+        setSizeForPlayer(player, localArena);
+
+    }
+
+    public void changeScoreboardSize(LocalArena localArena) {
+        for (Player p : localArena.getPlayerScoreboards().keySet()) {
+            setSizeForPlayer(p, localArena);
+        }
+    }
+
+    private void setSizeForPlayer(Player p, LocalArena localArena) {
+        Scoreboard scoreboard = localArena.getPlayerScoreboards().get(p);
+        Objective objective = scoreboard.getObjective(p.getName());
+
+        int size = plugin.getMessageList("game.scoreboard-new-" + localArena.getState().getCode()).size();
+        if (localArena.getState().equals(GameState.GAME) || localArena.getState().equals(GameState.ENDING)) {
+            size = size + localArena.getTeamRegions().size() - 2;
+        }
+
+        int j = 0;
+        for (org.bukkit.scoreboard.Team team : scoreboard.getTeams()) {
+            scoreboard.resetScores(lineNames[j]);
+            team.unregister();
+            j++;
+        }
+
+
+        for (int i = 0; i < size; i++) {
+            org.bukkit.scoreboard.Team team = scoreboard.registerNewTeam(Integer.toString(i));
+            team.addEntry(lineNames[i]);
+            Score score = objective.getScore(lineNames[i]);
+            score.setScore(i);
+        }
     }
 
 }

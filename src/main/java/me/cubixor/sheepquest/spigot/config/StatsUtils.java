@@ -46,19 +46,16 @@ public class StatsUtils {
 
     public static void addStats(String player, StatsField statsField, int count) {
         SheepQuest plugin = SheepQuest.getInstance();
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            int statsCount = plugin.getStats().getInt("players." + player + "." + statsField.getCode()) + count;
-            if (mysqlEnabled()) {
-                new StatsUtils().updateSqlStats(player, statsField, count);
-            } else {
-                plugin.getStats().set("players." + player + "." + statsField.getCode(), statsCount);
-                plugin.savePlayers();
-            }
+        int statsCount = plugin.getStats().getInt("players." + player + "." + statsField.getCode()) + count;
+        if (mysqlEnabled()) {
+            new StatsUtils().updateSqlStats(player, statsField, count);
+        } else {
+            plugin.getStats().set("players." + player + "." + statsField.getCode(), statsCount);
+        }
 
-            if (plugin.getPlayerInfo().get(Bukkit.getPlayerExact(player)) != null) {
-                plugin.getPlayerInfo().get(Bukkit.getPlayerExact(player)).getStats().replace(statsField, statsCount);
-            }
-        });
+        if (plugin.getPlayerInfo().get(Bukkit.getPlayerExact(player)) != null) {
+            plugin.getPlayerInfo().get(Bukkit.getPlayerExact(player)).getStats().replace(statsField, statsCount);
+        }
     }
 
     public static List<String> getPlayers() {

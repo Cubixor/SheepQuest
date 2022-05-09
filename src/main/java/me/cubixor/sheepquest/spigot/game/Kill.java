@@ -120,7 +120,7 @@ public class Kill implements Listener {
 
 
         if (((player.getHealth() - damage) <= 0)) {
-            player.setHealth(20);
+            player.setHealth(player.getMaxHealth());
             player.setAllowFlight(true);
 
             for (Player p : localArena.getPlayerTeam().keySet()) {

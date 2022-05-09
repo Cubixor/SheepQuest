@@ -199,7 +199,9 @@ public class SetupCommands {
             ConfigUtils.updateField(args[1], ConfigField.TEAMS, teamsString);
 
             plugin.getLocalArenas().get(args[1]).getTeamBossBars().put(team, new BossBar(plugin.getMessage("game.bossbar-team").replace("%team%", team.getName()), team));
-            plugin.getLocalArenas().get(args[1]).getTeamRegions().put(team, new TeamRegion(args[1], team));
+            if (ConfigUtils.getArea(args[1], team) != null) {
+                plugin.getLocalArenas().get(args[1]).getTeamRegions().put(team, new TeamRegion(args[1], team));
+            }
 
 
             player.sendMessage(plugin.getMessage("arena-setup.add-team-success").replace("%arena%", args[1]));

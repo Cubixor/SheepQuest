@@ -3,6 +3,7 @@ package me.cubixor.sheepquest.spigot.gameInfo;
 import me.cubixor.sheepquest.spigot.SheepQuest;
 import me.cubixor.sheepquest.spigot.api.BossBar;
 import me.cubixor.sheepquest.spigot.config.ConfigUtils;
+import me.cubixor.sheepquest.spigot.game.Scoreboards;
 import me.cubixor.sheepquest.spigot.game.events.SpecialEventsData;
 import me.cubixor.sheepquest.spigot.game.kits.KitType;
 import org.bukkit.Bukkit;
@@ -10,6 +11,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.scoreboard.Scoreboard;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -29,6 +31,8 @@ public class LocalArena extends Arena implements Serializable {
     private final HashMap<Team, BossBar> teamBossBars = new HashMap<>();
     private final HashMap<Player, PlayerData> playerData = new HashMap<>();
     private final HashMap<Team, TeamRegion> teamRegions = new HashMap<>();
+
+    private final HashMap<Player, Scoreboard> playerScoreboards = new HashMap<>();
 
     public LocalArena(String name) {
         super(name, SheepQuest.getInstance().getServerName());
@@ -118,5 +122,14 @@ public class LocalArena extends Arena implements Serializable {
 
     public HashMap<Team, TeamRegion> getTeamRegions() {
         return teamRegions;
+    }
+
+    public HashMap<Player, Scoreboard> getPlayerScoreboards() {
+        return playerScoreboards;
+    }
+
+    public void setState(GameState state) {
+        setGameState(state);
+        new Scoreboards().changeScoreboardSize(this);
     }
 }

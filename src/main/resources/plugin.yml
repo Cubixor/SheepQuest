@@ -1,6 +1,6 @@
 name: SheepQuest
-# version: ${project.version}
-version: 1.10.1
+version: ${project.version}
+#version: 1.10.1
 main: me.cubixor.sheepquest.spigot.SheepQuest
 author: Cubixor
 softdepend: [ Vault, Multiverse-Core, PlaceholderAPI ]
@@ -50,46 +50,46 @@ permissions:
       sheepquest.setup.changeteams: true
       sheepquest.setup.listteams: true
 
-  speepquest.setup.check:
+  sheepquest.setup.check:
     default: op
     description: Gives access to /sq check command.
-  speepquest.setup.create:
+  sheepquest.setup.create:
     default: op
     description: Gives access to /sq create command.
-  speepquest.setup.delete:
+  sheepquest.setup.delete:
     default: op
     description: Gives access to /sq delete command.
-  speepquest.setup.setmainlobby:
+  sheepquest.setup.setmainlobby:
     default: op
     description: Gives access to /sq setmainlobby command.
-  speepquest.setup.setwaitinglobby:
+  sheepquest.setup.setwaitinglobby:
     default: op
     description: Gives access to /sq setwaitinglobby command.
-  speepquest.setup.setminplayers:
+  sheepquest.setup.setminplayers:
     default: op
     description: Gives access to /sq setminplayers command.
-  speepquest.setup.setmaxplayers:
+  sheepquest.setup.setmaxplayers:
     default: op
     description: Gives access to /sq setmaxplayers command.
-  speepquest.setup.wand:
+  sheepquest.setup.wand:
     default: op
     description: Gives access to /sq wand command.
-  speepquest.setup.setsheepspawn:
+  sheepquest.setup.setsheepspawn:
     default: op
     description: Gives access to /sq setsheepspawn command.
-  speepquest.setup.setspawn:
+  sheepquest.setup.setspawn:
     default: op
     description: Gives access to /sq setspawn command.
-  speepquest.setup.setteamarea:
+  sheepquest.setup.setteamarea:
     default: op
     description: Gives access to /sq setteamsarea command.
-  speepquest.setup.signs:
+  sheepquest.setup.signs:
     default: op
     description: Allows to create and remove signs.
-  speepquest.setup.joinsheep:
+  sheepquest.setup.joinsheep:
     default: op
     description: Allows to create and remove join sheep.
-  speepquest.setup.reload:
+  sheepquest.setup.reload:
     default: op
     description: Gives access to /sq reload command.
   sheepquest.setup.help:

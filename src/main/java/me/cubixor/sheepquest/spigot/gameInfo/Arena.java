@@ -35,16 +35,12 @@ public class Arena implements Serializable {
         return state;
     }
 
-    public void setState(GameState state) {
+    public void setGameState(GameState state) {
         this.state = state;
     }
 
     public List<String> getPlayers() {
         return players;
-    }
-
-    public void setPlayers(List<String> players) {
-        this.players = players;
     }
 
     @Override

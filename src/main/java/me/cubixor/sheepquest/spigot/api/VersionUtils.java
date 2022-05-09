@@ -5,6 +5,7 @@ import org.bukkit.Material;
 public class VersionUtils {
 
     private static boolean is1_8 = false;
+    private static boolean before13 = false;
     private static boolean isBefore17 = false;
     private static boolean isBefore16 = false;
     private static boolean is1416 = true;
@@ -40,10 +41,20 @@ public class VersionUtils {
         } catch (NoSuchFieldError e) {
             isBefore18 = true;
         }
+
+        try {
+            Material.KELP.getClass();
+        } catch (NoSuchFieldError e) {
+            before13 = true;
+        }
     }
 
     public static boolean is1_8() {
         return is1_8;
+    }
+
+    public static boolean isBefore13() {
+        return before13;
     }
 
     public static boolean isBefore17() {
