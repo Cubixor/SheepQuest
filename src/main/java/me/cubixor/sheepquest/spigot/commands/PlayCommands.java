@@ -352,6 +352,7 @@ public class PlayCommands {
             }
 
             localArena.getTeamBossBars().get(localArena.getPlayerTeam().get(player)).removePlayer(player);
+            Utils.removeFromScoreboard(localArena, localArena.getPlayerTeam().get(player).getCode(), player.getName());
             if (localArena.getPlayerStats().get(player) != null && localArena.getPlayerStats().get(player).getSheepCooldown() != null) {
                 localArena.getPlayerStats().get(player).getSheepCooldown().cancel();
             }

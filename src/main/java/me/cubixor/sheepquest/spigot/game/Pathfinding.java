@@ -39,7 +39,9 @@ public class Pathfinding {
             Field f3 = pathfinderGoalSelectorClass.getDeclaredField("d");
             f3.setAccessible(true);
 
-            if (!VersionUtils.isBefore18()) {
+            if (!VersionUtils.isBefore19()) {
+                f3.set(entityInsentientClass.getField("bS").get(entityInsentient), Sets.newLinkedHashSet());
+            } else if (!VersionUtils.isBefore18()) {
                 f3.set(entityInsentientClass.getField("bR").get(entityInsentient), Sets.newLinkedHashSet());
             } else {
                 if (VersionUtils.isBefore17()) {
@@ -109,7 +111,9 @@ public class Pathfinding {
             Class<?> entityInsentientClass = ReflectionUtils.getNMSClass("world.entity", "EntityInsentient");
             Class<?> entityCreatureClass = ReflectionUtils.getNMSClass("world.entity", "EntityCreature");
             Field f;
-            if (!VersionUtils.isBefore18()) {
+            if (!VersionUtils.isBefore19()) {
+                f = entityInsentientClass.getField("bS");
+            } else if (!VersionUtils.isBefore18()) {
                 f = entityInsentientClass.getField("bR");
             } else if (!VersionUtils.isBefore17()) {
                 f = entityInsentientClass.getField("bP");

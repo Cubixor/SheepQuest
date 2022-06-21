@@ -17,6 +17,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.*;
 
@@ -408,6 +409,22 @@ public class Utils {
     public static void removeTeamBossBars(Player player, LocalArena localArena) {
         for (BossBar bossBar : localArena.getTeamBossBars().values()) {
             bossBar.removePlayer(player);
+        }
+    }
+
+    public static void addToScoreboard(LocalArena localArena, String team, String entry) {
+        for (Scoreboard scoreboard : localArena.getPlayerScoreboards().values()) {
+            scoreboard.getTeam(team).addEntry(entry);
+        }
+    }
+
+    public static void removeFromScoreboard(LocalArena localArena, String team, String entry) {
+        if (team.equals(Team.NONE.getCode())) {
+            return;
+        }
+
+        for (Scoreboard scoreboard : localArena.getPlayerScoreboards().values()) {
+            scoreboard.getTeam(team).removeEntry(entry);
         }
     }
 }

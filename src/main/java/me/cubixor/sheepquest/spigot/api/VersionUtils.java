@@ -1,52 +1,25 @@
 package me.cubixor.sheepquest.spigot.api;
 
-import org.bukkit.Material;
+import com.cryptomorin.xseries.XMaterial;
 
 public class VersionUtils {
 
-    private static boolean is1_8 = false;
-    private static boolean before13 = false;
-    private static boolean isBefore17 = false;
-    private static boolean isBefore16 = false;
-    private static boolean is1416 = true;
-    private static boolean isBefore18 = false;
+    private static boolean is1_8;
+    private static boolean before13;
+    private static boolean isBefore17;
+    private static boolean isBefore16;
+    private static boolean is1416;
+    private static boolean isBefore18;
+    private static boolean isBefore19;
 
     public static void initialize() {
-        try {
-            Material.PURPUR_BLOCK.getClass();
-        } catch (NoSuchFieldError e) {
-            is1_8 = true;
-        }
-
-        try {
-            Material.AZALEA.getClass();
-        } catch (NoSuchFieldError e) {
-            isBefore17 = true;
-        }
-
-        try {
-            Material.NETHERITE_INGOT.getClass();
-        } catch (NoSuchFieldError e) {
-            isBefore16 = true;
-        }
-
-        try {
-            Material.CROSSBOW.getClass();
-        } catch (NoSuchFieldError e) {
-            is1416 = false;
-        }
-
-        try {
-            Material.MUSIC_DISC_OTHERSIDE.getClass();
-        } catch (NoSuchFieldError e) {
-            isBefore18 = true;
-        }
-
-        try {
-            Material.KELP.getClass();
-        } catch (NoSuchFieldError e) {
-            before13 = true;
-        }
+        is1_8 = !XMaterial.PURPUR_BLOCK.isSupported();
+        isBefore17 = !XMaterial.AZALEA.isSupported();
+        isBefore16 = !XMaterial.NETHERITE_INGOT.isSupported();
+        is1416 = XMaterial.CROSSBOW.isSupported();
+        isBefore18 = !XMaterial.MUSIC_DISC_OTHERSIDE.isSupported();
+        before13 = !XMaterial.KELP.isSupported();
+        isBefore19 = !XMaterial.MUD.isSupported();
     }
 
     public static boolean is1_8() {
@@ -73,5 +46,8 @@ public class VersionUtils {
         return isBefore18;
     }
 
+    public static boolean isBefore19() {
+        return isBefore19;
+    }
 
 }

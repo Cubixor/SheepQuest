@@ -73,6 +73,7 @@ public class Teams implements Listener {
             String arenaString = localArena.getName();
 
             if (team.equals(Team.NONE)) {
+                Utils.removeFromScoreboard(localArena, localArena.getPlayerTeam().get(player).getCode(), player.getName());
                 localArena.getPlayerTeam().replace(player, Team.NONE);
                 player.sendMessage(plugin.getMessage("game.team-join-random"));
                 Utils.removeTeamBossBars(player, localArena);
@@ -84,10 +85,12 @@ public class Teams implements Listener {
 
                 if (teamPlayers.get(team) < ((float) localArena.getPlayers().size() / (float) ConfigUtils.getTeamList(arenaString).size())) {
                     if (!localArena.getPlayerTeam().get(player).equals(team)) {
+                        Utils.removeFromScoreboard(localArena, localArena.getPlayerTeam().get(player).getCode(), player.getName());
                         localArena.getPlayerTeam().replace(player, team);
                         Utils.removeTeamBossBars(player, localArena);
                         localArena.getTeamBossBars().get(team).addPlayer(player);
                         player.getInventory().setHelmet(team.getBanner());
+                        Utils.addToScoreboard(localArena, team.getCode(), player.getName());
                         if (localArena.getState().equals(GameState.WAITING)) {
                             player.setScoreboard(new Scoreboards().getWaitingScoreboard(localArena, player));
                         }

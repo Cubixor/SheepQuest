@@ -270,11 +270,42 @@ public class Scoreboards {
         objective.setDisplayName(plugin.getMessage("game.scoreboard-title"));
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
 
+        for (Team team : ConfigUtils.getTeamList(localArena.getName())) {
+            org.bukkit.scoreboard.Team scoreboardTeam = scoreboard.registerNewTeam(team.getCode());
+            scoreboardTeam.setColor(team.getChatColor());
+            scoreboardTeam.setPrefix(team.getChatColor().toString());
+        }
+
         localArena.getPlayerScoreboards().put(player, scoreboard);
+
+        copyTeams(localArena, player);
 
         setSizeForPlayer(player, localArena);
 
     }
+
+    private void copyTeams(LocalArena localArena, Player player) {
+        if (localArena.getPlayers().size() < 2) {
+            return;
+        }
+
+        Scoreboard otherScoreboard = null;
+        Scoreboard scoreboard = localArena.getPlayerScoreboards().get(player);
+
+        for (Player p : localArena.getPlayerScoreboards().keySet()) {
+            if (!p.equals(player)) {
+                otherScoreboard = localArena.getPlayerScoreboards().get(p);
+                break;
+            }
+        }
+
+        for (Team team : ConfigUtils.getTeamList(localArena.getName())) {
+            for (String entry : otherScoreboard.getTeam(team.getCode()).getEntries()) {
+                scoreboard.getTeam(team.getCode()).addEntry(entry);
+            }
+        }
+    }
+
 
     public void changeScoreboardSize(LocalArena localArena) {
         for (Player p : localArena.getPlayerScoreboards().keySet()) {
@@ -293,6 +324,12 @@ public class Scoreboards {
 
         int j = 0;
         for (org.bukkit.scoreboard.Team team : scoreboard.getTeams()) {
+            try {
+                Integer.parseInt(team.getName());
+            } catch (NumberFormatException e) {
+                continue;
+            }
+
             scoreboard.resetScores(lineNames[j]);
             team.unregister();
             j++;

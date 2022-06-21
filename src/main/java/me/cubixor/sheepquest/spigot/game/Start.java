@@ -73,6 +73,7 @@ public class Start {
                 team = (new ArrayList<>(teamSorted.keySet())).get(0);
 
                 localArena.getPlayerTeam().replace(p, team);
+                Utils.addToScoreboard(localArena, team.getCode(), p.getName());
             }
 
             setArmor(p, localArena.getPlayerTeam().get(p));
