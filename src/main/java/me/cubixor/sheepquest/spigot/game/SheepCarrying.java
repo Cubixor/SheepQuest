@@ -5,6 +5,7 @@ import me.cubixor.sheepquest.spigot.Utils;
 import me.cubixor.sheepquest.spigot.api.Particles;
 import me.cubixor.sheepquest.spigot.api.PassengerFix;
 import me.cubixor.sheepquest.spigot.api.Sounds;
+import me.cubixor.sheepquest.spigot.api.VersionUtils;
 import me.cubixor.sheepquest.spigot.config.ConfigField;
 import me.cubixor.sheepquest.spigot.config.ConfigUtils;
 import me.cubixor.sheepquest.spigot.game.events.BonusEntity;
@@ -42,7 +43,8 @@ public class SheepCarrying implements Listener {
             return;
         }
 
-        if (evt.getTo().getY() < 0) {
+        int voidLvl = VersionUtils.isBefore18() ? 0 : -64;
+        if (evt.getTo().getY() < voidLvl) {
             if (localArena.getState().equals(GameState.WAITING) || localArena.getState().equals(GameState.STARTING)) {
                 evt.getPlayer().teleport(ConfigUtils.getLocation(localArena.getName(), ConfigField.WAITING_LOBBY));
             } else {

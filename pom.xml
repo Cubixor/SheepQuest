@@ -6,7 +6,7 @@
 
     <groupId>me.cubixor</groupId>
     <artifactId>sheepquest</artifactId>
-    <version>1.12</version>
+    <version>1.12.1</version>
     <packaging>jar</packaging>
 
     <name>SheepQuest</name>
