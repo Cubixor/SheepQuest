@@ -6,6 +6,7 @@ public class VersionUtils {
 
     private static boolean is1_8;
     private static boolean before13;
+    private static boolean before12;
     private static boolean isBefore17;
     private static boolean isBefore16;
     private static boolean is1416;
@@ -19,6 +20,7 @@ public class VersionUtils {
         is1416 = XMaterial.CROSSBOW.isSupported();
         isBefore18 = !XMaterial.MUSIC_DISC_OTHERSIDE.isSupported();
         before13 = !XMaterial.KELP.isSupported();
+        before12 = !XMaterial.BLACK_CONCRETE_POWDER.isSupported();
         isBefore19 = !XMaterial.MUD.isSupported();
     }
 
@@ -49,5 +51,10 @@ public class VersionUtils {
     public static boolean isBefore19() {
         return isBefore19;
     }
+
+    public static boolean isBefore12() {
+        return before12;
+    }
+
 
 }

@@ -272,8 +272,10 @@ public class Scoreboards {
 
         for (Team team : ConfigUtils.getTeamList(localArena.getName())) {
             org.bukkit.scoreboard.Team scoreboardTeam = scoreboard.registerNewTeam(team.getCode());
-            scoreboardTeam.setColor(team.getChatColor());
             scoreboardTeam.setPrefix(team.getChatColor().toString());
+            if (!VersionUtils.isBefore12()) {
+                scoreboardTeam.setColor(team.getChatColor());
+            }
         }
 
         localArena.getPlayerScoreboards().put(player, scoreboard);
