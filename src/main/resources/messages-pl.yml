@@ -35,6 +35,7 @@ general:
   state-offline: "&4&lOFFLINE"
   vip-prefix: "&7[&6&lVIP&7] "
   too-fast: "%prefix% &cZa szybko!"
+  no-one: "&8Nikt"
   invalid-player: "%prefix% &cTen gracz jeszcze nigdy nie grał w SheepQuest!"
   version-not-supported: "%prefix% &cTa funkcja jest niedostępna w wersji 1.8. Zmień wersję silnika spigot na wyższą aby jej użyć!"
 other:

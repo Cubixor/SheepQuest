@@ -8,6 +8,8 @@ import me.cubixor.sheepquest.spigot.gameInfo.GameState;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+
 public class PlaceholderExpansion extends me.clip.placeholderapi.expansion.PlaceholderExpansion {
     @Override
     public @NotNull String getIdentifier() {
@@ -76,6 +78,17 @@ public class PlaceholderExpansion extends me.clip.placeholderapi.expansion.Place
                 return Integer.toString(StatsUtils.getStats(param1, StatsField.BONUS_SHEEP_TAKEN));
             case "playtime":
                 return new StatsUtils().convertPlaytime(StatsUtils.getStats(param1, StatsField.PLAYTIME));
+            case "pos":
+                if (!plugin.getRanking().containsKey(param1)) {
+                    return "-";
+                }
+                return Integer.toString(new ArrayList<>(plugin.getRanking().keySet()).indexOf(param1) + 1);
+            case "top":
+                int place = Integer.parseInt(param1);
+                if (plugin.getRanking().size() < place || place < 1) {
+                    return plugin.getMessage("general.no-one");
+                }
+                return new ArrayList<>(plugin.getRanking().keySet()).get(place - 1);
         }
 
         return null;

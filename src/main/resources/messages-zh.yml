@@ -37,6 +37,7 @@ general:
   state-offline: "&4&lOFFLINE"
   vip-prefix: "&7[&6&lVIP&7] "
   too-fast: "%prefix% &cToo fast!"
+  no-one: "&8No one"
   invalid-player: "%prefix% &cThis player has never played SheepQuest before!"
   version-not-supported: "%prefix% &cThis feature is not available on spigot 1.8! Upgrade to the newer version to use it!"
 other:

@@ -8,6 +8,7 @@ import me.cubixor.sheepquest.spigot.commands.SetupWand;
 import me.cubixor.sheepquest.spigot.commands.TabCompleter;
 import me.cubixor.sheepquest.spigot.config.ConfigField;
 import me.cubixor.sheepquest.spigot.config.ConfigUtils;
+import me.cubixor.sheepquest.spigot.config.StatsUtils;
 import me.cubixor.sheepquest.spigot.game.*;
 import me.cubixor.sheepquest.spigot.game.kits.*;
 import me.cubixor.sheepquest.spigot.gameInfo.*;
@@ -43,32 +44,29 @@ import java.util.List;
 public final class SheepQuest extends JavaPlugin {
 
 
+    public static final String CONFIG_VERSION = "1.8";
+    private static SheepQuest instance;
     private final File arenasFile = new File(getDataFolder(), "arenas.yml");
     private final File playersFile = new File(getDataFolder(), "players.yml");
-
-    private FileConfiguration messagesConfig;
-    private FileConfiguration arenasConfig;
-    private FileConfiguration playersConfig;
     private final HashMap<String, List<Location>> signs = new HashMap<>();
-
     private final HashMap<Player, PlayerInfo> playerInfo = new HashMap<>();
     private final HashMap<Player, ArenaInventories> inventories = new HashMap<>();
     private final HashMap<String, LocalArena> localArenas = new HashMap<>();
+    private final List<Kit> kits = new ArrayList<>();
+    private FileConfiguration messagesConfig;
+    private FileConfiguration arenasConfig;
+    private FileConfiguration playersConfig;
     private FileConfiguration connectionConfig;
     private HashMap<String, Arena> arenas = new HashMap<>();
+    private HashMap<String, Integer> ranking = new HashMap<>();
     private Items items;
-    private final List<Kit> kits = new ArrayList<>();
     private boolean enabled = false;
     private boolean passengerFix = false;
     private BukkitTask tipTask;
-
     private MysqlConnection mysqlConnection;
     private boolean bungee;
     private String serverName;
     private SocketConnection bungeeSocket;
-
-    private static SheepQuest instance;
-    public static final String CONFIG_VERSION = "1.8";
 
     public static SheepQuest getInstance() {
         return instance;
@@ -268,6 +266,7 @@ public final class SheepQuest extends JavaPlugin {
                 kit.loadItems();
             }
 
+            StatsUtils.updateRankingOrdered();
             new WaitingTips().runTipTask();
             setItems(new Items());
             new Signs().loadSigns();
@@ -336,10 +335,6 @@ public final class SheepQuest extends JavaPlugin {
         return arenasFile;
     }
 
-    public void setArenasConfig(FileConfiguration arenasConfig) {
-        this.arenasConfig = arenasConfig;
-    }
-
     public HashMap<String, List<Location>> getSigns() {
         return signs;
     }
@@ -362,6 +357,10 @@ public final class SheepQuest extends JavaPlugin {
 
     public FileConfiguration getArenasConfig() {
         return arenasConfig;
+    }
+
+    public void setArenasConfig(FileConfiguration arenasConfig) {
+        this.arenasConfig = arenasConfig;
     }
 
     public FileConfiguration getStats() {
@@ -426,5 +425,13 @@ public final class SheepQuest extends JavaPlugin {
 
     public void setTipTask(BukkitTask tipTask) {
         this.tipTask = tipTask;
+    }
+
+    public HashMap<String, Integer> getRanking() {
+        return ranking;
+    }
+
+    public void setRanking(HashMap<String, Integer> ranking) {
+        this.ranking = ranking;
     }
 }

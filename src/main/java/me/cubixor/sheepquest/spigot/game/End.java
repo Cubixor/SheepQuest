@@ -128,6 +128,8 @@ public class End {
         }
 
         plugin.savePlayers();
+        StatsUtils.updateRankingOrdered();
+
         new Signs().updateSigns(localArena.getName());
         if (plugin.isBungee()) {
             Arena arena = new Arena(localArena.getName(), localArena.getServer(), localArena.getState(), localArena.getPlayers());

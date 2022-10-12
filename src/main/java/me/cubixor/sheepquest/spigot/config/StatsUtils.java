@@ -1,6 +1,7 @@
 package me.cubixor.sheepquest.spigot.config;
 
 import me.cubixor.sheepquest.spigot.SheepQuest;
+import me.cubixor.sheepquest.spigot.Utils;
 import me.cubixor.sheepquest.spigot.mysql.MysqlConnection;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
@@ -10,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class StatsUtils {
@@ -70,6 +72,39 @@ public class StatsUtils {
                 return new ArrayList<>();
             }
         }
+    }
+
+    public static void updateRankingOrdered() {
+        SheepQuest plugin = SheepQuest.getInstance();
+        LinkedHashMap<String, Integer> ranking = new LinkedHashMap<>();
+
+        if (mysqlEnabled()) {
+            MysqlConnection mysqlConnection = plugin.getMysqlConnection();
+            try {
+                Connection connection = mysqlConnection.getConnection();
+                PreparedStatement statement = connection
+                        .prepareStatement("SELECT `player`, `wins` FROM " + mysqlConnection.getDatabase() + "." + mysqlConnection.getTableStats() + " ORDER BY `wins` DESC");
+
+                ResultSet results = statement.executeQuery();
+
+
+                while (results.next()) {
+                    ranking.put(results.getString("player"), results.getInt("wins"));
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } else {
+            List<String> players = getPlayers();
+            for (String p : players) {
+                ranking.put(p, getSavedStats(p, StatsField.WINS));
+            }
+
+            ranking = Utils.sortStringIntByValue(ranking);
+        }
+
+        plugin.setRanking(ranking);
     }
 
     private List<String> getSqlPlayers() {

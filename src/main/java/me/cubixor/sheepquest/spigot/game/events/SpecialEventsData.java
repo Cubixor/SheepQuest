@@ -7,9 +7,8 @@ import java.util.HashMap;
 
 public class SpecialEventsData {
 
-    private int specialEventsTimer = -1;
-
     private final HashMap<Entity, Team> bonusEntityTeam = new HashMap<>();
+    private int specialEventsTimer = -1;
 
     public int getSpecialEventsTimer() {
         return specialEventsTimer;

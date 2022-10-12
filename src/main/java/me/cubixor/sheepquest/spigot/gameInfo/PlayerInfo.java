@@ -10,12 +10,12 @@ import java.util.HashMap;
 
 public class PlayerInfo {
 
+    private final HashMap<StatsField, Integer> stats = new HashMap<>();
     private Block selMin;
     private Block selMax;
     private String minPlayersChat;
     private String maxPlayersChat;
     private String delete;
-    private final HashMap<StatsField, Integer> stats = new HashMap<>();
     private boolean cooldown;
     private boolean athleteCooldown;
 

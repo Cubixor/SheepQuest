@@ -427,4 +427,14 @@ public class Utils {
             scoreboard.getTeam(team).removeEntry(entry);
         }
     }
+
+    public static LinkedHashMap<String, Integer> sortStringIntByValue(HashMap<String, Integer> winner) {
+        LinkedHashMap<String, Integer> winnerSorted = new LinkedHashMap<>();
+        winner.entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .forEachOrdered(x -> winnerSorted.put(x.getKey(), x.getValue()));
+
+        return winnerSorted;
+    }
 }

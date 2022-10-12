@@ -18,10 +18,6 @@ import java.util.HashMap;
 
 public class LocalArena extends Arena implements Serializable {
 
-    private int timer = -1;
-    private int sheepTimer;
-    private Inventory teamChooseInv;
-    private SpecialEventsData specialEventsData;
     private final HashMap<Player, Team> playerTeam = new HashMap<>();
     private final HashMap<Player, KitType> playerKit = new HashMap<>();
     private final HashMap<Team, Integer> points = new HashMap<>();
@@ -31,8 +27,11 @@ public class LocalArena extends Arena implements Serializable {
     private final HashMap<Team, BossBar> teamBossBars = new HashMap<>();
     private final HashMap<Player, PlayerData> playerData = new HashMap<>();
     private final HashMap<Team, TeamRegion> teamRegions = new HashMap<>();
-
     private final HashMap<Player, Scoreboard> playerScoreboards = new HashMap<>();
+    private int timer = -1;
+    private int sheepTimer;
+    private Inventory teamChooseInv;
+    private SpecialEventsData specialEventsData;
 
     public LocalArena(String name) {
         super(name, SheepQuest.getInstance().getServerName());

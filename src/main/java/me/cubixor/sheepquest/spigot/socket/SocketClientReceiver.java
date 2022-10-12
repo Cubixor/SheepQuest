@@ -3,8 +3,10 @@ package me.cubixor.sheepquest.spigot.socket;
 import me.cubixor.sheepquest.spigot.SheepQuest;
 import me.cubixor.sheepquest.spigot.commands.PlayCommands;
 import me.cubixor.sheepquest.spigot.commands.StaffCommands;
+import me.cubixor.sheepquest.spigot.config.StatsUtils;
 import me.cubixor.sheepquest.spigot.game.Signs;
 import me.cubixor.sheepquest.spigot.gameInfo.Arena;
+import me.cubixor.sheepquest.spigot.gameInfo.GameState;
 import me.cubixor.sheepquest.utils.packets.Packet;
 import me.cubixor.sheepquest.utils.packets.classes.*;
 import org.bukkit.Bukkit;
@@ -53,8 +55,12 @@ public class SocketClientReceiver {
                         case ARENA_UPDATE: {
                             ArenaPacket arenaPacket = (ArenaPacket) object;
                             Arena arena = arenaPacket.getArena();
-                            if (!plugin.getArenas().containsKey(arena.getName())) {
+
+                            Arena oldArena = plugin.getArenas().get(arena.getName());
+                            if (oldArena == null) {
                                 plugin.getSigns().put(arena.getName(), new ArrayList<>());
+                            } else if (oldArena.getState().equals(GameState.ENDING) && !arena.getState().equals(GameState.ENDING)) {
+                                StatsUtils.updateRankingOrdered();
                             }
                             plugin.getArenas().put(arena.getName(), arena);
                             new Signs().updateSigns(arena.getName());
