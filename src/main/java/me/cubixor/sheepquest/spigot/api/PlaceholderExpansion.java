@@ -11,6 +11,13 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 
 public class PlaceholderExpansion extends me.clip.placeholderapi.expansion.PlaceholderExpansion {
+
+    private final SheepQuest plugin;
+
+    public PlaceholderExpansion() {
+        plugin = SheepQuest.getInstance();
+    }
+
     @Override
     public @NotNull String getIdentifier() {
         return "sheepquest";
@@ -36,10 +43,8 @@ public class PlaceholderExpansion extends me.clip.placeholderapi.expansion.Place
         return true;
     }
 
-
     @Override
     public String onRequest(OfflinePlayer player, @NotNull String params) {
-        SheepQuest plugin = SheepQuest.getInstance();
         String[] paramsSplit = params.split("_");
 
         if (paramsSplit.length != 2) {
@@ -84,14 +89,22 @@ public class PlaceholderExpansion extends me.clip.placeholderapi.expansion.Place
                 }
                 return Integer.toString(new ArrayList<>(plugin.getRanking().keySet()).indexOf(param1) + 1);
             case "top":
-                int place = Integer.parseInt(param1);
-                if (plugin.getRanking().size() < place || place < 1) {
-                    return plugin.getMessage("general.no-one");
-                }
-                return new ArrayList<>(plugin.getRanking().keySet()).get(place - 1);
+                String topPlayer = getPlayerAtPlace(param1);
+                return topPlayer == null ? plugin.getMessage("general.no-one") : topPlayer;
+            case "topwins":
+                String topWinsPlayer = getPlayerAtPlace(param1);
+                return topWinsPlayer == null ? "0" : Integer.toString(plugin.getRanking().get(topWinsPlayer));
         }
 
         return null;
+    }
+
+    private String getPlayerAtPlace(String param1) {
+        int place = Integer.parseInt(param1);
+        if (plugin.getRanking().size() < place || place < 1) {
+            return null;
+        }
+        return (String) plugin.getRanking().keySet().toArray()[place - 1];
     }
 
     private String getState(Arena arena) {
