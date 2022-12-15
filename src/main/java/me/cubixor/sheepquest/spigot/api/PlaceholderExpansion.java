@@ -1,11 +1,16 @@
 package me.cubixor.sheepquest.spigot.api;
 
 import me.cubixor.sheepquest.spigot.SheepQuest;
+import me.cubixor.sheepquest.spigot.Utils;
 import me.cubixor.sheepquest.spigot.config.StatsField;
 import me.cubixor.sheepquest.spigot.config.StatsUtils;
 import me.cubixor.sheepquest.spigot.gameInfo.Arena;
 import me.cubixor.sheepquest.spigot.gameInfo.GameState;
+import me.cubixor.sheepquest.spigot.gameInfo.LocalArena;
+import me.cubixor.sheepquest.spigot.gameInfo.Team;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -94,6 +99,18 @@ public class PlaceholderExpansion extends me.clip.placeholderapi.expansion.Place
             case "topwins":
                 String topWinsPlayer = getPlayerAtPlace(param1);
                 return topWinsPlayer == null ? "0" : Integer.toString(plugin.getRanking().get(topWinsPlayer));
+            case "team":
+                Player p = Bukkit.getPlayerExact(param1);
+                if (p != null) {
+                    LocalArena arena = Utils.getLocalArena(p);
+                    if (arena != null) {
+                        Team team = arena.getPlayerTeam().get(p);
+                        if (team != null) {
+                            return team.getName();
+                        }
+                    }
+                }
+                return "";
         }
 
         return null;
