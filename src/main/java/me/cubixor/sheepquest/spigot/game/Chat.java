@@ -52,7 +52,7 @@ public class Chat implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onChat(AsyncPlayerChatEvent evt) {
         if (Utils.getLocalArena(evt.getPlayer()) == null) {
             return;

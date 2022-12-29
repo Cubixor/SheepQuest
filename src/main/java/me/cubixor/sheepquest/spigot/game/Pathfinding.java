@@ -95,7 +95,12 @@ public class Pathfinding {
 
     public static void addWalkToLocationGoal(Object entityInsentient, Location loc, double speed) {
         try {
-            Object a = VersionUtils.isBefore18() ? ReflectionUtils.getNMSClass("world.entity", "EntityInsentient").getMethod("getNavigation").invoke(entityInsentient) : ReflectionUtils.getNMSClass("world.entity", "EntityInsentient").getMethod("D").invoke(entityInsentient);
+            Class<?> entityInsentientClass = ReflectionUtils.getNMSClass("world.entity", "EntityInsentient");
+            Method getNavigation =
+                    VersionUtils.isBefore18() ? entityInsentientClass.getMethod("getNavigation")
+                            : VersionUtils.isBefore193() ? entityInsentientClass.getMethod("D")
+                            : entityInsentientClass.getMethod("E");
+            Object a = getNavigation.invoke(entityInsentient);
             Method method = ReflectionUtils.getNMSClass("world.entity.ai.navigation", "NavigationAbstract")
                     .getMethod("a", double.class, double.class, double.class, double.class);
             method.invoke(a, loc.getX(), loc.getY(), loc.getZ(), speed);

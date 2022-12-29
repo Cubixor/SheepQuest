@@ -12,6 +12,7 @@ public class VersionUtils {
     private static boolean is1416;
     private static boolean isBefore18;
     private static boolean isBefore19;
+    private static boolean isBefore193;
 
     public static void initialize() {
         is1_8 = !XMaterial.PURPUR_BLOCK.isSupported();
@@ -22,6 +23,7 @@ public class VersionUtils {
         before13 = !XMaterial.KELP.isSupported();
         before12 = !XMaterial.BLACK_CONCRETE_POWDER.isSupported();
         isBefore19 = !XMaterial.MUD.isSupported();
+        isBefore193 = !XMaterial.ENDER_DRAGON_SPAWN_EGG.isSupported();
     }
 
     public static boolean is1_8() {
@@ -56,5 +58,7 @@ public class VersionUtils {
         return before12;
     }
 
-
+    public static boolean isBefore193() {
+        return isBefore193;
+    }
 }
