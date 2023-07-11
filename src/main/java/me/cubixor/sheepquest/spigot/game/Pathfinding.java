@@ -39,8 +39,10 @@ public class Pathfinding {
             Field f3 = pathfinderGoalSelectorClass.getDeclaredField("d");
             f3.setAccessible(true);
 
-            if (!VersionUtils.isBefore19()) {
-                f3.set(entityInsentientClass.getField("bS").get(entityInsentient), Sets.newLinkedHashSet());
+            if (!VersionUtils.isBefore120()) {
+                f3.set(entityInsentientClass.getField("bO").get(entityInsentient), Sets.newLinkedHashSet());
+            } else if (!VersionUtils.isBefore19()) {
+                f3.set(entityInsentientClass.getField("bN").get(entityInsentient), Sets.newLinkedHashSet());
             } else if (!VersionUtils.isBefore18()) {
                 f3.set(entityInsentientClass.getField("bR").get(entityInsentient), Sets.newLinkedHashSet());
             } else {
@@ -96,10 +98,18 @@ public class Pathfinding {
     public static void addWalkToLocationGoal(Object entityInsentient, Location loc, double speed) {
         try {
             Class<?> entityInsentientClass = ReflectionUtils.getNMSClass("world.entity", "EntityInsentient");
-            Method getNavigation =
-                    VersionUtils.isBefore18() ? entityInsentientClass.getMethod("getNavigation")
-                            : VersionUtils.isBefore193() ? entityInsentientClass.getMethod("D")
-                            : entityInsentientClass.getMethod("E");
+            String navigation;
+            if (VersionUtils.isBefore18()) {
+                navigation = "getNavigation";
+            } else if (VersionUtils.isBefore193()) {
+                navigation = "D";
+            } else if (VersionUtils.isBefore120()) {
+                navigation = "G";
+            } else {
+                navigation = "J";
+            }
+
+            Method getNavigation = entityInsentientClass.getMethod(navigation);
             Object a = getNavigation.invoke(entityInsentient);
             Method method = ReflectionUtils.getNMSClass("world.entity.ai.navigation", "NavigationAbstract")
                     .getMethod("a", double.class, double.class, double.class, double.class);
@@ -116,8 +126,10 @@ public class Pathfinding {
             Class<?> entityInsentientClass = ReflectionUtils.getNMSClass("world.entity", "EntityInsentient");
             Class<?> entityCreatureClass = ReflectionUtils.getNMSClass("world.entity", "EntityCreature");
             Field f;
-            if (!VersionUtils.isBefore19()) {
-                f = entityInsentientClass.getField("bS");
+            if (!VersionUtils.isBefore120()) {
+                f = entityInsentientClass.getField("bO");
+            } else if (!VersionUtils.isBefore19()) {
+                f = entityInsentientClass.getField("bN");
             } else if (!VersionUtils.isBefore18()) {
                 f = entityInsentientClass.getField("bR");
             } else if (!VersionUtils.isBefore17()) {

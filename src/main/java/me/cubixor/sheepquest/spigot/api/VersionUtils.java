@@ -1,6 +1,8 @@
 package me.cubixor.sheepquest.spigot.api;
 
 import com.cryptomorin.xseries.XMaterial;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
 
 public class VersionUtils {
 
@@ -13,17 +15,31 @@ public class VersionUtils {
     private static boolean isBefore18;
     private static boolean isBefore19;
     private static boolean isBefore193;
+    private static boolean isBefore120;
 
     public static void initialize() {
-        is1_8 = !XMaterial.PURPUR_BLOCK.isSupported();
-        isBefore17 = !XMaterial.AZALEA.isSupported();
-        isBefore16 = !XMaterial.NETHERITE_INGOT.isSupported();
-        is1416 = XMaterial.CROSSBOW.isSupported();
-        isBefore18 = !XMaterial.MUSIC_DISC_OTHERSIDE.isSupported();
-        before13 = !XMaterial.KELP.isSupported();
-        before12 = !XMaterial.BLACK_CONCRETE_POWDER.isSupported();
-        isBefore19 = !XMaterial.MUD.isSupported();
-        isBefore193 = !XMaterial.ENDER_DRAGON_SPAWN_EGG.isSupported();
+        is1_8 = !isSupported(XMaterial.PURPUR_BLOCK);
+        isBefore17 = !isSupported(XMaterial.AZALEA);
+        isBefore16 = !isSupported(XMaterial.NETHERITE_INGOT);
+        is1416 = isSupported(XMaterial.CROSSBOW);
+        isBefore18 = !isSupported(XMaterial.MUSIC_DISC_OTHERSIDE);
+        before13 = !isSupported(XMaterial.KELP);
+        before12 = !isSupported(XMaterial.BLACK_CONCRETE_POWDER);
+        isBefore19 = !isSupported(XMaterial.MUD);
+        isBefore193 = !isSupported(XMaterial.ENDER_DRAGON_SPAWN_EGG);
+        isBefore120 = !isSupported(XMaterial.BAMBOO_PLANKS);
+    }
+
+    private static boolean isSupported(XMaterial xMaterial) {
+        Material material = xMaterial.parseMaterial();
+        if (material == null) return false;
+
+        try {
+            return material.isEnabledByFeature(Bukkit.getWorlds().get(0));
+        } catch (Throwable t) {
+            return true;
+        }
+
     }
 
     public static boolean is1_8() {
@@ -60,5 +76,9 @@ public class VersionUtils {
 
     public static boolean isBefore193() {
         return isBefore193;
+    }
+
+    public static boolean isBefore120() {
+        return isBefore120;
     }
 }
