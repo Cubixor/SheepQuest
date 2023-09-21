@@ -17,12 +17,12 @@ public class BungeeUtils {
     public void sendBackToServer(Player player) {
         switch (plugin.getConfig().getString("bungee.on-leave")) {
             case "JOIN_SERVER": {
-                new SocketClientSender().sendBackToServerPacket(BackToServerPacket.ServerPriority.PREVIOUS,
+                plugin.getSocketClient().getSender().sendBackToServerPacket(BackToServerPacket.ServerPriority.PREVIOUS,
                         player.getName(), plugin.getConfig().getString("bungee.lobby-server"));
                 break;
             }
             case "LOBBY_SERVER": {
-                new SocketClientSender().sendBackToServerPacket(BackToServerPacket.ServerPriority.LOBBY,
+                plugin.getSocketClient().getSender().sendBackToServerPacket(BackToServerPacket.ServerPriority.LOBBY,
                         player.getName(), plugin.getConfig().getString("bungee.lobby-server"));
                 break;
             }

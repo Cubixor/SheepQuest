@@ -8,7 +8,6 @@ import me.cubixor.sheepquest.spigot.config.ConfigUtils;
 import me.cubixor.sheepquest.spigot.game.JoinSheep;
 import me.cubixor.sheepquest.spigot.game.Signs;
 import me.cubixor.sheepquest.spigot.gameInfo.*;
-import me.cubixor.sheepquest.spigot.socket.SocketClientSender;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -58,7 +57,7 @@ public class SetupCommands {
 
             if (plugin.isBungee()) {
                 Arena arenaObj = new Arena(localArena.getName(), localArena.getServer(), localArena.getState(), localArena.getPlayers());
-                Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> new SocketClientSender().sendUpdateArenaPacket(arenaObj));
+                Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> plugin.getSocketClient().getSender().sendUpdateArenaPacket(arenaObj));
             }
 
             new Signs().updateSigns("quickjoin");
@@ -98,7 +97,7 @@ public class SetupCommands {
 
                 if (plugin.isBungee()) {
                     Arena arenaObj = new Arena(arena, plugin.getServerName());
-                    new SocketClientSender().sendRemoveArenaPacket(arenaObj);
+                    plugin.getSocketClient().getSender().sendRemoveArenaPacket(arenaObj);
                 }
 
                 plugin.getPlayerInfo().get(player).setDelete(null);

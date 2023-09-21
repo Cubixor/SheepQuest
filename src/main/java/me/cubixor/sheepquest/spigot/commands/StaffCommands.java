@@ -10,7 +10,6 @@ import me.cubixor.sheepquest.spigot.game.Start;
 import me.cubixor.sheepquest.spigot.gameInfo.Arena;
 import me.cubixor.sheepquest.spigot.gameInfo.GameState;
 import me.cubixor.sheepquest.spigot.gameInfo.LocalArena;
-import me.cubixor.sheepquest.spigot.socket.SocketClientSender;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -56,7 +55,7 @@ public class StaffCommands {
         if (localPlayers.contains(target)) {
             kickFromLocalArena(player.getName(), target, arena.getName());
         } else if (bungeePlayers.contains(target)) {
-            new SocketClientSender().sendKickPacket(player.getName(), target, arena);
+            plugin.getSocketClient().getSender().sendKickPacket(player.getName(), target, arena);
         } else {
             player.sendMessage(plugin.getMessage("arena-moderate.kick-player-not-playing").replace("%player%", target));
             return;
@@ -105,7 +104,7 @@ public class StaffCommands {
             if (plugin.getLocalArenas().containsKey(args[1])) {
                 forceLocalArenaStart(player.getName(), args[1]);
             } else {
-                new SocketClientSender().sendForceStartPacket(player.getName(), arena);
+                plugin.getSocketClient().getSender().sendForceStartPacket(player.getName(), arena);
             }
         });
     }
@@ -143,7 +142,7 @@ public class StaffCommands {
             if (plugin.getLocalArenas().containsKey(args[1])) {
                 forceLocalArenaStop(player.getName(), args[1]);
             } else {
-                new SocketClientSender().sendForceStopPacket(player.getName(), arena);
+                plugin.getSocketClient().getSender().sendForceStopPacket(player.getName(), arena);
             }
         });
     }

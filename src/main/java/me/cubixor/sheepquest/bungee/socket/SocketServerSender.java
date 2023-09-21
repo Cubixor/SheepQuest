@@ -1,207 +1,84 @@
 package me.cubixor.sheepquest.bungee.socket;
 
-import me.cubixor.sheepquest.bungee.SheepQuestBungee;
 import me.cubixor.sheepquest.spigot.gameInfo.Arena;
+import me.cubixor.sheepquest.utils.SocketConnection;
+import me.cubixor.sheepquest.utils.packets.Packet;
 import me.cubixor.sheepquest.utils.packets.PacketType;
-import me.cubixor.sheepquest.utils.packets.classes.*;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
+import me.cubixor.sheepquest.utils.packets.TargetPacket;
+import me.cubixor.sheepquest.utils.packets.classes.ArenasPacket;
+import me.cubixor.sheepquest.utils.packets.classes.StringPacket;
 
+import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.logging.Level;
 
 public class SocketServerSender {
 
-    private final SheepQuestBungee plugin;
+    private final SocketServer socketServer;
+    private final LinkedBlockingDeque<TargetPacket> sendQueue = new LinkedBlockingDeque<>();
 
-    public SocketServerSender() {
-        plugin = SheepQuestBungee.getInstance();
+    public SocketServerSender(SocketServer socketServer) {
+        this.socketServer = socketServer;
     }
 
-    private ObjectOutputStream getOutputStream(String server) {
-        try {
-            return plugin.getSpigotSocket().get(server).getOutputStream();
-        } catch (Exception e) {
-            return null;
-        }
-    }
+    // Run this asynchronously!
+    public void send() {
+        while (!socketServer.getServerSocket().isClosed()) {
+            if (sendQueue.isEmpty()) continue;
+            TargetPacket targetPacket = sendQueue.pop();
 
-    public void joinArena(JoinPacket joinPacket) {
-        try {
-            ObjectOutputStream out = getOutputStream(joinPacket.getArena().getServer());
-            if (out == null) return;
+            try {
+                Packet packet = targetPacket.getPacket();
+                Set<String> servers = targetPacket.getServers();
 
-            ProxiedPlayer proxiedPlayer = plugin.getProxy().getPlayer(joinPacket.getPlayer());
-            proxiedPlayer.connect(plugin.getProxy().getServerInfo(joinPacket.getArena().getServer()));
+                for (String server : servers) {
+                    SocketConnection socketConnection = socketServer.getSpigotSocket(server);
+                    if (socketConnection == null) continue;
+                    ObjectOutputStream out = socketConnection.getOutputStream();
 
-            out.writeObject(joinPacket);
-            out.flush();
-            out.reset();
+                    out.writeObject(packet);
+                    out.flush();
+                    out.reset();
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+                    if (socketServer.isDebug()) {
+                        socketServer.log(Level.INFO, "Sent packet: " + packet.getPacketType().toString() + " to server: " + server);
+                    }
+                }
 
-    public void leaveArena(ArenaPlayerPacket arenaPlayerPacket) {
-        try {
-            ObjectOutputStream out = getOutputStream(arenaPlayerPacket.getArena().getServer());
-            if (out == null) return;
-
-            out.writeObject(arenaPlayerPacket);
-            out.flush();
-            out.reset();
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void sendArena(ArenaPacket arenaPacket) {
-        try {
-            List<String> servers = new ArrayList<>(getServersToSend(arenaPacket.getArena().getServer()));
-
-            for (String server : servers) {
-                ObjectOutputStream out = getOutputStream(server);
-                if (out == null) return;
-
-                out.writeObject(arenaPacket);
-                out.flush();
-                out.reset();
-
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
-    public void removeArena(ArenaPacket arenaPacket) {
-        try {
-            List<String> servers = new ArrayList<>(getServersToSend(arenaPacket.getArena().getServer()));
+    public void sendPacketToServer(Packet packet, String server) {
+        sendQueue.add(new TargetPacket(packet, Collections.singleton(server)));
+    }
 
-            for (String server : servers) {
-                ObjectOutputStream out = getOutputStream(server);
-                if (out == null) return;
-
-                out.writeObject(arenaPacket);
-                out.flush();
-                out.reset();
-
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void sendPacketToAllExcept(Packet packet, String exceptServer) {
+        Set<String> servers = getServersExcept(exceptServer);
+        sendQueue.add(new TargetPacket(packet, servers));
     }
 
     public void sendAllArenas(String server, List<Arena> arenas) {
-        try {
-            ObjectOutputStream out = getOutputStream(server);
-            if (out == null) return;
-
-            ArenasPacket arenasPacket = new ArenasPacket(PacketType.ARENAS_ADD, arenas);
-
-            out.writeObject(arenasPacket);
-            out.flush();
-            out.reset();
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        ArenasPacket arenasPacket = new ArenasPacket(PacketType.ARENAS_ADD, arenas);
+        sendPacketToServer(arenasPacket, server);
     }
 
-    public void sendServerArenas(ServerArenasPacket serverArenasPacket) {
-        try {
-            List<String> servers = new ArrayList<>(getServersToSend(serverArenasPacket.getServer()));
-            for (String serverToSend : servers) {
-                ObjectOutputStream out = getOutputStream(serverToSend);
-                if (out == null) return;
-
-                out.writeObject(serverArenasPacket);
-                out.flush();
-                out.reset();
-
-
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void sendRemoveServerArenas(String server) {
+        StringPacket stringPacket = new StringPacket(PacketType.SERVER_ARENAS_REMOVE, server);
+        sendPacketToAllExcept(stringPacket, server);
     }
 
-    public void removeServerArenas(String server) {
-        try {
-            List<String> arenas = new ArrayList<>(plugin.getArenas().keySet());
-            for (String arena : arenas) {
-                if (plugin.getArenas().get(arena).getServer().equals(server)) {
-                    plugin.getArenas().remove(arena);
-                }
-            }
-            List<String> servers = new ArrayList<>(getServersToSend(server));
-            for (String serverToSend : servers) {
-                ObjectOutputStream out = getOutputStream(serverToSend);
-                if (out == null) return;
-
-                StringPacket stringPacket = new StringPacket(PacketType.SERVER_ARENAS_REMOVE, server);
-
-                out.writeObject(stringPacket);
-                out.flush();
-                out.reset();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void forceStart(ArenaPlayerPacket arenaPlayerPacket) {
-        try {
-            ObjectOutputStream out = getOutputStream(arenaPlayerPacket.getArena().getServer());
-            if (out == null) return;
-
-            out.writeObject(arenaPlayerPacket);
-            out.flush();
-            out.reset();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void forceStop(ArenaPlayerPacket arenaPlayerPacket) {
-        try {
-            ObjectOutputStream out = getOutputStream(arenaPlayerPacket.getArena().getServer());
-            if (out == null) return;
-
-            out.writeObject(arenaPlayerPacket);
-            out.flush();
-            out.reset();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void kick(KickPacket kickPacket) {
-        try {
-            ObjectOutputStream out = getOutputStream(kickPacket.getArena().getServer());
-            if (out == null) return;
-
-            out.writeObject(kickPacket);
-            out.flush();
-            out.reset();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private List<String> getServersToSend(String server) {
-        List<String> servers = new ArrayList<>();
-        for (String srv : plugin.getSpigotSocket().keySet()) {
-            if (!srv.equals(server)) {
-                servers.add(srv);
-            }
-        }
+    private Set<String> getServersExcept(String server) {
+        Set<String> servers = new HashSet<>(socketServer.getSpigotSockets().keySet());
+        servers.remove(server);
         return servers;
     }
+
 }

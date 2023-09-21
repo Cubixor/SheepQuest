@@ -16,7 +16,6 @@ import me.cubixor.sheepquest.spigot.menu.*;
 import me.cubixor.sheepquest.spigot.mysql.ConnectionSetup;
 import me.cubixor.sheepquest.spigot.mysql.MysqlConnection;
 import me.cubixor.sheepquest.spigot.socket.SocketClient;
-import me.cubixor.sheepquest.utils.SocketConnection;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
 import org.bstats.charts.SingleLineChart;
@@ -66,7 +65,7 @@ public final class SheepQuest extends JavaPlugin {
     private MysqlConnection mysqlConnection;
     private boolean bungee;
     private String serverName;
-    private SocketConnection bungeeSocket;
+    private SocketClient socketClient;
 
     public static SheepQuest getInstance() {
         return instance;
@@ -139,20 +138,13 @@ public final class SheepQuest extends JavaPlugin {
                 new PlayCommands().kickFromLocalArenaSynchronized(p, localArenas.get(arena), false, false);
             }
         }
-        if (getBungeeSocket() != null) {
-            try {
-                getBungeeSocket().getSocket().close();
-                getBungeeSocket().getInputStream().close();
-                getBungeeSocket().getOutputStream().close();
-            } catch (IOException ignored) {
-            }
-        }
         if (getMysqlConnection() != null) {
             try {
                 getMysqlConnection().getConnection().close();
             } catch (SQLException ignored) {
             }
         }
+        socketClient.closeConnections();
         for (BukkitTask bukkitTask : Bukkit.getScheduler().getPendingTasks()) {
             bukkitTask.cancel();
         }
@@ -257,9 +249,11 @@ public final class SheepQuest extends JavaPlugin {
 
             if (getConfig().getBoolean("bungee.bungee-mode")) {
                 setBungee(true);
-                new SocketClient().clientSetup(getConnectionConfig().getString("host"),
+                socketClient = new SocketClient(
+                        getConnectionConfig().getString("host"),
                         getConnectionConfig().getInt("port"),
                         getConnectionConfig().getString("server-name"));
+                socketClient.clientSetup();
             }
 
             for (Kit kit : kits) {
@@ -395,12 +389,8 @@ public final class SheepQuest extends JavaPlugin {
         return connectionConfig;
     }
 
-    public SocketConnection getBungeeSocket() {
-        return bungeeSocket;
-    }
-
-    public void setBungeeSocket(SocketConnection bungeeSocket) {
-        this.bungeeSocket = bungeeSocket;
+    public SocketClient getSocketClient() {
+        return socketClient;
     }
 
     public List<Kit> getKits() {

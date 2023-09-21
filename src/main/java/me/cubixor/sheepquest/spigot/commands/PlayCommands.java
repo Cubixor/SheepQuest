@@ -68,12 +68,12 @@ public class PlayCommands {
                 if (checkArenaJoin(player, localArena)) {
                     putInLocalArena(player, localArena);
                     Arena arena = new Arena(localArena.getName(), localArena.getServer(), localArena.getState(), localArena.getPlayers());
-                    new SocketClientSender().sendJoinPacket(arena, player.getName(), firstJoin, true);
+                    plugin.getSocketClient().getSender().sendJoinPacket(arena, player.getName(), firstJoin, true);
                 }
             } else {
                 Arena arena = plugin.getArenas().get(arenaString);
                 if (checkArenaJoin(player, arena)) {
-                    new SocketClientSender().sendJoinPacket(arena, player.getName(), firstJoin, false);
+                    plugin.getSocketClient().getSender().sendJoinPacket(arena, player.getName(), firstJoin, false);
                 }
             }
         }
@@ -205,7 +205,7 @@ public class PlayCommands {
 
             if (plugin.isBungee()) {
                 Arena arena = new Arena(localArena.getName(), localArena.getServer(), localArena.getState(), localArena.getPlayers());
-                new SocketClientSender().sendUpdateArenaPacket(arena);
+                plugin.getSocketClient().getSender().sendUpdateArenaPacket(arena);
             }
         });
     }
@@ -382,7 +382,7 @@ public class PlayCommands {
                                 new Teams().menuUpdate(localArena);
                                 new Signs().updateSigns(arenaString);
                                 Arena arena = new Arena(localArena.getName(), localArena.getServer(), localArena.getState(), localArena.getPlayers());
-                                SocketClientSender socketClientSender = new SocketClientSender();
+                                SocketClientSender socketClientSender = plugin.getSocketClient().getSender();
                                 socketClientSender.sendUpdateArenaPacket(arena);
 
                             });
@@ -421,7 +421,7 @@ public class PlayCommands {
         if (plugin.isBungee()) {
             if (!reset && !resetSent && plugin.isEnabled()) {
                 Arena arena = new Arena(localArena.getName(), localArena.getServer(), localArena.getState(), localArena.getPlayers());
-                SocketClientSender socketClientSender = new SocketClientSender();
+                SocketClientSender socketClientSender = plugin.getSocketClient().getSender();
                 socketClientSender.sendUpdateArenaPacket(arena);
             }
             if (!(end && plugin.getConfig().getBoolean("auto-join-on-end"))) {

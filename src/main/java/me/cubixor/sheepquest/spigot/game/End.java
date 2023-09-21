@@ -12,7 +12,6 @@ import me.cubixor.sheepquest.spigot.config.StatsField;
 import me.cubixor.sheepquest.spigot.config.StatsUtils;
 import me.cubixor.sheepquest.spigot.game.events.SpecialEvents;
 import me.cubixor.sheepquest.spigot.gameInfo.*;
-import me.cubixor.sheepquest.spigot.socket.SocketClientSender;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
@@ -133,7 +132,7 @@ public class End {
         new Signs().updateSigns(localArena.getName());
         if (plugin.isBungee()) {
             Arena arena = new Arena(localArena.getName(), localArena.getServer(), localArena.getState(), localArena.getPlayers());
-            new SocketClientSender().sendUpdateArenaPacket(arena);
+            plugin.getSocketClient().getSender().sendUpdateArenaPacket(arena);
         }
 
         ending(localArena.getName());
@@ -210,7 +209,7 @@ public class End {
         if (plugin.isBungee()) {
             LocalArena newLocalArena = plugin.getLocalArenas().get(localArena.getName());
             Arena arena = new Arena(newLocalArena.getName(), newLocalArena.getServer(), newLocalArena.getState(), newLocalArena.getPlayers());
-            new SocketClientSender().sendUpdateArenaPacket(arena);
+            plugin.getSocketClient().getSender().sendUpdateArenaPacket(arena);
         }
         if (end && plugin.getConfig().getBoolean("auto-join-on-end")) {
             for (Player p : players) {

@@ -2,68 +2,127 @@ package me.cubixor.sheepquest.bungee.socket;
 
 import me.cubixor.sheepquest.bungee.SheepQuestBungee;
 import me.cubixor.sheepquest.utils.SocketConnection;
-import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.ProxyServer;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketException;
+import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class SocketServer {
 
     private final SheepQuestBungee plugin;
+    private final Logger logger;
+    private final boolean debug;
+    private final Map<String, SocketConnection> spigotSocket = new HashMap<>();
+    private final SocketServerSender sender;
+    private final SocketServerReceiver receiver;
+    private ServerSocket serverSocket;
 
     public SocketServer() {
         plugin = SheepQuestBungee.getInstance();
+        logger = ProxyServer.getInstance().getLogger();
+        debug = plugin.getBungeeConfig().getBoolean("debug");
+        sender = new SocketServerSender(this);
+        receiver = new SocketServerReceiver(this);
     }
-
 
     public void serverSetup(int port) {
-        plugin.getProxy().getScheduler().runAsync(plugin, () -> {
+        ProxyServer.getInstance().getScheduler().runAsync(plugin, () -> {
             try {
-                plugin.setServerSocket(new ServerSocket(port));
+                serverSocket = new ServerSocket(port);
 
-                plugin.getProxy().getLogger().info("[SheepQuest]" + ChatColor.GREEN + " Successfully started a socket server!");
-                while (true) {
-                    Socket socket = plugin.getServerSocket().accept();
+                ProxyServer.getInstance().getScheduler().runAsync(plugin, sender::send);
 
-                    ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
-                    ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
-                    String server = objectInputStream.readUTF();
+                log(Level.INFO, "§aSuccessfully started the socket server!");
+                while (!serverSocket.isClosed()) {
+                    Socket socket = serverSocket.accept();
 
-                    SocketConnection socketConnection = new SocketConnection(socket, objectInputStream, objectOutputStream);
-                    plugin.getSpigotSocket().put(server, socketConnection);
-
-                    plugin.getProxy().getLogger().info("[SheepQuest]" + ChatColor.GREEN + " Successfully connected to " + server + " server!");
-
-                    new SocketServerSender().sendAllArenas(server, new ArrayList<>(plugin.getArenas().values()));
-
-                    serverReceive(server);
+                    clientSetup(socket);
                 }
-            } catch (SocketException ignored) {
             } catch (IOException e) {
-                e.printStackTrace();
+                if (debug) {
+                    e.printStackTrace();
+                }
             }
         });
     }
 
+    private void clientSetup(Socket socket) throws IOException {
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+        ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
+        String server = objectInputStream.readUTF();
 
-    private void serverReceive(String server) {
-        plugin.getProxy().getScheduler().runAsync(plugin, () -> {
-            try {
-                new SocketServerReceiver().serverMessageReader(plugin.getSpigotSocket().get(server).getInputStream());
-            } catch (IOException e) {
-                if (!plugin.isDisabling()) {
-                    plugin.getProxy().getLogger().warning("[SheepQuest] Disconnected from " + server + " server!");
-                    new SocketServerSender().removeServerArenas(server);
-                    plugin.getSpigotSocket().remove(server);
+        SocketConnection socketConnection = new SocketConnection(socket, objectOutputStream);
+        spigotSocket.put(server, socketConnection);
+
+        sender.sendAllArenas(server, new ArrayList<>(plugin.getArenas().values()));
+        ProxyServer.getInstance().getScheduler().runAsync(plugin, () -> serverReceive(server, objectInputStream));
+
+        log(Level.INFO, "§aSuccessfully connected to the {0} server!", server);
+    }
+
+    private void serverReceive(String server, ObjectInputStream in) {
+        try {
+            receiver.serverMessageReader(server, in);
+        } catch (IOException e) {
+            log(Level.WARNING, "§eDisconnected from the {0} server!", server);
+
+            for (String arena : new ArrayList<>(plugin.getArenas().keySet())) {
+                if (plugin.getArenas().get(arena).getServer().equals(server)) {
+                    plugin.getArenas().remove(arena);
                 }
-            } catch (ClassNotFoundException e) {
+            }
+            sender.sendRemoveServerArenas(server);
+            spigotSocket.remove(server);
+
+            if (debug) {
                 e.printStackTrace();
             }
-        });
+        }
+    }
+
+    public void closeConnections() {
+        try {
+            serverSocket.close();
+            for (SocketConnection socketConnection : spigotSocket.values()) {
+                socketConnection.getSocket().close();
+            }
+        } catch (IOException e) {
+            if (debug) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void log(Level level, String message, String... args) {
+        logger.log(level, MessageFormat.format("[{0}] {1}", plugin.getDescription().getName(), message), args);
+    }
+
+    public boolean isDebug() {
+        return debug;
+    }
+
+    public SocketConnection getSpigotSocket(String server) {
+        return spigotSocket.get(server);
+    }
+
+    public Map<String, SocketConnection> getSpigotSockets() {
+        return spigotSocket;
+    }
+
+    public ServerSocket getServerSocket() {
+        return serverSocket;
+    }
+
+    public SocketServerSender getSender() {
+        return sender;
     }
 }

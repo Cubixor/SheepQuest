@@ -12,7 +12,6 @@ import me.cubixor.sheepquest.spigot.game.kits.KitArcher;
 import me.cubixor.sheepquest.spigot.game.kits.KitType;
 import me.cubixor.sheepquest.spigot.game.kits.Kits;
 import me.cubixor.sheepquest.spigot.gameInfo.*;
-import me.cubixor.sheepquest.spigot.socket.SocketClientSender;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -89,7 +88,7 @@ public class Start {
         new Signs().updateSigns(arenaName);
         if (plugin.isBungee()) {
             Arena arena = new Arena((localArena.getName()), localArena.getServer(), localArena.getState(), localArena.getPlayers());
-            new SocketClientSender().sendUpdateArenaPacket(arena);
+            plugin.getSocketClient().getSender().sendUpdateArenaPacket(arena);
         }
     }
 

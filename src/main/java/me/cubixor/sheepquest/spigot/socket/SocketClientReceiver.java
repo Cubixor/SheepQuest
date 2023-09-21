@@ -10,117 +10,115 @@ import me.cubixor.sheepquest.spigot.gameInfo.GameState;
 import me.cubixor.sheepquest.utils.packets.Packet;
 import me.cubixor.sheepquest.utils.packets.classes.*;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.scheduler.BukkitRunnable;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 public class SocketClientReceiver {
 
     private final SheepQuest plugin;
+    private final SocketClient socketClient;
 
-    public SocketClientReceiver() {
+    public SocketClientReceiver(SocketClient socketClient) {
         plugin = SheepQuest.getInstance();
+        this.socketClient = socketClient;
     }
 
 
-    public void clientMessageReader(ObjectInputStream in) {
-        while (true) {
-            Object object;
-
+    public void clientMessageReader(ObjectInputStream in) throws IOException {
+        while (!socketClient.getSocket().isClosed()) {
             try {
-                object = in.readObject();
-            } catch (IOException e) {
-                if (!plugin.getBungeeSocket().getSocket().isClosed()) {
-                    new SocketClient().clientSetup(plugin.getConnectionConfig().getString("host"),
-                            plugin.getConnectionConfig().getInt("port"),
-                            plugin.getConnectionConfig().getString("server-name"));
-                    plugin.getLogger().warning(ChatColor.YELLOW + "Lost connection with bungeecord server. Trying to reconnect...");
+                Object object = in.readObject();
+                Packet packet = (Packet) object;
+
+                if (socketClient.isDebug()) {
+                    socketClient.log(Level.INFO, "Packet received: " + packet.getPacketType().toString());
                 }
-                return;
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-                return;
+
+                Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> handlePacket(packet));
+
+            } catch (ClassNotFoundException |
+                     InvalidClassException |
+                     StreamCorruptedException |
+                     OptionalDataException e) {
+                if (socketClient.isDebug()) {
+                    e.printStackTrace();
+                }
+
             }
+        }
+    }
 
-            Packet packet = (Packet) object;
+    private void handlePacket(Packet packet) {
+        switch (packet.getPacketType()) {
+            case ARENA_UPDATE: {
+                ArenaPacket arenaPacket = (ArenaPacket) packet;
+                Arena arena = arenaPacket.getArena();
 
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    switch (packet.getPacketType()) {
-                        case ARENA_UPDATE: {
-                            ArenaPacket arenaPacket = (ArenaPacket) object;
-                            Arena arena = arenaPacket.getArena();
-
-                            Arena oldArena = plugin.getArenas().get(arena.getName());
-                            if (oldArena == null) {
-                                plugin.getSigns().put(arena.getName(), new ArrayList<>());
-                            } else if (oldArena.getState().equals(GameState.ENDING) && !arena.getState().equals(GameState.ENDING)) {
-                                StatsUtils.updateRankingOrdered();
-                            }
-                            plugin.getArenas().put(arena.getName(), arena);
-                            new Signs().updateSigns(arena.getName());
-                            break;
-                        }
-                        case ARENA_REMOVE: {
-                            ArenaPacket arenaPacket = (ArenaPacket) object;
-                            plugin.getArenas().remove(arenaPacket.getArena().getName());
-                            new Signs().removeSigns(arenaPacket.getArena().getName());
-                            break;
-                        }
-                        case SERVER_ARENAS_ADD: {
-                            ServerArenasPacket serverArenasPacket = (ServerArenasPacket) object;
-                            addArenas(serverArenasPacket.getArenas());
-                            break;
-                        }
-                        case SERVER_ARENAS_REMOVE: {
-                            StringPacket stringPacket = (StringPacket) object;
-                            for (String arena : plugin.getArenas().keySet()) {
-                                if (plugin.getArenas().get(arena).getServer().equals(stringPacket.getString())) {
-                                    plugin.getArenas().remove(arena);
-                                    new Signs().updateSigns(arena);
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                        case ARENA_JOIN: {
-                            JoinPacket joinPacket = (JoinPacket) object;
-                            new JoinRunnable().runTask(joinPacket.getPlayer(), joinPacket.getArena());
-                            break;
-                        }
-                        case ARENA_LEAVE: {
-                            ArenaPlayerPacket arenaPlayerPacket = (ArenaPlayerPacket) object;
-                            new PlayCommands().kickFromLocalArena(Bukkit.getPlayerExact(arenaPlayerPacket.getPlayer()), plugin.getLocalArenas().get(arenaPlayerPacket.getArena().getName()), false, false);
-                            break;
-                        }
-                        case ARENAS_ADD: {
-                            ArenasPacket arenasPacket = (ArenasPacket) object;
-                            addArenas(arenasPacket.getArenas());
-                            break;
-                        }
-                        case FORCE_START: {
-                            ArenaPlayerPacket arenaPlayerPacket = (ArenaPlayerPacket) object;
-                            new StaffCommands().forceLocalArenaStart(arenaPlayerPacket.getPlayer(), arenaPlayerPacket.getArena().getName());
-                            break;
-                        }
-                        case FORCE_STOP: {
-                            ArenaPlayerPacket arenaPlayerPacket = (ArenaPlayerPacket) object;
-                            new StaffCommands().forceLocalArenaStop(arenaPlayerPacket.getPlayer(), arenaPlayerPacket.getArena().getName());
-                            break;
-                        }
-                        case KICK: {
-                            KickPacket kickPacket = (KickPacket) object;
-                            new StaffCommands().kickFromLocalArena(kickPacket.getPlayer(), kickPacket.getTarget(), kickPacket.getArena().getName());
-                            break;
-                        }
+                Arena oldArena = plugin.getArenas().get(arena.getName());
+                if (oldArena == null) {
+                    plugin.getSigns().put(arena.getName(), new ArrayList<>());
+                } else if (oldArena.getState().equals(GameState.ENDING) && !arena.getState().equals(GameState.ENDING)) {
+                    StatsUtils.updateRankingOrdered();
+                }
+                plugin.getArenas().put(arena.getName(), arena);
+                new Signs().updateSigns(arena.getName());
+                break;
+            }
+            case ARENA_REMOVE: {
+                ArenaPacket arenaPacket = (ArenaPacket) packet;
+                plugin.getArenas().remove(arenaPacket.getArena().getName());
+                new Signs().removeSigns(arenaPacket.getArena().getName());
+                break;
+            }
+            case SERVER_ARENAS_ADD: {
+                ServerArenasPacket serverArenasPacket = (ServerArenasPacket) packet;
+                addArenas(serverArenasPacket.getArenas());
+                break;
+            }
+            case SERVER_ARENAS_REMOVE: {
+                StringPacket stringPacket = (StringPacket) packet;
+                for (String arena : plugin.getArenas().keySet()) {
+                    if (plugin.getArenas().get(arena).getServer().equals(stringPacket.getString())) {
+                        plugin.getArenas().remove(arena);
+                        new Signs().updateSigns(arena);
+                        break;
                     }
                 }
-            }.runTask(plugin);
+                break;
+            }
+            case ARENA_JOIN: {
+                JoinPacket joinPacket = (JoinPacket) packet;
+                new JoinRunnable().runTask(joinPacket.getPlayer(), joinPacket.getArena());
+                break;
+            }
+            case ARENA_LEAVE: {
+                ArenaPlayerPacket arenaPlayerPacket = (ArenaPlayerPacket) packet;
+                new PlayCommands().kickFromLocalArena(Bukkit.getPlayerExact(arenaPlayerPacket.getPlayer()), plugin.getLocalArenas().get(arenaPlayerPacket.getArena().getName()), false, false);
+                break;
+            }
+            case ARENAS_ADD: {
+                ArenasPacket arenasPacket = (ArenasPacket) packet;
+                addArenas(arenasPacket.getArenas());
+                break;
+            }
+            case FORCE_START: {
+                ArenaPlayerPacket arenaPlayerPacket = (ArenaPlayerPacket) packet;
+                new StaffCommands().forceLocalArenaStart(arenaPlayerPacket.getPlayer(), arenaPlayerPacket.getArena().getName());
+                break;
+            }
+            case FORCE_STOP: {
+                ArenaPlayerPacket arenaPlayerPacket = (ArenaPlayerPacket) packet;
+                new StaffCommands().forceLocalArenaStop(arenaPlayerPacket.getPlayer(), arenaPlayerPacket.getArena().getName());
+                break;
+            }
+            case KICK: {
+                KickPacket kickPacket = (KickPacket) packet;
+                new StaffCommands().kickFromLocalArena(kickPacket.getPlayer(), kickPacket.getTarget(), kickPacket.getArena().getName());
+                break;
+            }
         }
     }
 
