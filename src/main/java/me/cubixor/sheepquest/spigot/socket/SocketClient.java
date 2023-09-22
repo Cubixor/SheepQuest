@@ -44,21 +44,22 @@ public class SocketClient {
 
     public void clientSetup() {
         new BukkitRunnable() {
+            boolean msg = socket != null;
+
             @Override
             public void run() {
-                boolean done = false;
-                boolean msg = socket != null;
-                while (!done && plugin.isEnabled()) {
-                    done = clientConnect(host, port, server);
-                    if (!msg && !done) {
-                        msg = true;
-                        log(Level.WARNING, "§eCouldn't connect to the bungeecord server. Plugin will try to connect until it succeeds.");
+                if (clientConnect(host, port, server)) {
+                    this.cancel();
+                    return;
+                }
 
-                    }
+                if (!msg) {
+                    msg = true;
+                    log(Level.WARNING, "§eCouldn't connect to the bungeecord server. Plugin will try to connect until it succeeds.");
                 }
             }
 
-        }.runTaskAsynchronously(plugin);
+        }.runTaskTimerAsynchronously(plugin, 0, 20);
     }
 
     private boolean clientConnect(String host, int port, String server) {
