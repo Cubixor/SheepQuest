@@ -10,29 +10,29 @@ import me.cubixor.sheepquest.utils.packets.classes.StringPacket;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.net.ServerSocket;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 
 public class SocketServerSender {
 
     private final SocketServer socketServer;
-    private final LinkedBlockingDeque<TargetPacket> sendQueue = new LinkedBlockingDeque<>();
+    private final LinkedBlockingQueue<TargetPacket> sendQueue = new LinkedBlockingQueue<>();
 
     public SocketServerSender(SocketServer socketServer) {
         this.socketServer = socketServer;
     }
 
     // Run this asynchronously!
-    public void send() {
-        while (!socketServer.getServerSocket().isClosed()) {
-            if (sendQueue.isEmpty()) continue;
-            TargetPacket targetPacket = sendQueue.pop();
-
+    public void send(ServerSocket socket) {
+        while (!socket.isClosed()) {
             try {
+                TargetPacket targetPacket = sendQueue.take();
+                if (socket.isClosed()) return;
                 Packet packet = targetPacket.getPacket();
                 Set<String> servers = targetPacket.getServers();
 
@@ -50,7 +50,7 @@ public class SocketServerSender {
                     }
                 }
 
-            } catch (IOException e) {
+            } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
         }

@@ -39,7 +39,7 @@ public class SocketServer {
             try {
                 serverSocket = new ServerSocket(port);
 
-                ProxyServer.getInstance().getScheduler().runAsync(plugin, sender::send);
+                ProxyServer.getInstance().getScheduler().runAsync(plugin, () -> sender.send(serverSocket));
 
                 log(Level.INFO, "§aSuccessfully started the socket server!");
                 while (!serverSocket.isClosed()) {
@@ -71,7 +71,7 @@ public class SocketServer {
 
     private void serverReceive(String server, ObjectInputStream in) {
         try {
-            receiver.serverMessageReader(server, in);
+            receiver.serverMessageReader(serverSocket, server, in);
         } catch (IOException e) {
             log(Level.WARNING, "§eDisconnected from the {0} server!", server);
 
@@ -116,10 +116,6 @@ public class SocketServer {
 
     public Map<String, SocketConnection> getSpigotSockets() {
         return spigotSocket;
-    }
-
-    public ServerSocket getServerSocket() {
-        return serverSocket;
     }
 
     public SocketServerSender getSender() {

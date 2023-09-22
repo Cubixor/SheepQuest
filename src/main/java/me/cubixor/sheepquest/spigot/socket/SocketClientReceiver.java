@@ -12,6 +12,7 @@ import me.cubixor.sheepquest.utils.packets.classes.*;
 import org.bukkit.Bukkit;
 
 import java.io.*;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -27,8 +28,8 @@ public class SocketClientReceiver {
     }
 
 
-    public void clientMessageReader(ObjectInputStream in) throws IOException {
-        while (!socketClient.getSocket().isClosed()) {
+    public void clientMessageReader(Socket socket, ObjectInputStream in) throws IOException {
+        while (!socket.isClosed()) {
             try {
                 Object object = in.readObject();
                 Packet packet = (Packet) object;

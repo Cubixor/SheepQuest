@@ -7,26 +7,27 @@ import me.cubixor.sheepquest.utils.packets.classes.*;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.util.List;
-import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 
 public class SocketClientSender {
 
     private final SocketClient socketClient;
-    private final LinkedBlockingDeque<Packet> sendQueue = new LinkedBlockingDeque<>();
+    private final LinkedBlockingQueue<Packet> sendQueue = new LinkedBlockingQueue<>();
 
     public SocketClientSender(SocketClient socketClient) {
         this.socketClient = socketClient;
     }
 
     // Run this asynchronously!
-    public void send(ObjectOutputStream out) {
-        while (!socketClient.getSocket().isClosed()) {
-            if (sendQueue.isEmpty()) continue;
-            Packet packet = sendQueue.pop();
-
+    public void send(Socket socket, ObjectOutputStream out) {
+        while (!socket.isClosed()) {
             try {
+                Packet packet = sendQueue.take();
+                if (socket.isClosed()) return;
+
                 out.writeObject(packet);
                 out.flush();
                 out.reset();
@@ -34,7 +35,7 @@ public class SocketClientSender {
                 if (socketClient.isDebug()) {
                     socketClient.log(Level.INFO, "Sent packet: " + packet.getPacketType().toString());
                 }
-            } catch (IOException e) {
+            } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
         }

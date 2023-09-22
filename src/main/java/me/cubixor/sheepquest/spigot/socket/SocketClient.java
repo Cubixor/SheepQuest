@@ -70,7 +70,7 @@ public class SocketClient {
             out.writeUTF(server);
             out.flush();
 
-            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> sender.send(out));
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> sender.send(socket, out));
             Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> clientReceive(in));
 
             List<Arena> arenas = new ArrayList<>();
@@ -95,7 +95,7 @@ public class SocketClient {
 
     private void clientReceive(ObjectInputStream in) {
         try {
-            receiver.clientMessageReader(in);
+            receiver.clientMessageReader(socket, in);
         } catch (IOException e) {
             if (!socket.isClosed()) {
                 closeConnections();
@@ -126,10 +126,6 @@ public class SocketClient {
 
     public boolean isDebug() {
         return debug;
-    }
-
-    public Socket getSocket() {
-        return socket;
     }
 
     public SocketClientSender getSender() {

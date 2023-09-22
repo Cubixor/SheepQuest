@@ -8,6 +8,7 @@ import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.io.*;
+import java.net.ServerSocket;
 import java.util.logging.Level;
 
 public class SocketServerReceiver {
@@ -22,8 +23,8 @@ public class SocketServerReceiver {
         this.sender = socketServer.getSender();
     }
 
-    public void serverMessageReader(String server, ObjectInputStream in) throws IOException {
-        while (!socketServer.getServerSocket().isClosed()) {
+    public void serverMessageReader(ServerSocket socket, String server, ObjectInputStream in) throws IOException {
+        while (!socket.isClosed()) {
             try {
                 Object object = in.readObject();
                 Packet packet = (Packet) object;
