@@ -1,12 +1,12 @@
 package me.cubixor.sheepquest.bungee.socket;
 
+import me.cubixor.sheepquest.common.SocketConnection;
+import me.cubixor.sheepquest.common.packets.Packet;
+import me.cubixor.sheepquest.common.packets.PacketType;
+import me.cubixor.sheepquest.common.packets.TargetPacket;
+import me.cubixor.sheepquest.common.packets.classes.ArenasPacket;
+import me.cubixor.sheepquest.common.packets.classes.StringPacket;
 import me.cubixor.sheepquest.spigot.gameInfo.Arena;
-import me.cubixor.sheepquest.utils.SocketConnection;
-import me.cubixor.sheepquest.utils.packets.Packet;
-import me.cubixor.sheepquest.utils.packets.PacketType;
-import me.cubixor.sheepquest.utils.packets.TargetPacket;
-import me.cubixor.sheepquest.utils.packets.classes.ArenasPacket;
-import me.cubixor.sheepquest.utils.packets.classes.StringPacket;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;

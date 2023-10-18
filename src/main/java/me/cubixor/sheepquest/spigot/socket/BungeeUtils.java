@@ -1,7 +1,7 @@
 package me.cubixor.sheepquest.spigot.socket;
 
+import me.cubixor.sheepquest.common.packets.classes.BackToServerPacket;
 import me.cubixor.sheepquest.spigot.SheepQuest;
-import me.cubixor.sheepquest.utils.packets.classes.BackToServerPacket;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 

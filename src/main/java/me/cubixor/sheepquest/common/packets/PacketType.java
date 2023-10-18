@@ -1,4 +1,4 @@
-package me.cubixor.sheepquest.utils.packets;
+package me.cubixor.sheepquest.common.packets;
 
 import java.io.Serializable;
 

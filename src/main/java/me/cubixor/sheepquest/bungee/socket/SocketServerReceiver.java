@@ -1,9 +1,9 @@
 package me.cubixor.sheepquest.bungee.socket;
 
 import me.cubixor.sheepquest.bungee.SheepQuestBungee;
+import me.cubixor.sheepquest.common.packets.Packet;
+import me.cubixor.sheepquest.common.packets.classes.*;
 import me.cubixor.sheepquest.spigot.gameInfo.Arena;
-import me.cubixor.sheepquest.utils.packets.Packet;
-import me.cubixor.sheepquest.utils.packets.classes.*;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 

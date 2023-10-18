@@ -1,7 +1,7 @@
-package me.cubixor.sheepquest.utils.packets.classes;
+package me.cubixor.sheepquest.common.packets.classes;
 
-import me.cubixor.sheepquest.utils.packets.Packet;
-import me.cubixor.sheepquest.utils.packets.PacketType;
+import me.cubixor.sheepquest.common.packets.Packet;
+import me.cubixor.sheepquest.common.packets.PacketType;
 
 import java.io.Serializable;
 

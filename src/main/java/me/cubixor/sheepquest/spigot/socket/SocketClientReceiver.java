@@ -1,5 +1,7 @@
 package me.cubixor.sheepquest.spigot.socket;
 
+import me.cubixor.sheepquest.common.packets.Packet;
+import me.cubixor.sheepquest.common.packets.classes.*;
 import me.cubixor.sheepquest.spigot.SheepQuest;
 import me.cubixor.sheepquest.spigot.commands.PlayCommands;
 import me.cubixor.sheepquest.spigot.commands.StaffCommands;
@@ -7,8 +9,6 @@ import me.cubixor.sheepquest.spigot.config.StatsUtils;
 import me.cubixor.sheepquest.spigot.game.Signs;
 import me.cubixor.sheepquest.spigot.gameInfo.Arena;
 import me.cubixor.sheepquest.spigot.gameInfo.GameState;
-import me.cubixor.sheepquest.utils.packets.Packet;
-import me.cubixor.sheepquest.utils.packets.classes.*;
 import org.bukkit.Bukkit;
 
 import java.io.*;

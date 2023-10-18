@@ -1,7 +1,7 @@
 package me.cubixor.sheepquest.bungee.socket;
 
 import me.cubixor.sheepquest.bungee.SheepQuestBungee;
-import me.cubixor.sheepquest.utils.SocketConnection;
+import me.cubixor.sheepquest.common.SocketConnection;
 import net.md_5.bungee.api.ProxyServer;
 
 import java.io.IOException;

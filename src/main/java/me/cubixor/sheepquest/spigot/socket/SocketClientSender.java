@@ -1,9 +1,9 @@
 package me.cubixor.sheepquest.spigot.socket;
 
+import me.cubixor.sheepquest.common.packets.Packet;
+import me.cubixor.sheepquest.common.packets.PacketType;
+import me.cubixor.sheepquest.common.packets.classes.*;
 import me.cubixor.sheepquest.spigot.gameInfo.Arena;
-import me.cubixor.sheepquest.utils.packets.Packet;
-import me.cubixor.sheepquest.utils.packets.PacketType;
-import me.cubixor.sheepquest.utils.packets.classes.*;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;

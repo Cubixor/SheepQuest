@@ -1,4 +1,4 @@
-package me.cubixor.sheepquest.utils;
+package me.cubixor.sheepquest.common;
 
 import java.io.ObjectOutputStream;
 import java.net.Socket;
