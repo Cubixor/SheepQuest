@@ -26,7 +26,7 @@ public class SocketClientSender {
         while (!socket.isClosed()) {
             try {
                 Packet packet = sendQueue.take();
-                if (socket.isClosed()) return;
+                if (packet.getPacketType() == null) return;
 
                 out.writeObject(packet);
                 out.flush();
@@ -39,6 +39,10 @@ public class SocketClientSender {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void close() {
+        sendQueue.add(new Packet(null));
     }
 
     private void sendPacket(Packet packet) {

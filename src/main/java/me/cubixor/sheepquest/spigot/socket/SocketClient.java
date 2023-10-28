@@ -113,6 +113,7 @@ public class SocketClient {
 
     public void closeConnections() {
         try {
+            getSender().close();
             socket.close();
         } catch (IOException e) {
             if (debug) {

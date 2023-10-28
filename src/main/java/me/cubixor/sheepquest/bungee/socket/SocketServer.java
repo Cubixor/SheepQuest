@@ -42,17 +42,31 @@ public class SocketServer {
                 ProxyServer.getInstance().getScheduler().runAsync(plugin, () -> sender.send(serverSocket));
 
                 log(Level.INFO, "§aSuccessfully started the socket server!");
-                while (!serverSocket.isClosed()) {
-                    Socket socket = serverSocket.accept();
 
-                    clientSetup(socket);
-                }
+                acceptConnection(serverSocket);
             } catch (IOException e) {
                 if (debug) {
                     e.printStackTrace();
                 }
             }
         });
+    }
+
+    private void acceptConnection(ServerSocket serverSocket) {
+        try {
+            Socket socket = serverSocket.accept();
+            if (debug) {
+                log(Level.INFO, "Accepted connection from client {0}", socket.getInetAddress().toString());
+            }
+
+            ProxyServer.getInstance().getScheduler().runAsync(plugin, () -> acceptConnection(serverSocket));
+
+            clientSetup(socket);
+        } catch (IOException e) {
+            if (debug) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void clientSetup(Socket socket) throws IOException {
@@ -64,9 +78,10 @@ public class SocketServer {
         spigotSocket.put(server, socketConnection);
 
         sender.sendAllArenas(server, new ArrayList<>(plugin.getArenas().values()));
-        ProxyServer.getInstance().getScheduler().runAsync(plugin, () -> serverReceive(server, objectInputStream));
 
         log(Level.INFO, "§aSuccessfully connected to the {0} server!", server);
+
+        serverReceive(server, objectInputStream);
     }
 
     private void serverReceive(String server, ObjectInputStream in) {
