@@ -49,7 +49,7 @@ public class ConnectionSetup {
                     statement1.executeUpdate();
                     PreparedStatement statement2 = mysqlConnection.getConnection()
                             .prepareStatement("CREATE TABLE IF NOT EXISTS " + mysqlConnection.getDatabase() + "." + mysqlConnection.getTableStats() +
-                                    "( `player` VARCHAR(14) NOT NULL ,  " +
+                                    "( `player` VARCHAR(16) NOT NULL ,  " +
                                     "`kills` INT NOT NULL DEFAULT '0' ,  " +
                                     "`deaths` INT NOT NULL DEFAULT '0' ,  " +
                                     "`wins` INT NOT NULL DEFAULT '0' ,  " +
@@ -66,7 +66,7 @@ public class ConnectionSetup {
                             .prepareStatement("CREATE DATABASE IF NOT EXISTS " + mysqlConnection.getDatabase());
                     statement1.executeUpdate();
                     PreparedStatement statement2 = mysqlConnection.getConnection()
-                            .prepareStatement("CREATE TABLE IF NOT EXISTS `" + mysqlConnection.getDatabase() + "`.`" + mysqlConnection.getTableArenas() + "` ( `name` VARCHAR(14)  , `server` TEXT NULL DEFAULT NULL , `active` BOOLEAN NULL DEFAULT '0' , `vip` BOOLEAN NULL DEFAULT '0' , `min-players` INT NULL DEFAULT '0' ,  `max-players` INT NULL DEFAULT '0' ,    PRIMARY KEY  (`name`(14))) ENGINE = InnoDB;");
+                            .prepareStatement("CREATE TABLE IF NOT EXISTS `" + mysqlConnection.getDatabase() + "`.`" + mysqlConnection.getTableArenas() + "` ( `name` VARCHAR(16)  , `server` TEXT NULL DEFAULT NULL , `active` BOOLEAN NULL DEFAULT '0' , `vip` BOOLEAN NULL DEFAULT '0' , `min-players` INT NULL DEFAULT '0' ,  `max-players` INT NULL DEFAULT '0' ,    PRIMARY KEY  (`name`(14))) ENGINE = InnoDB;");
                     statement2.executeUpdate();
 
                 }
