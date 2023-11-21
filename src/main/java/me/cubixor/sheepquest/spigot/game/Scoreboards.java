@@ -252,15 +252,12 @@ public class Scoreboards {
             }
 
 
-            if (text[i].length() > 32) {
-                text[i] = text[i].substring(0, 32);
-            }
-
-            String str1 = text[i].substring(0, 16);
-            String str2 = text[i].substring(16);
+            boolean atColor = text[i].charAt(15) == '§';
+            String str1 = text[i].substring(0, atColor ? 15 : 16);
+            String str2 = text[i].substring(atColor ? 15 : 16, Math.min(text[i].length(), 30));
 
             team.setPrefix(str1);
-            team.setSuffix(ChatColor.RESET + ChatColor.getLastColors(str1) + str2);
+            team.setSuffix((atColor ? "" : ChatColor.getLastColors(str1)) + str2);
         }
     }
 
