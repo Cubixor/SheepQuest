@@ -144,7 +144,9 @@ public final class SheepQuest extends JavaPlugin {
             } catch (SQLException ignored) {
             }
         }
-        socketClient.closeConnections();
+        if (socketClient != null) {
+            socketClient.closeConnections();
+        }
         for (BukkitTask bukkitTask : Bukkit.getScheduler().getPendingTasks()) {
             bukkitTask.cancel();
         }
