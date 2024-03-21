@@ -106,7 +106,7 @@ public class Pathfinding {
             } else if (VersionUtils.isBefore120()) {
                 navigation = "G";
             } else {
-                navigation = "L";
+                navigation = "N";
             }
 
             Method getNavigation = entityInsentientClass.getMethod(navigation);
