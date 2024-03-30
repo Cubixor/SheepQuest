@@ -47,8 +47,7 @@ public class KitStandard extends Kit implements Listener {
                 && !localArena.getRespawnTimer().containsKey(player)
                 && localArena.getState().equals(GameState.GAME)) {
             evt.setCancelled(true);
-            player.setFlying(false);
-            player.setAllowFlight(false);
+
             if ((player.getPassenger() == null || !BonusEntity.isCarrying((LivingEntity) player.getPassenger()))) {
                 useDash(player, localArena);
             }
@@ -56,6 +55,9 @@ public class KitStandard extends Kit implements Listener {
     }
 
     private void useDash(Player player, LocalArena localArena) {
+        player.setFlying(false);
+        player.setAllowFlight(false);
+
         Sounds.playSound(localArena, player.getLocation(), "dash");
         Particles.spawnParticle(localArena, player.getLocation().add(0, 1.5, 0), "dash");
 
