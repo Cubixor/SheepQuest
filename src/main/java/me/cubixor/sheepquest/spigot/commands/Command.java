@@ -151,10 +151,15 @@ public class Command implements CommandExecutor {
             String finalMessage = finalMessageBuilder.toString();
 
             String teamColor = localArena.getPlayerTeam().get(player).getChatColor() + "";
+            String message = plugin.getMessage("game.team-chat-format")
+                    .replace("%player%", player.getName())
+                    .replace("%message%", finalMessage)
+                    .replace("%color%", teamColor);
+            message = Utils.replacePlaceholders(player, message);
 
             for (Player p : localArena.getPlayerTeam().keySet()) {
                 if (localArena.getPlayerTeam().get(p).equals(localArena.getPlayerTeam().get(player))) {
-                    p.sendMessage(plugin.getMessage("game.team-chat-format").replace("%player%", player.getName()).replace("%message%", finalMessage).replace("%color%", teamColor));
+                    p.sendMessage(message);
                 }
             }
         }

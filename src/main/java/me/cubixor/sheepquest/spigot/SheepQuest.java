@@ -66,6 +66,7 @@ public final class SheepQuest extends JavaPlugin {
     private boolean bungee;
     private String serverName;
     private SocketClient socketClient;
+    private boolean papiSupport = false;
 
     public static SheepQuest getInstance() {
         return instance;
@@ -119,6 +120,7 @@ public final class SheepQuest extends JavaPlugin {
 
 
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            papiSupport = true;
             new PlaceholderExpansion().register();
         }
 
@@ -425,5 +427,9 @@ public final class SheepQuest extends JavaPlugin {
 
     public void setRanking(HashMap<String, Integer> ranking) {
         this.ranking = ranking;
+    }
+
+    public boolean supportsPAPI() {
+        return papiSupport;
     }
 }

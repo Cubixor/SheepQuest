@@ -1,6 +1,7 @@
 package me.cubixor.sheepquest.spigot;
 
 import com.cryptomorin.xseries.XMaterial;
+import me.clip.placeholderapi.PlaceholderAPI;
 import me.cubixor.sheepquest.spigot.api.BossBar;
 import me.cubixor.sheepquest.spigot.api.PassengerFix;
 import me.cubixor.sheepquest.spigot.api.Sounds;
@@ -436,5 +437,10 @@ public class Utils {
                 .forEachOrdered(x -> winnerSorted.put(x.getKey(), x.getValue()));
 
         return winnerSorted;
+    }
+
+    public static String replacePlaceholders(Player player, String msg) {
+        if (!SheepQuest.getInstance().supportsPAPI()) return msg;
+        return PlaceholderAPI.setPlaceholders(player, msg);
     }
 }
