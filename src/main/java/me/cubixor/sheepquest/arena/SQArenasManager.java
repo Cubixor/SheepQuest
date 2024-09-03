@@ -26,6 +26,6 @@ public class SQArenasManager extends ArenasManager {
     }
 
     public void setTeamSpawn(String arena, Team team, Location loc) {
-        getConfigManager().updateField(arena, SQConfigField.SPAWN, team.getCode(), loc);
+        getConfigManager().updateField(arena, SQConfigField.SPAWN, team.toString(), loc);
     }
 }

@@ -56,12 +56,13 @@ public enum Team {
         }
     }
 
-    public String getCode() {
-        return this.toString().toLowerCase();
+    @Override
+    public String toString() {
+        return super.toString().toLowerCase();
     }
 
     public String getName() {
-        return Messages.get("general.team-" + getCode());
+        return Messages.get("general.team-" + this);
     }
 
     public ChatColor getChatColor() {
