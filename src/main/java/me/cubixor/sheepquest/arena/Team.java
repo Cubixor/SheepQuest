@@ -7,6 +7,10 @@ import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.boss.BarColor;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public enum Team {
     RED(ChatColor.RED, DyeColor.RED, BarColor.RED, XMaterial.RED_WOOL, XMaterial.RED_BANNER, XMaterial.RED_DYE),
     GREEN(ChatColor.GREEN, DyeColor.LIME, BarColor.GREEN, XMaterial.LIME_WOOL, XMaterial.LIME_BANNER, XMaterial.LIME_DYE),
@@ -22,6 +26,8 @@ public enum Team {
     BLACK(ChatColor.BLACK, DyeColor.BLACK, BarColor.WHITE, XMaterial.BLACK_WOOL, XMaterial.BLACK_BANNER, XMaterial.BLACK_DYE),
     NONE(ChatColor.GRAY, DyeColor.WHITE, BarColor.WHITE, XMaterial.WHITE_WOOL, XMaterial.WHITE_BANNER, XMaterial.WHITE_DYE);
 
+    private static final List<Team> allTeams = Arrays.stream(Team.values()).filter(t -> !t.equals(NONE)).collect(Collectors.toList());
+
     private final ChatColor chatColor;
     private final DyeColor dyeColor;
     private final BarColor barColor;
@@ -36,6 +42,10 @@ public enum Team {
         this.wool = wool;
         this.banner = banner;
         this.dye = dye;
+    }
+
+    public static List<Team> getAll() {
+        return allTeams;
     }
 
     public String getCode() {
