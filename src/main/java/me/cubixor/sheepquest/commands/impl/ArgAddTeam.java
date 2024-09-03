@@ -3,7 +3,6 @@ package me.cubixor.sheepquest.commands.impl;
 import com.google.common.collect.ImmutableMap;
 import me.cubixor.minigamesapi.spigot.game.ArenasManager;
 import me.cubixor.minigamesapi.spigot.utils.Messages;
-import me.cubixor.sheepquest.arena.SQArenasManager;
 import me.cubixor.sheepquest.arena.Team;
 import me.cubixor.sheepquest.commands.ArenaTeamCommandArgument;
 import org.bukkit.entity.Player;
@@ -12,11 +11,8 @@ import java.util.List;
 
 public class ArgAddTeam extends ArenaTeamCommandArgument {
 
-    private final SQArenasManager sqArenasManager;
-
     public ArgAddTeam(ArenasManager arenasManager) {
         super(arenasManager, "addteam", "setup.changeteams", 3, "arena-setup.add-team", true, false);
-        sqArenasManager = (SQArenasManager) arenasManager;
     }
 
     @Override
@@ -32,7 +28,7 @@ public class ArgAddTeam extends ArenaTeamCommandArgument {
 
         teams.add(team);
         sqArenasManager.setTeamList(args[1], teams);
-        //TODO Add BossBar, TeamRegion
+        //TODO Add BossBar
 
 
         //TODO add in messages.yml
