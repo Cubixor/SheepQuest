@@ -12,7 +12,7 @@ public class ArgSetSpawn extends ArenaTeamCommandArgument {
 
     private final SQArenasManager sqArenasManager;
 
-    protected ArgSetSpawn(ArenasManager arenasManager) {
+    public ArgSetSpawn(ArenasManager arenasManager) {
         super(arenasManager, "setspawn", "setup.setspawn", 3, "arena-setup.set-spawn", true, false);
         this.sqArenasManager = (SQArenasManager) arenasManager;
     }
