@@ -48,6 +48,14 @@ public enum Team {
         return allTeams;
     }
 
+    public static Team getByName(String name) {
+        try {
+            return Team.valueOf(name);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+    }
+
     public String getCode() {
         return this.toString().toLowerCase();
     }
