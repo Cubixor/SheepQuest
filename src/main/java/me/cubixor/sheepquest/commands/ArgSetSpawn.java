@@ -20,7 +20,7 @@ public class ArgSetSpawn extends ArenaCommandArgument {
     @Override
     protected void handle(Player player, String[] args) {
 
-        String teamStr = args[2].toUpperCase();
+        String teamStr = args[2];
         Team team = Team.getByName(teamStr);
         if (team == null) {
             Messages.send(player, "arena-setup.invalid-team");

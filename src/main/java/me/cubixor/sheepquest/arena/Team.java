@@ -50,7 +50,7 @@ public enum Team {
 
     public static Team getByName(String name) {
         try {
-            return Team.valueOf(name);
+            return Team.valueOf(name.toUpperCase());
         } catch (IllegalArgumentException e) {
             return null;
         }
