@@ -1,4 +1,4 @@
-package me.cubixor.sheepquest.commands;
+package me.cubixor.sheepquest.commands.impl;
 
 import com.google.common.collect.ImmutableMap;
 import me.cubixor.minigamesapi.spigot.commands.arguments.ArenaCommandArgument;

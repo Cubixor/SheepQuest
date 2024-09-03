@@ -1,4 +1,4 @@
-package me.cubixor.sheepquest.commands;
+package me.cubixor.sheepquest.commands.impl;
 
 import me.cubixor.minigamesapi.spigot.commands.arguments.LocationArgument;
 import me.cubixor.minigamesapi.spigot.game.ArenasManager;
