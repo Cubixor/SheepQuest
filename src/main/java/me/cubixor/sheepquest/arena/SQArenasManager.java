@@ -27,10 +27,14 @@ public class SQArenasManager extends ArenasManager {
 
     public void setTeamList(String arena, List<Team> teams) {
         List<String> teamsStr = teams.stream().map(Team::toString).collect(Collectors.toList());
-        getConfigManager().updateField(arena, SQConfigField.TEAMS, teamsStr);
+        updateArenaField(arena, SQConfigField.TEAMS, teamsStr);
     }
 
     public void setTeamSpawn(String arena, Team team, Location loc) {
         getConfigManager().updateField(arena, SQConfigField.SPAWN, team.toString(), loc);
+    }
+
+    public void setTeamArea(String arena, Team team, Location[] locs) {
+        getConfigManager().updateField(arena, SQConfigField.AREA, team.toString(), locs);
     }
 }
