@@ -12,7 +12,7 @@ import java.util.List;
 public class ArgRemoveTeam extends ArenaTeamCommandArgument {
 
     public ArgRemoveTeam(ArenasManager arenasManager) {
-        super(arenasManager, "removeteam", "setup.changeteams", 3, "arena-setup.remove-team", true, false);
+        super(arenasManager, "removeteam", "setup.changeteams", "arena-setup.remove-team");
     }
 
     @Override

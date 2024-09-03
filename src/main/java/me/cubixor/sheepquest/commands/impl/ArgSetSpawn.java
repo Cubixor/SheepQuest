@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 public class ArgSetSpawn extends ArenaTeamCommandArgument {
 
     public ArgSetSpawn(ArenasManager arenasManager) {
-        super(arenasManager, "setspawn", "setup.setspawn", 3, "arena-setup.set-spawn", true, false);
+        super(arenasManager, "setspawn", "setup.setspawn", "arena-setup.set-spawn");
     }
 
     @Override

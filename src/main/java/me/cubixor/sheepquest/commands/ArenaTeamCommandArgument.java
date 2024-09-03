@@ -12,8 +12,8 @@ import java.util.List;
 public abstract class ArenaTeamCommandArgument extends ArenaCommandArgument {
     protected final SQArenasManager sqArenasManager;
 
-    protected ArenaTeamCommandArgument(ArenasManager arenasManager, String name, String permission, int argLength, String messagesPath, boolean requireInServer, Boolean shouldBeActive) {
-        super(arenasManager, name, permission, argLength, messagesPath, requireInServer, shouldBeActive);
+    protected ArenaTeamCommandArgument(ArenasManager arenasManager, String name, String permission, String messagesPath) {
+        super(arenasManager, name, permission, 3, messagesPath, true, false);
         sqArenasManager = (SQArenasManager) arenasManager;
     }
 
