@@ -24,7 +24,7 @@ public enum Team {
     PURPLE(ChatColor.DARK_PURPLE, DyeColor.PURPLE, BarColor.PURPLE, XMaterial.PURPLE_WOOL, XMaterial.PURPLE_BANNER, XMaterial.PURPLE_DYE),
     GRAY(ChatColor.DARK_GRAY, DyeColor.GRAY, BarColor.WHITE, XMaterial.GRAY_WOOL, XMaterial.GRAY_BANNER, XMaterial.GRAY_DYE),
     BLACK(ChatColor.BLACK, DyeColor.BLACK, BarColor.WHITE, XMaterial.BLACK_WOOL, XMaterial.BLACK_BANNER, XMaterial.BLACK_DYE),
-    NONE(ChatColor.GRAY, DyeColor.WHITE, BarColor.WHITE, XMaterial.WHITE_WOOL, XMaterial.WHITE_BANNER, XMaterial.WHITE_DYE);
+    NONE(ChatColor.GRAY, DyeColor.WHITE, BarColor.WHITE, XMaterial.WHITE_WOOL, XMaterial.AIR, XMaterial.WHITE_DYE);
 
     private static final List<Team> allTeams = Arrays.stream(Team.values()).filter(t -> !t.equals(NONE)).collect(Collectors.toList());
 
@@ -91,6 +91,17 @@ public enum Team {
 
     public Color getColor() {
         return getDyeColor().getColor();
+    }
+
+    public static Team getByWool(XMaterial material) {
+        if (material.toString().contains("WOOL")) {
+            for (Team team : Team.values()) {
+                if (material.equals(team.getWool())) {
+                    return team;
+                }
+            }
+        }
+        return Team.NONE;
     }
 }
 
