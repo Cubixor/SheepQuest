@@ -1,26 +1,23 @@
 package me.cubixor.sheepquest.arena;
 
 import me.cubixor.minigamesapi.spigot.game.arena.LocalArena;
+import me.cubixor.sheepquest.game.kits.KitType;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class SQArena extends LocalArena {
 
-    private final HashMap<Player, Team> playerTeam = new HashMap<>();
-    //private final HashMap<Player, KitType> playerKit = new HashMap<>();
-    private final HashMap<Team, Integer> points = new HashMap<>();
-    private final HashMap<Entity, BukkitTask> sheep = new HashMap<>();
-    private final HashMap<Player, Integer> respawnTimer = new HashMap<>();
-    private final HashMap<Team, TeamRegion> teamRegions = new HashMap<>();
-    private int teamsCount;
+    private final Map<Player, Team> playerTeam = new HashMap<>();
+    private final Map<Player, KitType> playerKit = new HashMap<>();
+    private final Map<Team, Integer> points = new HashMap<>();
+    private final Map<Entity, BukkitTask> sheep = new HashMap<>();
+    private final Map<Player, Integer> respawnTimer = new HashMap<>();
+    private final Map<Team, TeamRegion> teamRegions;
     private int sheepTimer;
     private Inventory teamChooseInv;
     //private SpecialEventsData specialEventsData;
@@ -28,11 +25,12 @@ public class SQArena extends LocalArena {
 
     public SQArena(String name, String server) {
         super(name, server);
+        this.teamRegions = new EnumMap<>(Team.class);
     }
 
-    public SQArena(String name, String server, boolean active, boolean vip, int minPlayers, int maxPlayers, List<Team> teams) {
+    public SQArena(String name, String server, boolean active, boolean vip, int minPlayers, int maxPlayers, Map<Team, TeamRegion> teamRegions) {
         super(name, server, active, vip, minPlayers, maxPlayers);
-
+        this.teamRegions = teamRegions;
     }
 
     public Map<Player, Team> getPlayerTeam() {
@@ -69,6 +67,10 @@ public class SQArena extends LocalArena {
 
     public Map<Team, TeamRegion> getTeamRegions() {
         return teamRegions;
+    }
+
+    public Map<Player, KitType> getPlayerKit() {
+        return playerKit;
     }
 
     public List<Team> getTeams() {

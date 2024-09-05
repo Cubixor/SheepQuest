@@ -36,5 +36,8 @@ public class SQArenasManager extends ArenasManager {
 
     public void setTeamArea(String arena, Team team, Location[] locs) {
         getConfigManager().updateField(arena, SQConfigField.AREA, team.toString(), locs);
+
+        SQArena sqArena = (SQArena) getRegistry().getLocalArenas().get(arena);
+        sqArena.getTeamRegions().put(team, new TeamRegion(locs));
     }
 }
