@@ -103,5 +103,14 @@ public enum Team {
         }
         return Team.NONE;
     }
+
+    public static Team getByDyeColor(DyeColor color) {
+        for (Team team : Team.values()) {
+            if (color.equals(team.getDyeColor())) {
+                return team;
+            }
+        }
+        return Team.NONE;
+    }
 }
 

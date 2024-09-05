@@ -82,4 +82,12 @@ public class SQArena extends LocalArena {
                         Collectors.summingInt(t -> 1) // Count the number of players in each team
                 ));
     }
+
+    public boolean isInRegion(Entity entity, Team team) {
+        return getTeamRegions().get(team).isInRegion(entity);
+    }
+
+    public boolean isInSheepSpawn(Entity entity) {
+        return entity.getLocation().distance(getTeamRegions().get(Team.NONE).getLoc()) < 10;
+    }
 }
