@@ -1,10 +1,11 @@
 package me.cubixor.sheepquest.arena;
 
+import me.cubixor.minigamesapi.spigot.MinigamesAPI;
+import me.cubixor.minigamesapi.spigot.game.arena.GameState;
 import me.cubixor.minigamesapi.spigot.game.arena.LocalArena;
 import me.cubixor.sheepquest.game.kits.KitType;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.*;
@@ -18,8 +19,8 @@ public class SQArena extends LocalArena {
     private final Map<Entity, BukkitTask> sheep = new HashMap<>();
     private final Map<Player, Integer> respawnTimer = new HashMap<>();
     private final Map<Team, TeamRegion> teamRegions;
+    private final Map<Player, PlayerGameStats> playerGameStats = new HashMap<>();
     private int sheepTimer;
-    private Inventory teamChooseInv;
     //private SpecialEventsData specialEventsData;
 
 
@@ -33,6 +34,16 @@ public class SQArena extends LocalArena {
         this.teamRegions = teamRegions;
     }
 
+    public void resetArena() {
+        playerTeam.clear();
+        playerKit.clear();
+        points.clear();
+        sheep.clear();
+        respawnTimer.clear();
+        playerGameStats.clear();
+        sheepTimer = -1;
+    }
+
     public Map<Player, Team> getPlayerTeam() {
         return playerTeam;
     }
@@ -43,14 +54,6 @@ public class SQArena extends LocalArena {
 
     public void setSheepTimer(int sheepTimer) {
         this.sheepTimer = sheepTimer;
-    }
-
-    public Inventory getTeamChooseInv() {
-        return teamChooseInv;
-    }
-
-    public void setTeamChooseInv(Inventory teamChooseInv) {
-        this.teamChooseInv = teamChooseInv;
     }
 
     public Map<Team, Integer> getPoints() {
@@ -73,16 +76,29 @@ public class SQArena extends LocalArena {
         return playerKit;
     }
 
+    public Map<Player, PlayerGameStats> getPlayerGameStats() {
+        return playerGameStats;
+    }
+
     public List<Team> getTeams() {
         return new ArrayList<>(getTeamRegions().keySet());
     }
 
-    public Map<Team, Integer> getTeamPlayers() {
+    public Map<Team, Integer> countTeamPlayers() {
         return getPlayerTeam().values().stream()
                 .collect(Collectors.groupingBy(
                         t -> t, // Group by team
                         Collectors.summingInt(t -> 1) // Count the number of players in each team
                 ));
+    }
+
+    public List<Player> getTeamPlayers(Team team) {
+        return getPlayerTeam()
+                .entrySet()
+                .stream()
+                .filter(e -> e.getValue().equals(team))
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
     }
 
     public boolean isInRegion(Entity entity, Team team) {
@@ -91,5 +107,11 @@ public class SQArena extends LocalArena {
 
     public boolean isInSheepSpawn(Entity entity) {
         return entity.getLocation().distance(getTeamRegions().get(Team.NONE).getLoc()) < 10;
+    }
+
+
+    public int getTimeLeft() {
+        if (!getState().equals(GameState.GAME)) return getTimer();
+        return MinigamesAPI.getPlugin().getConfig().getInt("game-time") - getTimer();
     }
 }

@@ -85,7 +85,7 @@ public class GameStartHandler implements Listener {
         Team team = arena.getPlayerTeam().get(p);
 
         if (team == Team.NONE) {
-            LinkedHashMap<Team, Integer> teams = (LinkedHashMap<Team, Integer>) arena.getTeamPlayers();
+            LinkedHashMap<Team, Integer> teams = (LinkedHashMap<Team, Integer>) arena.countTeamPlayers();
             Utils.sortByValueInPlace(teams);
             team = teams
                     .entrySet()

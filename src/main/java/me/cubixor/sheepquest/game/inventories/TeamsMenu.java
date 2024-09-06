@@ -111,7 +111,7 @@ public class TeamsMenu extends Menu {
 
             Messages.send(player, "game.team-join-random");
         } else {
-            Map<Team, Integer> teamPlayers = arena.getTeamPlayers();
+            Map<Team, Integer> teamPlayers = arena.countTeamPlayers();
             String teamMessage = team.getName();
 
             if (teamPlayers.get(team) >= ((float) arena.getPlayers().size() / (float) arena.getTeams().size())) {
