@@ -34,7 +34,7 @@ public class TeamsMenu extends Menu {
     @Override
     public Inventory create() {
         int invSlots;
-        if (arena.getTeams().size() > 9) {
+        if (((SQArena) getArena()).getTeams().size() > 9) {
             invSlots = 18;
         } else {
             invSlots = 9;

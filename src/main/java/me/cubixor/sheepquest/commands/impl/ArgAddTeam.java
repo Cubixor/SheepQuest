@@ -28,10 +28,7 @@ public class ArgAddTeam extends ArenaTeamCommandArgument {
 
         teams.add(team);
         sqArenasManager.setTeamList(args[1], teams);
-        //TODO Add BossBar
 
-
-        //TODO add in messages.yml
         Messages.send(player, "arena-setup.add-team-success",
                 ImmutableMap.of("%arena%", args[1], "%team%", team.getName()));
     }

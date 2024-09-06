@@ -7,12 +7,12 @@ import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 
 public class BossBarManager {
 
-    private final Map<Team, BossBar> teamBossBars = new HashMap<>();
+    private final Map<Team, BossBar> teamBossBars = new EnumMap<>(Team.class);
 
     public BossBarManager() {
         for (Team team : Team.values()) {

@@ -38,7 +38,6 @@ public class ArgListTeams extends ArenaCommandArgument {
             }
         }
 
-        //TODO add in messages.yml
         Map<String, String> toReplace = ImmutableMap.of(
                 "%arena%", args[1],
                 "%teams-added%", addedTeams.toString(),

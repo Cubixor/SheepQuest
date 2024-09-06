@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.metadata.MetadataValue;
 
 public class ArgSetArea extends ArenaTeamCommandArgument {
-    protected ArgSetArea(ArenasManager arenasManager) {
+    public ArgSetArea(ArenasManager arenasManager) {
         super(arenasManager, "setteamarea", "setup.setteamarea", "arena-setup.set-teams-area");
     }
 

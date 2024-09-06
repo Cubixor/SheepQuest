@@ -25,10 +25,8 @@ public class ArgRemoveTeam extends ArenaTeamCommandArgument {
 
         sqArenasManager.setTeamList(args[1], teams);
         sqArenasManager.setTeamSpawn(args[1], team, null);
-        //TODO remove area
+        sqArenasManager.setTeamArea(args[1], team, null);
 
-
-        //TODO remove in messages.yml
         Messages.send(player, "arena-setup.remove-team-success",
                 ImmutableMap.of("%arena%", args[1], "%team%", team.getName()));
     }

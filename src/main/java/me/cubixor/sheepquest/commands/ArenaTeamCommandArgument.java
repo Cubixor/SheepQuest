@@ -3,8 +3,10 @@ package me.cubixor.sheepquest.commands;
 import me.cubixor.minigamesapi.spigot.commands.arguments.ArenaCommandArgument;
 import me.cubixor.minigamesapi.spigot.game.ArenasManager;
 import me.cubixor.minigamesapi.spigot.utils.Messages;
+import me.cubixor.minigamesapi.spigot.utils.Permissions;
 import me.cubixor.sheepquest.arena.SQArenasManager;
 import me.cubixor.sheepquest.arena.Team;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -37,5 +39,23 @@ public abstract class ArenaTeamCommandArgument extends ArenaCommandArgument {
             return null;
         }
         return team;
+    }
+
+    @Override
+    public List<String> handleTabComplete(CommandSender sender, String[] args) {
+        List<String> result = super.handleTabComplete(sender, args);
+        if (args.length == 3 &&
+                args[0].equalsIgnoreCase(getName()) &&
+                Permissions.has(sender, getPermission())) {
+
+            for (Team team : Team.values()) {
+                if (team.toString().startsWith(args[2].toLowerCase())) {
+                    result.add(team.toString());
+                }
+            }
+
+        }
+
+        return result;
     }
 }
