@@ -16,7 +16,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
@@ -44,10 +44,10 @@ public class TeamsMenu extends Menu {
 
     @Override
     public void update() {
-        Map<Team, List<String>> lore = new HashMap<>();
+        Map<Team, List<String>> lore = new EnumMap<>(Team.class);
         List<String> lorePlayers = Messages.getList("game.team-menu-players");
         List<Team> arenaTeams = arena.getTeams();
-        HashMap<Team, Integer> players = new HashMap<>();
+        Map<Team, Integer> players = new EnumMap<>(Team.class);
 
         for (Team team : arenaTeams) {
             lore.put(team, new ArrayList<>(lorePlayers));
@@ -70,16 +70,17 @@ public class TeamsMenu extends Menu {
             }
         }
 
-        Map<Team, ItemStack> arenaTeamItems = new HashMap<>();
+        Map<Team, ItemStack> arenaTeamItems = new EnumMap<>(Team.class);
         for (Team team : arena.getTeams()) {
             if (arenaTeams.contains(team)) {
                 arenaTeamItems.put(team, new GameItem(team.getWool().parseItem(), "game.team-menu-team-" + team, "game.team-menu-no-players").getItem());
             }
         }
 
-        for (Team team : arenaTeamItems.keySet()) {
+        for (Map.Entry<Team, ItemStack> e : arenaTeamItems.entrySet()) {
+            Team team = e.getKey();
 
-            ItemStack itemStack = arenaTeamItems.get(team);
+            ItemStack itemStack = e.getValue();
             ItemMeta itemMeta = itemStack.getItemMeta();
             itemMeta.setLore(lore.get(team));
             itemStack.setItemMeta(itemMeta);
@@ -114,15 +115,16 @@ public class TeamsMenu extends Menu {
             Map<Team, Integer> teamPlayers = arena.countTeamPlayers();
             String teamMessage = team.getName();
 
-            if (teamPlayers.get(team) >= ((float) arena.getPlayers().size() / (float) arena.getTeams().size())) {
+            if (arena.getPlayerTeam().get(player).equals(team)) {
+                Messages.send(player, "game.already-in-this-team", "%team%", teamMessage);
+                return;
+            }
+
+            if (teamPlayers.containsKey(team) && teamPlayers.get(team) >= ((float) arena.getPlayers().size() / (float) arena.getTeams().size())) {
                 Messages.send(player, "game.team-full", "%team%", teamMessage);
                 return;
             }
 
-            if (!arena.getPlayerTeam().get(player).equals(team)) {
-                Messages.send(player, "game.already-in-this-team", "%team%", teamMessage);
-                return;
-            }
 
             putInTeam(player, team, arena);
 

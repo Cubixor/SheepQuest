@@ -94,7 +94,7 @@ public enum Team {
     }
 
     public static Team getByWool(XMaterial material) {
-        if (material.toString().contains("WOOL")) {
+        if (material.toString().toUpperCase().contains("WOOL")) {
             for (Team team : Team.values()) {
                 if (material.equals(team.getWool())) {
                     return team;
