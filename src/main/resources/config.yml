@@ -1,0 +1,573 @@
+# SheepQuest plugin configuration file (config.yml) If there aren't any other comments in this file check this page for explanation: https://github.com/Cubixor/SheepQuest/wiki/Config-explanation
+#
+# Read all comments carefully to do not break plugin
+#
+# You can use /sq reload command to reload modified files without restarting server.
+
+
+# Plugin messages language.
+# Available languages are:
+# en - English - default
+# pl - Polish [by Cubixor]
+# zh - Chinese [by Light² (from www.mcbbs.net)]
+# ru - Russian [by Pupok (@Pupok#1755 on discord)]
+#
+# If you have translated the plugin and would like me to add your translation here, let me know on my discord server:
+# http://discord.gg/AQhUVfm
+language: en
+
+# Settings related to a database.
+# You have to use a database if you are using bungee mode.
+database:
+
+  # If true, player stats will be saved in a database.
+  # If false, player stats will be saved in a local file.
+  # WARNING! You have to set it to "true" if you are using bungee mode! [true/false]
+  enabled-stats: false
+
+  # Database address.
+  # If you have a mysql database, it will look like: "jdbc:mysql://<host>:<port>/<database>".
+  address: "jdbc:mysql://localhost:3306/minigame?useSSL=false&autoReConnect=true"
+
+  # MySQL username.
+  # It's not recommended to use root account here for security reasons.
+  username: "user"
+
+  # MySQL password.
+  # If you are not using password just leave it blank, but it's not recommended.
+  password: "12345"
+
+  # MySQL table used for saving player statistics.
+  table: "stats"
+
+
+# Settings related to the plugin bungee mode.
+bungee:
+
+  simple-bungee-mode: false
+
+  # Should plugin be in bungee mode?
+  # If it's set true you will be able to join all arenas in your bungeecord network.
+  #
+  # WARNING! You can use it only if you have enabled saving stats and arenas to database.
+  #
+  # WARNING! If you enable this option remember to upload the plugin to the bungeecord server and
+  # to fill in the connection.yml file with info that is needed to connect to bungeecord server. [true/false]
+  bungee-mode: false
+
+  # What should happen to the player who left the game?
+  # Use JOIN_SERVER to put player back to the server from where he had joined the game.
+  # Use LOBBY_SERVER to put player in the lobby server.
+  # USE GAME_SERVER to leave the player in the server that he was playing on.
+  # Use LEAVE_COMMAND to make spigot server console execute custom command when player leaves the game.
+  on-leave: JOIN_SERVER
+
+  # Lobby server.
+  # Use the bungeecord server name that you set in bungeecord config.yml.
+  lobby-server: hub
+
+  # Leave commands.
+  # They are used only when "on-leave" option is set to "LEAVE_COMMAND" and will be executed from the spigot server's console.
+  # You can use %player% placeholder - it will be replaced with the player's name.
+  # Do not put slash (/) at the beginning!
+  leave-commands:
+    - "custom command %player%"
+    - "custom command2"
+
+# Cooldown between commands, sign clicks, menu uses etc.
+# Use bigger values if your server is slow, you are using bungee mode or saving in mysql.
+# You can set it to 0 if you are not using bungee mode and database. [seconds]
+cooldown: 1
+
+# Countdown time.
+# Countdown will start when the arena minimum players count will be reached. [seconds]
+waiting-time: 40
+
+# Countdown time, when game is full and players can no longer join it. [seconds]
+full-waiting-time: 10
+
+# Game time [seconds]
+game-time: 360
+
+# Every this amount of time the sheep will appear [seconds]
+sheep-time: 10
+
+# Time that will game ending take [seconds]
+ending-time: 12
+
+# Player will respawn after this amount of time [seconds]
+respawn-time: 7
+
+# Should game use private game chat?
+# Player messages will be sent only to players in the same arena if true. [true/false]
+game-chat: true
+
+# Should players be able to choose teams?
+# If true, players will be able to choose their team by menu.
+# If false, players' team will be chosen randomly. [true/false]
+allow-team-choosing: true
+
+# Speed of the sheep [float]
+sheep-speed: 2
+
+# If true, when the arena ends players will be teleported to main lobby location.
+# If false player will be teleported to the place where he was before he joined the arena. [true/false]
+use-main-lobby: true
+
+# If true, player will be put in the next arena after the previous ends.
+# If false, player will be teleported to main lobby or previous location, depending on "use-main-lobby" is set to true or false. [true/false]
+auto-join-on-end: true
+
+# If true game will be stopped when only one player is on the arena (because others left).
+# If false game will it will continue even if there is only one player on it.
+stop-game-one-player: true
+
+# Date format in plugin messages.
+# If you don't know how to create proper date format check this page: https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html
+# (Scroll down to "Patterns for Formatting and Parsing" section)
+date-format: "dd/MM/yyyy"
+
+# Set how often the tip in waiting lobby will change. [seconds]
+tip-rate: 5
+
+# Color of join sheep (which you can spawn using /sq spawnjoinsheep) used for quick joining.
+join-sheep-color: MAGENTA
+
+# Item types and slots.
+# type - item name. Full item list on https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html [item name]
+# slot - slot number. Available slot numbers are 0-8.
+items:
+  team-choose-item:
+    material: CHEST
+    slot: 0
+  kit-choose-item:
+    material: STONE_SWORD
+    slot: 1
+  leave-item:
+    material: CLOCK
+    slot: 8
+  sheep-item:
+    material: SADDLE
+
+# Settings connected to in-game effects. You can enable or disable each of them [true/false]
+effects:
+  sheep-slowness: true
+  kill-blindness: true
+  kill-slowness: true
+
+# All sounds that are played during game.
+#
+# Full sound list available here: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html [sound]
+#
+# How to configure:
+# name: - sound name, do not change it
+#   enabled: true - enable or disable the sound [true/false]
+#   sound: UI_BUTTON_CLICK - sound type, choose one from the list mentioned above [sound]
+#   volume: 1 - sound volume [float]
+#   pitch: 1 - sound pitch [float]
+
+sounds:
+  join:
+    enabled: true
+    sound: ENTITY_ENDERMAN_TELEPORT
+    volume: 1
+    pitch: 1
+  leave:
+    enabled: true
+    sound: ENTITY_ENDERMAN_TELEPORT
+    volume: 1
+    pitch: 1
+  click:
+    enabled: true
+    sound: UI_BUTTON_CLICK
+    volume: 1
+    pitch: 1
+  countdown:
+    enabled: true
+    sound: BLOCK_NOTE_BLOCK_PLING
+    volume: 100
+  start:
+    enabled: true
+    sound: ENTITY_ENDER_DRAGON_GROWL
+    volume: 100
+    pitch: 1
+  sheep-pick:
+    enabled: true
+    sound: ENTITY_HORSE_SADDLE
+    volume: 100
+    pitch: 1
+  sheep-drop:
+    enabled: true
+    sound: ITEM_ARMOR_EQUIP_LEATHER
+    volume: 100
+    pitch: 1
+  sheep-bring:
+    enabled: true
+    sound: ENTITY_PLAYER_LEVELUP
+    volume: 1
+    pitch: 1
+  sheep-spawn:
+    enabled: true
+    sound: ENTITY_CHICKEN_EGG
+    volume: 1
+    pitch: 1
+  death:
+    enabled: true
+    sound: BLOCK_ANVIL_LAND
+    volume: 100
+    pitch: 0
+  kill:
+    enabled: true
+    sound: ENTITY_IRON_GOLEM_DEATH
+    volume: 100
+    pitch: 1.2
+  respawn-countdown:
+    enabled: true
+    sound: ENTITY_EXPERIENCE_ORB_PICKUP
+    volume: 100
+    pitch: 1
+  respawn:
+    enabled: true
+    sound: ENTITY_ENDERMAN_TELEPORT
+    volume: 1
+    pitch: 1
+  ending-countdown:
+    enabled: true
+    sound: BLOCK_NOTE_BLOCK_HAT
+    volume: 100
+    pitch: 1
+  win:
+    enabled: true
+    sound: ENTITY_ENDER_DRAGON_DEATH
+    volume: 100
+    pitch: 1
+  defeat:
+    enabled: true
+    sound: ENTITY_WITHER_SPAWN
+    volume: 100
+    pitch: 1
+  dash:
+    enabled: true
+    sound: ENTITY_GHAST_SHOOT
+    volume: 1
+    pitch: 1
+  throw-sheep:
+    enabled: true
+    sound: ENTITY_GHAST_SHOOT
+    volume: 1
+    pitch: 1
+  launch-players:
+    enabled: true
+    sound: ENTITY_GHAST_SHOOT
+    volume: 1
+    pitch: 1
+  bonus-sheep-spawn:
+    enabled: true
+    sound: ENTITY_GENERIC_EXPLODE
+    volume: 1
+    pitch: 0.9
+  bonus-sheep-bring:
+    enabled: true
+    sound: ENTITY_PLAYER_LEVELUP
+    volume: 1
+    pitch: 0
+
+# All particles that appear in game.
+#
+# Full particle list for versions from 1.9 up to the latest available here: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Particle.html
+# Full particle list for version 1.8 available here: https://hastebin.com/uyebofosen.less
+# WARNING! Remember to use proper particle list while editing this section!!!
+#
+# How to configure:
+# name: - particle name, do not change it
+#   enabled: true - enable or disable the particle [true/false]
+#   particle: CLOUD - particle type, choose one from the list mentioned above [particle]
+#   count: 50 - the number of particles [number]
+#   offset: 1 - the maximum random offset on all the axis [float]
+#   speed: 1 - particle speed [float]
+particles:
+  join:
+    enabled: true
+    particle: CLOUD
+    count: 50
+    offset: 1
+    speed: 0.1
+  leave:
+    enabled: true
+    particle: CLOUD
+    count: 50
+    offset: 1
+    speed: 0.1
+  sheep-bring:
+    enabled: true
+    particle: VILLAGER_HAPPY
+    count: 50
+    offset: 1
+    speed: 0.1
+  sheep-spawn:
+    enabled: true
+    particle: SPELL_WITCH
+    count: 50
+    offset: 1
+    speed: 0.1
+  death:
+    enabled: true
+    particle: SPELL_INSTANT
+    count: 50
+    offset: 0.1
+    speed: 0.1
+  respawn:
+    enabled: true
+    particle: CLOUD
+    count: 50
+    offset: 1
+    speed: 0.1
+  win:
+    enabled: true
+    particle: HEART
+    count: 30
+    offset: 0.5
+    speed: 0.1
+  dash:
+    enabled: true
+    particle: CLOUD
+    count: 50
+    offset: 1
+    speed: 0.1
+  throw-sheep:
+    enabled: true
+    particle: CLOUD
+    count: 50
+    offset: 1
+    speed: 0.1
+  launch-players:
+    enabled: true
+    particle: CLOUD
+    count: 50
+    offset: 1
+    speed: 0.1
+  bonus-sheep-spawn:
+    enabled: true
+    particle: EXPLOSION_HUGE
+    count: 1
+    offset: 0
+    speed: 0.1
+  bonus-sheep-bring:
+    enabled: true
+    particle: PORTAL
+    count: 70
+    offset: 1
+    speed: 0.1
+  bonus-sheep-carrying:
+    enabled: true
+    particle: FLAME
+    count: 50
+    offset: 0.1
+    speed: 0.1
+
+  # WARNING! You can't change blood particles, there is only an option to enable or disable it. [true/false]
+  enable-blood: true
+
+
+# If true, blocks behind signs will be changed depending on game state. [true/false]
+color-signs: true
+# Types of blocks behind signs.
+# Full item list on https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html [item name]
+sign-colors:
+  offline: LIGHT_GRAY_STAINED_GLASS
+  inactive: BLACK_STAINED_GLASS
+  waiting: LIME_STAINED_GLASS
+  starting: CYAN_STAINED_GLASS
+  game: RED_STAINED_GLASS
+  ending: PURPLE_STAINED_GLASS
+
+# Configure which commands will be available in game and put them in the command-blocker-list section below.
+# Set to WHITELIST to allow players to use only commands from command-blocker-list section.
+# Set to BLACKLIST to allow players to use all commands except these from command-blocker-list section. [BLACKLIST/WHITELIST]
+command-blocker: BLACKLIST
+
+# List of all commands allowed/blocked in game (without "/").
+# You can leave this list empty to block or allow to use all commands. [command name]
+command-blocker-list:
+  - me
+  - spawn
+
+# If true, when the game ends for each player (depends on which place player took) will be executed right command. [true/false]
+win-rewards: true
+
+# Rewards list.
+# If you don't want to execute commands for some place leave it blank.
+# You can use "%player%" placeholder - it will be changed to player name.
+# Section 1 is for first place, 2 for second etc. [command]
+rewards:
+  1:
+    - eco give %player% 100
+  2:
+    - eco give %player% 50
+  3:
+    - eco give %player% 25
+  4:
+    - eco give %player% 0
+
+
+# Kits' settings
+# Full item list on https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
+kits:
+
+  enabled: true
+
+  # Standard kit settings
+  standard:
+
+    # Should this kit be enabled? [true/false]
+    enabled: true
+
+    # Item that represents this kit in kits menu [item name]
+    menu-icon:
+      material: IRON_SWORD
+
+    # Primary weapon for this kit. [item name]
+    primary-weapon:
+      material: IRON_SWORD
+
+    # Secondary weapon for this kit
+    # By default it's disabled (null) in standard kit [item name]
+    secondary-weapon: null
+
+    # Should players with this kit receive shields? [true/false]
+    shield: false
+
+    # Should dash effect (double jump) be enabled for this kit? [true/false]
+    dash: true
+
+    # Dash power
+    # The higher this number is, the further player will be launched. [float]
+    dash-power: 1.2
+
+    # Dash power in Y axis
+    # The higher this number is, the higher player will be launched. [float]
+    dash-power-y: 0.3
+
+    # Dash use cooldown [seconds]
+    dash-cooldown: 3
+
+  # Archer kit settings
+  archer:
+
+    # Should this kit be enabled? [true/false]
+    enabled: true
+
+    # Item that represents this kit in kits menu [item name]
+    menu-icon:
+      material: BOW
+
+    # Primary weapon for this kit. [item name]
+    primary-weapon:
+      material: WOODEN_SWORD
+
+    # Secondary weapon for this kit
+    # You can choose bow or crossbow in archer kit. [item name]
+    secondary-weapon:
+      material: BOW
+
+    # Should players with this kit receive shields? [true/false]
+    shield: false
+
+    # Arrow type for this kit.
+    # You can choose between arrows, spectral arrows and tipped arrows. [item name]
+    arrow:
+      material: ARROW
+
+    # Number of seconds every which player will receive an arrow. [seconds]
+    arrow-interval: 5
+
+  # Athlete kit settings
+  athlete:
+
+    # Should this kit be enabled? [true/false]
+    enabled: true
+
+    # Item that represents this kit in kits menu [item name]
+    menu-icon:
+      material: FEATHER
+
+    # Primary weapon for this kit. [item name]
+    primary-weapon:
+      material: WOODEN_AXE
+
+    # Secondary weapon for this kit
+    # It's an item which is used for launch other players up. [item name]
+    secondary-weapon:
+      material: FEATHER
+
+    # Should players with this kit receive shields? [true/false]
+    shield: false
+
+    # Should ability to throw sheep be enabled for this kit? [true/false]
+    throw-sheep: true
+
+    # Sheep throw power
+    # The higher this number is, the further sheep will be launched. [float]
+    throw-sheep-power: 1.2
+
+    # Sheep throw power in Y axis
+    # The higher this number is, the higher sheep will be launched. [float]
+    throw-sheep-power-y: 0.4
+
+    # Damage that thrown sheep causes. [float]
+    throw-sheep-damage: 4
+
+    # Should ability to launch nearby players be enabled for this kit? [true/false]
+    launch-players: true
+
+    # Range in which item for launching players will work.
+    launch-players-range: 3
+
+    # Players launch power
+    # The higher this number is, the further players will be launched. [float]
+    launch-players-power: 1.6
+
+    # Players launch power in Y axis
+    # The higher this number is, the higher players will be launched. [float]
+    launch-players-power-y: 0.8
+
+    # Damage that nearby players will receive when launched.
+    launch-players-damage: 5
+
+    # Cooldown for launching nearby players up.
+    launch-players-cooldown: 10
+
+
+# All special game events' settings
+special-events:
+
+  # Should special game events be enabled? [true/false]
+  enabled: true
+
+  # How often should special game event perform?
+  # For example if set to 40-60, special game event will perform every random amount of time between 40 and 60 seconds. [minSeconds-maxSeconds]
+  rate: 40-60
+
+  # Bonus sheep settings
+  bonus-sheep:
+
+    # Should it be enabled? [true/false]
+    enabled: true
+
+    # Bonus entity type. List of entity types: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/entity/EntityType.html [entity type]
+    entity-material: SHEEP
+
+    # Bonus sheep color. List of colors: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/DyeColor.html [color]
+    # It's also the bonus entity firework color.
+    # Obviously, it will affect an entity only when it's a sheep.
+    color: MAGENTA
+
+    # Bonus sheep speed. [float]
+    speed: 3.0
+
+    # Bonus sheep points [number]
+    points: 3
+
+
+# Config version - DO NOT CHANGE IT!
+config-version: 1.9
