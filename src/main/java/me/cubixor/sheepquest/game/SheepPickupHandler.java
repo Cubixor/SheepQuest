@@ -61,10 +61,8 @@ public class SheepPickupHandler implements Listener {
 
         Team team = arena.getPlayerTeam().get(player);
 
-        if (player.getPassenger() != null) {
-            if (arena.getTeamRegions().get(team).isInRegion(player)) {
-                regionEnter(player, arena);
-            }
+        if (player.getPassenger() != null && arena.getTeamRegions().get(team).isInRegion(player)) {
+            regionEnter(player, arena);
         }
 
 

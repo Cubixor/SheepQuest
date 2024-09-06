@@ -21,10 +21,7 @@ import me.cubixor.sheepquest.config.SQStatsField;
 import me.cubixor.sheepquest.game.BossBarManager;
 import me.cubixor.sheepquest.game.SQArenaProtection;
 import me.cubixor.sheepquest.game.SheepPickupHandler;
-import me.cubixor.sheepquest.game.events.GameEndHandler;
-import me.cubixor.sheepquest.game.events.GameJoinLeaveHandler;
-import me.cubixor.sheepquest.game.events.GameResetHandler;
-import me.cubixor.sheepquest.game.events.GameStartHandler;
+import me.cubixor.sheepquest.game.events.*;
 import me.cubixor.sheepquest.game.kits.KitManager;
 import me.cubixor.sheepquest.items.SQItemsRegistry;
 import org.bukkit.plugin.PluginManager;
@@ -80,12 +77,14 @@ public class Main extends JavaPlugin {
         GameStartHandler gameStartHandler = new GameStartHandler(arenasManager, itemsRegistry, kitManager);
         GameEndHandler gameEndHandler = new GameEndHandler(configManager.getStatsManager());
         GameResetHandler gameResetHandler = new GameResetHandler();
+        SheepSpawner sheepSpawner = new SheepSpawner(arenasManager.getConfigManager());
 
         pluginManager.registerEvents(sheepPickupHandler, this);
         pluginManager.registerEvents(gameJoinLeaveHandler, this);
         pluginManager.registerEvents(gameStartHandler, this);
         pluginManager.registerEvents(gameEndHandler, this);
         pluginManager.registerEvents(gameResetHandler, this);
+        pluginManager.registerEvents(sheepSpawner, this);
 
         MinigamesAPI.registerPAPI(arenasRegistry, configManager.getStatsManager());
     }

@@ -7,6 +7,7 @@ import me.cubixor.minigamesapi.spigot.Utils;
 import me.cubixor.minigamesapi.spigot.events.GameStartEvent;
 import me.cubixor.minigamesapi.spigot.utils.Messages;
 import me.cubixor.minigamesapi.spigot.utils.Sounds;
+import me.cubixor.sheepquest.arena.PlayerGameStats;
 import me.cubixor.sheepquest.arena.SQArena;
 import me.cubixor.sheepquest.arena.SQArenasManager;
 import me.cubixor.sheepquest.arena.Team;
@@ -65,8 +66,10 @@ public class GameStartHandler implements Listener {
         for (Player p : players) {
             Team team = chooseTeam(p, arena);
 
-            itemsRegistry.getSheepItem().give(p);
+            arena.getPlayerGameStats().put(p, new PlayerGameStats());
+
             kitManager.getKits().get(arena.getPlayerKit().get(p)).giveKit(p);
+            itemsRegistry.getSheepItem().give(p);
             setItems(p, team);
 
             p.teleport(arenasManager.getConfigManager().getLocation(arena.getName(), SQConfigField.SPAWN, team.toString()));

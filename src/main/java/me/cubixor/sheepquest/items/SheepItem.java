@@ -16,4 +16,9 @@ public class SheepItem extends ClickableItem {
     public void handleClick(ArenasManager arenasManager, LocalArena localArena, Player player, PlayerInteractEvent evt) {
 
     }
+
+    @Override
+    public void give(Player player) {
+        player.getInventory().addItem(getItem());
+    }
 }
