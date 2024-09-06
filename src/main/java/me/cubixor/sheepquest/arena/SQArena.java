@@ -20,7 +20,7 @@ public class SQArena extends LocalArena {
     private final Map<Player, Integer> respawnTimer = new HashMap<>();
     private final Map<Team, TeamRegion> teamRegions;
     private final Map<Player, PlayerGameStats> playerGameStats = new HashMap<>();
-    private int sheepTimer;
+    private int sheepTimer = 0;
     //private SpecialEventsData specialEventsData;
 
 
@@ -41,7 +41,7 @@ public class SQArena extends LocalArena {
         sheep.clear();
         respawnTimer.clear();
         playerGameStats.clear();
-        sheepTimer = -1;
+        sheepTimer = 0;
     }
 
     public Map<Player, Team> getPlayerTeam() {

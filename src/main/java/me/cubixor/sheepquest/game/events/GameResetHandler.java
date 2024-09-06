@@ -16,5 +16,6 @@ public class GameResetHandler implements Listener {
             arena.getSheep().get(e).cancel();
             e.remove();
         }
+        arena.resetArena();
     }
 }

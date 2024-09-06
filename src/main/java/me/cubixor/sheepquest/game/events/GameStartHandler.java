@@ -2,7 +2,6 @@ package me.cubixor.sheepquest.game.events;
 
 import com.cryptomorin.xseries.XMaterial;
 import com.cryptomorin.xseries.messages.Titles;
-import me.cubixor.minigamesapi.spigot.MinigamesAPI;
 import me.cubixor.minigamesapi.spigot.Utils;
 import me.cubixor.minigamesapi.spigot.events.GameStartEvent;
 import me.cubixor.minigamesapi.spigot.utils.Messages;
@@ -42,8 +41,6 @@ public class GameStartHandler implements Listener {
     @EventHandler
     public void onGameStart(GameStartEvent evt) {
         SQArena arena = (SQArena) evt.getLocalArena();
-
-        arena.setSheepTimer(MinigamesAPI.getPlugin().getConfig().getInt("sheep-time"));
 
         KitArcher kitArcher = (KitArcher) kitManager.getKits().get(KitType.ARCHER);
         if (kitArcher != null) {
