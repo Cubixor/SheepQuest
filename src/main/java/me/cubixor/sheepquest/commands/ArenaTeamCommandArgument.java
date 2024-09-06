@@ -9,21 +9,25 @@ import me.cubixor.sheepquest.arena.Team;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public abstract class ArenaTeamCommandArgument extends ArenaCommandArgument {
     protected final SQArenasManager sqArenasManager;
+    private final String allTeams;
 
     protected ArenaTeamCommandArgument(ArenasManager arenasManager, String name, String permission, String messagesPath) {
         super(arenasManager, name, permission, 3, messagesPath, true, false);
         sqArenasManager = (SQArenasManager) arenasManager;
+        allTeams = Arrays.stream(Team.values()).map(Team::getName).collect(Collectors.joining(" "));
     }
 
     protected Team validateTeam(Player player, String[] args) {
         String teamStr = args[2];
         Team team = Team.getByName(teamStr);
         if (team == null) {
-            Messages.send(player, "arena-setup.invalid-team");
+            Messages.send(player, "arena-setup.invalid-team", "%teams%", allTeams);
             return null;
         }
         return team;

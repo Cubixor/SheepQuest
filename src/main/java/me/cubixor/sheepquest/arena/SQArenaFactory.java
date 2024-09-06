@@ -40,9 +40,9 @@ public class SQArenaFactory implements ArenaFactory {
         for (String teamName : teams) {
             Team team = Team.getByName(teamName);
             Location[] loc = configManager.getArea(name, SQConfigField.AREA, teamName);
-            if (loc != null) {
-                teamRegionMap.put(team, new TeamRegion(loc));
-            }
+            TeamRegion teamRegion = loc == null ? null : new TeamRegion(loc);
+
+            teamRegionMap.put(team, teamRegion);
         }
 
         SQArena arena = new SQArena(

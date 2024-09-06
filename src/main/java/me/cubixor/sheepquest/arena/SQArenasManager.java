@@ -22,10 +22,28 @@ public class SQArenasManager extends ArenasManager {
 
     public List<Team> getTeamList(String arena) {
         List<String> teamsStr = getConfigManager().getStringList(arena, SQConfigField.TEAMS);
-        return teamsStr.stream().map(Team::valueOf).collect(Collectors.toList());
+        return teamsStr.stream().map(String::toUpperCase).map(Team::valueOf).collect(Collectors.toList());
     }
 
-    public void setTeamList(String arena, List<Team> teams) {
+    public void addTeam(String arena, Team team) {
+        List<Team> teams = getTeamList(arena);
+        teams.add(team);
+        setTeamList(arena, teams);
+
+        SQArena sqArena = (SQArena) getRegistry().getLocalArenas().get(arena);
+        sqArena.getTeamRegions().put(team, null);
+    }
+
+    public void removeTeam(String arena, Team team) {
+        List<Team> teams = getTeamList(arena);
+        teams.remove(team);
+        setTeamList(arena, teams);
+
+        SQArena sqArena = (SQArena) getRegistry().getLocalArenas().get(arena);
+        sqArena.getTeamRegions().remove(team);
+    }
+
+    private void setTeamList(String arena, List<Team> teams) {
         List<String> teamsStr = teams.stream().map(Team::toString).collect(Collectors.toList());
         updateArenaField(arena, SQConfigField.TEAMS, teamsStr);
     }
@@ -38,10 +56,6 @@ public class SQArenasManager extends ArenasManager {
         getConfigManager().updateField(arena, SQConfigField.AREA, team.toString(), locs);
 
         SQArena sqArena = (SQArena) getRegistry().getLocalArenas().get(arena);
-        if (locs == null) {
-            sqArena.getTeamRegions().remove(team);
-        } else {
-            sqArena.getTeamRegions().put(team, new TeamRegion(locs));
-        }
+        sqArena.getTeamRegions().replace(team, new TeamRegion(locs));
     }
 }

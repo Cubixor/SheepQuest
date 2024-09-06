@@ -41,10 +41,10 @@ public class ArgListTeams extends ArenaCommandArgument {
         Map<String, String> toReplace = ImmutableMap.of(
                 "%arena%", args[1],
                 "%teams-added%", addedTeams.toString(),
-                "teams-available", otherTeams.toString()
+                "%teams-available%", otherTeams.toString()
         );
 
-        Messages.send(player, "arena-setup.list-teams-success", toReplace);
+        Messages.sendList(player, "arena-setup.list-teams-success", toReplace);
 
     }
 }

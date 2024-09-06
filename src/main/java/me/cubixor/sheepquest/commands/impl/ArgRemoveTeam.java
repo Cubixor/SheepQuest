@@ -7,8 +7,6 @@ import me.cubixor.sheepquest.arena.Team;
 import me.cubixor.sheepquest.commands.ArenaTeamCommandArgument;
 import org.bukkit.entity.Player;
 
-import java.util.List;
-
 public class ArgRemoveTeam extends ArenaTeamCommandArgument {
 
     public ArgRemoveTeam(ArenasManager arenasManager) {
@@ -20,10 +18,7 @@ public class ArgRemoveTeam extends ArenaTeamCommandArgument {
         Team team = validateTeamAdded(player, args);
         if (team == null) return;
 
-        List<Team> teams = sqArenasManager.getTeamList(args[1]);
-        teams.remove(team);
-
-        sqArenasManager.setTeamList(args[1], teams);
+        sqArenasManager.removeTeam(args[1], team);
         sqArenasManager.setTeamSpawn(args[1], team, null);
         sqArenasManager.setTeamArea(args[1], team, null);
 

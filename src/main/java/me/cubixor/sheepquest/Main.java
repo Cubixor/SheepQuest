@@ -4,6 +4,7 @@ import me.cubixor.minigamesapi.spigot.MinigamesAPI;
 import me.cubixor.minigamesapi.spigot.commands.MainCommand;
 import me.cubixor.minigamesapi.spigot.commands.MainCommandCompleter;
 import me.cubixor.minigamesapi.spigot.commands.arguments.CommandArgument;
+import me.cubixor.minigamesapi.spigot.commands.arguments.impl.setup.ArgSetupWand;
 import me.cubixor.minigamesapi.spigot.config.ConfigManager;
 import me.cubixor.minigamesapi.spigot.game.ArenasRegistry;
 import me.cubixor.minigamesapi.spigot.game.ChatBlocker;
@@ -57,7 +58,8 @@ public class Main extends JavaPlugin {
 
         List<CommandArgument> args = Stream.concat(
                 MainCommand.getCommonArguments(arenasManager, arenaSetupChecker, configManager.getStatsManager()).stream(),
-                Stream.of(new ArgListTeams(arenasManager),
+                Stream.of(new ArgSetupWand(itemsRegistry),
+                        new ArgListTeams(arenasManager),
                         new ArgAddTeam(arenasManager),
                         new ArgRemoveTeam(arenasManager),
                         new ArgSetSheepSpawn(arenasManager),
