@@ -11,6 +11,7 @@ import me.cubixor.sheepquest.arena.SQArena;
 import me.cubixor.sheepquest.arena.SQArenasManager;
 import me.cubixor.sheepquest.arena.Team;
 import me.cubixor.sheepquest.config.SQConfigField;
+import me.cubixor.sheepquest.game.BossBarManager;
 import me.cubixor.sheepquest.game.kits.KitArcher;
 import me.cubixor.sheepquest.game.kits.KitManager;
 import me.cubixor.sheepquest.game.kits.KitType;
@@ -31,11 +32,13 @@ public class GameStartHandler implements Listener {
     private final SQArenasManager arenasManager;
     private final SQItemsRegistry itemsRegistry;
     private final KitManager kitManager;
+    private final BossBarManager bossBarManager;
 
-    public GameStartHandler(SQArenasManager arenasManager, SQItemsRegistry itemsRegistry, KitManager kitManager) {
+    public GameStartHandler(SQArenasManager arenasManager, SQItemsRegistry itemsRegistry, KitManager kitManager, BossBarManager bossBarManager) {
         this.arenasManager = arenasManager;
         this.itemsRegistry = itemsRegistry;
         this.kitManager = kitManager;
+        this.bossBarManager = bossBarManager;
     }
 
     @EventHandler
@@ -101,6 +104,7 @@ public class GameStartHandler implements Listener {
 
 
             arena.getPlayerTeam().put(p, team);
+            bossBarManager.addPlayer(p, team);
         }
 
         return team;

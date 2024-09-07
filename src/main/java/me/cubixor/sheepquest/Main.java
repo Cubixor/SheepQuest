@@ -74,7 +74,7 @@ public class Main extends JavaPlugin {
         KitManager kitManager = new KitManager(arenasRegistry, sheepPickupHandler);
 
         GameJoinLeaveHandler gameJoinLeaveHandler = new GameJoinLeaveHandler(itemsRegistry, bossBarManager);
-        GameStartHandler gameStartHandler = new GameStartHandler(arenasManager, itemsRegistry, kitManager);
+        GameStartHandler gameStartHandler = new GameStartHandler(arenasManager, itemsRegistry, kitManager, bossBarManager);
         GameEndHandler gameEndHandler = new GameEndHandler(configManager.getStatsManager());
         GameResetHandler gameResetHandler = new GameResetHandler();
         SheepSpawner sheepSpawner = new SheepSpawner(arenasManager.getConfigManager());
