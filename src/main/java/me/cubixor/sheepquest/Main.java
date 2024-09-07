@@ -78,6 +78,7 @@ public class Main extends JavaPlugin {
         GameEndHandler gameEndHandler = new GameEndHandler(configManager.getStatsManager());
         GameResetHandler gameResetHandler = new GameResetHandler();
         SheepSpawner sheepSpawner = new SheepSpawner(arenasManager.getConfigManager());
+        ScoreboardFormatter scoreboardFormatter = new ScoreboardFormatter();
 
         pluginManager.registerEvents(sheepPickupHandler, this);
         pluginManager.registerEvents(gameJoinLeaveHandler, this);
@@ -85,6 +86,7 @@ public class Main extends JavaPlugin {
         pluginManager.registerEvents(gameEndHandler, this);
         pluginManager.registerEvents(gameResetHandler, this);
         pluginManager.registerEvents(sheepSpawner, this);
+        pluginManager.registerEvents(scoreboardFormatter, this);
 
         MinigamesAPI.registerPAPI(arenasRegistry, configManager.getStatsManager());
     }
