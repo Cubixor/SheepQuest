@@ -14,6 +14,7 @@ import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.SheepDyeWoolEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 
 public class SQArenaProtection extends ArenaProtection {
@@ -57,6 +58,12 @@ public class SQArenaProtection extends ArenaProtection {
     @EventHandler
     public void onDye(SheepDyeWoolEvent evt) {
         cancelForEntity(evt.getEntity(), evt);
+    }
+
+    @EventHandler
+    public void onItemDamage(PlayerItemDamageEvent evt) {
+        cancelInArena(evt.getPlayer(), evt);
+        evt.getPlayer().updateInventory();
     }
 
     private void cancelForEntity(Sheep sheep, Cancellable evt) {
