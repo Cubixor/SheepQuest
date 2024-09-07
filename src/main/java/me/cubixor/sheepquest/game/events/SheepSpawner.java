@@ -31,13 +31,13 @@ public class SheepSpawner implements Listener {
             return;
         }
 
-        if (arena.getSheepTimer() == 0) {
+        arena.setSheepTimer(arena.getSheepTimer() - 1);
+
+        if (arena.getSheepTimer() <= 0) {
             arena.setSheepTimer(MinigamesAPI.getPlugin().getConfig().getInt("sheep-time"));
 
             spawnSheep(arena);
         }
-
-        arena.setSheepTimer(arena.getSheepTimer() - 1);
     }
 
     public void spawnSheep(SQArena arena) {
