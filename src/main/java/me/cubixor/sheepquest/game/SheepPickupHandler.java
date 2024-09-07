@@ -21,13 +21,18 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class SheepPickupHandler implements Listener {
 
     private final ArenasRegistry arenasRegistry;
     private final SQItemsRegistry itemsRegistry;
+
     private final int maxPassengers;
+    private final int cooldownTime = 1;
+    private final Set<Player> cooldownPlayers = new HashSet<>();
 
     public SheepPickupHandler(ArenasRegistry arenasRegistry, SQItemsRegistry itemsRegistry) {
         this.arenasRegistry = arenasRegistry;
@@ -47,15 +52,15 @@ public class SheepPickupHandler implements Listener {
             return;
         }
 
-        //TODO Sheep cooldown
-        /*if (arena.getPlayerStats().get(player).getSheepCooldown() != null) {
-            return;
-        }*/
         if (arena.getRespawnTimer().containsKey(evt.getPlayer())) {
             return;
         }
 
         if (!evt.getPlayer().getInventory().getItemInMainHand().equals(itemsRegistry.getSheepItem().getItem())) {
+            return;
+        }
+
+        if (cooldownPlayers.contains(player)) {
             return;
         }
 
@@ -237,5 +242,15 @@ public class SheepPickupHandler implements Listener {
         if (!player.getInventory().getItem(oldSlot).equals(itemsRegistry.getSheepItem().getItem())) return;
 
         removeSheep(player);
+    }
+
+    public void addCooldown(Player player) {
+        cooldownPlayers.add(player);
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                cooldownPlayers.remove(player);
+            }
+        }.runTaskLater(MinigamesAPI.getPlugin(), cooldownTime * 20);
     }
 }
