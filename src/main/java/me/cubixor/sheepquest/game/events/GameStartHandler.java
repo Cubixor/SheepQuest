@@ -15,7 +15,6 @@ import me.cubixor.sheepquest.game.BossBarManager;
 import me.cubixor.sheepquest.game.kits.KitArcher;
 import me.cubixor.sheepquest.game.kits.KitManager;
 import me.cubixor.sheepquest.game.kits.KitType;
-import me.cubixor.sheepquest.items.SQItemsRegistry;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -30,13 +29,11 @@ import java.util.*;
 public class GameStartHandler implements Listener {
 
     private final SQArenasManager arenasManager;
-    private final SQItemsRegistry itemsRegistry;
     private final KitManager kitManager;
     private final BossBarManager bossBarManager;
 
-    public GameStartHandler(SQArenasManager arenasManager, SQItemsRegistry itemsRegistry, KitManager kitManager, BossBarManager bossBarManager) {
+    public GameStartHandler(SQArenasManager arenasManager, KitManager kitManager, BossBarManager bossBarManager) {
         this.arenasManager = arenasManager;
-        this.itemsRegistry = itemsRegistry;
         this.kitManager = kitManager;
         this.bossBarManager = bossBarManager;
     }
@@ -68,8 +65,8 @@ public class GameStartHandler implements Listener {
 
             arena.getPlayerGameStats().put(p, new PlayerGameStats());
 
+            p.setInvulnerable(false);
             kitManager.getKits().get(arena.getPlayerKit().get(p)).giveKit(p);
-            itemsRegistry.getSheepItem().give(p);
             setItems(p, team);
 
             p.teleport(arenasManager.getConfigManager().getLocation(arena.getName(), SQConfigField.SPAWN, team.toString()));

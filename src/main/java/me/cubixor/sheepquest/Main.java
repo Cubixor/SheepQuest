@@ -71,10 +71,10 @@ public class Main extends JavaPlugin {
         getServer().getPluginCommand(getName()).setTabCompleter(mainCommandCompleter);
 
         SheepPickupHandler sheepPickupHandler = new SheepPickupHandler(arenasRegistry, itemsRegistry);
-        KitManager kitManager = new KitManager(arenasRegistry, sheepPickupHandler);
+        KitManager kitManager = new KitManager(arenasRegistry, itemsRegistry, sheepPickupHandler);
 
         GameJoinLeaveHandler gameJoinLeaveHandler = new GameJoinLeaveHandler(itemsRegistry, bossBarManager);
-        GameStartHandler gameStartHandler = new GameStartHandler(arenasManager, itemsRegistry, kitManager, bossBarManager);
+        GameStartHandler gameStartHandler = new GameStartHandler(arenasManager, kitManager, bossBarManager);
         GameEndHandler gameEndHandler = new GameEndHandler(configManager.getStatsManager());
         GameResetHandler gameResetHandler = new GameResetHandler();
         SheepSpawner sheepSpawner = new SheepSpawner(arenasManager.getConfigManager());

@@ -519,7 +519,7 @@ kits:
     throw-sheep-power-y: 0.4
 
     # Damage that thrown sheep causes. [float]
-    throw-sheep-damage: 4
+    throw-sheep-damage: 6
 
     # Should ability to launch nearby players be enabled for this kit? [true/false]
     launch-players: true
@@ -536,7 +536,7 @@ kits:
     launch-players-power-y: 0.8
 
     # Damage that nearby players will receive when launched.
-    launch-players-damage: 5
+    launch-players-damage: 7
 
     # Cooldown for launching nearby players up.
     launch-players-cooldown: 10

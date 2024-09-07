@@ -3,6 +3,7 @@ package me.cubixor.sheepquest.game.kits;
 import me.cubixor.minigamesapi.spigot.MinigamesAPI;
 import me.cubixor.minigamesapi.spigot.game.ArenasRegistry;
 import me.cubixor.sheepquest.game.SheepPickupHandler;
+import me.cubixor.sheepquest.items.SQItemsRegistry;
 import org.bukkit.Bukkit;
 
 import java.util.EnumMap;
@@ -12,10 +13,10 @@ public class KitManager {
 
     private final Map<KitType, Kit> kits = new EnumMap<>(KitType.class);
 
-    public KitManager(ArenasRegistry arenasRegistry, SheepPickupHandler sheepPickupHandler) {
-        KitStandard kitStandard = new KitStandard(arenasRegistry);
-        KitArcher kitArcher = new KitArcher(arenasRegistry);
-        KitAthlete kitAthlete = new KitAthlete(arenasRegistry, sheepPickupHandler);
+    public KitManager(ArenasRegistry arenasRegistry, SQItemsRegistry itemsRegistry, SheepPickupHandler sheepPickupHandler) {
+        KitStandard kitStandard = new KitStandard(arenasRegistry, itemsRegistry);
+        KitArcher kitArcher = new KitArcher(arenasRegistry, itemsRegistry);
+        KitAthlete kitAthlete = new KitAthlete(arenasRegistry, sheepPickupHandler, itemsRegistry);
 
         kits.put(KitType.STANDARD, kitStandard);
         kits.put(KitType.ARCHER, kitArcher);

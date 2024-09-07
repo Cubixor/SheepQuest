@@ -4,6 +4,7 @@ import com.cryptomorin.xseries.XMaterial;
 import me.cubixor.minigamesapi.spigot.MinigamesAPI;
 import me.cubixor.minigamesapi.spigot.game.ArenasRegistry;
 import me.cubixor.minigamesapi.spigot.game.items.GameItem;
+import me.cubixor.sheepquest.items.SQItemsRegistry;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
@@ -11,15 +12,17 @@ public abstract class Kit {
 
     protected final FileConfiguration config;
     protected final ArenasRegistry arenasRegistry;
+    private final SQItemsRegistry itemsRegistry;
     private final KitType kitType;
     private final GameItem primaryWeapon;
     private GameItem secondaryWeapon;
     private GameItem shield;
 
-    protected Kit(ArenasRegistry arenasRegistry, KitType kitType) {
-        this.arenasRegistry = arenasRegistry;
-        this.config = MinigamesAPI.getPlugin().getConfig();
+    protected Kit(KitType kitType, ArenasRegistry arenasRegistry, SQItemsRegistry itemsRegistry) {
         this.kitType = kitType;
+        this.arenasRegistry = arenasRegistry;
+        this.itemsRegistry = itemsRegistry;
+        this.config = MinigamesAPI.getPlugin().getConfig();
 
         String rootPath = "kits." + kitType.toString();
 
@@ -42,6 +45,7 @@ public abstract class Kit {
         if (getShield() != null) {
             player.getInventory().setItemInOffHand(getShield().getItem());
         }
+        itemsRegistry.getSheepItem().give(player);
     }
 
     public KitType getKitType() {

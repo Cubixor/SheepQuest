@@ -6,6 +6,7 @@ import me.cubixor.minigamesapi.spigot.game.arena.GameState;
 import me.cubixor.minigamesapi.spigot.utils.Particles;
 import me.cubixor.minigamesapi.spigot.utils.Sounds;
 import me.cubixor.sheepquest.arena.SQArena;
+import me.cubixor.sheepquest.items.SQItemsRegistry;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,8 +20,8 @@ public class KitStandard extends Kit implements Listener {
     private final double dashPower;
     private final int dashCooldown;
 
-    public KitStandard(ArenasRegistry arenasRegistry) {
-        super(arenasRegistry, KitType.STANDARD);
+    public KitStandard(ArenasRegistry arenasRegistry, SQItemsRegistry itemsRegistry) {
+        super(KitType.STANDARD, arenasRegistry, itemsRegistry);
 
         dashVector = new Vector(0, config.getDouble("kits.standard.dash-power-y"), 0);
         dashPower = config.getDouble("kits.standard.dash-power");

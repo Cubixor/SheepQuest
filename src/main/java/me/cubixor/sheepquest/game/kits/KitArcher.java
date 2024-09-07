@@ -4,6 +4,7 @@ import me.cubixor.minigamesapi.spigot.MinigamesAPI;
 import me.cubixor.minigamesapi.spigot.game.ArenasRegistry;
 import me.cubixor.minigamesapi.spigot.game.items.GameItem;
 import me.cubixor.sheepquest.arena.SQArena;
+import me.cubixor.sheepquest.items.SQItemsRegistry;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -20,8 +21,8 @@ public class KitArcher extends Kit implements Listener {
     private final GameItem arrow;
     private final int arrowInterval;
 
-    public KitArcher(ArenasRegistry arenasRegistry) {
-        super(arenasRegistry, KitType.ARCHER);
+    public KitArcher(ArenasRegistry arenasRegistry, SQItemsRegistry itemsRegistry) {
+        super(KitType.ARCHER, arenasRegistry, itemsRegistry);
         arrow = new GameItem("kits.archer.arrow", "kits.arrow-name", "kits.arrow-lore");
         arrowInterval = (int) Math.round(config.getDouble("kits.archer.arrow-interval") * 20);
     }

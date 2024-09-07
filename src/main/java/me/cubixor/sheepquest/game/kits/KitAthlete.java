@@ -9,8 +9,8 @@ import me.cubixor.sheepquest.arena.SQArena;
 import me.cubixor.sheepquest.arena.Team;
 import me.cubixor.sheepquest.arena.TeamRegion;
 import me.cubixor.sheepquest.game.SheepPickupHandler;
+import me.cubixor.sheepquest.items.SQItemsRegistry;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Sheep;
 import org.bukkit.event.EventHandler;
@@ -43,8 +43,8 @@ public class KitAthlete extends Kit implements Listener {
     private final long launchPlayerCooldown;
 
 
-    public KitAthlete(ArenasRegistry arenasRegistry, SheepPickupHandler sheepPickupHandler) {
-        super(arenasRegistry, KitType.ATHLETE);
+    public KitAthlete(ArenasRegistry arenasRegistry, SheepPickupHandler sheepPickupHandler, SQItemsRegistry itemsRegistry) {
+        super(KitType.ATHLETE, arenasRegistry, itemsRegistry);
         this.sheepPickupHandler = sheepPickupHandler;
 
         throwSheepEnabled = config.getBoolean("kits.athlete.throw-sheep");
@@ -145,25 +145,19 @@ public class KitAthlete extends Kit implements Listener {
         Particles.spawnParticle(player.getLocation().add(0, 1.5, 0), "launch-players");
 
         for (Entity targetEntity : player.getNearbyEntities(launchPlayerRange, launchPlayerRange, launchPlayerRange)) {
-            if (!targetEntity.getType().equals(EntityType.PLAYER)) {
-                continue;
+            if (targetEntity instanceof Player) {
+                Player target = (Player) targetEntity;
+
+                if (arena.getPlayerTeam().get(target).equals(team)) {
+                    continue;
+                }
+
+                target.damage(launchPlayerDamage, player);
             }
 
-            Player target = (Player) targetEntity;
-
-            if (arena.getPlayerTeam().get(target).equals(team)) {
-                continue;
-            }
-
-            Vector direction = target.getLocation().toVector().subtract(player.getLocation().toVector()).normalize()
+            Vector direction = targetEntity.getLocation().toVector().subtract(player.getLocation().toVector()).normalize()
                     .add(launchPlayerVector).multiply(launchPlayerPower);
-            target.setVelocity(direction);
-            if (target.getHealth() - launchPlayerDamage > 0) {
-                target.damage(launchPlayerDamage);
-            }
-            //TODO DAMAGE
-            //new Kill().damagePlayer(target, player, arena, launchPlayerDamage);
-
+            targetEntity.setVelocity(direction);
         }
         addCooldown(player, launchPlayerCooldown);
     }
@@ -175,11 +169,7 @@ public class KitAthlete extends Kit implements Listener {
             Player target = (Player) e;
 
             if (!arena.getPlayerTeam().get(damager).equals(arena.getPlayerTeam().get(target))) {
-                target.damage(damage);
-                //TODO Damage
-                /*if (new Kill().damagePlayer(target, damager, Utils.getLocalArena(damager), damage)) {
-                    target.setHealth(20);
-                }*/
+                target.damage(damage, damager);
             }
 
         }

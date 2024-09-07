@@ -15,7 +15,6 @@ import me.cubixor.sheepquest.arena.PlayerGameStats;
 import me.cubixor.sheepquest.arena.SQArena;
 import me.cubixor.sheepquest.config.SQConfigField;
 import me.cubixor.sheepquest.game.SheepPickupHandler;
-import me.cubixor.sheepquest.game.kits.Kit;
 import me.cubixor.sheepquest.game.kits.KitManager;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -24,7 +23,6 @@ import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -78,17 +76,6 @@ public class DamageHandler implements Listener {
         if (arena.getRespawnTimer().containsKey(player) ||
                 arena.getRespawnTimer().containsKey(attacker) ||
                 arena.getPlayerTeam().get(attacker).equals(arena.getPlayerTeam().get(player))) {
-            evt.setCancelled(true);
-            return;
-        }
-
-        Kit playerKit = kitManager.getKits().get(arena.getPlayerKit().get(player));
-        ItemStack itemInHand = attacker.getInventory().getItemInMainHand();
-
-        if (!(evt.getDamager() instanceof Projectile ||
-                itemInHand.equals(playerKit.getPrimaryWeapon().getItem()) ||
-                (playerKit.getSecondaryWeapon() != null && itemInHand.equals(playerKit.getSecondaryWeapon().getItem())))
-        ) {
             evt.setCancelled(true);
             return;
         }
@@ -200,7 +187,7 @@ public class DamageHandler implements Listener {
                         Messages.get("game.respawn-in-subtitle", "%time%", Integer.toString(time)));
 
 
-                arena.getRespawnTimer().merge(player, ++time, Integer::sum);
+                arena.getRespawnTimer().merge(player, -1, Integer::sum);
             }
 
         }.runTaskTimer(MinigamesAPI.getPlugin(), 0, 20));
