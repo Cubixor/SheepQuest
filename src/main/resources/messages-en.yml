@@ -1,4 +1,4 @@
-# SheepQuest plugin messages file (messages.yml) - English
+# SheepQuest plugin messages file (messages-en.yml) - English
 #
 # This file contains all plugin messages. Edit them as you like!
 #
@@ -755,3 +755,6 @@ staff-menu:
   back-item-name: "&eBack"
   back-item-lore:
     - "&7Go back to arenas menu."
+
+
+messages-version: 2.0

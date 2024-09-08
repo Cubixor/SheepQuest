@@ -9,6 +9,7 @@ import me.cubixor.minigamesapi.spigot.config.ConfigManager;
 import me.cubixor.minigamesapi.spigot.game.ArenasRegistry;
 import me.cubixor.minigamesapi.spigot.game.ChatBlocker;
 import me.cubixor.minigamesapi.spigot.game.SignManager;
+import me.cubixor.minigamesapi.spigot.game.WaitingTips;
 import me.cubixor.minigamesapi.spigot.game.inventories.MenuHandler;
 import me.cubixor.minigamesapi.spigot.game.items.ItemHandler;
 import me.cubixor.minigamesapi.spigot.sockets.PacketManagerSpigot;
@@ -41,7 +42,7 @@ public class Main extends JavaPlugin {
         MinigamesAPI.INIT(this);
         PluginManager pluginManager = getServer().getPluginManager();
 
-        ConfigManager configManager = new ConfigManager(SQStatsField.getAllFields());
+        ConfigManager configManager = new ConfigManager(SQStatsField.getAllFields(), new String[]{"en"});
         ArenasRegistry arenasRegistry = new ArenasRegistry();
         SQItemsRegistry itemsRegistry = new SQItemsRegistry();
         PacketSenderSpigot packetSender = new PacketSenderSpigot(configManager.getConnectionConfig());
@@ -54,6 +55,8 @@ public class Main extends JavaPlugin {
         ItemHandler itemHandler = new ItemHandler(arenasManager, itemsRegistry);
         MenuHandler menuHandler = new MenuHandler(arenasRegistry);
         ChatBlocker chatBlocker = new ChatBlocker(arenasRegistry);
+        WaitingTips waitingTips = new WaitingTips();
+        waitingTips.runTipTask(arenasRegistry);
         SQSetupChecker arenaSetupChecker = new SQSetupChecker(configManager.getArenasConfigManager());
 
         List<CommandArgument> args = Stream.concat(
