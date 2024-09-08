@@ -4,7 +4,7 @@
 #
 # Remember NOT to edit placeholders (marked with "%" character).
 #
-# You can use /sq reload command to reload modified files without restarting server.
+# You can use /sq reload command to reload modified files without restarting the server.
 
 prefix: "&8&l| &9&lSQ &8&l|&r"
 
@@ -35,7 +35,6 @@ general:
   state-offline: "&4&lOFFLINE"
   vip-prefix: "&7[&6&lVIP&7] "
   too-fast: "%prefix% &cToo fast!"
-  no-one: "&8No one"
   invalid-player: "%prefix% &cThis player has never played SheepQuest before!"
 other:
   stats-command-usage: "%prefix% &cWrong use! &7Type: &e/sq stats &a[player]"
@@ -138,6 +137,9 @@ help:
 bungee:
   not-on-server: "%prefix% &cYou have to be on the same server as arena to do this!"
   arena-offline: "%prefix% &cArena &e%arena% &cis offline!"
+  kick-message: "%prefix% &cYou cannot join this arena right now"
+  leave-message: "%prefix% &7Left the minigame"
+  motd: "&9&lMGAPI &7&l» %?vip?%&d&l%arena% \n&7&l│ %state% &7&l│ &7&l» &e&l%count%&7/&e&l%max% "
 game:
   arena-join-vip: "%prefix% &cThis arena is available only for VIPs!"
   arena-join-usage: "%prefix% &cWrong use! &7Type: &e/sq join &d<arena>"
@@ -151,6 +153,7 @@ game:
   quick-join-no-games-found: "%prefix% &cThere are no games that you could join now. Try again later."
   countdown-started: "%prefix% &7Countdown has started. The game will begin soon."
   full-countdown: "%prefix% &7Arena is full! Waiting time has been reduced to &e%time% seconds&7."
+  stopped-one-player: "%prefix% &cThe game was stopped because everyone except you left!"
   countdown-60s-title: "&a&l60"
   countdown-60s-subtitle: "&7Waiting for more players..."
   countdown-30s-title: "&a&l30"
@@ -177,18 +180,6 @@ game:
   already-in-this-team: "%prefix% &cYou are already in team %team%&c!"
   bossbar-team: "&7Team: %team%"
   team-full: "%prefix% &cTeam %team% &cis full!"
-  team-menu-team-red: "&c&lTeam red"
-  team-menu-team-green: "&a&lTeam green"
-  team-menu-team-blue: "&9&lTeam blue"
-  team-menu-team-yellow: "&e&lTeam yellow"
-  team-menu-team-orange: "&6&lTeam orange"
-  team-menu-team-dark_green: "&2&lTeam dark green"
-  team-menu-team-cyan: "&3&lTeam cyan"
-  team-menu-team-light_blue: "&b&lTeam light blue"
-  team-menu-team-pink: "&d&lTeam pink"
-  team-menu-team-purple: "&5&lTeam purple"
-  team-menu-team-gray: "&8&lTeam gray"
-  team-menu-team-black: "&0&lTeam black"
   team-menu-team-random: "&7&lRandom team"
   team-menu-team-random-lore:
     - "&7Click to join random team"
@@ -280,7 +271,6 @@ game:
     - "&d&lThanks for playing!"
     - "&m---------------------------------------------------"
   summary-points: "&7&l| %team%&7: %points% &7&l| "
-  stopped-one-player: "%prefix% &cThe game was stopped because everyone except you left!"
 kits:
   already-selected: "%prefix% &cYou have this kit already selected!"
   choose-success: "%prefix% &7You have selected kit %kit%!"
@@ -410,8 +400,7 @@ arena-setup:
   create-usage: "%prefix% &cWrong use! &7Type: &e/sq create &d<arena>"
   create-already-exists: "%prefix% &cArena named &e%arena% &calready exists!"
   delete-success: "%prefix% &7Arena &e%arena% &7was deleted succesfully!"
-  delete-confirm: "%prefix% &cAre you sure you want to delete &e%arena% &carena? &7To confirm type &e/sq confirm &7in the next 20 seconds. &c&lTHIS CANNOT BE UNDONE!"
-  delete-confirm-none: "%prefix% &cThere is nothing you can confirm!"
+  delete-confirm: "%prefix% &cAre you sure you want to delete &e%arena% &carena? &7To confirm retype the &e/sq delete %arena% &7command. &c&lTHIS CANNOT BE UNDONE!"
   delete-usage: "%prefix% &cWrong use! &7Type: &e/sq delete &d<arena>"
   delete-not-exists: "%prefix% &cArena named &e%arena% &cdoes not exists!"
   set-main-lobby-usage: "%prefix% &cWrong use! &7Type: &e/sq setmainlobby &d<arena>"
@@ -452,8 +441,6 @@ arena-setup:
     - "   &7Other available teams: %teams-available%"
   check-set: "&aSet!"
   check-notset: "&cNot set!"
-  check-yes: "&aYes!"
-  check-no: "&cNo!"
   check-usage: "%prefix% &cWrong use! &7Type &e/sq check &d<arena>"
   check-ready: "&a&lArena is configured and it is ready to use!"
   check-not-ready: "&c&lArena is not ready to play yet!"
