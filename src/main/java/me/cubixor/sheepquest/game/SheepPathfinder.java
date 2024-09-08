@@ -59,12 +59,15 @@ public class SheepPathfinder {
 
                 if (!inRegion && wasInRegion) {
                     pathfinding.clearGoals(entityInsentient);
-                    pathfinding.addWalkToLocationGoal(entityInsentient, teamRegion.getMiddle(), speed);
                     wasInRegion = false;
                 } else if (inRegion && !wasInRegion) {
                     pathfinding.clearGoals(entityInsentient);
                     pathfinding.addOtherGoals(entityInsentient);
                     wasInRegion = true;
+                }
+
+                if (!inRegion) {
+                    pathfinding.addWalkToLocationGoal(entityInsentient, teamRegion.getMiddle(), speed);
                 }
             }
         }.runTaskTimer(MinigamesAPI.getPlugin(), 0, 10);
