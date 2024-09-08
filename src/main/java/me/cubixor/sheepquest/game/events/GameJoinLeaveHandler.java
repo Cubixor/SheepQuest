@@ -28,15 +28,14 @@ public class GameJoinLeaveHandler implements Listener {
         SQArena arena = (SQArena) evt.getLocalArena();
 
         arena.getPlayerTeam().put(player, Team.NONE);
-        arena.getPlayerKit().put(player, KitType.STANDARD);
+        arena.getPlayerKit().put(player, KitType.getFirstEnabled());
         bossBarManager.addPlayer(player, Team.NONE);
 
         if (MinigamesAPI.getPlugin().getConfig().getBoolean("allow-team-choosing")) {
             itemsRegistry.getTeamItem().give(player);
         }
-        if (MinigamesAPI.getPlugin().getConfig().getBoolean("kits.enabled")) {
-            itemsRegistry.getKitsItem().give(player);
-        }
+
+        itemsRegistry.getKitsItem().give(player);
     }
 
     @EventHandler

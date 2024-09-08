@@ -129,8 +129,11 @@ date-format: "dd/MM/yyyy"
 
 time-format: "mm:ss"
 
+# The Maximum number of sheep a player can pick up at once
 max-sheep-carried: 3
 
+# Set how far away from spawn sheep will be able to wander-off.
+# After they exceed this distance, their pathfinding will kick-in, and they will return to the spawn point [block]
 sheep-spawn-size: 10
 
 # Set how often the tip in waiting lobby will change. [seconds]
@@ -419,8 +422,6 @@ rewards:
 # Kits' settings
 # Full item list on https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
 kits:
-
-  enabled: true
 
   # Standard kit settings
   standard:

@@ -37,10 +37,6 @@ public class KitStandard extends Kit implements Listener {
 
     @EventHandler
     public void onDoubleJump(PlayerToggleFlightEvent evt) {
-        if (!getKitType().isEnabled()) {
-            return;
-        }
-
         Player player = evt.getPlayer();
         SQArena arena = (SQArena) arenasRegistry.getPlayerLocalArena(player);
 

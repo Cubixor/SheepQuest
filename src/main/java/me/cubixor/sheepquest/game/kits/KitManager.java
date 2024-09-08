@@ -14,17 +14,16 @@ public class KitManager {
     private final Map<KitType, Kit> kits = new EnumMap<>(KitType.class);
 
     public KitManager(ArenasRegistry arenasRegistry, SQItemsRegistry itemsRegistry, SheepPickupHandler sheepPickupHandler) {
-        KitStandard kitStandard = new KitStandard(arenasRegistry, itemsRegistry);
-        KitArcher kitArcher = new KitArcher(arenasRegistry, itemsRegistry);
-        KitAthlete kitAthlete = new KitAthlete(arenasRegistry, sheepPickupHandler, itemsRegistry);
+        registerKit(KitType.STANDARD, new KitStandard(arenasRegistry, itemsRegistry));
+        registerKit(KitType.ARCHER, new KitArcher(arenasRegistry, itemsRegistry));
+        registerKit(KitType.ATHLETE, new KitAthlete(arenasRegistry, sheepPickupHandler, itemsRegistry));
+    }
 
-        kits.put(KitType.STANDARD, kitStandard);
-        kits.put(KitType.ARCHER, kitArcher);
-        kits.put(KitType.ATHLETE, kitAthlete);
-
-        Bukkit.getPluginManager().registerEvents(kitStandard, MinigamesAPI.getPlugin());
-        Bukkit.getPluginManager().registerEvents(kitArcher, MinigamesAPI.getPlugin());
-        Bukkit.getPluginManager().registerEvents(kitAthlete, MinigamesAPI.getPlugin());
+    private void registerKit(KitType kitType, Kit kit) {
+        if (kitType.isEnabled()) {
+            kits.put(kitType, kit);
+            Bukkit.getPluginManager().registerEvents(kit, MinigamesAPI.getPlugin());
+        }
     }
 
     public Map<KitType, Kit> getKits() {

@@ -37,6 +37,15 @@ public enum KitType {
         return MinigamesAPI.getPlugin().getConfig().getBoolean("kits." + this + ".enabled");
     }
 
+    public static KitType getFirstEnabled() {
+        for (KitType kitType : KitType.values()) {
+            if (kitType.isEnabled()) {
+                return kitType;
+            }
+        }
+        return null;
+    }
+
     @Override
     public String toString() {
         return super.toString().toLowerCase();

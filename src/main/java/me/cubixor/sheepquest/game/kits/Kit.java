@@ -7,8 +7,9 @@ import me.cubixor.minigamesapi.spigot.game.items.GameItem;
 import me.cubixor.sheepquest.items.SQItemsRegistry;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 
-public abstract class Kit {
+public abstract class Kit implements Listener {
 
     protected final FileConfiguration config;
     protected final ArenasRegistry arenasRegistry;
