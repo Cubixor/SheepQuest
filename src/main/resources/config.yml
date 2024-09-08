@@ -131,6 +131,8 @@ time-format: "mm:ss"
 
 max-sheep-carried: 3
 
+sheep-spawn-size: 10
+
 # Set how often the tip in waiting lobby will change. [seconds]
 tip-rate: 5
 

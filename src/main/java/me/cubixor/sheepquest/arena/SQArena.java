@@ -105,10 +105,6 @@ public class SQArena extends LocalArena {
         return getTeamRegions().get(team).isInRegion(entity);
     }
 
-    public boolean isInSheepSpawn(Entity entity) {
-        return entity.getLocation().distance(getTeamRegions().get(Team.NONE).getLoc()) < 10;
-    }
-
 
     public int getTimeLeft() {
         if (!getState().equals(GameState.GAME)) return getTimer();

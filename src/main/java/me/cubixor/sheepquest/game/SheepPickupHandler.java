@@ -8,6 +8,7 @@ import me.cubixor.minigamesapi.spigot.utils.Sounds;
 import me.cubixor.sheepquest.arena.SQArena;
 import me.cubixor.sheepquest.arena.Team;
 import me.cubixor.sheepquest.items.SQItemsRegistry;
+import me.cubixor.sheepquest.utils.PassengerFix;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.entity.*;
@@ -34,10 +35,21 @@ public class SheepPickupHandler implements Listener {
     private final int cooldownTime = 1;
     private final Set<Player> cooldownPlayers = new HashSet<>();
 
-    public SheepPickupHandler(ArenasRegistry arenasRegistry, SQItemsRegistry itemsRegistry) {
+    private final SheepPathfinder sheepPathfinder;
+    private PassengerFix passengerFix;
+
+    public SheepPickupHandler(ArenasRegistry arenasRegistry, SQItemsRegistry itemsRegistry, SheepPathfinder sheepPathfinder) {
         this.arenasRegistry = arenasRegistry;
         this.itemsRegistry = itemsRegistry;
+        this.sheepPathfinder = sheepPathfinder;
         this.maxPassengers = MinigamesAPI.getPlugin().getConfig().getInt("max-sheep-carried");
+
+
+        try {
+            this.passengerFix = new PassengerFix();
+        } catch (ReflectiveOperationException e) {
+            e.printStackTrace();
+        }
     }
 
     @EventHandler
@@ -102,6 +114,8 @@ public class SheepPickupHandler implements Listener {
             if (currPass.getPassenger() == null) {
                 if (currPass.setPassenger(sheep)) {
                     pickupSheep(player, i);
+
+                    passengerFix.updatePassengers(player);
                 }
                 break;
             }
@@ -189,8 +203,7 @@ public class SheepPickupHandler implements Listener {
         } else {
             addPoint(player, (Sheep) entity);
         }*/
-        //TODO Pathfinding (!!!)
-        //Pathfinding.walkToLocation(sheep, Pathfinding.getMiddleArea(localArena.getName(), team), plugin.getConfig().getDouble("sheep-speed"), localArena, team);
+        sheepPathfinder.walkToLocation(sheep, arena.getTeamRegions().get(team), arena);
 
         sheep.setColor(team.getDyeColor());
         Sounds.playSound("sheep-bring", sheep.getLocation(), arena.getBukkitPlayers());
@@ -228,6 +241,8 @@ public class SheepPickupHandler implements Listener {
             e.eject();
         }
         player.eject();
+
+        passengerFix.updatePassengers(player);
 
         return carried;
     }

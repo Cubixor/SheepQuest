@@ -7,20 +7,23 @@ import me.cubixor.minigamesapi.spigot.game.arena.GameState;
 import me.cubixor.minigamesapi.spigot.utils.Particles;
 import me.cubixor.minigamesapi.spigot.utils.Sounds;
 import me.cubixor.sheepquest.arena.SQArena;
+import me.cubixor.sheepquest.arena.SheepRegion;
 import me.cubixor.sheepquest.config.SQConfigField;
+import me.cubixor.sheepquest.game.SheepPathfinder;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Sheep;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.scheduler.BukkitRunnable;
 
 public class SheepSpawner implements Listener {
 
     private final ArenasConfigManager arenasConfigManager;
+    private final SheepPathfinder sheepPathfinder;
 
-    public SheepSpawner(ArenasConfigManager arenasConfigManager) {
+    public SheepSpawner(ArenasConfigManager arenasConfigManager, SheepPathfinder sheepPathfinder) {
         this.arenasConfigManager = arenasConfigManager;
+        this.sheepPathfinder = sheepPathfinder;
     }
 
     @EventHandler
@@ -49,13 +52,6 @@ public class SheepSpawner implements Listener {
         Sounds.playSound("sheep-spawn", loc, arena.getBukkitPlayers());
         Particles.spawnParticle(loc.add(0, 1, 0), "sheep-spawn");
 
-        arena.getSheep().put(sheep, new BukkitRunnable() {
-            @Override
-            public void run() {
-                //TODO TODO TODO
-            }
-        }.runTask(MinigamesAPI.getPlugin()));
-        //TODO Pathfinding
-        //Pathfinding.walkToLocation(sheep, loc, plugin.getConfig().getDouble("sheep-speed"), arena, Team.NONE);
+        sheepPathfinder.walkToLocation(sheep, new SheepRegion(loc, MinigamesAPI.getPlugin().getConfig().getInt("sheep-spawn-size")), arena);
     }
 }

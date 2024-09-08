@@ -20,6 +20,7 @@ import me.cubixor.sheepquest.commands.impl.*;
 import me.cubixor.sheepquest.config.SQStatsField;
 import me.cubixor.sheepquest.game.BossBarManager;
 import me.cubixor.sheepquest.game.SQArenaProtection;
+import me.cubixor.sheepquest.game.SheepPathfinder;
 import me.cubixor.sheepquest.game.SheepPickupHandler;
 import me.cubixor.sheepquest.game.events.*;
 import me.cubixor.sheepquest.game.kits.KitManager;
@@ -70,14 +71,15 @@ public class Main extends JavaPlugin {
         getServer().getPluginCommand(getName()).setExecutor(mainCommand);
         getServer().getPluginCommand(getName()).setTabCompleter(mainCommandCompleter);
 
-        SheepPickupHandler sheepPickupHandler = new SheepPickupHandler(arenasRegistry, itemsRegistry);
+        SheepPathfinder sheepPathfinder = new SheepPathfinder();
+        SheepPickupHandler sheepPickupHandler = new SheepPickupHandler(arenasRegistry, itemsRegistry, sheepPathfinder);
         KitManager kitManager = new KitManager(arenasRegistry, itemsRegistry, sheepPickupHandler);
 
         GameJoinLeaveHandler gameJoinLeaveHandler = new GameJoinLeaveHandler(itemsRegistry, bossBarManager);
         GameStartHandler gameStartHandler = new GameStartHandler(arenasManager, kitManager, bossBarManager);
         GameEndHandler gameEndHandler = new GameEndHandler(configManager.getStatsManager());
         GameResetHandler gameResetHandler = new GameResetHandler();
-        SheepSpawner sheepSpawner = new SheepSpawner(arenasManager.getConfigManager());
+        SheepSpawner sheepSpawner = new SheepSpawner(arenasManager.getConfigManager(), sheepPathfinder);
         ScoreboardFormatter scoreboardFormatter = new ScoreboardFormatter();
         DamageHandler damageHandler = new DamageHandler(arenasManager, kitManager, sheepPickupHandler);
 

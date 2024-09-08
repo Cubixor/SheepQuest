@@ -4,19 +4,16 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 
-public class TeamRegion {
+public class TeamRegion implements Region {
 
-    World world;
-
-    double bxMin;
-    double byMin;
-    double bzMin;
-
-    double bxMax;
-    double byMax;
-    double bzMax;
-
-    Location loc;
+    private final World world;
+    private final Location mid;
+    private final double bxMin;
+    private final double byMin;
+    private final double bzMin;
+    private final double bxMax;
+    private final double byMax;
+    private final double bzMax;
 
     public TeamRegion(Location[] area) {
         Location min = area[0];
@@ -54,6 +51,11 @@ public class TeamRegion {
             bzMin = b2z - 1;
             bzMax = b1z + 1;
         }
+
+        double midX = (bxMin + bxMax) / 2;
+        double midY = (byMin + byMax) / 2;
+        double midZ = (bzMin + bzMax) / 2;
+        mid = new Location(world, midX, midY, midZ);
     }
 
     public boolean isInRegion(Entity entity) {
@@ -77,7 +79,7 @@ public class TeamRegion {
 
     }
 
-    public Location getLoc() {
-        return loc;
+    public Location getMiddle() {
+        return mid;
     }
 }
