@@ -34,6 +34,8 @@ import java.util.stream.Stream;
 
 public class Main extends JavaPlugin {
 
+    private SQArenasManager arenasManager;
+
     @Override
     public void onEnable() {
         MinigamesAPI.INIT(this);
@@ -46,7 +48,7 @@ public class Main extends JavaPlugin {
         SignManager signManager = new SignManager(configManager.getArenasConfigManager(), arenasRegistry);
         BossBarManager bossBarManager = new BossBarManager();
         SQArenaFactory arenaFactory = new SQArenaFactory(bossBarManager);
-        SQArenasManager arenasManager = new SQArenasManager(arenasRegistry, configManager.getArenasConfigManager(), signManager, packetSender, configManager.getStatsManager(), itemsRegistry, arenaFactory);
+        arenasManager = new SQArenasManager(arenasRegistry, configManager.getArenasConfigManager(), signManager, packetSender, configManager.getStatsManager(), itemsRegistry, arenaFactory);
         PacketManagerSpigot packetManager = new PacketManagerSpigot(arenasManager, packetSender);
         SQArenaProtection arenaProtection = new SQArenaProtection(arenasManager);
         ItemHandler itemHandler = new ItemHandler(arenasManager, itemsRegistry);
@@ -93,5 +95,10 @@ public class Main extends JavaPlugin {
         pluginManager.registerEvents(damageHandler, this);
 
         MinigamesAPI.registerPAPI(arenasRegistry, configManager.getStatsManager());
+    }
+
+    @Override
+    public void onDisable() {
+        MinigamesAPI.disable(arenasManager);
     }
 }

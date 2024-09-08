@@ -46,8 +46,8 @@ public class GameJoinLeaveHandler implements Listener {
 
         arena.getPlayerTeam().remove(player);
         arena.getPlayerKit().remove(player);
+        arena.getRespawnTimer().remove(player);
+        arena.getPlayerGameStats().remove(player);
         bossBarManager.removePlayer(player);
-
-        //TODO Respawn
     }
 }

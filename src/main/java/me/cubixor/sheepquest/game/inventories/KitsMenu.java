@@ -52,7 +52,6 @@ public class KitsMenu extends Menu {
         }
 
         sqArena.getPlayerKit().replace(player, kitType);
-        //TODO Scoreboard update
 
         Sounds.playSound("click", player);
         Messages.send(player, "kits.choose-success", "%kit%", kitType.getName());

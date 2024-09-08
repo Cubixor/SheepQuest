@@ -177,8 +177,7 @@ public class SheepPickupHandler implements Listener {
         Team team = arena.getPlayerTeam().get(player);
 
         //boolean specialSheep = BonusEntity.isCarrying(entity);
-        //TODO Add stats, special sheep
-        //localArena.getPlayerStats().get(player).setSheepTaken(localArena.getPlayerStats().get(player).getSheepTaken() + 1);
+        arena.getPlayerGameStats().get(player).addSheepTaken();
 
         player.removePotionEffect(PotionEffectType.SLOW);
 
@@ -266,6 +265,6 @@ public class SheepPickupHandler implements Listener {
             public void run() {
                 cooldownPlayers.remove(player);
             }
-        }.runTaskLater(MinigamesAPI.getPlugin(), cooldownTime * 20);
+        }.runTaskLater(MinigamesAPI.getPlugin(), cooldownTime * 20L);
     }
 }

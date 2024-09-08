@@ -56,6 +56,26 @@ public enum Team {
         }
     }
 
+    public static Team getByWool(XMaterial material) {
+        if (material.toString().toUpperCase().contains("WOOL")) {
+            for (Team team : Team.values()) {
+                if (material.equals(team.getWool())) {
+                    return team;
+                }
+            }
+        }
+        return Team.NONE;
+    }
+
+    public static Team getByDyeColor(DyeColor color) {
+        for (Team team : Team.values()) {
+            if (color.equals(team.getDyeColor())) {
+                return team;
+            }
+        }
+        return Team.NONE;
+    }
+
     @Override
     public String toString() {
         return super.toString().toLowerCase();
@@ -91,26 +111,6 @@ public enum Team {
 
     public Color getColor() {
         return getDyeColor().getColor();
-    }
-
-    public static Team getByWool(XMaterial material) {
-        if (material.toString().toUpperCase().contains("WOOL")) {
-            for (Team team : Team.values()) {
-                if (material.equals(team.getWool())) {
-                    return team;
-                }
-            }
-        }
-        return Team.NONE;
-    }
-
-    public static Team getByDyeColor(DyeColor color) {
-        for (Team team : Team.values()) {
-            if (color.equals(team.getDyeColor())) {
-                return team;
-            }
-        }
-        return Team.NONE;
     }
 }
 

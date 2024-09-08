@@ -11,7 +11,6 @@ import me.cubixor.minigamesapi.spigot.game.arena.GameState;
 import me.cubixor.minigamesapi.spigot.utils.Messages;
 import me.cubixor.minigamesapi.spigot.utils.Particles;
 import me.cubixor.minigamesapi.spigot.utils.Sounds;
-import me.cubixor.sheepquest.arena.PlayerGameStats;
 import me.cubixor.sheepquest.arena.SQArena;
 import me.cubixor.sheepquest.config.SQConfigField;
 import me.cubixor.sheepquest.game.SheepPickupHandler;
@@ -146,10 +145,8 @@ public class DamageHandler implements Listener {
         Location killLoc = player.getLocation().add(0, 3, 0);
         player.teleport(killLoc);
 
-        PlayerGameStats playerGameStats = arena.getPlayerGameStats().get(player);
-        playerGameStats.setDeaths(playerGameStats.getDeaths() + 1);
-        PlayerGameStats attackerGameStats = arena.getPlayerGameStats().get(attacker);
-        attackerGameStats.setKills(attackerGameStats.getKills() + 1);
+        arena.getPlayerGameStats().get(player).addDeath();
+        arena.getPlayerGameStats().get(attacker).addKill();
 
         respawnTimer(player, attacker, arena);
     }
