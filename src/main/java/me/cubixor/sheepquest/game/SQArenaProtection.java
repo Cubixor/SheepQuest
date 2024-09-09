@@ -4,9 +4,9 @@ import me.cubixor.minigamesapi.spigot.game.ArenaProtection;
 import me.cubixor.minigamesapi.spigot.game.ArenasManager;
 import me.cubixor.minigamesapi.spigot.game.arena.LocalArena;
 import me.cubixor.sheepquest.arena.SQArena;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Sheep;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -25,10 +25,15 @@ public class SQArenaProtection extends ArenaProtection {
 
     @EventHandler
     public void onSheepHurt(EntityDamageEvent evt) {
-        if (!evt.getEntityType().equals(EntityType.SHEEP)) {
+        if (evt.getEntityType().equals(EntityType.PLAYER)) {
+            if (!evt.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK)
+                    && !evt.getCause().equals(EntityDamageEvent.DamageCause.PROJECTILE)) {
+                evt.setCancelled(true);
+            }
+
             return;
         }
-        cancelForEntity((Sheep) evt.getEntity(), evt);
+        cancelForEntity(evt.getEntity(), evt);
     }
 
     @Override
@@ -66,10 +71,10 @@ public class SQArenaProtection extends ArenaProtection {
         evt.getPlayer().updateInventory();
     }
 
-    private void cancelForEntity(Sheep sheep, Cancellable evt) {
+    private void cancelForEntity(Entity entity, Cancellable evt) {
         for (LocalArena localArena : arenasManager.getRegistry().getLocalArenas().values()) {
             SQArena arena = (SQArena) localArena;
-            if (arena.getSheep().containsKey(sheep)) {
+            if (arena.getSheep().containsKey(entity)) {
                 evt.setCancelled(true);
                 return;
             }

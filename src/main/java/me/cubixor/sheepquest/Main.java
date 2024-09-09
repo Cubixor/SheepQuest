@@ -82,7 +82,7 @@ public class Main extends JavaPlugin {
 
         GameJoinLeaveHandler gameJoinLeaveHandler = new GameJoinLeaveHandler(itemsRegistry, bossBarManager);
         GameStartHandler gameStartHandler = new GameStartHandler(arenasManager, kitManager, bossBarManager);
-        GameEndHandler gameEndHandler = new GameEndHandler(configManager.getStatsManager());
+        GameEndHandler gameEndHandler = new GameEndHandler(configManager.getStatsManager(), sheepPickupHandler);
         GameResetHandler gameResetHandler = new GameResetHandler();
         SheepSpawner sheepSpawner = new SheepSpawner(arenasManager.getConfigManager(), sheepPathfinder);
         ScoreboardFormatter scoreboardFormatter = new ScoreboardFormatter();

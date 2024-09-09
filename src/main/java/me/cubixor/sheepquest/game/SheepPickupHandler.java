@@ -103,6 +103,10 @@ public class SheepPickupHandler implements Listener {
             if (arena.getBonusEntity().get(e).equals(team)) {
                 return;
             }
+            if (player.getPassenger() != null) {
+                return;
+            }
+
         } else {
             if (!(e instanceof Sheep)) return;
             Sheep sheep = (Sheep) e;
@@ -232,7 +236,7 @@ public class SheepPickupHandler implements Listener {
         arena.getPoints().merge(team, points, Integer::sum);
         arena.getBonusEntity().replace(entity, team);
 
-        arena.getPlayerGameStats().get(player).addSheepTaken();
+        arena.getPlayerGameStats().get(player).addBonusSheepTaken();
 
         Sounds.playSound("bonus-sheep-bring", player.getLocation(), arena.getBukkitPlayers());
         Particles.spawnParticle(player.getLocation().add(0, 1.5, 0), "bonus-sheep-bring");

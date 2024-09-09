@@ -571,7 +571,7 @@ bonus-sheep:
   color: MAGENTA
 
   # Bonus sheep speed. [float]
-  speed: 3.0
+  speed: 2.5
 
   # Bonus sheep points [number]
   points: 3

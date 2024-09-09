@@ -165,6 +165,12 @@ public class DamageHandler implements Listener {
                     return;
                 }
 
+                if (!arena.getState().equals(GameState.GAME)) {
+                    removeDeathEffects(arena, player);
+                    this.cancel();
+                    return;
+                }
+
                 int time = arena.getRespawnTimer().get(player);
 
                 if (time <= 0) {
@@ -190,8 +196,8 @@ public class DamageHandler implements Listener {
         }.runTaskTimer(MinigamesAPI.getPlugin(), 0, 20));
     }
 
-    public void respawn(SQArena arena, Player player) {
-        player.teleport(arenasConfigManager.getLocation(arena.getName(), SQConfigField.SPAWN, arena.getPlayerTeam().get(player).toString()));
+    public void removeDeathEffects(SQArena arena, Player player) {
+        arena.getRespawnTimer().remove(player);
 
         player.setAllowFlight(false);
         player.setFlying(false);
@@ -201,14 +207,16 @@ public class DamageHandler implements Listener {
         for (Player p : arena.getBukkitPlayers()) {
             p.showPlayer(player);
         }
+    }
 
+    public void respawn(SQArena arena, Player player) {
+        removeDeathEffects(arena, player);
+
+        player.teleport(arenasConfigManager.getLocation(arena.getName(), SQConfigField.SPAWN, arena.getPlayerTeam().get(player).toString()));
         kitManager.getKits().get(arena.getPlayerKit().get(player)).giveKit(player);
 
         Titles.sendTitle(player, 0, 40, 10, Messages.get("game.respawned-title"), Messages.get("game.respawned-subtitle"));
         Sounds.playSound("respawn", player);
         Particles.spawnParticle(player.getLocation().add(0, 1.5, 0), "respawn");
-
-
-        arena.getRespawnTimer().remove(player);
     }
 }
