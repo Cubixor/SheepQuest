@@ -3,6 +3,7 @@ package me.cubixor.sheepquest.game.kits;
 import me.cubixor.minigamesapi.spigot.MinigamesAPI;
 import me.cubixor.minigamesapi.spigot.game.ArenasRegistry;
 import me.cubixor.minigamesapi.spigot.game.arena.GameState;
+import me.cubixor.minigamesapi.spigot.utils.Messages;
 import me.cubixor.minigamesapi.spigot.utils.Particles;
 import me.cubixor.minigamesapi.spigot.utils.Sounds;
 import me.cubixor.sheepquest.arena.SQArena;
@@ -136,6 +137,7 @@ public class KitAthlete extends Kit implements Listener {
 
     private void launchNearbyPlayers(Player player, SQArena arena) {
         if (athleteCooldown.contains(player)) {
+            Messages.send(player, "kits.cooldown");
             return;
         }
 

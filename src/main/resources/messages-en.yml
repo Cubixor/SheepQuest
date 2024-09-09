@@ -276,6 +276,7 @@ game:
 kits:
   already-selected: "%prefix% &cYou have this kit already selected!"
   choose-success: "%prefix% &7You have selected kit %kit%!"
+  cooldown: "%prefix% &7You need to wait before using this again!"
   bossbar-kit: "&7Kit: %kit%"
   standard: "&e&lStandard"
   archer: "&e&lArcher"
