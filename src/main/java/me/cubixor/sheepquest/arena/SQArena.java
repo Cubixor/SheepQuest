@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 public class SQArena extends LocalArena {
 
+    private final Random random = new Random();
     private final Map<Player, Team> playerTeam = new HashMap<>();
     private final Map<Player, KitType> playerKit = new HashMap<>();
     private final Map<Team, Integer> points = new EnumMap<>(Team.class);
@@ -20,9 +21,9 @@ public class SQArena extends LocalArena {
     private final Map<Player, Integer> respawnTimer = new HashMap<>();
     private final Map<Team, TeamRegion> teamRegions;
     private final Map<Player, PlayerGameStats> playerGameStats = new HashMap<>();
+    private final Map<Entity, Team> bonusEntity = new HashMap<>();
     private int sheepTimer = 1;
-    //private SpecialEventsData specialEventsData;
-
+    private int nextBonusSheepTime = -1;
 
     public SQArena(String name, String server) {
         super(name, server);
@@ -32,16 +33,6 @@ public class SQArena extends LocalArena {
     public SQArena(String name, String server, boolean active, boolean vip, int minPlayers, int maxPlayers, Map<Team, TeamRegion> teamRegions) {
         super(name, server, active, vip, minPlayers, maxPlayers);
         this.teamRegions = teamRegions;
-    }
-
-    public void resetArena() {
-        playerTeam.clear();
-        playerKit.clear();
-        points.clear();
-        sheep.clear();
-        respawnTimer.clear();
-        playerGameStats.clear();
-        sheepTimer = 1;
     }
 
     public Map<Player, Team> getPlayerTeam() {
@@ -78,6 +69,34 @@ public class SQArena extends LocalArena {
 
     public Map<Player, PlayerGameStats> getPlayerGameStats() {
         return playerGameStats;
+    }
+
+    public void resetArena() {
+        playerTeam.clear();
+        playerKit.clear();
+        points.clear();
+        sheep.clear();
+        respawnTimer.clear();
+        playerGameStats.clear();
+        bonusEntity.clear();
+        sheepTimer = 1;
+        nextBonusSheepTime = -1;
+    }
+
+    public Map<Entity, Team> getBonusEntity() {
+        return bonusEntity;
+    }
+
+    public int getNextBonusSheepTime() {
+        return nextBonusSheepTime;
+    }
+
+    public void setNextBonusSheepTime() {
+        String[] rateString = MinigamesAPI.getPlugin().getConfig().getString("bonus-sheep.rate").split("-");
+        int rate1 = Integer.parseInt(rateString[0]);
+        int rate2 = Integer.parseInt(rateString[1]);
+
+        nextBonusSheepTime = random.nextInt(rate2 - rate1 + 1) + rate1;
     }
 
     public List<Team> getTeams() {

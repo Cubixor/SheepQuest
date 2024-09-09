@@ -551,35 +551,30 @@ kits:
     launch-players-cooldown: 10
 
 
-# All special game events' settings
-special-events:
+# Bonus sheep settings
+bonus-sheep:
 
-  # Should special game events be enabled? [true/false]
+  # Should it be enabled? [true/false]
   enabled: true
 
-  # How often should special game event perform?
-  # For example, if set to 40-60, special game event will perform every random amount of time between 40 and 60 seconds. [minSeconds-maxSeconds]
+  # How often should bonus sheep spawn?
+  # For example, if set to 40-60, bonus sheep will spawn every random amount of time between 40 and 60 seconds. [minSeconds-maxSeconds]
   rate: 40-60
 
-  # Bonus sheep settings
-  bonus-sheep:
+  # Bonus entity type. List of entity types: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/entity/EntityType.html [entity type]
+  entity-type: SHEEP
 
-    # Should it be enabled? [true/false]
-    enabled: true
+  # Bonus sheep color.
+  # List of colors: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/DyeColor.html [color]
+  # It will affect an entity only when it's a sheep.
+  # WARNING! Do not use a color of a team added to the arena to avoid bugs!
+  color: MAGENTA
 
-    # Bonus entity type. List of entity types: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/entity/EntityType.html [entity type]
-    entity-material: SHEEP
+  # Bonus sheep speed. [float]
+  speed: 3.0
 
-    # Bonus sheep color. List of colors: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/DyeColor.html [color]
-    # It's also the bonus entity firework color.
-    # It will affect an entity only when it's a sheep.
-    color: MAGENTA
-
-    # Bonus sheep speed. [float]
-    speed: 3.0
-
-    # Bonus sheep points [number]
-    points: 3
+  # Bonus sheep points [number]
+  points: 3
 
 
 # Config version - DO NOT CHANGE IT!

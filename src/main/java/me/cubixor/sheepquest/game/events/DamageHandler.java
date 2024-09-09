@@ -86,7 +86,7 @@ public class DamageHandler implements Listener {
 
     public boolean damagePlayer(Player player, Player attacker, SQArena arena, double damage) {
         sheepPickupHandler.addCooldown(player);
-        sheepPickupHandler.removeSheep(player);
+        sheepPickupHandler.removePassengers(player);
 
         Location loc = player.getLocation().add(0, 1, 0);
         Particles.dropBlood(loc);

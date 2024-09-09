@@ -47,7 +47,7 @@ other:
     - "  &aKills: &e%kills%"
     - "  &aDeaths: &e%deaths%"
     - "  &aSheep taken: &e%sheep%"
-    - "  &aBonus sheep taken: &e%bonus-sheep%"
+    - "  &aBonus sheep taken: &e%bonus_sheep%"
     - "  &aPlaytime: &e%playtime%"
     - "&m---------------------------------------------------"
   stats-playtime-hours: "h"
@@ -271,6 +271,8 @@ game:
     - "&d&lThanks for playing!"
     - "&m---------------------------------------------------"
   summary-points: "&7&l| %team%&7: %points% &7&l| "
+  bonus-sheep-name: "&d&l%points% &f&lPOINTS"
+  bonus-sheep-spawn: "%prefix% &7The &d&lBONUS SHEEP &7has spawned!"
 kits:
   already-selected: "%prefix% &cYou have this kit already selected!"
   choose-success: "%prefix% &7You have selected kit %kit%!"
@@ -361,9 +363,6 @@ kits:
   arrow-lore:
     - "&7You will receive an arrow"
     - "&7every 5 seconds."
-special-events:
-  bonus-sheep-name: "&d&l%points% &f&lPOINTS"
-  bonus-sheep-spawn: "%prefix% &7The &d&lBONUS SHEEP &7has spawned!"
 arena-moderate:
   force-start-usage: "%prefix% &cWrong use! &7Type: &e/sq forcestart &d<arena>"
   force-start-already-started: "%prefix% &cArena &e%arena% &chas already started!"

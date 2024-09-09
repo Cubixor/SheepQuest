@@ -31,8 +31,9 @@ public class SheepPickupHandler implements Listener {
     private final ArenasRegistry arenasRegistry;
     private final SQItemsRegistry itemsRegistry;
 
-    private final int maxPassengers;
     private final int cooldownTime = 1;
+    private final int maxPassengers;
+
     private final Set<Player> cooldownPlayers = new HashSet<>();
 
     private final SheepPathfinder sheepPathfinder;
@@ -93,29 +94,26 @@ public class SheepPickupHandler implements Listener {
         if (!e.isOnGround()) return;
         if (isCarried(e, arena)) return;
 
-        //TODO BonusEntity
-        /*BonusEntity bonusEntity = new BonusEntity();
-        if (bonusEntity.pickupEntity(player, (LivingEntity) e)) {
-            continue;
-        }
-        if (player.getPassenger() != null && BonusEntity.isCarrying((LivingEntity) player.getPassenger())) {
-            return;
-        }*/
-
-        if (!(e instanceof Sheep)) return;
+        if (isCarryingBonusEntity(player)) return;
 
         Team team = arena.getPlayerTeam().get(player);
-        Sheep sheep = (Sheep) e;
+        boolean isBonusSheep = isBonusEntity(e);
 
-        if (team.equals(Team.getByDyeColor(sheep.getColor()))) return;
+        if (isBonusSheep) {
+            if (arena.getBonusEntity().get(e).equals(team)) {
+                return;
+            }
+        } else {
+            if (!(e instanceof Sheep)) return;
+            Sheep sheep = (Sheep) e;
+            if (team.equals(Team.getByDyeColor(sheep.getColor()))) return;
+        }
 
         Entity currPass = player;
         for (int i = 0; i < maxPassengers; i++) {
             if (currPass.getPassenger() == null) {
-                if (currPass.setPassenger(sheep)) {
-                    pickupSheep(player, i);
-
-                    passengerFix.updatePassengers(player);
+                if (currPass.setPassenger(e)) {
+                    pickupSheep(player, arena, i, isBonusSheep);
                 }
                 break;
             }
@@ -124,11 +122,17 @@ public class SheepPickupHandler implements Listener {
         }
     }
 
-    private void pickupSheep(Player player, int id) {
+    private void pickupSheep(Player player, SQArena arena, int id, boolean bonus) {
         Sounds.playSound("sheep-pick", player);
         if (MinigamesAPI.getPlugin().getConfig().getBoolean("effects.sheep-slowness")) {
-            player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 9999999, id, false, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 9999999, bonus ? 2 : id, false, false));
         }
+
+        if (bonus) {
+            carryingParticles(player, arena);
+        }
+
+        passengerFix.updatePassengers(player);
     }
 
 
@@ -163,28 +167,25 @@ public class SheepPickupHandler implements Listener {
 
                 if (!arena.isInRegion(player, arena.getPlayerTeam().get(player))) return;
 
-                List<Entity> sheep = removeSheep(player);
+                List<Entity> sheep = removePassengers(player);
 
                 for (Entity e : sheep) {
-                    bringSheep(player, (Sheep) e, arena);
+                    bringEntity(player, e, arena);
                 }
 
             }
         }.runTaskLater(MinigamesAPI.getPlugin(), 10));
     }
 
-    public void bringSheep(Player player, Sheep sheep, SQArena arena) {
+    public void bringEntity(Player player, Entity entity, SQArena arena) {
         Team team = arena.getPlayerTeam().get(player);
-
-        //boolean specialSheep = BonusEntity.isCarrying(entity);
-        arena.getPlayerGameStats().get(player).addSheepTaken();
 
         player.removePotionEffect(PotionEffectType.SLOW);
 
-        Firework firework = (Firework) sheep.getWorld().spawnEntity(sheep.getLocation(), EntityType.FIREWORK);
+        Firework firework = (Firework) entity.getWorld().spawnEntity(entity.getLocation(), EntityType.FIREWORK);
         FireworkMeta fwm = firework.getFireworkMeta();
         FireworkEffect.Type type = FireworkEffect.Type.BALL;
-        Color color = /*specialSheep ? DyeColor.valueOf(MinigamesAPI.getPlugin().getConfig().getString("special-events.bonus-sheep.color")).getColor() :*/ team.getColor();
+        Color color = team.getColor();
         FireworkEffect fwe = FireworkEffect.builder()
                 .flicker(true)
                 .withColor(color)
@@ -195,18 +196,11 @@ public class SheepPickupHandler implements Listener {
         fwm.setPower(1);
         firework.setFireworkMeta(fwm);
 
-        addPoint(player, sheep, arena);
-
-        /*if (specialSheep) {
-            new BonusEntity().bringEntity(player, entity);
+        if (isBonusEntity(entity)) {
+            addBonusPoint(player, (LivingEntity) entity, arena);
         } else {
-            addPoint(player, (Sheep) entity);
-        }*/
-        sheepPathfinder.walkToLocation(sheep, arena.getTeamRegions().get(team), arena);
-
-        sheep.setColor(team.getDyeColor());
-        Sounds.playSound("sheep-bring", sheep.getLocation(), arena.getBukkitPlayers());
-        Particles.spawnParticle(player.getLocation().add(0, 1.5, 0), "sheep-bring");
+            addPoint(player, (Sheep) entity, arena);
+        }
     }
 
     private void addPoint(Player player, Sheep sheep, SQArena arena) {
@@ -218,9 +212,35 @@ public class SheepPickupHandler implements Listener {
             }
         }
         arena.getPoints().merge(team, 1, Integer::sum);
+        arena.getPlayerGameStats().get(player).addSheepTaken();
+
+        sheep.setColor(team.getDyeColor());
+        Sounds.playSound("sheep-bring", sheep.getLocation(), arena.getBukkitPlayers());
+        Particles.spawnParticle(player.getLocation().add(0, 1.5, 0), "sheep-bring");
+
+        sheepPathfinder.walkToLocation(sheep, arena.getTeamRegions().get(team), MinigamesAPI.getPlugin().getConfig().getDouble("sheep-speed"), arena);
     }
 
-    public List<Entity> removeSheep(Player player) {
+    private void addBonusPoint(Player player, LivingEntity entity, SQArena arena) {
+        Team team = arena.getPlayerTeam().get(player);
+        int points = MinigamesAPI.getPlugin().getConfig().getInt("bonus-sheep.points");
+
+        Team bonusEntityTeam = arena.getBonusEntity().get(entity);
+        if (!bonusEntityTeam.equals(Team.NONE)) {
+            arena.getPoints().merge(bonusEntityTeam, -points, Integer::sum);
+        }
+        arena.getPoints().merge(team, points, Integer::sum);
+        arena.getBonusEntity().replace(entity, team);
+
+        arena.getPlayerGameStats().get(player).addSheepTaken();
+
+        Sounds.playSound("bonus-sheep-bring", player.getLocation(), arena.getBukkitPlayers());
+        Particles.spawnParticle(player.getLocation().add(0, 1.5, 0), "bonus-sheep-bring");
+
+        sheepPathfinder.walkToLocation(entity, arena.getTeamRegions().get(team), MinigamesAPI.getPlugin().getConfig().getDouble("bonus-sheep.speed"), arena);
+    }
+
+    public List<Entity> removePassengers(Player player) {
         List<Entity> carried = new ArrayList<>();
 
         Entity currentEntity = player;
@@ -255,7 +275,7 @@ public class SheepPickupHandler implements Listener {
         if (arenasRegistry.getPlayerLocalArena(player) == null) return;
         if (!player.getInventory().getItem(oldSlot).equals(itemsRegistry.getSheepItem().getItem())) return;
 
-        removeSheep(player);
+        removePassengers(player);
     }
 
     public void addCooldown(Player player) {
@@ -266,5 +286,28 @@ public class SheepPickupHandler implements Listener {
                 cooldownPlayers.remove(player);
             }
         }.runTaskLater(MinigamesAPI.getPlugin(), cooldownTime * 20L);
+    }
+
+    private boolean isBonusEntity(Entity entity) {
+        return entity.hasMetadata("SQ-bonus");
+    }
+
+    public boolean isCarryingBonusEntity(Player player) {
+        return player.getPassenger() != null && isBonusEntity(player.getPassenger());
+    }
+
+    public void carryingParticles(Player player, SQArena arena) {
+        arena.addTask(new BukkitRunnable() {
+            @Override
+            public void run() {
+                if (!isCarryingBonusEntity(player)) {
+                    this.cancel();
+                    return;
+                }
+
+                Particles.spawnParticle(player.getLocation().add(0, 3.5, 0), "bonus-sheep-carrying");
+
+            }
+        }.runTaskTimer(MinigamesAPI.getPlugin(), 0, 10));
     }
 }

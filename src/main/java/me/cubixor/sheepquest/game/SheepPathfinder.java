@@ -1,7 +1,7 @@
 package me.cubixor.sheepquest.game;
 
 import me.cubixor.minigamesapi.spigot.MinigamesAPI;
-import me.cubixor.pathfinderapi.Pathfinding;
+import me.cubixor.minigamesapi.spigot.utils.Pathfinding;
 import me.cubixor.sheepquest.arena.Region;
 import me.cubixor.sheepquest.arena.SQArena;
 import org.bukkit.Bukkit;
@@ -16,12 +16,10 @@ import java.util.logging.Level;
 
 public class SheepPathfinder {
 
-    private final double speed;
     private boolean nmsPathfindingSupported = true;
     private Pathfinding pathfinding;
 
     public SheepPathfinder() {
-        this.speed = MinigamesAPI.getPlugin().getConfig().getDouble("sheep-speed");
         try {
             this.pathfinding = new Pathfinding();
         } catch (ReflectiveOperationException e) {
@@ -30,17 +28,17 @@ public class SheepPathfinder {
         }
     }
 
-    public void walkToLocation(LivingEntity entity, Region teamRegion, SQArena arena) {
+    public void walkToLocation(LivingEntity entity, Region teamRegion, double speed, SQArena arena) {
         if (arena.getSheep().containsKey(entity)) {
             arena.getSheep().get(entity).cancel();
         }
 
-        BukkitTask pathfindingTask = nmsPathfindingSupported ? nmsWalkToLocation(entity, teamRegion) : substituteWalkToLocation(entity, teamRegion);
+        BukkitTask pathfindingTask = nmsPathfindingSupported ? nmsWalkToLocation(entity, teamRegion, speed) : substituteWalkToLocation(entity, teamRegion, speed);
         arena.getSheep().put(entity, pathfindingTask);
     }
 
 
-    private BukkitTask nmsWalkToLocation(LivingEntity entity, Region teamRegion) {
+    private BukkitTask nmsWalkToLocation(LivingEntity entity, Region teamRegion, double speed) {
         Object entityInsentient = pathfinding.getEntityInsentient(entity);
         pathfinding.clearGoals(entityInsentient);
         pathfinding.changeFollowRange(entityInsentient, 1000);
@@ -73,11 +71,11 @@ public class SheepPathfinder {
         }.runTaskTimer(MinigamesAPI.getPlugin(), 0, 10);
     }
 
-    private BukkitTask substituteWalkToLocation(LivingEntity entity, Region teamRegion) {
+    private BukkitTask substituteWalkToLocation(LivingEntity entity, Region teamRegion, double speed) {
         return new BukkitRunnable() {
             public void run() {
                 if (!teamRegion.isInRegion(entity)) {
-                    applyMovement(entity, teamRegion.getMiddle());
+                    applyMovement(entity, teamRegion.getMiddle(), speed);
                 }
             }
         }.runTaskTimer(MinigamesAPI.getPlugin(), 0L, 1);
@@ -93,7 +91,7 @@ public class SheepPathfinder {
         return new float[]{yaw, pitch};
     }
 
-    private void applyMovement(Entity entity, Location location) {
+    private void applyMovement(Entity entity, Location location, double speed) {
         float yaw = getRotations(entity.getLocation(), location)[0];
 
         Vector direction = new Vector(-Math.sin(yaw * 3.1415927F / 180.0F) * 1 * 0.5F, 0, Math.cos(yaw * 3.1415927F / 180.0F) * 1 * 0.5F).multiply(speed);

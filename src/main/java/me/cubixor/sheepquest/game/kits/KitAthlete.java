@@ -93,7 +93,7 @@ public class KitAthlete extends Kit implements Listener {
         if (throwSheepEnabled && player.getPassenger() instanceof Sheep
             /* && !BonusEntity.isCarrying((Sheep) player.getPassenger())*/) {
 
-            List<Entity> sheep = sheepPickupHandler.removeSheep(player);
+            List<Entity> sheep = sheepPickupHandler.removePassengers(player);
             throwSheep(arena, sheep, player);
 
         } else if (launchPlayerEnabled && evt.getItem().equals(getSecondaryWeapon().getItem())) {
@@ -120,7 +120,7 @@ public class KitAthlete extends Kit implements Listener {
                     TeamRegion teamRegion = arena.getTeamRegions().get(team);
 
                     if (teamRegion.isInRegion(e)) {
-                        sheepPickupHandler.bringSheep(player, (Sheep) e, arena);
+                        sheepPickupHandler.bringEntity(player, e, arena);
                     }
                     damageNearbyPlayers(e, throwSheepDamage, player, arena);
 

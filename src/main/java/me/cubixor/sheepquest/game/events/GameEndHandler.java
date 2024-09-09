@@ -75,8 +75,7 @@ public class GameEndHandler implements Listener {
         boolean noWinners = winners.isEmpty();
         Team winner = noWinners ? Team.NONE : arena.getPlayerTeam().get(winners.get(0));
 
-        String winnerTeamString = winner.toString();
-        int stay = evt.getLocalArena().getTimer();
+        int stay = arena.getTimer();
 
         StringBuilder summaryPoints = new StringBuilder();
         for (Team team : arena.getTeams()) {

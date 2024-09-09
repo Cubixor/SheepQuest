@@ -2,6 +2,7 @@ package me.cubixor.sheepquest.game.events;
 
 import com.cryptomorin.xseries.XMaterial;
 import com.cryptomorin.xseries.messages.Titles;
+import me.cubixor.minigamesapi.spigot.MinigamesAPI;
 import me.cubixor.minigamesapi.spigot.Utils;
 import me.cubixor.minigamesapi.spigot.events.GameStartEvent;
 import me.cubixor.minigamesapi.spigot.utils.Messages;
@@ -47,15 +48,13 @@ public class GameStartHandler implements Listener {
             kitArcher.arrowTimer(arena);
         }
 
+        if (MinigamesAPI.getPlugin().getConfig().getBoolean("bonus-sheep.enabled")) {
+            arena.setNextBonusSheepTime();
+        }
 
         for (Team t : arena.getTeams()) {
             arena.getPoints().put(t, 0);
         }
-
-        //gameTimer.spawnSheep(arena);
-        //TODO Special events
-        //SpecialEvents specialEvents = new SpecialEvents();
-        //specialEvents.setupSpecialEvents(arenaName);
 
         List<Player> players = new ArrayList<>(arena.getPlayerTeam().keySet());
         Collections.shuffle(players);
