@@ -11,7 +11,6 @@ public class SQMenuRegistry extends MenuRegistry {
     private final Menu kitsMenu;
 
     public SQMenuRegistry(LocalArena arena, BossBarManager bossBarManager) {
-        super(arena);
         teamsMenu = new TeamsMenu(arena, bossBarManager);
         kitsMenu = new KitsMenu(arena, bossBarManager);
 

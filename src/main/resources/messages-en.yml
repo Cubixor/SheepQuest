@@ -458,6 +458,7 @@ arena-setup:
     - "&e&l%arena% &7arena configuration state:"
     - "  &7Minimum players: %min-players%"
     - "  &7Maximum players: %max-players%"
+    - "  &7Teams: %teams%"
     - "  &7Main lobby: %main-lobby%"
     - "  &7Waiting lobby: %waiting-lobby%"
     - "  &7Sheep spawn: %sheep-spawn%"

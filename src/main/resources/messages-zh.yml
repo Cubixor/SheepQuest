@@ -470,6 +470,7 @@ arena-setup:
     - '&e&l%arena% &7竞技场设置信息:'
     - '  &7最少开启玩家: %min-players%'
     - '  &7最大容纳玩家: %max-players%'
+    - "  &7Teams: %teams%"
     - '  &7大厅: %main-lobby%'
     - '  &7等待大厅: %waiting-lobby%'
     - '  &7羊 出生点: %sheep-spawn%'

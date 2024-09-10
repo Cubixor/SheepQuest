@@ -56,9 +56,7 @@ public class SQArenasManager extends ArenasManager {
         getConfigManager().updateField(arena, SQConfigField.AREA, team.toString(), locs);
 
         SQArena sqArena = (SQArena) getRegistry().getLocalArenas().get(arena);
-        if (locs == null) {
-            sqArena.getTeamRegions().remove(team);
-        } else {
+        if (locs != null) {
             sqArena.getTeamRegions().replace(team, new TeamRegion(locs));
         }
     }

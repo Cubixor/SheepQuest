@@ -19,10 +19,12 @@ public class SQSetupChecker extends ArenaSetupChecker {
         Map<ConfigField, Boolean> ready = super.getReadyMap(arena);
         SQArena sqArena = (SQArena) arena;
 
+        boolean teamsAdded = !sqArena.getTeams().isEmpty();
+
         ready.put(SQConfigField.SHEEP_SPAWN, arenasConfigManager.getLocation(arena.getName(), SQConfigField.SHEEP_SPAWN) != null);
-        ready.put(SQConfigField.TEAMS, !sqArena.getTeams().isEmpty());
-        ready.put(SQConfigField.SPAWN, checkSpawns(sqArena));
-        ready.put(SQConfigField.AREA, checkAreas(sqArena));
+        ready.put(SQConfigField.TEAMS, teamsAdded);
+        ready.put(SQConfigField.SPAWN, teamsAdded && checkSpawns(sqArena));
+        ready.put(SQConfigField.AREA, teamsAdded && checkAreas(sqArena));
 
         return ready;
     }
