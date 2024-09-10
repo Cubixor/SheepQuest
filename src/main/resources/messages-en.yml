@@ -3,8 +3,6 @@
 # This file contains all plugin messages. Edit them as you like!
 #
 # Remember NOT to edit placeholders (marked with "%" character).
-#
-# You can use /sq reload command to reload modified files without restarting the server.
 
 prefix: "&8&l| &9&lSQ &8&l|&r"
 
@@ -78,7 +76,6 @@ other:
     - "%tip-prefix% &eYou can carry up to 3 sheep at once"
     - "%tip-prefix% &eYou can use team chat by adding /t before your message"
     - "%tip-prefix% &eYou can check your game stats using /sq stats command"
-  join-sheep-name: "&9&lSheepQuest"
 help:
   general-help:
     - "&m---------------------------------------------------"
@@ -127,8 +124,6 @@ help:
     - "  &a/sq setteamarea &e<arena> <team> &7- Set arena teams area"
     - "  &a/sq setsheepspawn &e<arena> &7- Set arena sheep spawn"
     - "  &a/sq wand &7- Get selection wand"
-    - "  &a/sq spawnjoinsheep &7- Spawn quick join sheep npc"
-    - "  &a/sq removejoinsheep &7- Remove quick join sheep npc"
     - "  &a/sq check &e<arena> &7- Check is arena fully configured"
     - "  &a/sq setupmenu &e<arena> &7- Open arena setup menu"
     - "  &a/sq help &7- Show main help page"
@@ -459,9 +454,6 @@ arena-setup:
     - "%active%"
     - "%ready%"
     - "&m---------------------------------------------------"
-  spawn-join-sheep: "%prefix% &7Quick join sheep has been spawned!"
-  remove-join-sheep-no-sheep: "%prefix% &cThere are no quick join sheep nearby!"
-  remove-join-sheep-success: "%prefix% &7Quick join sheep has been removed!"
 arenas-menu:
   command-usage: "%prefix% &cWrong use! &7Type: &e/sq arenasmenu"
   name: "&9&lSheepQuest &7&l| &8Games"
@@ -744,4 +736,4 @@ staff-menu:
     - "&7Go back to arenas menu."
 
 
-messages-version: 2.0
+config-version: 2.0
