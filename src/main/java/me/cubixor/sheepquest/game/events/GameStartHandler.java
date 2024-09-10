@@ -86,7 +86,7 @@ public class GameStartHandler implements Listener {
 
         if (team == Team.NONE) {
             LinkedHashMap<Team, Integer> teams = new LinkedHashMap<>(arena.countTeamPlayers());
-            for (Team t : Team.values()) {
+            for (Team t : arena.getTeams()) {
                 if (t == Team.NONE) continue;
                 teams.putIfAbsent(t, 0);
             }
