@@ -29,7 +29,8 @@ public class GameJoinLeaveHandler implements Listener {
 
         arena.getPlayerTeam().put(player, Team.NONE);
         arena.getPlayerKit().put(player, KitType.getFirstEnabled());
-        bossBarManager.addPlayer(player, Team.NONE);
+        bossBarManager.addTeamBossBar(player, Team.NONE);
+        bossBarManager.addKitBossBar(player, KitType.STANDARD);
 
         if (MinigamesAPI.getPlugin().getConfig().getBoolean("allow-team-choosing")) {
             itemsRegistry.getTeamItem().give(player);
@@ -47,7 +48,8 @@ public class GameJoinLeaveHandler implements Listener {
         arena.getPlayerKit().remove(player);
         arena.getRespawnTimer().remove(player);
         arena.getPlayerGameStats().remove(player);
-        bossBarManager.removePlayer(player);
+        bossBarManager.removeTeamBossBar(player);
+        bossBarManager.removeKitBossBar(player);
 
         for (Player p : arena.getBukkitPlayers()) {
             p.showPlayer(player);

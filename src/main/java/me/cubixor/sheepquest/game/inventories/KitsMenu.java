@@ -6,6 +6,7 @@ import me.cubixor.minigamesapi.spigot.game.items.GameItem;
 import me.cubixor.minigamesapi.spigot.utils.Messages;
 import me.cubixor.minigamesapi.spigot.utils.Sounds;
 import me.cubixor.sheepquest.arena.SQArena;
+import me.cubixor.sheepquest.game.BossBarManager;
 import me.cubixor.sheepquest.game.kits.KitType;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -15,10 +16,12 @@ import org.bukkit.inventory.Inventory;
 public class KitsMenu extends Menu {
 
     private final SQArena sqArena;
+    private final BossBarManager bossBarManager;
 
-    protected KitsMenu(LocalArena arena) {
+    protected KitsMenu(LocalArena arena, BossBarManager bossBarManager) {
         super(arena);
         sqArena = (SQArena) arena;
+        this.bossBarManager = bossBarManager;
     }
 
     @Override
@@ -52,6 +55,7 @@ public class KitsMenu extends Menu {
         }
 
         sqArena.getPlayerKit().replace(player, kitType);
+        bossBarManager.addKitBossBar(player, kitType);
 
         Sounds.playSound("click", player);
         Messages.send(player, "kits.choose-success", "%kit%", kitType.getName());

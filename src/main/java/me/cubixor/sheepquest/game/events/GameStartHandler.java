@@ -66,6 +66,7 @@ public class GameStartHandler implements Listener {
 
             p.setInvulnerable(false);
             kitManager.getKits().get(arena.getPlayerKit().get(p)).giveKit(p);
+            bossBarManager.removeKitBossBar(p);
             setItems(p, team);
 
             p.teleport(arenasManager.getConfigManager().getLocation(arena.getName(), SQConfigField.SPAWN, team.toString()));
@@ -100,7 +101,7 @@ public class GameStartHandler implements Listener {
 
 
             arena.getPlayerTeam().put(p, team);
-            bossBarManager.addPlayer(p, team);
+            bossBarManager.addTeamBossBar(p, team);
         }
 
         return team;

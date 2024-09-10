@@ -13,7 +13,7 @@ public class SQMenuRegistry extends MenuRegistry {
     public SQMenuRegistry(LocalArena arena, BossBarManager bossBarManager) {
         super(arena);
         teamsMenu = new TeamsMenu(arena, bossBarManager);
-        kitsMenu = new KitsMenu(arena);
+        kitsMenu = new KitsMenu(arena, bossBarManager);
 
         getMenus().add(teamsMenu);
         getMenus().add(kitsMenu);

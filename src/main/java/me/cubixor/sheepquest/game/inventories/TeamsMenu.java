@@ -134,7 +134,7 @@ public class TeamsMenu extends Menu {
 
     private void putInTeam(Player player, Team team, SQArena arena) {
         arena.getPlayerTeam().replace(player, team);
-        bossBarManager.addPlayer(player, team);
+        bossBarManager.addTeamBossBar(player, team);
         player.getInventory().setHelmet(team.getBanner().parseItem());
     }
 }
