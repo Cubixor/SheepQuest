@@ -67,7 +67,13 @@ public class Main extends JavaPlugin {
                         new ArgRemoveTeam(arenasManager),
                         new ArgSetSheepSpawn(arenasManager),
                         new ArgSetSpawn(arenasManager),
-                        new ArgSetArea(arenasManager)
+                        new ArgSetArea(arenasManager),
+                        new ArgNotImplemented("arenasmenu", "play.menu"),
+                        new ArgNotImplemented("statsmenu", "play.stats.menu"),
+                        new ArgNotImplemented("playersmenu", "staff.menu"),
+                        new ArgNotImplemented("staffmenu", "staff.menu"),
+                        new ArgNotImplemented("setupmenu", "setup.menu"),
+                        new ArgNotImplemented("reload", "setup.reload")
                 )
         ).collect(Collectors.toList());
 
