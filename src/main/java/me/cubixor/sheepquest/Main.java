@@ -27,6 +27,7 @@ import me.cubixor.sheepquest.game.events.*;
 import me.cubixor.sheepquest.game.kits.KitManager;
 import me.cubixor.sheepquest.items.SQItemsRegistry;
 import me.cubixor.sheepquest.utils.ConfigUpdater;
+import me.cubixor.sheepquest.utils.Updater;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -42,6 +43,8 @@ public class Main extends JavaPlugin {
     public void onEnable() {
         MinigamesAPI.INIT(this);
         PluginManager pluginManager = getServer().getPluginManager();
+        Updater updater = new Updater(this, 83005);
+        updater.runUpdaterTask();
 
         new ConfigUpdater().updateTo2(getConfig());
         ConfigManager configManager = new ConfigManager(SQStatsField.getAllFields(), new String[]{"en", "pl", "ru", "zh"});

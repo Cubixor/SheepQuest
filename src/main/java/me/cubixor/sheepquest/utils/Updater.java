@@ -23,7 +23,7 @@ public class Updater {
         Bukkit.getScheduler().runTaskTimer(plugin, this::runUpdater, 0, 1728000);
     }
 
-    public void runUpdater() {
+    private void runUpdater() {
         getVersion(version -> {
             if (!plugin.getDescription().getVersion().equals(version)) {
                 plugin.getLogger().warning("There is a new update of SheepQuest available!");
@@ -34,7 +34,7 @@ public class Updater {
         });
     }
 
-    public void getVersion(final Consumer<String> consumer) {
+    private void getVersion(final Consumer<String> consumer) {
         Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> {
             try (InputStream inputStream = new URL("https://api.spigotmc.org/legacy/update.php?resource=" + this.resourceId).openStream(); Scanner scanner = new Scanner(inputStream)) {
                 if (scanner.hasNext()) {
