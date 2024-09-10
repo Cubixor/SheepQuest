@@ -42,14 +42,20 @@ database:
 
 
 # Settings related to the plugin bungee mode.
+#
+# WARNING!!!
+# BEFORE CONFIGURING IT, READ THE TUTORIAL:
+# https://github.com/Cubixor/SheepQuest/wiki/Installation#bungeecord-installation
 bungee:
 
+  # Should the plugin be in simple bungee mode?
+  # Players will automatically join an arena after they join this server if it's enabled. [true/false]
   simple-bungee-mode: false
 
   # Should the plugin be in bungee mode?
   # If it's set true, you will be able to join all arenas in your bungeecord network.
   #
-  # WARNING! You can use it only if you have enabled saving stats and arenas to a database.
+  # WARNING! You can use it only if you have enabled saving stats to a database.
   #
   # WARNING! If you enable this option, remember to upload the plugin to the bungeecord server and
   # fill in the connection.yml file with info that is necessary to connect to bungeecord server. [true/false]
