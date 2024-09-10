@@ -44,7 +44,7 @@ public class Main extends JavaPlugin {
         PluginManager pluginManager = getServer().getPluginManager();
 
         new ConfigUpdater().updateTo2(getConfig());
-        ConfigManager configManager = new ConfigManager(SQStatsField.getAllFields(), new String[]{"en,pl,ru,zh"});
+        ConfigManager configManager = new ConfigManager(SQStatsField.getAllFields(), new String[]{"en", "pl", "ru", "zh"});
         ArenasRegistry arenasRegistry = new ArenasRegistry();
         SQItemsRegistry itemsRegistry = new SQItemsRegistry();
         PacketSenderSpigot packetSender = new PacketSenderSpigot(configManager.getConnectionConfig());
