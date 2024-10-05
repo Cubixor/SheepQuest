@@ -179,7 +179,7 @@ effects:
   kill-slowness: true
 
 # Should bossabr showing selected kit be enabled? [true/false]
-kits-bossbar: true
+kit-bossbar: true
 
 # Should bossabr showing selected team be enabled? [true/false]
 team-bossbar: true
