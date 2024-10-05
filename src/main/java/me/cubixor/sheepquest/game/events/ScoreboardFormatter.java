@@ -6,6 +6,7 @@ import me.cubixor.minigamesapi.spigot.utils.MessageUtils;
 import me.cubixor.minigamesapi.spigot.utils.Messages;
 import me.cubixor.sheepquest.arena.SQArena;
 import me.cubixor.sheepquest.arena.Team;
+import me.cubixor.sheepquest.game.kits.KitType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
@@ -22,6 +23,8 @@ public class ScoreboardFormatter implements Listener {
 
         evt.addReplacement("%time-left%", MessageUtils.formatTime(arena.getTimeLeft(), "time-format"));
         evt.addReplacement("%time-sheep%", timeSheep);
+        evt.addReplacement("%team%", arena.getPlayerTeam().getOrDefault(evt.getPlayer(), Team.NONE).getName());
+        evt.addReplacement("%kit%", arena.getPlayerKit().getOrDefault(evt.getPlayer(), KitType.STANDARD).getName());
         evt.addMultiLineReplacement("%teams%", getTeamScoreboard(arena));
     }
 

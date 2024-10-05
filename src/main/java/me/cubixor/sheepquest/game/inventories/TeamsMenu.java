@@ -136,5 +136,7 @@ public class TeamsMenu extends Menu {
         arena.getPlayerTeam().replace(player, team);
         bossBarManager.addTeamBossBar(player, team);
         player.getInventory().setHelmet(team.getBanner().parseItem());
+
+        arena.getScoreboardManager().updateScoreboard();
     }
 }

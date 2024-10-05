@@ -59,5 +59,7 @@ public class KitsMenu extends Menu {
 
         Sounds.playSound("click", player);
         Messages.send(player, "kits.choose-success", "%kit%", kitType.getName());
+
+        sqArena.getScoreboardManager().updateScoreboard();
     }
 }

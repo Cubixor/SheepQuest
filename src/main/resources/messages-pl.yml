@@ -235,6 +235,9 @@ game:
     - ''
     - '&7Arena: &e%arena%'
     - ' '
+    - "&7Drużyna: &e%team%"
+    - "&7Kit: &e%kit%"
+    - '  '
     - '&7Gracze: &e%players%'
     - '   '
     - '&7Oczekiwanie...'
@@ -244,6 +247,9 @@ game:
     - ''
     - '&7Arena: &e%arena%'
     - ' '
+    - "&7Drużyna: &e%team%"
+    - "&7Kit: &e%kit%"
+    - '  '
     - '&7Gracze: &e%players%'
     - '   '
     - '&7Start za: &e%time-short%'
