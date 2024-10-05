@@ -178,6 +178,12 @@ effects:
   kill-blindness: true
   kill-slowness: true
 
+# Should bossabr showing selected kit be enabled? [true/false]
+kits-bossbar: true
+
+# Should bossabr showing selected team be enabled? [true/false]
+team-bossbar: true
+
 # All sounds that are played during the game.
 #
 # Full sound list available here: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html [sound]
