@@ -98,6 +98,7 @@ public class Main extends JavaPlugin {
         SheepSpawner sheepSpawner = new SheepSpawner(arenasManager.getConfigManager(), sheepPathfinder);
         ScoreboardFormatter scoreboardFormatter = new ScoreboardFormatter();
         DamageHandler damageHandler = new DamageHandler(arenasManager, kitManager, sheepPickupHandler);
+        ChatManager chatManager = new ChatManager();
 
         pluginManager.registerEvents(sheepPickupHandler, this);
         pluginManager.registerEvents(gameJoinLeaveHandler, this);
@@ -107,6 +108,7 @@ public class Main extends JavaPlugin {
         pluginManager.registerEvents(sheepSpawner, this);
         pluginManager.registerEvents(scoreboardFormatter, this);
         pluginManager.registerEvents(damageHandler, this);
+        pluginManager.registerEvents(chatManager, this);
 
         MinigamesAPI.registerPAPI(arenasRegistry, configManager.getStatsManager());
     }
