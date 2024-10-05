@@ -111,6 +111,8 @@ public class Main extends JavaPlugin {
         pluginManager.registerEvents(chatManager, this);
 
         MinigamesAPI.registerPAPI(arenasRegistry, configManager.getStatsManager());
+        PlaceholderManager placeholderManager = new PlaceholderManager(arenasRegistry);
+        pluginManager.registerEvents(placeholderManager, this);
     }
 
     @Override
