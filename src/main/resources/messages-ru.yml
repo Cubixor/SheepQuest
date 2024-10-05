@@ -103,7 +103,7 @@ help:
     - '&9&lSheepquest &7помощь &c(staff)'
     - '  &a/sq forcestart &e<arena> &7- Принудительное начало игры'
     - '  &a/sq forcestop &e<arena> &7- Принудительная остановка игры'
-    - '  &a/sq active &e<arena> <true/false> &7- Установить арену активной или нет.'
+    - '  &a/sq setactive &e<arena> <true/false> &7- Установить арену активной или нет.'
     - '  &a/sq kick &e<player> &7- Выгнать игрока с арены.'
     - '  &a/sq stats &e<player> &7- Показать статистику игрока'
     - '  &a/sq statsmenu &e<player> &7- Показывать статистику игрока в меню'

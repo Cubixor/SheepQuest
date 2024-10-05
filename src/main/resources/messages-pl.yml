@@ -97,7 +97,7 @@ help:
     - '&9&lSheepquest &7- pomoc &c(moderacja)'
     - '  &a/sq forcestart &e<arena> &7- Wymuś start areny'
     - '  &a/sq forcestop &e<arena> &7- Zatrzymaj grę'
-    - '  &a/sq active &e<arena> <true/false> &7- Aktywuj lub dezaktywuj arenę.'
+    - '  &a/sq setactive &e<arena> <true/false> &7- Aktywuj lub dezaktywuj arenę.'
     - '  &a/sq kick &e<player> &7- Wyrzuć gracza z areny.'
     - '  &a/sq stats &e<player> &7- Pokaż statystyki gry danego gracza'
     - '  &a/sq statsmenu &e<player> &7- Pokaż statystyki gry danego gracza w menu'

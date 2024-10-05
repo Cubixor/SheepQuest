@@ -97,7 +97,7 @@ help:
     - "&9&lSheepquest &7help &c(staff)"
     - "  &a/sq forcestart &e<arena> &7- Force arena start"
     - "  &a/sq forcestop &e<arena> &7- Force arena stop"
-    - "  &a/sq active &e<arena> <true/false> &7- Set arena active or not."
+    - "  &a/sq setactive &e<arena> <true/false> &7- Set arena active or not."
     - "  &a/sq kick &e<player> &7- Kick player from arena."
     - "  &a/sq stats &e<player> &7- Show player stats"
     - "  &a/sq statsmenu &e<player> &7- Show player stats in menu"

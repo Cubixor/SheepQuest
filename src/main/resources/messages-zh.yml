@@ -212,7 +212,7 @@ help:
     - '&9&l抢羊乱战 &7帮助 &c(管理员)'
     - '  &a/sq forcestart &e<竞技场> &7- 强制一个竞技场开启游戏'
     - '  &a/sq forcestop &e<竞技场> &7- 强制一个竞技场停止游戏'
-    - '  &a/sq active &e<竞技场> <true/false> &7- 将竞技场状态设置为停止使用'
+    - '  &a/sq setactive &e<竞技场> <true/false> &7- 将竞技场状态设置为停止使用'
     - '  &a/sq kick &e<player> &7- Kick player from arena.'
     - '  &a/sq stats &e<player> &7- Show player stats'
     - '  &a/sq statsmenu &e<player> &7- Show player stats in menu'
