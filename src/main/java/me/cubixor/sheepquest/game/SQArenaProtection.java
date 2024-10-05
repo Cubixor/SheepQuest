@@ -26,6 +26,10 @@ public class SQArenaProtection extends ArenaProtection {
     @EventHandler
     public void onSheepHurt(EntityDamageEvent evt) {
         if (evt.getEntityType().equals(EntityType.PLAYER)) {
+            if (!arenasManager.getRegistry().isInArena((Player) evt.getEntity())) {
+                return;
+            }
+
             if (!evt.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK)
                     && !evt.getCause().equals(EntityDamageEvent.DamageCause.PROJECTILE)) {
                 evt.setCancelled(true);
