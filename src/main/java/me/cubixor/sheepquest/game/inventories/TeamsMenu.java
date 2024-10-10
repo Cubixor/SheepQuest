@@ -1,6 +1,7 @@
 package me.cubixor.sheepquest.game.inventories;
 
 import com.cryptomorin.xseries.XMaterial;
+import me.cubixor.minigamesapi.spigot.MinigamesAPI;
 import me.cubixor.minigamesapi.spigot.game.arena.LocalArena;
 import me.cubixor.minigamesapi.spigot.game.inventories.Menu;
 import me.cubixor.minigamesapi.spigot.game.items.GameItem;
@@ -24,11 +25,13 @@ public class TeamsMenu extends Menu {
 
     private final SQArena arena;
     private final BossBarManager bossBarManager;
+    private final boolean balanceTeams;
 
     protected TeamsMenu(LocalArena arena, BossBarManager bossBarManager) {
         super(arena);
         this.arena = (SQArena) arena;
         this.bossBarManager = bossBarManager;
+        this.balanceTeams = MinigamesAPI.getPlugin().getConfig().getBoolean("balance-teams");
     }
 
     @Override
@@ -120,7 +123,7 @@ public class TeamsMenu extends Menu {
                 return;
             }
 
-            if (teamPlayers.containsKey(team) && teamPlayers.get(team) >= ((float) arena.getPlayers().size() / (float) arena.getTeams().size())) {
+            if (balanceTeams && teamPlayers.containsKey(team) && teamPlayers.get(team) >= ((float) arena.getPlayers().size() / (float) arena.getTeams().size())) {
                 Messages.send(player, "game.team-full", "%team%", teamMessage);
                 return;
             }

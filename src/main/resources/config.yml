@@ -141,6 +141,11 @@ time-format: "mm:ss"
 # The Maximum number of sheep a player can pick up at once
 max-sheep-carried: 3
 
+# Choose if teams should be balanced, so that players are unable to all join one team or be distributed unevenly across teams.
+# If this is enabled, players will be unable to join team in which: (number of players) >= [(number of players on arena)/(number of teams)]
+# Keep in mind that disabling this will allow players to all join one team, and win the game without any effort, which can harm the server economy.
+balance-teams: true
+
 # Set how far away from spawn sheep will be able to wander-off.
 # After they exceed this distance, their pathfinding will kick-in, and they will return to the spawn point [block]
 sheep-spawn-size: 10
