@@ -105,6 +105,7 @@ public class SQArena extends LocalArena {
 
     public Map<Team, Integer> countTeamPlayers() {
         return getPlayerTeam().values().stream()
+                .filter(t -> !t.equals(Team.NONE))
                 .collect(Collectors.groupingBy(
                         t -> t, // Group by team
                         Collectors.summingInt(t -> 1) // Count the number of players in each team
