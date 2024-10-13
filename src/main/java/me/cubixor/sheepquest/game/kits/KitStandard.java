@@ -85,6 +85,9 @@ public class KitStandard extends Kit implements Listener {
             if (arena.getRespawnTimer().containsKey(player)) {
                 return;
             }
+            if (player.getPassenger() != null) {
+                return;
+            }
 
             player.setAllowFlight(true);
         }, dashCooldown);

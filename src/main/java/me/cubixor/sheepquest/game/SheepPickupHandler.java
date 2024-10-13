@@ -7,6 +7,7 @@ import me.cubixor.minigamesapi.spigot.utils.Particles;
 import me.cubixor.minigamesapi.spigot.utils.Sounds;
 import me.cubixor.sheepquest.arena.SQArena;
 import me.cubixor.sheepquest.arena.Team;
+import me.cubixor.sheepquest.game.kits.KitType;
 import me.cubixor.sheepquest.items.SQItemsRegistry;
 import me.cubixor.sheepquest.utils.PassengerFix;
 import org.bukkit.Color;
@@ -137,6 +138,10 @@ public class SheepPickupHandler implements Listener {
         }
 
         passengerFix.updatePassengers(player);
+
+        if (arena.getPlayerKit().get(player).equals(KitType.STANDARD)) {
+            player.setAllowFlight(false);
+        }
     }
 
 
@@ -264,6 +269,11 @@ public class SheepPickupHandler implements Listener {
             e.eject();
         }
         player.eject();
+
+
+        if (((SQArena) arenasRegistry.getPlayerLocalArena(player)).getPlayerKit().get(player).equals(KitType.STANDARD)) {
+            player.setAllowFlight(true);
+        }
 
         passengerFix.updatePassengers(player);
 
