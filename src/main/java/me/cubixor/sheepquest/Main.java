@@ -46,8 +46,11 @@ public class Main extends JavaPlugin {
         Updater updater = new Updater(this, 83005);
         updater.runUpdaterTask();
 
-        new ConfigUpdater().updateTo2(getConfig());
+        ConfigUpdater configUpdater = new ConfigUpdater();
+        configUpdater.updateTo2(getConfig());
         ConfigManager configManager = new ConfigManager(SQStatsField.getAllFields(), new String[]{"en", "pl", "ru", "zh"});
+        configUpdater.updateArenasTo2(configManager.getArenasConfigManager().getArenasConfig());
+
         ArenasRegistry arenasRegistry = new ArenasRegistry();
         SQItemsRegistry itemsRegistry = new SQItemsRegistry();
         PacketSenderSpigot packetSender = new PacketSenderSpigot(configManager.getConnectionConfig());
