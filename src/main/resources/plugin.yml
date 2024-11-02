@@ -10,9 +10,8 @@ commands:
     description: Main plugin command
     aliases: sq
     usage: /sheepquest
-  t:
-    description: Team chat in game
-    usage: /t
+  leave:
+    description: Alias for /sq leave
 permissions:
   sheepquest.*:
     default: op

@@ -1,6 +1,7 @@
 package me.cubixor.sheepquest;
 
 import me.cubixor.minigamesapi.spigot.MinigamesAPI;
+import me.cubixor.minigamesapi.spigot.commands.LeaveCommand;
 import me.cubixor.minigamesapi.spigot.commands.MainCommand;
 import me.cubixor.minigamesapi.spigot.commands.MainCommandCompleter;
 import me.cubixor.minigamesapi.spigot.commands.arguments.CommandArgument;
@@ -89,6 +90,7 @@ public class Main extends JavaPlugin {
         MainCommandCompleter mainCommandCompleter = new MainCommandCompleter(args);
         getServer().getPluginCommand(getName()).setExecutor(mainCommand);
         getServer().getPluginCommand(getName()).setTabCompleter(mainCommandCompleter);
+        LeaveCommand leaveCommand = new LeaveCommand();
 
         SheepPathfinder sheepPathfinder = new SheepPathfinder();
         SheepPickupHandler sheepPickupHandler = new SheepPickupHandler(arenasRegistry, itemsRegistry, sheepPathfinder);
