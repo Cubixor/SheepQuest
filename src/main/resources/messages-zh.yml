@@ -494,7 +494,6 @@ arenas-menu:
     - '&7玩家: &e%count%/&e%max%'
     - '&7当前状态: %state%'
     - ''
-    - '&e右键 &7查看进阶设定'
     - '&a左键 &7加入竞技场'
   quickjoin-item-name: '&e快速加入'
   quickjoin-item-lore:

@@ -482,8 +482,7 @@ arenas-menu:
     - "&7Players: &e%count%/&e%max%"
     - "&7Game state: %state%"
     - ""
-    - "&7Click &eRMB &7to show advanced options."
-    - "&aClick &e&lLMB &ato join arena."
+    - "&aClick to join arena."
   quickjoin-item-name: "&eQuick join"
   quickjoin-item-lore:
     - "&7Click to join random arena"

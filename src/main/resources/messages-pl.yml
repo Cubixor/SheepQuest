@@ -496,8 +496,7 @@ arenas-menu:
     - '&7Gracze: &e%count%/&e%max%'
     - '&7Status gry: %state%'
     - ''
-    - '&7Kliknij &ePPM &7aby pokazać zaawansowane opcje.'
-    - '&aKliknij &e&lLPM &aaby dołączyć do areny.'
+    - '&aKliknij aby dołączyć do areny.'
   quickjoin-item-name: '&eSzybkie dołączanie'
   quickjoin-item-lore:
     - '&7Kliknij aby dołączyć do losowej areny'

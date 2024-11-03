@@ -168,6 +168,10 @@ items:
   team-choose-item:
     material: CHEST
     slot: 0
+  menu-arenas-quickjoin:
+    material: SLIME_BALL
+  menu-arenas-close:
+    material: ARROW
   kit-choose-item:
     material: STONE_SWORD
     slot: 1
@@ -595,4 +599,4 @@ bonus-sheep:
 
 
 # Config version - DO NOT CHANGE IT!
-config-version: 2.0
+config-version: 2.1

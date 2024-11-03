@@ -8,6 +8,7 @@ import me.cubixor.minigamesapi.spigot.commands.arguments.CommandArgument;
 import me.cubixor.minigamesapi.spigot.commands.arguments.impl.setup.ArgSetupWand;
 import me.cubixor.minigamesapi.spigot.config.ConfigManager;
 import me.cubixor.minigamesapi.spigot.game.*;
+import me.cubixor.minigamesapi.spigot.game.inventories.GlobalMenuRegistry;
 import me.cubixor.minigamesapi.spigot.game.inventories.MenuHandler;
 import me.cubixor.minigamesapi.spigot.game.items.ItemHandler;
 import me.cubixor.minigamesapi.spigot.sockets.PacketManagerSpigot;
@@ -52,14 +53,15 @@ public class Main extends JavaPlugin {
         ArenasRegistry arenasRegistry = new ArenasRegistry();
         SQItemsRegistry itemsRegistry = new SQItemsRegistry();
         PacketSenderSpigot packetSender = new PacketSenderSpigot(configManager.getConnectionConfig());
-        SignManager signManager = new SignManager(configManager.getArenasConfigManager(), arenasRegistry);
+        SignManager signManager = new SignManager(configManager.getArenasConfigManager(), arenasRegistry, itemsRegistry);
         BossBarManager bossBarManager = new BossBarManager();
         SQArenaFactory arenaFactory = new SQArenaFactory(bossBarManager);
         arenasManager = new SQArenasManager(arenasRegistry, configManager.getArenasConfigManager(), signManager, packetSender, configManager.getStatsManager(), itemsRegistry, arenaFactory);
         PacketManagerSpigot packetManager = new PacketManagerSpigot(arenasManager, packetSender);
         SQArenaProtection arenaProtection = new SQArenaProtection(arenasManager);
         ItemHandler itemHandler = new ItemHandler(arenasManager, itemsRegistry);
-        MenuHandler menuHandler = new MenuHandler(arenasRegistry);
+        GlobalMenuRegistry globalMenuRegistry = new GlobalMenuRegistry(arenasManager, itemsRegistry);
+        MenuHandler menuHandler = new MenuHandler(arenasRegistry, globalMenuRegistry);
         ChatBlocker chatBlocker = new ChatBlocker(arenasRegistry);
         SimpleBungeeMode simpleBungeeMode = new SimpleBungeeMode(arenasManager);
         WaitingTips waitingTips = new WaitingTips();
@@ -67,7 +69,7 @@ public class Main extends JavaPlugin {
         SQSetupChecker arenaSetupChecker = new SQSetupChecker(configManager.getArenasConfigManager());
 
         List<CommandArgument> args = Stream.concat(
-                MainCommand.getCommonArguments(arenasManager, arenaSetupChecker, configManager.getStatsManager()).stream(),
+                MainCommand.getCommonArguments(arenasManager, arenaSetupChecker, configManager.getStatsManager(), globalMenuRegistry).stream(),
                 Stream.of(new ArgSetupWand(itemsRegistry),
                         new ArgListTeams(arenasManager),
                         new ArgAddTeam(arenasManager),
@@ -75,7 +77,6 @@ public class Main extends JavaPlugin {
                         new ArgSetSheepSpawn(arenasManager),
                         new ArgSetSpawn(arenasManager),
                         new ArgSetArea(arenasManager),
-                        new ArgNotImplemented("arenasmenu", "play.menu"),
                         new ArgNotImplemented("statsmenu", "play.stats.menu"),
                         new ArgNotImplemented("playersmenu", "staff.menu"),
                         new ArgNotImplemented("staffmenu", "staff.menu"),
