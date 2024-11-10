@@ -11,6 +11,7 @@ import me.cubixor.minigamesapi.spigot.game.*;
 import me.cubixor.minigamesapi.spigot.game.inventories.GlobalMenuRegistry;
 import me.cubixor.minigamesapi.spigot.game.inventories.MenuHandler;
 import me.cubixor.minigamesapi.spigot.game.items.ItemHandler;
+import me.cubixor.minigamesapi.spigot.integrations.Telemetry;
 import me.cubixor.minigamesapi.spigot.sockets.PacketManagerSpigot;
 import me.cubixor.minigamesapi.spigot.sockets.PacketSenderSpigot;
 import me.cubixor.sheepquest.arena.SQArenaFactory;
@@ -64,8 +65,7 @@ public class Main extends JavaPlugin {
         MenuHandler menuHandler = new MenuHandler(arenasRegistry, globalMenuRegistry);
         ChatBlocker chatBlocker = new ChatBlocker(arenasRegistry);
         SimpleBungeeMode simpleBungeeMode = new SimpleBungeeMode(arenasManager);
-        WaitingTips waitingTips = new WaitingTips();
-        waitingTips.runTipTask(arenasRegistry);
+        WaitingTips waitingTips = new WaitingTips(arenasRegistry);
         SQSetupChecker arenaSetupChecker = new SQSetupChecker(configManager.getArenasConfigManager());
 
         List<CommandArgument> args = Stream.concat(
@@ -87,8 +87,6 @@ public class Main extends JavaPlugin {
 
         MainCommand mainCommand = new MainCommand(args);
         MainCommandCompleter mainCommandCompleter = new MainCommandCompleter(args);
-        getServer().getPluginCommand(getName()).setExecutor(mainCommand);
-        getServer().getPluginCommand(getName()).setTabCompleter(mainCommandCompleter);
         LeaveCommand leaveCommand = new LeaveCommand();
 
         SheepPathfinder sheepPathfinder = new SheepPathfinder();
@@ -117,6 +115,9 @@ public class Main extends JavaPlugin {
         MinigamesAPI.registerPAPI(arenasRegistry, configManager.getStatsManager());
         PlaceholderManager placeholderManager = new PlaceholderManager(arenasRegistry);
         pluginManager.registerEvents(placeholderManager, this);
+
+        Telemetry telemetry = new Telemetry();
+        telemetry.runMetrics(arenasRegistry, 9022);
     }
 
     @Override
