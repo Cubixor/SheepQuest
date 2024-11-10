@@ -81,7 +81,7 @@ bungee:
     - "custom command2"
 
 # Cooldown between commands, sign clicks, menu clicks and other actions
-# Use bigger values if your server is slow, you are using bungee mode or saving in mysql.
+# Use higher values if your server is slow, you are using bungee mode or saving in mysql.
 # You can set it to 0 if you are not using bungee mode and database. [seconds]
 cooldown: 1
 

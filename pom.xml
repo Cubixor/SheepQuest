@@ -6,7 +6,7 @@
 
     <groupId>me.cubixor</groupId>
     <artifactId>SheepQuest</artifactId>
-    <version>2.0.0-beta5</version>
+    <version>2.0.0</version>
     <packaging>jar</packaging>
 
     <name>SheepQuest</name>
@@ -54,7 +54,15 @@
                     <relocations>
                         <relocation>
                             <pattern>com.cryptomorin.xseries</pattern>
-                            <shadedPattern>sheepquest.libs.com.cryptomorin.xseries</shadedPattern>
+                            <shadedPattern>me.cubixor.sheepquest.libs.com.cryptomorin.xseries</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>me.cubixor.minigamesapi</pattern>
+                            <shadedPattern>me.cubixor.sheepquest.minigamesapi</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>me.cubixor.socketsmc</pattern>
+                            <shadedPattern>me.cubixor.sheepquest.socketsmc</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
@@ -105,12 +113,6 @@
             <groupId>com.github.cryptomorin</groupId>
             <artifactId>XSeries</artifactId>
             <version>11.3.0</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.bstats</groupId>
-            <artifactId>bstats-bukkit</artifactId>
-            <version>3.0.2</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
