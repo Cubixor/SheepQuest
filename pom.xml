@@ -57,6 +57,14 @@
                             <shadedPattern>me.cubixor.sheepquest.libs.com.cryptomorin.xseries</shadedPattern>
                         </relocation>
                         <relocation>
+                            <pattern>org.bstats</pattern>
+                            <shadedPattern>me.cubixor.sheepquest.libs.org.bstats</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>com.zaxxer</pattern>
+                            <shadedPattern>me.cubixor.sheepquest.libs.com.zaxxer</shadedPattern>
+                        </relocation>
+                        <relocation>
                             <pattern>me.cubixor.minigamesapi</pattern>
                             <shadedPattern>me.cubixor.sheepquest.minigamesapi</shadedPattern>
                         </relocation>
