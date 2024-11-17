@@ -4,6 +4,7 @@ import me.cubixor.minigamesapi.spigot.game.arena.LocalArena;
 import me.cubixor.minigamesapi.spigot.game.inventories.Menu;
 import me.cubixor.minigamesapi.spigot.game.items.GameItem;
 import me.cubixor.minigamesapi.spigot.utils.Messages;
+import me.cubixor.minigamesapi.spigot.utils.Permissions;
 import me.cubixor.minigamesapi.spigot.utils.Sounds;
 import me.cubixor.sheepquest.arena.SQArena;
 import me.cubixor.sheepquest.game.BossBarManager;
@@ -49,7 +50,7 @@ public class KitsMenu extends Menu {
             return;
         }
 
-        if (!player.hasPermission(kitType.getPermission())) {
+        if (!Permissions.has(player, kitType.getPermission())) {
             Messages.send(player, "general.no-permission");
             return;
         }

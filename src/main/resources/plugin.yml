@@ -116,7 +116,6 @@ permissions:
       sheepquest.play.leave: true
       sheepquest.play.quickjoin: true
       sheepquest.play.stats: true
-      sheepquest.play.stats.menu: true
       sheepquest.play.list: true
       sheepquest.play.signs: true
       sheepquest.play.menu: true
@@ -140,7 +139,7 @@ permissions:
     default: op
     description: Gives access to /sq stats <player> command.
   sheepquest.play.stats.menu:
-    default: true
+    default: op
     description: Gives access to stats menu.
   sheepquest.play.stats.menu.others:
     default: op
@@ -187,8 +186,8 @@ permissions:
       sheepquest.play.stats.menu.others: true
 
   sheepquest.staff.help:
-    default: true
-    description: Gives access to /sq mod command.
+    default: op
+    description: Gives access to /sq staff command.
   sheepquest.staff.start:
     default: op
     description: Gives access to /sq forcestart command.
