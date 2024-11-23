@@ -1,0 +1,10 @@
+{
+  "id": "sheepquest",
+  "name": "${project.name}",
+  "version": "${project.version}",
+  "authors": [
+    "Cubixor"
+  ],
+  "dependencies": [],
+  "main": "me.cubixor.sheepquest.minigamesapi.proxy.velocity.MinigamesAPIVelocity"
+}

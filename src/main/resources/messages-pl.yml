@@ -3,181 +3,177 @@
 # This file contains all plugin messages. Edit them as you like!
 #
 # Remember to DO NOT edit placeholders (marked with "%" character).
-#
-# You can use /sq reload command to reload modified files without restarting server.
 
-prefix: "&8&l| &9&lSQ &8&l|&r"
+prefix: '&8&l| &9&lSQ &8&l|&r'
 
 general:
-  arena-invalid: "%prefix% &cTa arena nie istnieje!"
-  must-be-player: "%prefix% &cAby użyć tej komendy musisz być graczem!"
-  no-permission: "%prefix% &cNie masz uprawnień aby to zrobić!"
-  reload-success: "%prefix% &aWszystkie pliki zostały przeładowane pomyślnie!"
-  unknown-command: "%prefix% &cNieznana komenda. &7Wpisz &e/sq help &7aby uzyskać pomoc."
-  team-red: "&c&lCzerwoni"
-  team-green: "&a&lJasnozieloni"
-  team-blue: "&9&lNiebiescy"
-  team-yellow: "&e&lŻółci"
-  team-orange: "&6&lPomarańczowi"
-  team-dark_green: "&2&lCiemnozieloni"
-  team-cyan: "&3&lBłękitni"
-  team-light_blue: "&b&lJasnoniebiescy"
-  team-pink: "&d&lRóżowi"
-  team-purple: "&5&lFioletowi"
-  team-gray: "&8&lSzarzy"
-  team-black: "&0&lCzarni"
-  team-none: "&8&lLosowa"
-  state-inactive: "&8&lNIEAKTYWNA"
-  state-waiting: "&a&lOCZEKIWANIE"
-  state-starting: "&3&lSTART"
-  state-game: "&c&lW GRZE"
-  state-ending: "&5&lKONIEC"
-  state-offline: "&4&lOFFLINE"
-  vip-prefix: "&7[&6&lVIP&7] "
-  too-fast: "%prefix% &cZa szybko!"
-  no-one: "&8Nikt"
-  invalid-player: "%prefix% &cTen gracz jeszcze nigdy nie grał w SheepQuest!"
-  version-not-supported: "%prefix% &cTa funkcja jest niedostępna w wersji 1.8. Zmień wersję silnika spigot na wyższą aby jej użyć!"
+  arena-invalid: '%prefix% &cTa arena nie istnieje!'
+  must-be-player: '%prefix% &cAby użyć tej komendy musisz być graczem!'
+  no-permission: '%prefix% &cNie masz uprawnień aby to zrobić!'
+  reload-success: '%prefix% &aWszystkie pliki zostały przeładowane pomyślnie!'
+  unknown-command: '%prefix% &cNieznana komenda. &7Wpisz &e/sq help &7aby uzyskać pomoc.'
+  team-red: '&c&lCzerwoni'
+  team-green: '&a&lJasnozieloni'
+  team-blue: '&9&lNiebiescy'
+  team-yellow: '&e&lŻółci'
+  team-orange: '&6&lPomarańczowi'
+  team-dark_green: '&2&lCiemnozieloni'
+  team-cyan: '&3&lBłękitni'
+  team-light_blue: '&b&lJasnoniebiescy'
+  team-pink: '&d&lRóżowi'
+  team-purple: '&5&lFioletowi'
+  team-gray: '&8&lSzarzy'
+  team-black: '&0&lCzarni'
+  team-none: '&8&lLosowa'
+  state-inactive: '&8&lNIEAKTYWNA'
+  state-waiting: '&a&lOCZEKIWANIE'
+  state-starting: '&3&lSTART'
+  state-game: '&c&lW GRZE'
+  state-ending: '&5&lKONIEC'
+  state-offline: '&4&lOFFLINE'
+  vip-prefix: '&7[&6&lVIP&7] '
+  too-fast: '%prefix% &cZa szybko!'
+  invalid-player: '%prefix% &cTen gracz jeszcze nigdy nie grał w SheepQuest!'
 other:
-  stats-command-usage: "%prefix% &cZłe użycie! &7Wpisz: &e/sq stats &a[gracz]"
+  stats-command-usage: '%prefix% &cZłe użycie! &7Wpisz: &e/sq stats &a[gracz]'
   stats:
-    - "&m---------------------------------------------------"
-    - "&e%player% &7- statystyki &9&lSheepQuest"
-    - "  &aWygrane: &e%wins%"
-    - "  &aPrzegrane: &e%looses%"
-    - "  &aRozegrane gry: &e%games%"
-    - "  &aZabójstwa: &e%kills%"
-    - "  &aŚmierci: &e%deaths%"
-    - "  &aZebrane owce: &e%sheep%"
-    - "  &aZebrane bonusowe owce: &e%bonus-sheep%"
-    - "  &aCzas gry: &e%playtime%"
-    - "&m---------------------------------------------------"
-  stats-playtime-hours: "godz"
-  stats-playtime-minutes: "min"
-  stats-playtime-seconds: "sek"
-  sign-first-line: "&9&lSheepQuest"
-  sign-second-line: "&7&l» %?vip?%&d&l%arena% &7&l«"
-  sign-third-line: "&e&l%count%&7/&e&l%max%"
-  sign-fourth-line: "&7│ %state%&7│"
-  sign-quickjoin-first-line: "&9&lSheepQuest"
-  sign-quickjoin-second-line: "&7&l» &b&lGRAJ&7&l«"
-  sign-quickjoin-third-line: "&3&lAreny: &e&l%count%"
-  sign-quickjoin-fourth-line: "&a&lKliknij aby dołączyć"
+    - '&m---------------------------------------------------'
+    - '&e%player% &7- statystyki &9&lSheepQuest'
+    - '  &aWygrane: &e%wins%'
+    - '  &aPrzegrane: &e%looses%'
+    - '  &aRozegrane gry: &e%games%'
+    - '  &aZabójstwa: &e%kills%'
+    - '  &aŚmierci: &e%deaths%'
+    - '  &aZebrane owce: &e%sheep%'
+    - '  &aZebrane bonusowe owce: &e%bonus_sheep%'
+    - '  &aCzas gry: &e%playtime%'
+    - '&m---------------------------------------------------'
+  stats-playtime-hours: godz
+  stats-playtime-minutes: min
+  stats-playtime-seconds: sek
+  sign-first-line: '&9&lSheepQuest'
+  sign-second-line: '&7&l» %?vip?%&d&l%arena% &7&l«'
+  sign-third-line: '&e&l%count%&7/&e&l%max%'
+  sign-fourth-line: '&7│ %state%&7│'
+  sign-quickjoin-first-line: '&9&lSheepQuest'
+  sign-quickjoin-second-line: '&7&l» &b&lGRAJ&7&l«'
+  sign-quickjoin-third-line: '&3&lAreny: &e&l%count%'
+  sign-quickjoin-fourth-line: '&a&lKliknij aby dołączyć'
   list-header:
-    - "&m---------------------------------------------------"
-    - "&7Lista gier &9&lSheepQuest"
+    - '&m---------------------------------------------------'
+    - '&7Lista gier &9&lSheepQuest'
   list-footer:
-    - "&m---------------------------------------------------"
-  list-empty: "&cAktualnie nie ma żadnych aren gotowych do gry!"
-  list-arena: "  %?vip?%&d&l%arena% &7|&e&l%count%&7/&e&l%max%&7| &7|%state%&7|"
-  list-hover: "&aKliknij aby dołączyć"
-  tip-prefix: "&7[&eRada&7]&r"
+    - '&m---------------------------------------------------'
+  list-empty: '&cAktualnie nie ma żadnych aren gotowych do gry!'
+  list-arena: '  %?vip?%&d&l%arena% &7|&e&l%count%&7/&e&l%max%&7| &7|%state%&7|'
+  list-hover: '&aKliknij aby dołączyć'
+  tip-prefix: '&7[&eRada&7]&r'
   tips:
-    - "%tip-prefix% &eMożesz kraść owce innym drużynom"
-    - "%tip-prefix% &eIm więcej niesiesz owiec, tym wolniej się poruszasz"
-    - "%tip-prefix% &eGdy uderzysz przeciwnika upuszcza on niesione owce"
-    - "%tip-prefix% &eMożesz użyć widoku z trzeciej osoby (F5) dla lepszego widoczności"
-    - "%tip-prefix% &eMożesz nieść maksymalnie 3 owce na raz"
-    - "%tip-prefix% &eMożesz użyć czatu drużynowego wstawiając /t przed wiadomością"
-    - "%tip-prefix% &eMożesz sprawdzić swoje statystyki komendą /sq stats"
-  join-sheep-name: "&9&lSheepQuest"
+    - '%tip-prefix% &eMożesz kraść owce innym drużynom'
+    - '%tip-prefix% &eIm więcej niesiesz owiec, tym wolniej się poruszasz'
+    - '%tip-prefix% &eGdy uderzysz przeciwnika upuszcza on niesione owce'
+    - '%tip-prefix% &eMożesz użyć widoku z trzeciej osoby (F5) dla lepszego widoczności'
+    - '%tip-prefix% &eMożesz nieść maksymalnie 3 owce na raz'
+    - '%tip-prefix% &eMożesz użyć czatu drużynowego wstawiając /t przed wiadomością'
+    - '%tip-prefix% &eMożesz sprawdzić swoje statystyki komendą /sq stats'
 help:
   general-help:
-    - "&m---------------------------------------------------"
-    - "&9&lSheepquest &7- pomoc"
-    - "  &a/sq join &e<arena> &7- Dołącz do areny"
-    - "  &a/sq leave &7- Wyjdź z areny"
-    - "  &a/sq quickjoin &7- Wybierz grę automatycznie"
-    - "  &a/sq list &7- Pokaz listę aren"
-    - "  &a/sq stats &7- Pokaż statystyki gry"
-    - "  &a/sq statsmenu &7- Pokaż statystyki gry w menu"
-    - "  &a/sq arenasmenu &7- Otwórz menu aren"
-    - "  &a/t &e<message> &7- Czat drużyny w grze"
-    - "  &a/sq help &7- Wyświetl stronę pomocy"
-    - "  &a/sq staff &7- Wyświetl pomoc dla moderatorów"
-    - "  &a/sq admin &7- Wyświetl pomoc dla administratorów"
-    - "&m---------------------------------------------------"
+    - '&m---------------------------------------------------'
+    - '&9&lSheepquest &7- pomoc'
+    - '  &a/sq join &e<arena> &7- Dołącz do areny'
+    - '  &a/sq leave &7- Wyjdź z areny'
+    - '  &a/sq quickjoin &7- Wybierz grę automatycznie'
+    - '  &a/sq list &7- Pokaz listę aren'
+    - '  &a/sq stats &7- Pokaż statystyki gry'
+    - '  &a/sq statsmenu &7- Pokaż statystyki gry w menu'
+    - '  &a/sq arenasmenu &7- Otwórz menu aren'
+    - '  &a/t &e<message> &7- Czat drużyny w grze'
+    - '  &a/sq help &7- Wyświetl stronę pomocy'
+    - '  &a/sq staff &7- Wyświetl pomoc dla moderatorów'
+    - '  &a/sq admin &7- Wyświetl pomoc dla administratorów'
+    - '&m---------------------------------------------------'
   staff-help:
-    - "&m---------------------------------------------------"
-    - "&9&lSheepquest &7- pomoc &c(moderacja)"
-    - "  &a/sq forcestart &e<arena> &7- Wymuś start areny"
-    - "  &a/sq forcestop &e<arena> &7- Zatrzymaj grę"
-    - "  &a/sq active &e<arena> <true/false> &7- Aktywuj lub dezaktywuj arenę."
-    - "  &a/sq kick &e<player> &7- Wyrzuć gracza z areny."
-    - "  &a/sq stats &e<player> &7- Pokaż statystyki gry danego gracza"
-    - "  &a/sq statsmenu &e<player> &7- Pokaż statystyki gry danego gracza w menu"
-    - "  &a/sq staffmenu &e<arena> &7- Otwórz menu moderacji areny"
-    - "  &a/sq playersmenu &e<arena> &7- Otwórz menu graczy na arenie"
-    - "  &a/sq help &7- Wyświetl główną stronę pomocy"
-    - "  &a/sq admin &7- Wyświetl pomoc dla administratorów"
-    - "&m---------------------------------------------------"
+    - '&m---------------------------------------------------'
+    - '&9&lSheepquest &7- pomoc &c(moderacja)'
+    - '  &a/sq forcestart &e<arena> &7- Wymuś start areny'
+    - '  &a/sq forcestop &e<arena> &7- Zatrzymaj grę'
+    - '  &a/sq setactive &e<arena> <true/false> &7- Aktywuj lub dezaktywuj arenę.'
+    - '  &a/sq kick &e<player> &7- Wyrzuć gracza z areny.'
+    - '  &a/sq stats &e<player> &7- Pokaż statystyki gry danego gracza'
+    - '  &a/sq statsmenu &e<player> &7- Pokaż statystyki gry danego gracza w menu'
+    - '  &a/sq staffmenu &e<arena> &7- Otwórz menu moderacji areny'
+    - '  &a/sq playersmenu &e<arena> &7- Otwórz menu graczy na arenie'
+    - '  &a/sq help &7- Wyświetl główną stronę pomocy'
+    - '  &a/sq admin &7- Wyświetl pomoc dla administratorów'
+    - '&m---------------------------------------------------'
   admin-help:
-    - "&m---------------------------------------------------"
-    - "&9&lSheepquest &7- pomoc &c(administracja)"
-    - "  &a/sq reload &7- Przeładuj pliki pluginu"
-    - "  &a/sq create &e<arena> &7- Stwórz arenę"
-    - "  &a/sq delete &e<arena> &7- Usuń arenę"
-    - "  &a/sq addteam &e<arena> &7- Dodaj drużynę do areny"
-    - "  &a/sq removeteam &e<arena> &7- Usuń drużynę z areny"
-    - "  &a/sq listteams &e<arena> &7- Pokaż drużyny dodane do areny"
-    - "  &a/sq setminplayers &e<arena> <min-players> &7- Ustaw minimalną liczbę graczy"
-    - "  &a/sq setmaxplayers &e<arena> <max-players> &7- Ustaw maksymalną liczbę graczy"
-    - "  &a/sq setvip &e<arena> <true/false> &7- Ustaw arenę jako vip lub nie"
-    - "  &a/sq setmainlobby &e<arena> &7- Ustaw lokację głównego lobby"
-    - "  &a/sq setwaitinglobby &e<arena> &7- Ustaw lokację poczekalni"
-    - "  &a/sq setspawn &e<arena> <drużyna> &7- Ustaw spawn dla drużyny"
-    - "  &a/sq setteamarea &e<arena> <drużyna> &7- Ustaw obszar drużyny"
-    - "  &a/sq setsheepspawn &e<arena> &7- Ustaw spawn owiec"
-    - "  &a/sq wand &7- Otrzymaj różdżkę do zaznaczania"
-    - "  &a/sq spawnjoinsheep &7- Stwórz owcę do szybkiego dołączania"
-    - "  &a/sq removejoinsheep &7- Usuń owcę do szybkiego dołączania"
-    - "  &a/sq check &e<arena> &7- Sprawdź czy arena jest gotowa do gry"
-    - "  &a/sq setupmenu &e<arena> &7- Otwórz menu konfiguracji areny"
-    - "  &a/sq help &7- Wyświetl główną stronę pomocy"
-    - "  &a/sq staff &7- Wyświetl pomoc dla moderatorów"
-    - "&m---------------------------------------------------"
+    - '&m---------------------------------------------------'
+    - '&9&lSheepquest &7- pomoc &c(administracja)'
+    - '  &a/sq reload &7- Przeładuj pliki pluginu'
+    - '  &a/sq create &e<arena> &7- Stwórz arenę'
+    - '  &a/sq delete &e<arena> &7- Usuń arenę'
+    - '  &a/sq addteam &e<arena> &7- Dodaj drużynę do areny'
+    - '  &a/sq removeteam &e<arena> &7- Usuń drużynę z areny'
+    - '  &a/sq listteams &e<arena> &7- Pokaż drużyny dodane do areny'
+    - '  &a/sq setminplayers &e<arena> <min-players> &7- Ustaw minimalną liczbę graczy'
+    - '  &a/sq setmaxplayers &e<arena> <max-players> &7- Ustaw maksymalną liczbę graczy'
+    - '  &a/sq setvip &e<arena> <true/false> &7- Ustaw arenę jako vip lub nie'
+    - '  &a/sq setmainlobby &e<arena> &7- Ustaw lokację głównego lobby'
+    - '  &a/sq setwaitinglobby &e<arena> &7- Ustaw lokację poczekalni'
+    - '  &a/sq setspawn &e<arena> <drużyna> &7- Ustaw spawn dla drużyny'
+    - '  &a/sq setteamarea &e<arena> <drużyna> &7- Ustaw obszar drużyny'
+    - '  &a/sq setsheepspawn &e<arena> &7- Ustaw spawn owiec'
+    - '  &a/sq wand &7- Otrzymaj różdżkę do zaznaczania'
+    - '  &a/sq check &e<arena> &7- Sprawdź czy arena jest gotowa do gry'
+    - '  &a/sq setupmenu &e<arena> &7- Otwórz menu konfiguracji areny'
+    - '  &a/sq help &7- Wyświetl główną stronę pomocy'
+    - '  &a/sq staff &7- Wyświetl pomoc dla moderatorów'
+    - '&m---------------------------------------------------'
 bungee:
-  not-on-server: "%prefix% &cMusisz być na tym samym serwerze co arena aby to zrobić!"
-  arena-offline: "%prefix% &cArena &e%arena% &cjest offline!"
+  not-on-server: '%prefix% &cMusisz być na tym samym serwerze co arena aby to zrobić!'
+  arena-offline: '%prefix% &cArena &e%arena% &cjest offline!'
+  kick-message: '%prefix% &cNie możesz teraz dołączyć do tej areny!'
+  leave-message: '%prefix% &7Opuszczono minigrę'
+  motd: "&9&lSQ &7&l» %?vip?%&d&l%arena% \n&7&l│ %state% &7&l│ &7&l» &e&l%count%&7/&e&l%max% "
 game:
-  arena-join-vip: "%prefix% &cTa arena jest dostępna tylko dla VIPów!"
-  arena-join-usage: "%prefix% &cZłe użycie! &7Wpisz: &e/sq join &d<arena>"
-  arena-join-already-in-game: "%prefix% &cJesteś już w grze!"
-  arena-join-arena-in-game: "%prefix% &cArena &e%arena% &cjuż wystartowała!"
-  arena-join-arena-full: "%prefix% &cArena &e%arena% &cjest pełna!"
-  arena-join-not-active: "%prefix% &cArena &e%arena% &cjest nieaktywna!"
-  arena-join-success: "%prefix% &7Gracz &e%player% &7dołączył do gry! &7(&e&l&o%count%/%max%&7)"
-  arena-leave-not-in-game: "%prefix% &cNie jesteś w grze!"
-  arena-leave-success: "%prefix% &7Gracz &e%player% &7opuścił grę! &7(&e&l&o%count%/%max%&7)"
-  quick-join-no-games-found: "%prefix% &cAktualnie nie ma gier do których mógłbyś dołączyć."
-  countdown-started: "%prefix% &7Odliczanie zostało rozpoczęte. Gra niedługo się rozpocznie."
-  full-countdown: "%prefix% &7Arena jest pełna! Czas oczekiwania został skrócony do &e%time% sekund&7."
-  countdown-60s-title: "&a&l60"
-  countdown-60s-subtitle: "&7Oczekiwanie na graczy..."
-  countdown-30s-title: "&a&l30"
-  countdown-30s-subtitle: "&7Oczekiwanie na graczy..."
-  countdown-10s-title: "&a&l10"
-  countdown-10s-subtitle: "&7Przygotuj się!"
-  countdown-5s-title: "&a&l5"
-  countdown-5s-subtitle: "&7Zbieraj owce z środka"
-  countdown-4s-title: "&a&l4"
-  countdown-4s-subtitle: "&7Chroń swoją zagrodę"
-  countdown-3s-title: "&a&l3"
-  countdown-3s-subtitle: "&7Zabijaj innych i kradnij im owce"
-  countdown-2s-title: "&a&l2"
-  countdown-2s-subtitle: "&7Współpracuj ze swoją drużyną"
-  countdown-1s-title: "&a&l1"
-  countdown-1s-subtitle: "&7&lBaw się dobrze!"
-  countdown-chat: "%prefix% &7Start za: &e%time%"
-  start-title: "&d&lStart!"
-  start-subtitle: "&7Jesteś w drużynie %team%"
-  start-chat: "%prefix% &7Gra się rozpoczęła!"
-  time-left: "&7Pozostało &d&l%time% &7sekund!"
-  team-join-success: "%prefix% &7Dołączyłeś do drużyny %team%&7!"
-  team-join-random: "%prefix% &7Gdy gra się zacznie, zostaniesz umieszczony w losowej drużynie!"
-  already-in-this-team: "%prefix% &cJesteś już w drużynie %team%&c!"
-  bossbar-team: "&7Drużyna: %team%"
-  team-full: "%prefix% &cDrużyna %team% &cjest pełna!"
+  arena-join-vip: '%prefix% &cTa arena jest dostępna tylko dla VIPów!'
+  arena-join-usage: '%prefix% &cZłe użycie! &7Wpisz: &e/sq join &d<arena>'
+  arena-join-already-in-game: '%prefix% &cJesteś już w grze!'
+  arena-join-arena-in-game: '%prefix% &cArena &e%arena% &cjuż wystartowała!'
+  arena-join-arena-full: '%prefix% &cArena &e%arena% &cjest pełna!'
+  arena-join-not-active: '%prefix% &cArena &e%arena% &cjest nieaktywna!'
+  arena-join-success: '%prefix% &7Gracz &e%player% &7dołączył do gry! &7(&e&l&o%count%/%max%&7)'
+  arena-leave-not-in-game: '%prefix% &cNie jesteś w grze!'
+  arena-leave-success: '%prefix% &7Gracz &e%player% &7opuścił grę! &7(&e&l&o%count%/%max%&7)'
+  quick-join-no-games-found: '%prefix% &cAktualnie nie ma gier do których mógłbyś dołączyć.'
+  countdown-started: '%prefix% &7Odliczanie zostało rozpoczęte. Gra niedługo się rozpocznie.'
+  full-countdown: '%prefix% &7Arena jest pełna! Czas oczekiwania został skrócony do &e%time% sekund&7.'
+  countdown-60s-title: '&a&l60'
+  countdown-60s-subtitle: '&7Oczekiwanie na graczy...'
+  countdown-30s-title: '&a&l30'
+  countdown-30s-subtitle: '&7Oczekiwanie na graczy...'
+  countdown-10s-title: '&a&l10'
+  countdown-10s-subtitle: '&7Przygotuj się!'
+  countdown-5s-title: '&a&l5'
+  countdown-5s-subtitle: '&7Zbieraj owce z środka'
+  countdown-4s-title: '&a&l4'
+  countdown-4s-subtitle: '&7Chroń swoją zagrodę'
+  countdown-3s-title: '&a&l3'
+  countdown-3s-subtitle: '&7Zabijaj innych i kradnij im owce'
+  countdown-2s-title: '&a&l2'
+  countdown-2s-subtitle: '&7Współpracuj ze swoją drużyną'
+  countdown-1s-title: '&a&l1'
+  countdown-1s-subtitle: '&7&lBaw się dobrze!'
+  countdown-chat: '%prefix% &7Start za: &e%time%'
+  start-title: '&d&lStart!'
+  start-subtitle: '&7Jesteś w drużynie %team%'
+  start-chat: '%prefix% &7Gra się rozpoczęła!'
+  time-left: '&7Pozostało &d&l%time% &7sekund!'
+  team-join-success: '%prefix% &7Dołączyłeś do drużyny %team%&7!'
+  team-join-random: '%prefix% &7Gdy gra się zacznie, zostaniesz umieszczony w losowej drużynie!'
+  already-in-this-team: '%prefix% &cJesteś już w drużynie %team%&c!'
+  bossbar-team: '&7Drużyna: %team%'
+  team-full: '%prefix% &cDrużyna %team% &cjest pełna!'
   team-menu-team-red: "&c&lDrużyna czerwona"
   team-menu-team-green: "&a&lDrużyna zielona"
   team-menu-team-blue: "&9&lDrużyna niebieska"
@@ -190,586 +186,593 @@ game:
   team-menu-team-purple: "&5&lDrużyna fioletowa"
   team-menu-team-gray: "&8&lDrużyna szara"
   team-menu-team-black: "&0&lDrużyna czarna"
-  team-menu-team-random: "&7&lLosowa drużyna"
+  team-menu-team-random: '&7&lLosowa drużyna'
   team-menu-team-random-lore:
-    - "&7Kliknij aby dołączyć do losowej drużyny"
-    - "&7która zostanie wybrana automatycznie"
-    - "&7gdy gra się rozpocznie!"
-  start-cancelled: "%prefix% &7Start gry został anulowany - niewystarczająca ilość graczy!"
+    - '&7Kliknij aby dołączyć do losowej drużyny'
+    - '&7która zostanie wybrana automatycznie'
+    - '&7gdy gra się rozpocznie!'
+  start-cancelled: '%prefix% &7Start gry został anulowany - niewystarczająca ilość graczy!'
   team-menu-players:
-    - "&7Gracze:"
-  team-menu-players-format: "&7- %player%"
+    - '&7Gracze:'
+  team-menu-players-format: '&7- %player%'
   team-menu-no-players:
-    - "&7Drużyna jest pusta!"
-  team-menu-name: "&6&lWybór drużyny"
-  team-item-name: "&6&lWybierz drużynę"
+    - '&7Drużyna jest pusta!'
+  team-menu-name: '&6&lWybór drużyny'
+  team-item-name: '&6&lWybierz drużynę'
   team-item-lore:
-    - "&7Kliknij aby otworzyć menu,"
-    - "&7w którym możesz wybrać swoją drużynę!"
-  sheep-item-name: "&9&lPodnieś owcę"
+    - '&7Kliknij aby otworzyć menu,'
+    - '&7w którym możesz wybrać swoją drużynę!'
+  sheep-item-name: '&9&lPodnieś owcę'
   sheep-item-lore:
-    - "&7Podejdź blisko do owcy"
-    - "&7aby ją podnieść!"
-  weapon-item-name: "&7&lBroń swojej zagrody"
+    - '&7Podejdź blisko do owcy'
+    - '&7aby ją podnieść!'
+  weapon-item-name: '&7&lBroń swojej zagrody'
   weapon-item-lore:
-    - "&7Użyj tej broni aby zabijać"
-    - "&7przeciwników, którzy chcą"
-    - "&7ukraść twoje owce!"
-  leave-item-name: "&c&lOpuść arenę"
+    - '&7Użyj tej broni aby zabijać'
+    - '&7przeciwników, którzy chcą'
+    - '&7ukraść twoje owce!'
+  leave-item-name: '&c&lOpuść arenę'
   leave-item-lore:
-    - "&7Kliknij aby wyjść z gry"
-    - "&7i powrócić do lobby!"
-  kill: "%prefix% &7Gracz %killerTeam%%killer% &7zabił gracza %playerTeam%%player%&7!"
-  kill-subtitle: "&7Zabiłeś gracza %team-color%%player%"
-  respawn-in-title: "&7Zabójca: %team-color%%player%"
-  respawn-in-subtitle: "&d&lOdrodzenie za: %time%"
-  respawned-title: "&a&lOdradzasz się!"
-  respawned-subtitle: "&a&lWracaj do gry!"
-  win-title: "&a&lWygrana"
-  defeat-title: "&c&lPorażka"
-  win-defeat-subtitle: "&7Drużyna %team% &7zwycięża"
-  no-win-subtitle: "&7Nikt nie wygrał"
-  chat-format: "%color%%player% &8&l» &r%message%"
-  team-chat-format: "&7[&d&lDRUŻYNA&7] %color%%player% &8&l» &r%message%"
-  team-chat-usage: "%prefix% &cZłe użycie! &7Wpisz /t &e<message>"
-  chat-not-in-game: "%prefix% &cMożesz używać czatu drużyny tylko grając w SheepQuest!"
-  team-chat-game: "%prefix% &cMożesz używać czatu drużyny dopiero gdy gra się rozpocznie!"
-  command-blocked: "%prefix% &cTa komenda nie jest dostępna w grze!"
-  scoreboard-new-waiting:
-    - ""
-    - "&7Arena: &e%arena%"
-    - " "
-    - "&7Gracze: &e%players%"
-    - "   "
-    - "&7Drużyna: %team%"
-    - "&7Kit: %kit%"
-    - "    "
-    - "&7Oczekiwanie..."
-    - "     "
-    - "&7%date%"
-  scoreboard-new-starting:
-    - ""
-    - "&7Arena: &e%arena%"
-    - " "
-    - "&7Gracze: &e%players%"
-    - "   "
-    - "&7Drużyna: %team%"
-    - "&7Kit: %kit%"
-    - "    "
-    - "&7Start za: &e%time-short%"
-    - "     "
-    - "&7%date%"
-  scoreboard-new-game:
-    - ""
-    - "%teams%"
-    - " "
-    - "&e&lNastępna owca:"
-    - "&f%sheep-long% "
-    - "  "
-    - "&e&lPozostały czas:"
-    - "&f%time-long%"
-  scoreboard-new-ending:
-    - ""
-    - "%teams%"
-    - " "
-    - "&e&lKoniec za:"
-    - "&f%time-long%"
-  scoreboard-team: "&f%points% %team%"
-  scoreboard-title: "   &9&lSheepQuest   "
-  scoreboard-seconds: "&f%count% &fsekund(y)"
-  scoreboard-second: "&f%count% &fsekunda"
-  scoreboard-minutes: "&f%count% &fminut(y)"
-  scoreboard-minute: "&f%count% &fminuta"
+    - '&7Kliknij aby wyjść z gry'
+    - '&7i powrócić do lobby!'
+  kill: '%prefix% &7Gracz %killerTeam%%killer% &7zabił gracza %playerTeam%%player%&7!'
+  kill-subtitle: '&7Zabiłeś gracza %team-color%%player%'
+  respawn-in-title: '&7Zabójca: %team-color%%player%'
+  respawn-in-subtitle: '&d&lOdrodzenie za: %time%'
+  respawned-title: '&a&lOdradzasz się!'
+  respawned-subtitle: '&a&lWracaj do gry!'
+  win-title: '&a&lWygrana'
+  defeat-title: '&c&lPorażka'
+  win-defeat-subtitle: '&7Drużyna %team% &7zwycięża'
+  no-win-subtitle: '&7Nikt nie wygrał'
+  chat-format: '%color%%player% &8&l» &r%message%'
+  team-chat-format: '&7[&d&lDRUŻYNA&7] %color%%player% &8&l» &r%message%'
+  team-chat-usage: '%prefix% &cZłe użycie! &7Wpisz /t &e<message>'
+  chat-not-in-game: '%prefix% &cMożesz używać czatu drużyny tylko grając w SheepQuest!'
+  team-chat-game: '%prefix% &cMożesz używać czatu drużyny dopiero gdy gra się rozpocznie!'
+  command-blocked: '%prefix% &cTa komenda nie jest dostępna w grze!'
+  scoreboard-waiting:
+    - ''
+    - '&7Arena: &e%arena%'
+    - ' '
+    - "&7Drużyna: &e%team%"
+    - "&7Kit: &e%kit%"
+    - '  '
+    - '&7Gracze: &e%players%'
+    - '   '
+    - '&7Oczekiwanie...'
+    - '     '
+    - '&7%date%'
+  scoreboard-starting:
+    - ''
+    - '&7Arena: &e%arena%'
+    - ' '
+    - "&7Drużyna: &e%team%"
+    - "&7Kit: &e%kit%"
+    - '  '
+    - '&7Gracze: &e%players%'
+    - '   '
+    - '&7Start za: &e%time-short%'
+    - '     '
+    - '&7%date%'
+  scoreboard-game:
+    - ''
+    - '%teams%'
+    - ' '
+    - '&e&lNastępna owca:'
+    - '&f%time-sheep% sekund'
+    - '  '
+    - '&e&lPozostały czas:'
+    - '&f%time-left%'
+  scoreboard-ending:
+    - ''
+    - '%teams%'
+    - ' '
+    - '&e&lKoniec za:'
+    - '&f%time-long%'
+  scoreboard-team: '&f%points% %team%'
+  scoreboard-title: '   &9&lSheepQuest   '
   summary:
-    - "&m---------------------------------------------------"
-    - " %teams%"
-    - ""
-    - "   &eStatystyki gry:"
-    - "   &7Zabójstwa: &e%kills%"
-    - "   &7Zgony: &e%deaths%"
-    - "   &7Zebrane owce: &e%sheep%"
-    - ""
-    - "&d&lDziękujemy za grę!"
-    - "&m---------------------------------------------------"
-  summary-points: "&7&l| %team%&7: %points% &7&l| "
-  stopped-one-player: "%prefix% &cGra została zatrzymana, bo wszyscy poza tobą wyszli!"
+    - '&m---------------------------------------------------'
+    - ' %teams%'
+    - ''
+    - '   &eStatystyki gry:'
+    - '   &7Zabójstwa: &e%kills%'
+    - '   &7Zgony: &e%deaths%'
+    - '   &7Zebrane owce: &e%sheep%'
+    - ''
+    - '&d&lDziękujemy za grę!'
+    - '&m---------------------------------------------------'
+  summary-points: '&7&l| %team%&7: %points% &7&l| '
+  stopped-one-player: '%prefix% &cGra została zatrzymana, bo wszyscy poza tobą wyszli!'
+  bonus-sheep-name: '&d&l%points% &f&lPUNKTY'
+  bonus-sheep-spawn: '%prefix% &7Pojawiła się &d&lBONUSOWA OWCA&7!'
 kits:
-  already-selected: "%prefix% &cJuż korzystasz z tego kitu!"
-  choose-success: "%prefix% &7Wybrano kit %kit%!"
-  bossbar-kit: "&7Kit: %kit%"
-  standard: "&e&lStandardowy"
-  archer: "&e&lŁucznik"
-  athlete: "&e&lAtleta"
-  menu-name: "&d&lWybierz kit"
-  item-name: "&d&lWybierz kit"
+  already-selected: '%prefix% &cJuż korzystasz z tego kitu!'
+  choose-success: '%prefix% &7Wybrano kit %kit%!'
+  cooldown: '%prefix% &7Poczekaj zanim użyjesz tego ponownie!'
+  bossbar-kit: '&7Kit: %kit%'
+  standard: '&e&lStandardowy'
+  archer: '&e&lŁucznik'
+  athlete: '&e&lAtleta'
+  menu-name: '&d&lWybierz kit'
+  item-name: '&d&lWybierz kit'
   item-lore:
-    - "&7Kliknij aby otworzyć menu"
-    - "&7w którym możesz wybrać kit!"
-  standard-name: "&e&lStandardowy"
+    - '&7Kliknij aby otworzyć menu'
+    - '&7w którym możesz wybrać kit!'
+  standard-name: '&e&lStandardowy'
   standard-lore:
-    - "&7Darmowy, klasyczny kit"
-    - ""
-    - "&7Zawiera:"
-    - "&7- Żelazny miecz"
-    - "&7- Podwójny skok"
-    - "&7  (możliwy do użycia 3 sekundy)"
-    - ""
-    - "&aKliknij aby wybrać"
-  archer-name: "&e&lŁucznik"
+    - '&7Darmowy, klasyczny kit'
+    - ''
+    - '&7Zawiera:'
+    - '&7- Żelazny miecz'
+    - '&7- Podwójny skok'
+    - '&7  (możliwy do użycia 3 sekundy)'
+    - ''
+    - '&aKliknij aby wybrać'
+  archer-name: '&e&lŁucznik'
   archer-lore:
-    - "&7Kit dla tych, który lubią"
-    - "&7walczyć z dystansu."
-    - ""
-    - "&7Zawiera:"
-    - "&7- Drewniany miecz"
-    - "&7- Łuk"
-    - "&7- Strzały"
-    - "&7  (dostajesz jedną co 5 sekund)"
-    - ""
-    - "&aKliknij aby wybrać"
-  athlete-name: "&e&lAtleta"
+    - '&7Kit dla tych, który lubią'
+    - '&7walczyć z dystansu.'
+    - ''
+    - '&7Zawiera:'
+    - '&7- Drewniany miecz'
+    - '&7- Łuk'
+    - '&7- Strzały'
+    - '&7  (dostajesz jedną co 5 sekund)'
+    - ''
+    - '&aKliknij aby wybrać'
+  athlete-name: '&e&lAtleta'
   athlete-lore:
-    - "&7Kit dla tych, którzy marzą"
-    - "&7o wyrzuceniu wszystkiego w powietrze."
-    - ""
-    - "&7Zawiera:"
-    - "&7- Drewnianą siekierę"
-    - "&7- Umiejętność rzucania owcami"
-    - "&7  i zadawania nimi obrażeń."
-    - "&7  Umiejętność odrzucenia pobliskich graczy"
-    - "&7  i zadania im obrażeń."
-    - "&7  (możliwość użycia co 10 sekund)"
-    - ""
-    - "&aKliknij aby wybrać"
-  standard-primary-weapon-name: "&7&lŻelazny miecz"
+    - '&7Kit dla tych, którzy marzą'
+    - '&7o wyrzuceniu wszystkiego w powietrze.'
+    - ''
+    - '&7Zawiera:'
+    - '&7- Drewnianą siekierę'
+    - '&7- Umiejętność rzucania owcami'
+    - '&7  i zadawania nimi obrażeń.'
+    - '&7  Umiejętność odrzucenia pobliskich graczy'
+    - '&7  i zadania im obrażeń.'
+    - '&7  (możliwość użycia co 10 sekund)'
+    - ''
+    - '&aKliknij aby wybrać'
+  standard-primary-weapon-name: '&7&lŻelazny miecz'
   standard-primary-weapon-lore:
-    - "&7Użyj tego przedmiotu do"
-    - "&7obrony swojej zagrody i"
-    - "&7zabijania przeciwników!"
-    - ""
-    - "&ePamiętaj o możliwości podwójnego skoku!."
-  standard-secondary-weapon-name: "&7&lTwój przedmiot"
+    - '&7Użyj tego przedmiotu do'
+    - '&7obrony swojej zagrody i'
+    - '&7zabijania przeciwników!'
+    - ''
+    - '&ePamiętaj o możliwości podwójnego skoku!.'
+  standard-secondary-weapon-name: '&7&lTwój przedmiot'
   standard-secondary-weapon-lore:
-    - "&7Domyślnie wyłączony"
-  archer-primary-weapon-name: "&7&lDrewniany miecz"
+    - '&7Domyślnie wyłączony'
+  archer-primary-weapon-name: '&7&lDrewniany miecz'
   archer-primary-weapon-lore:
-    - "&7Użyj tego przedmiotu do"
-    - "&7obrony swojej zagrody i"
-    - "&7zabijania przeciwników!"
-  archer-secondary-weapon-name: "&7&lBow"
+    - '&7Użyj tego przedmiotu do'
+    - '&7obrony swojej zagrody i'
+    - '&7zabijania przeciwników!'
+  archer-secondary-weapon-name: '&7&lBow'
   archer-secondary-weapon-lore:
-    - "&7Użyj tego przedmiotu do"
-    - "&7obrony swojej zagrody i"
-    - "&7zabijania przeciwników!"
-    - ""
-    - "&e(dostajesz strzałę co 5 sekund)"
-  athlete-primary-weapon-name: "&7&lDrewniana siekiera"
+    - '&7Użyj tego przedmiotu do'
+    - '&7obrony swojej zagrody i'
+    - '&7zabijania przeciwników!'
+    - ''
+    - '&e(dostajesz strzałę co 5 sekund)'
+  athlete-primary-weapon-name: '&7&lDrewniana siekiera'
   athlete-primary-weapon-lore:
-    - "&7Użyj tego przedmiotu do"
-    - "&7obrony swojej zagrody i"
-    - "&7zabijania przeciwników!"
-  athlete-secondary-weapon-name: "&7&lDetonator"
+    - '&7Użyj tego przedmiotu do'
+    - '&7obrony swojej zagrody i'
+    - '&7zabijania przeciwników!'
+  athlete-secondary-weapon-name: '&7&lDetonator'
   athlete-secondary-weapon-lore:
-    - "&7Użyj tego przedmiotu aby wyrzucić"
-    - "&7pobliskich graczy w powietrze"
-    - "&7i zadać im obrażenia!"
-    - ""
-    - "&e(możliwość użycia co 10 sekund)"
-    - "&eKliknij PPM"
-  shield-name: "&7&lTarcza"
+    - '&7Użyj tego przedmiotu aby wyrzucić'
+    - '&7pobliskich graczy w powietrze'
+    - '&7i zadać im obrażenia!'
+    - ''
+    - '&e(możliwość użycia co 10 sekund)'
+    - '&eKliknij PPM'
+  shield-name: '&7&lTarcza'
   shield-lore:
-    - "&7Użyj tego przedmiotu aby się obronić!"
-  arrow-name: "&7&lStrzała"
+    - '&7Użyj tego przedmiotu aby się obronić!'
+  arrow-name: '&7&lStrzała'
   arrow-lore:
-    - "&7Dostaniesz nową strzałę"
-    - "&7co 5 sekund."
-special-events:
-  bonus-sheep-name: "&d&l%points% &f&lPUNKTY"
-  bonus-sheep-spawn: "%prefix% &7Pojawiła się &d&lBONUSOWA OWCA&7!"
+    - '&7Dostaniesz nową strzałę'
+    - '&7co 5 sekund.'
 arena-moderate:
-  force-start-usage: "%prefix% &cZłe użycie! &7Wpisz: &e/sq forcestart &d<arena>"
-  force-start-already-started: "%prefix% &cArena &e%arena% &cjuż wystartowała!"
-  force-start-no-players: "%prefix% &cArena &e%arena% &cjest pusta! (nie ma na niej żadnych graczy)"
-  force-start-success: "%prefix% &7Gracz &e%player% &7wymusił start areny!"
-  force-stop-usage: "%prefix% &cZłe użycie! &7Wpisz: &e/sq forcestop &d<arena>"
-  force-stop-not-started: "%prefix% &cArena &e%arena% &cjeszcze nie wystartowała!"
-  force-stop-success: "%prefix% &cGracz &e%player% &cwymusił zatrzymanie areny!"
-  kick-usage: "%prefix% &cZłe użycie! &7Wpisz: &e/sq kick &d<gracz>"
-  kick-player-not-playing: "%prefix% &cGracz &e%player% &cnie jest na żadnej arenie!"
-  kick-success: "%prefix% &cGracz &e%player% &czostał wyrzucony z areny &e%arena%&c!"
-  kick-player: "%prefix% &cZostałeś wyrzucony z areny przez &e%kicker%&c!"
-  kick-players: "%prefix% &cGracz &e%player% &czostał wyrzucony z areny przez &e%kicker%&c!"
-  active-usage: "%prefix% &cZłe użycie! &7Wpisz: &e/sq active &d<arena> <true/false>"
-  active-arena-active: "%prefix% &cArena &e%arena% &cjest już aktywna!"
-  active-arena-not-active: "%prefix% &cArena &e%arena% &cjest już nieaktywna!"
-  active-activate: "%prefix% &7Arena &e%arena% &7jest teraz &a&lAKTYWNA &7i gracze mogą do niej dołączać."
-  active-deactivate: "%prefix% &7Arena &e%arena% &7jest teraz &c&lNIEAKTYWNA &7i gracze nie mogą do niej dołączać."
-  active-players: "%prefix% &7Zostałeś wyrzucony z gry, ponieważ arena została dezaktywowana przez administrację."
-  active-not-ready: "%prefix% &cArena &e%arena% &cnie jest gotowa do gry, więc nie może zostać aktywowana."
+  force-start-usage: '%prefix% &cZłe użycie! &7Wpisz: &e/sq forcestart &d<arena>'
+  force-start-already-started: '%prefix% &cArena &e%arena% &cjuż wystartowała!'
+  force-start-no-players: '%prefix% &cArena &e%arena% &cjest pusta! (nie ma na niej żadnych graczy)'
+  force-start-success: '%prefix% &7Wymuszono start areny!'
+  force-stop-usage: '%prefix% &cZłe użycie! &7Wpisz: &e/sq forcestop &d<arena>'
+  force-stop-not-started: '%prefix% &cArena &e%arena% &cjeszcze nie wystartowała!'
+  force-stop-success: '%prefix% &cWymuszono zatrzymanie areny!'
+  kick-usage: '%prefix% &cZłe użycie! &7Wpisz: &e/sq kick &d<gracz>'
+  kick-player-not-playing: '%prefix% &cGracz &e%player% &cnie jest na żadnej arenie!'
+  kick-success: '%prefix% &cGracz &e%player% &czostał wyrzucony z areny &e%arena%&c!'
+  kick-player: '%prefix% &cZostałeś wyrzucony z areny przez &e%kicker%&c!'
+  kick-players: '%prefix% &cGracz &e%player% &czostał wyrzucony z areny przez &e%kicker%&c!'
+  active-usage: '%prefix% &cZłe użycie! &7Wpisz: &e/sq active &d<arena> <true/false>'
+  active-arena-active: '%prefix% &cArena &e%arena% &cjest już aktywna!'
+  active-arena-not-active: '%prefix% &cArena &e%arena% &cjest już nieaktywna!'
+  active-activate: '%prefix% &7Arena &e%arena% &7jest teraz &a&lAKTYWNA &7i gracze mogą do niej dołączać.'
+  active-deactivate: '%prefix% &7Arena &e%arena% &7jest teraz &c&lNIEAKTYWNA &7i gracze nie mogą do niej dołączać.'
+  active-players: '%prefix% &7Zostałeś wyrzucony z gry, ponieważ arena została dezaktywowana przez administrację.'
+  active-not-ready: '%prefix% &cArena &e%arena% &cnie jest gotowa do gry, więc nie może zostać aktywowana.'
 arena-setup:
-  active-block: "%prefix% &cTa arena jest aktywna, więc nie możesz modyfikować jej ustawień! &7Dezaktywuj ją przez menu moderacji lub komendę &e/sq active %arena% false&7."
-  wand-item-name: "&6&lRóżdżka konfiguracyjna"
+  check-page:
+    - '&m---------------------------------------------------'
+    - '&e&l%arena% &7arena configuration state:'
+    - '  &7Minimum players: %min-players%'
+    - '  &7Maximum players: %max-players%'
+    - "  &7Drużyny: %teams%"
+    - '  &7Main lobby: %main-lobby%'
+    - '  &7Waiting lobby: %waiting-lobby%'
+    - '  &7Sheep spawn: %sheep-spawn%'
+    - '  &7Spawns: %spawn%'
+    - '  &7Areas: %area%'
+    - '%active%'
+    - '%ready%'
+    - '&m---------------------------------------------------'
+  active-block: '%prefix% &cTa arena jest aktywna, więc nie możesz modyfikować jej ustawień! &7Dezaktywuj ją przez menu moderacji lub komendę &e/sq active %arena% false&7.'
+  wand-item-name: '&6&lRóżdżka konfiguracyjna'
   wand-item-lore:
-    - "&7Kliknij LPM to aby wybrać pierwszą pozycję."
-    - "&7(którykolwiek dolny róg zagrody)"
-    - "&7Kliknij RPM to aby wybrać drugą pozycję."
-    - "&7(przeciwległy górny róg zagrody)"
-  wand-item-recive: "%prefix% &7Otrzymałeś różdżkę! Zaznacz jeden róg budowli LPM i drugi róg PPM."
-  selection-empty: "%prefix% &cTwoje zaznaczenie jest puste! &7Przed ustawieniem obszaru drużyny zaznacz go różdżką."
-  wand-select-min: "%prefix% &7Wybrałeś pierwszy punkt! Teraz zaznacz drugi, po przeciwległej stronie."
-  wand-select-max: "%prefix% &7Wybrałeś drugi punkt! Możesz teraz ustawić obszar drużyny!"
-  wand-selection-world: "%prefix% &7Twoje punkty zaznaczenia muszą być w tym samym świecie!"
-  invalid-team: "%prefix% &cZła drużyna! Dostępne drużyny to: &c&lred &a&lgreen &9&lblue &e&lyellow"
-  create-success: "%prefix% &7Arena &e%arena% &7została utworzona pomyślnie! Możesz teraz zacząć ją konfigurować!"
-  create-usage: "%prefix% &cZłe użycie! &7Wpisz: &e/sq create &d<arena>"
-  create-already-exists: "%prefix% &cArena &e%arena% &cjuż istnieje!"
-  delete-success: "%prefix% &7Arena &e%arena% &7została usunięta pomyślnie!"
-  delete-confirm: "%prefix% &cJesteś pewien, że chcesz usunąć arenę &e%arena% &c? &7Aby potwierdzić wpisz &e/sq confirm &7w ciągu następnych 20 sekund. &c&lNIE DA SIĘ TEGO COFNĄĆ!"
-  delete-confirm-none: "%prefix% &cNie masz niczego do potwierdzenia!"
-  delete-usage: "%prefix% &cZłe użycie! &7Wpisz: &e/sq delete &d<arena>"
-  delete-not-exists: "%prefix% &cArena o nazwie &e%arena% &cnie istnieje!"
-  set-main-lobby-usage: "%prefix% &cZłe użycie &7Wpisz: &e/sq setmainlobby &d<arena>"
-  set-main-lobby-success: "%prefix% &7Główne lobby dla areny &e%arena% &7zostało ustawione!"
-  set-waiting-lobby-usage: "%prefix% &cZłe użycie! &7Wpisz: &e/sq setwaitinglobby &d<arena>"
-  set-waiting-lobby-success: "%prefix% &7Poczekalnia dla areny &e%arena% &7została ustawiona!"
-  set-spawn-usage: "%prefix% &cZłe użycie! &7Wpisz: &e/sq setspawn &d<arena> <drużyna>"
-  set-spawn-success: "%prefix% &7Spawn dla drużyny %team% &7na arenie &e%arena% &7został ustawiony!"
-  set-sheep-spawn-usage: "%prefix% &cZłe użycie! &7Wpisz: &e/sq setsheepspawn &d<arena>"
-  set-sheep-spawn-success: "%prefix% &7Spawn owiec na arenie &e%arena% &7został ustawiony!"
-  set-teams-area-usage: "%prefix% &cZłe użycie! &7Wpisz: &e/sq setteamsarea &d<arena> <drużyna>"
-  set-teams-area-success: "%prefix% &7Obszar drużyny %team% &7na arenie &e%arena% &7został ustawiony!"
-  set-teams-area-no-selection: "%prefix% &cMusisz najpierw utworzyć zaznaczenie! Użyj &e/sq setupwand &7aby otrzymać różdżkę i to zrobić!"
-  set-min-players-usage: "%prefix% &cZłe użycie! &7Wpisz: &e/sq setminplayers &d<arena> <liczba>"
-  set-min-players-success: "%prefix% &7Minimalna liczba graczy na arenie &e%arena% &7została ustawiona!"
-  set-min-players-too-small: "%prefix% &cMinimalna liczba graczy musi być większa niż 1!"
-  set-min-players-invalid-count: "%prefix% &cMinimalna liczba graczy musi być liczbą!"
-  set-max-players-usage: "%prefix% &cZłe użycie! &7Wpisz: &e/sq setmaxplayers &d<arena> <liczba>"
-  set-max-players-success: "%prefix% &7Maksymalna liczba graczy na arenie &e%arena% &7została ustawiona!"
-  set-max-players-invalid-count: "%prefix% &cMaksymalna liczba graczy musi być liczbą!"
-  set-vip-usage: "%prefix% &cZłe użycie! &7Wpisz: &e/sq setvip &d<arena> <true/false>"
-  set-vip-arena-vip: "%prefix% &cArena &e%arena% &cjest już areną dla VIPów!"
-  set-vip-arena-not-vip: "%prefix% &cArena &e%arena% &cjest już zwykłą areną!"
-  set-vip-success-vip: "%prefix% &7Arena &e%arena% &7jest teraz areną &a&lVIP &7i tylko VIPy mogą do niej dołączać."
-  set-vip-success-not-vip: "%prefix% &7Arena &e%arena% &7jest teraz areną &c&lNIE VIP &7i każdy może do niej dołączyć."
-  add-team-usage: "%prefix% &cZłe użycie! &7Wpisz &e/sq addteam &d<arena> <drużyna>&7."
-  add-team-invalid-team: "%prefix% &cZła drużyna! &7Wpisz &e/sq teams &d<arena> &7aby wyświetlić listę dostępnych drużyn."
-  add-team-already-added: "%prefix% &cTa drużyna jest już dodana do tej areny!"
-  add-team-success: "%prefix% &7Drużyna została pomyślnie dodana do areny &e%arena%&7!"
-  remove-team-usage: "%prefix% &cZłe użycie! &7Wpisz &e/sq removeteam &d<arena> <drużyna>&7."
-  remove-team-invalid-team: "%prefix% &cZła drużyna! &7Wpisz &e/sq teams &d<arena> &7aby wyświetlić listę dostępnych drużyn."
-  remove-team-not-added: "%prefix% &cTa drużyna nie jest dodana do tej areny!"
-  remove-team-success: "%prefix% &7Drużyna została pomyślnie usunięta z areny &e%arena%&7!"
-  list-teams-usage: "%prefix% &cZłe użycie! &7Wpisz &e/sq teams &d<arena>"
-  list-teams-success: "%prefix% &7Drużyny dodane do areny &e%arena%&7: %teams%"
-  list-teams-success2: "%prefix% &7Drużyny możliwe do dodania: %teams%"
-  check-set: "&aTak!"
-  check-notset: "&cNie!"
-  check-yes: "&aTak!"
-  check-no: "&cNie!"
-  check-usage: "%prefix% &cZłe użycie! &7Wpisz &e/sq check &d<arena>"
-  check-ready: "&a&lArena jest skonfigurowana i gotowa do użycia!"
-  check-not-ready: "&c&lArena nie jest jeszcze gotowa do gry!"
-  check-active: "&aArena jest aktywna, a gracze mogą do niej dołączać!"
-  check-not-active: "&cArena nie jest aktywna i gracze nie mogą do niej dołączać!"
+    - '&7Kliknij LPM to aby wybrać pierwszą pozycję.'
+    - '&7(którykolwiek dolny róg zagrody)'
+    - '&7Kliknij RPM to aby wybrać drugą pozycję.'
+    - '&7(przeciwległy górny róg zagrody)'
+  wand-item-receive: '%prefix% &7Otrzymałeś różdżkę! Zaznacz jeden róg budowli LPM i drugi róg PPM.'
+  selection-empty: '%prefix% &cTwoje zaznaczenie jest puste! &7Przed ustawieniem obszaru drużyny zaznacz go różdżką.'
+  wand-select-min: '%prefix% &7Wybrałeś pierwszy punkt! Teraz zaznacz drugi, po przeciwległej stronie.'
+  wand-select-max: '%prefix% &7Wybrałeś drugi punkt! Możesz teraz ustawić obszar drużyny!'
+  wand-selection-world: '%prefix% &7Twoje punkty zaznaczenia muszą być w tym samym świecie!'
+  invalid-team: '%prefix% &cZła drużyna! Dostępne drużyny to: %teams%'
+  create-success: '%prefix% &7Arena &e%arena% &7została utworzona pomyślnie! Możesz teraz zacząć ją konfigurować!'
+  create-usage: '%prefix% &cZłe użycie! &7Wpisz: &e/sq create &d<arena>'
+  create-already-exists: '%prefix% &cArena &e%arena% &cjuż istnieje!'
+  delete-success: '%prefix% &7Arena &e%arena% &7została usunięta pomyślnie!'
+  delete-confirm: '%prefix% &cJesteś pewien, że chcesz usunąć arenę &e%arena% &c? &7Aby potwierdzić wpisz &e/sq confirm &7w ciągu następnych 20 sekund. &c&lNIE DA SIĘ TEGO COFNĄĆ!'
+  delete-usage: '%prefix% &cZłe użycie! &7Wpisz: &e/sq delete &d<arena>'
+  delete-not-exists: '%prefix% &cArena o nazwie &e%arena% &cnie istnieje!'
+  set-main-lobby-usage: '%prefix% &cZłe użycie &7Wpisz: &e/sq setmainlobby &d<arena>'
+  set-main-lobby-success: '%prefix% &7Główne lobby dla areny &e%arena% &7zostało ustawione!'
+  set-waiting-lobby-usage: '%prefix% &cZłe użycie! &7Wpisz: &e/sq setwaitinglobby &d<arena>'
+  set-waiting-lobby-success: '%prefix% &7Poczekalnia dla areny &e%arena% &7została ustawiona!'
+  set-spawn-usage: '%prefix% &cZłe użycie! &7Wpisz: &e/sq setspawn &d<arena> <drużyna>'
+  set-spawn-success: '%prefix% &7Spawn dla drużyny %team% &7na arenie &e%arena% &7został ustawiony!'
+  set-sheep-spawn-usage: '%prefix% &cZłe użycie! &7Wpisz: &e/sq setsheepspawn &d<arena>'
+  set-sheep-spawn-success: '%prefix% &7Spawn owiec na arenie &e%arena% &7został ustawiony!'
+  set-teams-area-usage: '%prefix% &cZłe użycie! &7Wpisz: &e/sq setteamsarea &d<arena> <drużyna>'
+  set-teams-area-success: '%prefix% &7Obszar drużyny %team% &7na arenie &e%arena% &7został ustawiony!'
+  set-teams-area-no-selection: '%prefix% &cMusisz najpierw utworzyć zaznaczenie! Użyj &e/sq setupwand &7aby otrzymać różdżkę i to zrobić!'
+  set-min-players-usage: '%prefix% &cZłe użycie! &7Wpisz: &e/sq setminplayers &d<arena> <liczba>'
+  set-min-players-success: '%prefix% &7Minimalna liczba graczy na arenie &e%arena% &7została ustawiona!'
+  set-min-players-too-small: '%prefix% &cMinimalna liczba graczy musi być większa niż 1!'
+  set-min-players-invalid-count: '%prefix% &cMinimalna liczba graczy musi być liczbą!'
+  set-max-players-usage: '%prefix% &cZłe użycie! &7Wpisz: &e/sq setmaxplayers &d<arena> <liczba>'
+  set-max-players-success: '%prefix% &7Maksymalna liczba graczy na arenie &e%arena% &7została ustawiona!'
+  set-max-players-invalid-count: '%prefix% &cMaksymalna liczba graczy musi być liczbą!'
+  set-vip-usage: '%prefix% &cZłe użycie! &7Wpisz: &e/sq setvip &d<arena> <true/false>'
+  set-vip-arena-vip: '%prefix% &cArena &e%arena% &cjest już areną dla VIPów!'
+  set-vip-arena-not-vip: '%prefix% &cArena &e%arena% &cjest już zwykłą areną!'
+  set-vip-success-vip: '%prefix% &7Arena &e%arena% &7jest teraz areną &a&lVIP &7i tylko VIPy mogą do niej dołączać.'
+  set-vip-success-not-vip: '%prefix% &7Arena &e%arena% &7jest teraz areną &c&lNIE VIP &7i każdy może do niej dołączyć.'
+  add-team-usage: '%prefix% &cZłe użycie! &7Wpisz &e/sq addteam &d<arena> <drużyna>&7.'
+  add-team-invalid-team: '%prefix% &cZła drużyna! &7Wpisz &e/sq teams &d<arena> &7aby wyświetlić listę dostępnych drużyn.'
+  add-team-already-added: '%prefix% &cTa drużyna jest już dodana do tej areny!'
+  add-team-success: '%prefix% &7Drużyna została pomyślnie dodana do areny &e%arena%&7!'
+  remove-team-usage: '%prefix% &cZłe użycie! &7Wpisz &e/sq removeteam &d<arena> <drużyna>&7.'
+  remove-team-invalid-team: '%prefix% &cZła drużyna! &7Wpisz &e/sq teams &d<arena> &7aby wyświetlić listę dostępnych drużyn.'
+  team-not-added: '%prefix% &cTa drużyna nie jest dodana do tej areny!'
+  remove-team-success: '%prefix% &7Drużyna została pomyślnie usunięta z areny &e%arena%&7!'
+  list-teams-usage: '%prefix% &cZłe użycie! &7Wpisz &e/sq teams &d<arena>'
+  list-teams-success: '%prefix% &7Drużyny dodane do areny &e%arena%&7: %teams%'
+  list-teams-success2: '%prefix% &7Drużyny możliwe do dodania: %teams%'
+  check-set: '&aTak!'
+  check-notset: '&cNie!'
+  check-usage: '%prefix% &cZłe użycie! &7Wpisz &e/sq check &d<arena>'
+  check-ready: '&a&lArena jest skonfigurowana i gotowa do użycia!'
+  check-not-ready: '&c&lArena nie jest jeszcze gotowa do gry!'
+  check-active: '&aArena jest aktywna, a gracze mogą do niej dołączać!'
+  check-not-active: '&cArena nie jest aktywna i gracze nie mogą do niej dołączać!'
   check-page-new:
-    - "&m---------------------------------------------------"
-    - "&e&l%arena% &7- stan konfiguracji:"
-    - "  &7Minimalna liczba graczy: %min-players%"
-    - "  &7Maksymalna liczba graczy: %max-players%"
-    - "  &7Dodane drużyny: &e%team%"
-    - "  &7Główne lobby: %main-lobby%"
-    - "  &7Poczekalnia: %waiting-lobby%"
-    - "  &7Spawn owcy: %sheep-spawn%"
-    - "  &7Spawny drużyn: %spawn%"
-    - "  &7Obszary drużyn: %area%"
-    - "%active%"
-    - "%ready%"
-    - "&m---------------------------------------------------"
-  spawn-join-sheep: "%prefix% &7Owca do szybkiego dołączania została utworzona!"
-  remove-join-sheep-no-sheep: "%prefix% &cW pobliżu nie ma żadnych owiec do szybkiego dołączania!"
-  remove-join-sheep-success: "%prefix% &7Owca do szybkiego dołączania została usunięta!"
+    - '&m---------------------------------------------------'
+    - '&e&l%arena% &7- stan konfiguracji:'
+    - '  &7Minimalna liczba graczy: %min-players%'
+    - '  &7Maksymalna liczba graczy: %max-players%'
+    - '  &7Główne lobby: %main-lobby%'
+    - '  &7Poczekalnia: %waiting-lobby%'
+    - '  &7Spawn owcy: %sheep-spawn%'
+    - '  &7Spawny drużyn: %spawn%'
+    - '  &7Obszary drużyn: %area%'
+    - '%active%'
+    - '%ready%'
+    - '&m---------------------------------------------------'
 arenas-menu:
-  command-usage: "%prefix% &cZłe użycie! &7Wpisz: &e/sq arenasmenu"
-  name: "&9&lSheepQuest &7&l| &8Areny"
-  advanced-menu-name: "&3&l%arena% &8- zaawansowane opcje"
-  arena-item-name: "%?vip?%&e%arena%"
+  command-usage: '%prefix% &cZłe użycie! &7Wpisz: &e/sq arenasmenu'
+  name: '&9&lSheepQuest &7&l| &8Areny'
+  advanced-menu-name: '&3&l%arena% &8- zaawansowane opcje'
+  arena-item-name: '%?vip?%&e%arena%'
   arena-item-lore:
-    - "&7Gracze: &e%count%/&e%max%"
-    - "&7Status gry: %state%"
-    - ""
-    - "&7Kliknij &ePPM &7aby pokazać zaawansowane opcje."
-    - "&aKliknij &e&lLPM &aaby dołączyć do areny."
-  quickjoin-item-name: "&eSzybkie dołączanie"
+    - '&7Gracze: &e%count%/&e%max%'
+    - '&7Status gry: %state%'
+    - ''
+    - '&aKliknij aby dołączyć do areny.'
+  quickjoin-item-name: '&eSzybkie dołączanie'
   quickjoin-item-lore:
-    - "&7Kliknij aby dołączyć do losowej areny"
-    - ""
-    - "&7Zostaniesz umieszczony na arenie"
-    - "&7z największą liczbą graczy"
-    - "&7aby rozpocząć grę jak najszybciej!"
-  stats-item-name: "&eStatystyki"
+    - '&7Kliknij aby dołączyć do losowej areny'
+    - ''
+    - '&7Zostaniesz umieszczony na arenie'
+    - '&7z największą liczbą graczy'
+    - '&7aby rozpocząć grę jak najszybciej!'
+  stats-item-name: '&eStatystyki'
   stats-item-lore:
-    - "&7Kliknij aby zobaczyć"
-    - "&7swoje statystyki."
-  close-item-name: "&eZamknij"
+    - '&7Kliknij aby zobaczyć'
+    - '&7swoje statystyki.'
+  close-item-name: '&eZamknij'
   close-item-lore:
-    - "&7Zamknij to menu."
-  play-item-name: "&eDołącz do &3&l%arena%"
+    - '&7Zamknij to menu.'
+  play-item-name: '&eDołącz do &3&l%arena%'
   play-item-lore:
-    - "&7Gracze: &e%count%/&e%max%"
-    - "&7Status gry: %state%"
-    - ""
-    - "&a&lKliknij aby dołączyć do tej areny!"
-  staff-item-name: "&eOpcje moderacji"
+    - '&7Gracze: &e%count%/&e%max%'
+    - '&7Status gry: %state%'
+    - ''
+    - '&a&lKliknij aby dołączyć do tej areny!'
+  staff-item-name: '&eOpcje moderacji'
   staff-item-lore:
-    - "&7Ustawienia areny dla moderacji."
-    - ""
-    - "&a&lKliknij aby otworzyć menu moderacji"
-  setup-item-name: "&eKonfiguracja"
+    - '&7Ustawienia areny dla moderacji.'
+    - ''
+    - '&a&lKliknij aby otworzyć menu moderacji'
+  setup-item-name: '&eKonfiguracja'
   setup-item-lore:
-    - "&7Menu konfiguracyjne dla administracji."
-    - ""
-    - "&a&lKliknij aby otworzyć menu konfiguracji"
-  options-menu-back-item-name: "&eCofnij"
+    - '&7Menu konfiguracyjne dla administracji.'
+    - ''
+    - '&a&lKliknij aby otworzyć menu konfiguracji'
+  options-menu-back-item-name: '&eCofnij'
   options-menu-back-item-lore:
-    - "&7Wróć do menu gier."
+    - '&7Wróć do menu gier.'
 stats-menu:
-  command-usage: "%prefix% &cZłe użycie! &7Wpisz: &e/sq statsmenu &a[gracz]"
-  name: "&8Statystyki gracza &3&l%player%"
-  wins: "&eWygrane: &7%wins%"
-  looses: "&ePrzegrane: &7%looses%"
-  games-played: "&eRozegrane gry: &7%games%"
-  kills: "&eZabójstwa: &7%kills%"
-  deaths: "&eŚmierci: &7%deaths%"
-  sheep-taken: "&eZebrane owce: &7%sheep%"
-  bonus-sheep-taken: "&eZebrane bonusowe owce: &7%bonus-sheep%"
-  playtime: "&eCzas gry: &7%playtime%"
-  back-item-name: "&ePowrót"
+  command-usage: '%prefix% &cZłe użycie! &7Wpisz: &e/sq statsmenu &a[gracz]'
+  name: '&8Statystyki gracza &3&l%player%'
+  wins: '&eWygrane: &7%wins%'
+  looses: '&ePrzegrane: &7%looses%'
+  games-played: '&eRozegrane gry: &7%games%'
+  kills: '&eZabójstwa: &7%kills%'
+  deaths: '&eŚmierci: &7%deaths%'
+  sheep-taken: '&eZebrane owce: &7%sheep%'
+  bonus-sheep-taken: '&eZebrane bonusowe owce: &7%bonus-sheep%'
+  playtime: '&eCzas gry: &7%playtime%'
+  back-item-name: '&ePowrót'
   back-item-lore:
-    - "&7Wróć do menu aren."
+    - '&7Wróć do menu aren.'
 setup-menu:
-  command-usage: "%prefix% &cZłe użycie! &7Wpisz: &e/sq setupmenu &d<arena>"
-  name: "&3&l%arena% &8- konfiguracja"
-  arena-vip: "&c&lVIPy"
-  arena-not-vip: "&a&lKAŻDY"
-  team-spawn-menu-name: "&3&l%arena% &8- spawn drużyn"
-  team-area-menu-name: "&3&l%arena% &8- obszar drużyn"
-  teams-add-remove-menu-name: "&3&l%arena% &8- drużyny"
-  min-players-message: "%prefix% &7Wpisz minimalną liczbę graczy. Aby anulować wpisz &ecancel&7."
-  max-players-message: "%prefix% &7Wpisz maksymalną liczbę graczy. Aby anulować wpisz &ecancel&7."
-  cancelled: "%prefix% &7Anulowano."
-  check-item-name: "&c&lSprawdź arenę"
+  command-usage: '%prefix% &cZłe użycie! &7Wpisz: &e/sq setupmenu &d<arena>'
+  name: '&3&l%arena% &8- konfiguracja'
+  arena-vip: '&c&lVIPy'
+  arena-not-vip: '&a&lKAŻDY'
+  team-spawn-menu-name: '&3&l%arena% &8- spawn drużyn'
+  team-area-menu-name: '&3&l%arena% &8- obszar drużyn'
+  teams-add-remove-menu-name: '&3&l%arena% &8- drużyny'
+  min-players-message: '%prefix% &7Wpisz minimalną liczbę graczy. Aby anulować wpisz
+    &ecancel&7.'
+  max-players-message: '%prefix% &7Wpisz maksymalną liczbę graczy. Aby anulować wpisz
+    &ecancel&7.'
+  cancelled: '%prefix% &7Anulowano.'
+  check-item-name: '&c&lSprawdź arenę'
   check-item-lore:
-    - "&7Kliknij aby wyświetlić stan"
-    - "&7konfiguracji areny na czacie."
-    - ""
-    - "&7Arena gotowa? %ready%"
-  delete-item-name: "&c&lUsuń arenę"
+    - '&7Kliknij aby wyświetlić stan'
+    - '&7konfiguracji areny na czacie.'
+    - ''
+    - '&7Arena gotowa? %ready%'
+  delete-item-name: '&c&lUsuń arenę'
   delete-item-lore:
-    - "&7Kliknij aby usunąć arenę."
-    - ""
-    - "&7Zostanie ona permanentnie usunięta."
-    - "&7"
-    - "&c&lUWAGA! &7Nie da się tego cofnąć!"
-  vip-item-name: "&eVip"
+    - '&7Kliknij aby usunąć arenę.'
+    - ''
+    - '&7Zostanie ona permanentnie usunięta.'
+    - '&7'
+    - '&c&lUWAGA! &7Nie da się tego cofnąć!'
+  vip-item-name: '&eVip'
   vip-item-lore:
-    - "&7Ustaw arenę jako dostępną"
-    - "&7tylko dla VIPów lub dla każdego."
-    - ""
-    - "&7Tylko gracze z uprawnieniem sheepquest.vip"
-    - "&7mogą dołączać do aren dla VIPów."
-    - ""
-    - "&7Dostępność areny: &e%vip%"
-  min-players-item-name: "&eUstaw minimalną liczbę graczy"
+    - '&7Ustaw arenę jako dostępną'
+    - '&7tylko dla VIPów lub dla każdego.'
+    - ''
+    - '&7Tylko gracze z uprawnieniem sheepquest.vip'
+    - '&7mogą dołączać do aren dla VIPów.'
+    - ''
+    - '&7Dostępność areny: &e%vip%'
+  min-players-item-name: '&eUstaw minimalną liczbę graczy'
   min-players-item-lore:
-    - "&7Kliknij aby ustawić"
-    - "&7minimalną liczbę graczy."
-    - ""
-    - "&7Gra wystartuje dopiero gdy"
-    - "&7minimalna liczba graczy"
-    - "&7zostanie osiągnięta."
-    - ""
-    - "&7Ustawione? %set%"
-  max-players-item-name: "&eUstaw maksymalną liczbę graczy"
+    - '&7Kliknij aby ustawić'
+    - '&7minimalną liczbę graczy.'
+    - ''
+    - '&7Gra wystartuje dopiero gdy'
+    - '&7minimalna liczba graczy'
+    - '&7zostanie osiągnięta.'
+    - ''
+    - '&7Ustawione? %set%'
+  max-players-item-name: '&eUstaw maksymalną liczbę graczy'
   max-players-item-lore:
-    - "&7Kliknij aby ustawić"
-    - "&7maksymalną liczbę graczy."
-    - ""
-    - "&7Maksymalna liczba graczy,"
-    - "&7który mogą grać na arenie"
-    - "&7na raz."
-    - ""
-    - "&7Ustawione? %set%"
-  main-lobby-item-name: "&eUstaw główne lobby"
+    - '&7Kliknij aby ustawić'
+    - '&7maksymalną liczbę graczy.'
+    - ''
+    - '&7Maksymalna liczba graczy,'
+    - '&7który mogą grać na arenie'
+    - '&7na raz.'
+    - ''
+    - '&7Ustawione? %set%'
+  main-lobby-item-name: '&eUstaw główne lobby'
   main-lobby-item-lore:
-    - "&7Kliknij aby ustawić lokację"
-    - "&7głównego lobby w miejscu,"
-    - "&7w którym stoisz."
-    - ""
-    - "&7Gracze zostaną tam przeteleportowani"
-    - "&7gdy opuszczą grę."
-    - ""
-    - "&7Ustawione? %set%"
-  waiting-lobby-item-name: "&eUstaw poczekalnię"
+    - '&7Kliknij aby ustawić lokację'
+    - '&7głównego lobby w miejscu,'
+    - '&7w którym stoisz.'
+    - ''
+    - '&7Gracze zostaną tam przeteleportowani'
+    - '&7gdy opuszczą grę.'
+    - ''
+    - '&7Ustawione? %set%'
+  waiting-lobby-item-name: '&eUstaw poczekalnię'
   waiting-lobby-item-lore:
-    - "&7Kliknij aby ustawić lokację"
-    - "&7poczekalni w miejscu,"
-    - "&7w którym stoisz."
-    - ""
-    - "&7Gracze będą tam czekać"
-    - "&7aż gra się zacznie."
-    - ""
-    - "&7Ustawione? %set%"
-  sheep-spawn-item-name: "&eUstaw spawn owiec"
+    - '&7Kliknij aby ustawić lokację'
+    - '&7poczekalni w miejscu,'
+    - '&7w którym stoisz.'
+    - ''
+    - '&7Gracze będą tam czekać'
+    - '&7aż gra się zacznie.'
+    - ''
+    - '&7Ustawione? %set%'
+  sheep-spawn-item-name: '&eUstaw spawn owiec'
   sheep-spawn-item-lore:
-    - "&7Kliknij aby ustawić lokację"
-    - "&7spawnu owiec w miejscu,"
-    - "&7w którym stoisz."
-    - ""
-    - "&7Owce będą się tam pojawiać"
-    - "&7w trakcie gry."
-    - ""
-    - "&7Ustawione? %set%"
-  team-spawn-item-name: "&eUstaw spawn drużyny"
+    - '&7Kliknij aby ustawić lokację'
+    - '&7spawnu owiec w miejscu,'
+    - '&7w którym stoisz.'
+    - ''
+    - '&7Owce będą się tam pojawiać'
+    - '&7w trakcie gry.'
+    - ''
+    - '&7Ustawione? %set%'
+  team-spawn-item-name: '&eUstaw spawn drużyny'
   team-spawn-item-lore:
-    - "&7Kliknij aby ustawić lokację"
-    - "&7spawnu drużyny w miejscu,"
-    - "&7w którym stoisz."
-    - "&7Będziesz musiał wybrać drużynę"
-    - "&7w następnym menu."
-    - ""
-    - "&7Będzie to punkt odrodzenia"
-    - "&7dla wszystkich graczy w drużynie."
-    - ""
-    - "&7Ustawione? %set%"
-  team-area-item-name: "&eUstaw obszar drużyny"
+    - '&7Kliknij aby ustawić lokację'
+    - '&7spawnu drużyny w miejscu,'
+    - '&7w którym stoisz.'
+    - '&7Będziesz musiał wybrać drużynę'
+    - '&7w następnym menu.'
+    - ''
+    - '&7Będzie to punkt odrodzenia'
+    - '&7dla wszystkich graczy w drużynie.'
+    - ''
+    - '&7Ustawione? %set%'
+  team-area-item-name: '&eUstaw obszar drużyny'
   team-area-item-lore:
-    - "&7Kliknij aby ustawić obszar drużyny"
-    - "&7w miejscu twojego zaznaczenia."
-    - "&7Będziesz musiał wybrać drużynę"
-    - "&7w następnym menu."
-    - ""
-    - "&7Gracze będą przechowywać tam"
-    - "&7zebrane owce."
-    - ""
-    - "&7Ustawione? %set%"
-  specific-team-spawn-item-name: "&eUstaw spawn drużyny %team%"
+    - '&7Kliknij aby ustawić obszar drużyny'
+    - '&7w miejscu twojego zaznaczenia.'
+    - '&7Będziesz musiał wybrać drużynę'
+    - '&7w następnym menu.'
+    - ''
+    - '&7Gracze będą przechowywać tam'
+    - '&7zebrane owce.'
+    - ''
+    - '&7Ustawione? %set%'
+  specific-team-spawn-item-name: '&eUstaw spawn drużyny %team%'
   specific-team-spawn-item-lore:
-    - "&7Kliknij aby ustawić lokację"
-    - "&7spawnu drużyny %team%."
-    - "&7w miejscu, w którym stoisz."
-    - ""
-    - "&7Będzie to punkt odrodzenia"
-    - "&7dla wszystkich graczy"
-    - "&7w drużynie %team%."
-    - ""
-    - "&7Ustawione? %set%"
-  team-spawn-menu-back-item-name: "&eBack"
+    - '&7Kliknij aby ustawić lokację'
+    - '&7spawnu drużyny %team%.'
+    - '&7w miejscu, w którym stoisz.'
+    - ''
+    - '&7Będzie to punkt odrodzenia'
+    - '&7dla wszystkich graczy'
+    - '&7w drużynie %team%.'
+    - ''
+    - '&7Ustawione? %set%'
+  team-spawn-menu-back-item-name: '&eBack'
   team-spawn-menu-back-item-lore:
-    - "&7Wróć do menu konfiguracyjnego areny."
-  specific-team-area-item-name: "&eUstaw obszar drużyny %team%"
+    - '&7Wróć do menu konfiguracyjnego areny.'
+  specific-team-area-item-name: '&eUstaw obszar drużyny %team%'
   specific-team-area-item-lore:
-    - "&7Kliknij aby ustawić obszar"
-    - "&7drużyny %team%"
-    - "&7w miejscu twojego zaznaczenia."
-    - ""
-    - "&7Gracze drużyny %team% będą"
-    - "&7przechowywać tam zebrane owce."
-    - ""
-    - "&7Ustawione? %set%"
-  wand-item-name: "&eSelection wand"
+    - '&7Kliknij aby ustawić obszar'
+    - '&7drużyny %team%'
+    - '&7w miejscu twojego zaznaczenia.'
+    - ''
+    - '&7Gracze drużyny %team% będą'
+    - '&7przechowywać tam zebrane owce.'
+    - ''
+    - '&7Ustawione? %set%'
+  wand-item-name: '&eSelection wand'
   wand-item-lore:
-    - "&7Kliknij aby otrzymać różdżkę"
-    - "&7umożliwiającą zaznaczenie"
-    - "&7obszaru poszczególnych drużyn."
-  team-area-menu-back-item-name: "&ePowrót"
+    - '&7Kliknij aby otrzymać różdżkę'
+    - '&7umożliwiającą zaznaczenie'
+    - '&7obszaru poszczególnych drużyn.'
+  team-area-menu-back-item-name: '&ePowrót'
   team-area-menu-back-item-lore:
-    - "&7Wróć do menu konfiguracyjnego areny."
-  teams-add-remove-item-name: "&eDodaj lub usuń drużyny"
+    - '&7Wróć do menu konfiguracyjnego areny.'
+  teams-add-remove-item-name: '&eDodaj lub usuń drużyny'
   teams-add-remove-item-lore:
-    - "&7Kliknij aby otworzyć menu"
-    - "&7w którym możesz dodać lub usunąć"
-    - "&7drużyny z areny."
-    - ""
-    - "&7Dodane drużyny: &e&l%count%"
-  specific-team-add-item-name: "&eDodaj drużynę %team%"
+    - '&7Kliknij aby otworzyć menu'
+    - '&7w którym możesz dodać lub usunąć'
+    - '&7drużyny z areny.'
+    - ''
+    - '&7Dodane drużyny: &e&l%count%'
+  specific-team-add-item-name: '&eDodaj drużynę %team%'
   specific-team-add-item-lore:
-    - "&7Kliknij aby dodać drużynę %team%"
-    - "&7do areny."
-    - ""
-    - "&7Do areny można dodać od"
-    - "&72 do 12 drużyn."
-    - ""
-    - "&aKliknij aby dodać"
-  specific-team-remove-item-name: "&eUsuń drużynę %team%"
+    - '&7Kliknij aby dodać drużynę %team%'
+    - '&7do areny.'
+    - ''
+    - '&7Do areny można dodać od'
+    - '&72 do 12 drużyn.'
+    - ''
+    - '&aKliknij aby dodać'
+  specific-team-remove-item-name: '&eUsuń drużynę %team%'
   specific-team-remove-item-lore:
-    - "&7Kliknij aby usunąć drużynę %team%"
-    - "&7z areny."
-    - ""
-    - "&7Do areny można dodać od"
-    - "&72 do 12 drużyn."
-    - ""
-    - "&cKliknij aby usunąć"
-  teams-add-remove-menu-back-item-name: "&ePowrót"
+    - '&7Kliknij aby usunąć drużynę %team%'
+    - '&7z areny.'
+    - ''
+    - '&7Do areny można dodać od'
+    - '&72 do 12 drużyn.'
+    - ''
+    - '&cKliknij aby usunąć'
+  teams-add-remove-menu-back-item-name: '&ePowrót'
   teams-add-remove-menu-back-item-lore:
-    - "&7Wróć do menu konfiguracyjnego areny."
-  back-item-name: "&ePowrót"
+    - '&7Wróć do menu konfiguracyjnego areny.'
+  back-item-name: '&ePowrót'
   back-item-lore:
-    - "&7Wróć do menu aren."
+    - '&7Wróć do menu aren.'
 staff-menu:
-  command-usage: "%prefix% &cZłe użycie! &7Wpisz: &e/sq staffmenu &d<arena>"
-  players-command-usage: "%prefix% &cZłe użycie! &7Wpisz: &e/sq playersmenu &d<arena>"
-  name: "&3&l%arena% &8- menu moderacji"
-  players-menu-name: "&3&l%arena% &8- gracze"
-  state-active: "&a&lAKTYWNA"
-  state-not-active: "&c&lNIEAKTYWNA"
-  active-item-name: "&eAktywacja/dezaktywacja"
+  command-usage: '%prefix% &cZłe użycie! &7Wpisz: &e/sq staffmenu &d<arena>'
+  players-command-usage: '%prefix% &cZłe użycie! &7Wpisz: &e/sq playersmenu &d<arena>'
+  name: '&3&l%arena% &8- menu moderacji'
+  players-menu-name: '&3&l%arena% &8- gracze'
+  state-active: '&a&lAKTYWNA'
+  state-not-active: '&c&lNIEAKTYWNA'
+  active-item-name: '&eAktywacja/dezaktywacja'
   active-item-lore:
-    - "&7Aktywuj lub dezaktywuj arenę."
-    - ""
-    - "&7Gracze nie mogą dołączać do"
-    - "&7nieaktywnych aren. Użyj tego"
-    - "&7do tymczasowego wyłączenia."
-    - "&7areny z użytku."
-    - ""
-    - "&7Aktualny status: &e%active%"
-  start-item-name: "&eWymuś start"
+    - '&7Aktywuj lub dezaktywuj arenę.'
+    - ''
+    - '&7Gracze nie mogą dołączać do'
+    - '&7nieaktywnych aren. Użyj tego'
+    - '&7do tymczasowego wyłączenia.'
+    - '&7areny z użytku.'
+    - ''
+    - '&7Aktualny status: &e%active%'
+  start-item-name: '&eWymuś start'
   start-item-lore:
-    - "&7Natychmiast wystartuj arenę."
-    - ""
-    - "&7Może być użyte tylko gdy stan"
-    - "&7areny to oczekiwanie lub startowanie."
-    - ""
-    - "&7Aktualny status: &e%state%"
-  stop-item-name: "&eWymuś zatrzymanie"
+    - '&7Natychmiast wystartuj arenę.'
+    - ''
+    - '&7Może być użyte tylko gdy stan'
+    - '&7areny to oczekiwanie lub startowanie.'
+    - ''
+    - '&7Aktualny status: &e%state%'
+  stop-item-name: '&eWymuś zatrzymanie'
   stop-item-lore:
-    - "&7Natychmiast zatrzymaj grę."
-    - ""
-    - "&7Może być użyte tylko gdy stan"
-    - "&7areny to w grze lub koniec."
-    - ""
-    - "&7Aktualny status: &e%state%"
-  players-item-name: "&eGracze na arenie"
+    - '&7Natychmiast zatrzymaj grę.'
+    - ''
+    - '&7Może być użyte tylko gdy stan'
+    - '&7areny to w grze lub koniec.'
+    - ''
+    - '&7Aktualny status: &e%state%'
+  players-item-name: '&eGracze na arenie'
   players-item-lore:
-    - "&7Pokaż listę graczy"
-    - "&7grających na tej arenie."
-    - ""
-    - "&7Będziesz mógł ich"
-    - "&7wyrzucić lub obserwować."
-    - ""
-    - "&7Gracze na arenie: &e%players%"
-  player-item-name: "&e%nick%"
+    - '&7Pokaż listę graczy'
+    - '&7grających na tej arenie.'
+    - ''
+    - '&7Będziesz mógł ich'
+    - '&7wyrzucić lub obserwować.'
+    - ''
+    - '&7Gracze na arenie: &e%players%'
+  player-item-name: '&e%nick%'
   player-item-lore:
-    - "&7Statystyki w tej grze:"
-    - "&7Drużyna: %team%"
-    - "&7Zebrane owce: %sheep%"
-    - "&7Zabójstwa: %kills%"
-    - "&7Śmierci: %deaths%"
-    - ""
-    - "&7Kliknij &eLPM &7aby przeteleportować się do gracza."
-    - "&7Kliknij &ePPM &7aby wyrzucić gracza z areny."
-  players-menu-back-item-name: "&ePowrót"
+    - '&7Statystyki w tej grze:'
+    - '&7Drużyna: %team%'
+    - '&7Zebrane owce: %sheep%'
+    - '&7Zabójstwa: %kills%'
+    - '&7Śmierci: %deaths%'
+    - ''
+    - '&7Kliknij &eLPM &7aby przeteleportować się do gracza.'
+    - '&7Kliknij &ePPM &7aby wyrzucić gracza z areny.'
+  players-menu-back-item-name: '&ePowrót'
   players-menu-back-item-lore:
-    - "&7Wróż do menu moderacji."
-  back-item-name: "&ePowrót"
+    - '&7Wróż do menu moderacji.'
+  back-item-name: '&ePowrót'
   back-item-lore:
-    - "&7Wróć do menu aren."
+    - '&7Wróć do menu aren.'
+
+
+config-version: 2.0

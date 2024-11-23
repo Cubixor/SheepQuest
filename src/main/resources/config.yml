@@ -1,8 +1,8 @@
-# SheepQuest plugin configuration file (config.yml) If there aren't any other comments in this file check this page for explanation: https://github.com/Cubixor/SheepQuest/wiki/Config-explanation
+# SheepQuest plugin configuration file (config.yml) If there aren't any other comments in this file, check this page for explanation: https://github.com/Cubixor/SheepQuest/wiki/Config-explanation
 #
 # Read all comments carefully to do not break plugin
 #
-# You can use /sq reload command to reload modified files without restarting server.
+# You can use /sq reload command to reload modified files without restarting the server.
 
 
 # Plugin messages language.
@@ -16,72 +16,56 @@
 # http://discord.gg/AQhUVfm
 language: en
 
-# Settings related to database.
-# You have to use database if you are using bungee mode.
+# Settings related to a database.
+# You have to use a database if you are using bungee mode.
 database:
 
-  # If true, player stats will be saved in a database.
-  # If false, player stats will be saved in a local file.
+  # If set to true, player stats will be saved in a database.
+  # If set to false, player stats will be saved in a local file.
   # WARNING! You have to set it to "true" if you are using bungee mode! [true/false]
   enabled-stats: false
 
-  # If true, arenas will be saved in a database.
-  # If false, arenas will be saved in a local file.
-  # WARNING! You have to set it to "true" if you are using bungee mode! [true/false]
-  enabled-arenas: false
-
-  # MySQL hostname.
-  # If you have database on the same machine as spigot server, use "localhost".
-  host: "localhost"
-
-  # MySQL port.
-  # Default port for mysql is 3306.
-  port: "3306"
+  # Database address.
+  # If you have a mysql database, it will look like: "jdbc:mysql://<host>:<port>/<database>".
+  address: "jdbc:mysql://localhost:3306/minigame?useSSL=false&autoReConnect=true"
 
   # MySQL username.
-  # It's not recommended to use root account here for security reasons.
+  # It's not recommended to use the root account here for security reasons.
   username: "user"
 
   # MySQL password.
-  # If you are not using password just leave it blank, but it's not recommended.
+  # If you are not using a password, just leave it blank (not recommended).
   password: "12345"
 
-  # MySQL database.
-  # It will be used to store plugin data.
-  database: "sheepquest"
-
   # MySQL table used for saving player statistics.
-  table-stats: "stats"
+  table: "stats"
 
-  # MySQL table used for saving arenas.
-  table-arenas: "arenas"
-
-  # If you are getting error like:
-  #
-  # "com.mysql.cj.jdbc.exceptions.CommunicationsException: The last packet successfully received from the server was X milliseconds ago.
-  # The last packet sent successfully to the server was X milliseconds ago. is longer than the server configured value of 'wait_timeout'.
-  # You should consider either expiring and/or testing connection validity before use in your application, increasing the server configured values for client timeouts, or using the Connector/J connection property 'autoReconnect=true' to avoid this problem."
-  #
-  # Try to lower this value. [seconds]
-  ping-period: 180
 
 # Settings related to the plugin bungee mode.
+#
+# WARNING!!!
+# BEFORE CONFIGURING IT, READ THE TUTORIAL:
+# https://github.com/Cubixor/SheepQuest/wiki/Installation#bungeecord-installation
 bungee:
 
-  # Should plugin be in bungee mode?
-  # If it's set true you will be able to join all arenas in your bungeecord network.
+  # Should the plugin be in simple bungee mode?
+  # Players will automatically join an arena after they join this server if it's enabled. [true/false]
+  simple-bungee-mode: false
+
+  # Should the plugin be in bungee mode?
+  # If it's set true, you will be able to join all arenas in your bungeecord network.
   #
-  # WARNING! You can use it only if you have enabled saving stats and arenas to database.
+  # WARNING! You can use it only if you have enabled saving stats to a database.
   #
-  # WARNING! If you enable this option remember to upload the plugin to the bungeecord server and
-  # to fill in the connection.yml file with info that is needed to connect to bungeecord server. [true/false]
+  # WARNING! If you enable this option, remember to upload the plugin to the bungeecord server and
+  # fill in the connection.yml file with info that is necessary to connect to bungeecord server. [true/false]
   bungee-mode: false
 
   # What should happen to the player who left the game?
-  # Use JOIN_SERVER to put player back to the server from where he had joined the game.
-  # Use LOBBY_SERVER to put player in the lobby server.
+  # Use JOIN_SERVER to put the player back to the server from where he had joined the game.
+  # Use LOBBY_SERVER to put the player in the lobby server.
   # USE GAME_SERVER to leave the player in the server that he was playing on.
-  # Use LEAVE_COMMAND to make spigot server console execute custom command when player leaves the game.
+  # Use LEAVE_COMMAND to make spigot server console execute custom command when the player leaves the game.
   on-leave: JOIN_SERVER
 
   # Lobby server.
@@ -89,23 +73,23 @@ bungee:
   lobby-server: hub
 
   # Leave commands.
-  # They are used only when "on-leave" option is set to "LEAVE_COMMAND" and will be executed from the spigot server's console.
+  # They are used only when the "on-leave" option is set to "LEAVE_COMMAND" and will be executed from the spigot server's console.
   # You can use %player% placeholder - it will be replaced with the player's name.
   # Do not put slash (/) at the beginning!
   leave-commands:
     - "custom command %player%"
     - "custom command2"
 
-# Cooldown between commands, sign clicks, menu uses etc.
-# Use bigger values if your server is slow, you are using bungee mode or saving in mysql.
+# Cooldown between commands, sign clicks, menu clicks and other actions
+# Use higher values if your server is slow, you are using bungee mode or saving in mysql.
 # You can set it to 0 if you are not using bungee mode and database. [seconds]
 cooldown: 1
 
 # Countdown time.
-# Countdown will start when the arena minimum players count will be reached. [seconds]
+# The Countdown will start when the arena minimum players count will be reached. [seconds]
 waiting-time: 40
 
-# Countdown time, when game is full and players can no longer join it. [seconds]
+# Countdown time, when the game is full and players can no longer join it. [seconds]
 full-waiting-time: 10
 
 # Game time [seconds]
@@ -121,33 +105,50 @@ ending-time: 12
 respawn-time: 7
 
 # Should game use private game chat?
-# Player messages will be sent only to players in the same arena if true. [true/false]
+# Player messages will be sent only to players in the same arena If set to true. [true/false]
 game-chat: true
 
 # Should players be able to choose teams?
-# If true, players will be able to choose their team by menu.
-# If false, players' team will be chosen randomly. [true/false]
+# If set to true, players will be able to choose their team by menu.
+# If set to false, players' team will be chosen randomly. [true/false]
 allow-team-choosing: true
 
-# Speed of the sheep [float]
+# Speed of a sheep [float]
 sheep-speed: 2
 
-# If true, when the arena ends players will be teleported to main lobby location.
-# If false player will be teleported to the place where he was before he joined the arena. [true/false]
+# If set to true, when the arena ends, players will be teleported to the main lobby location.
+# If set to false, a player is teleported to the place where he was before he joined the arena. [true/false]
 use-main-lobby: true
 
-# If true, player will be put in the next arena after the previous ends.
-# If false, player will be teleported to main lobby or previous location, depending on "use-main-lobby" is set to true or false. [true/false]
+# If set to true, player will be put in the next arena after the previous ends.
+# If set to false, the player will be teleported to the main lobby or previous location, depending on "use-main-lobby" is set to true or false. [true/false]
 auto-join-on-end: true
 
-# If true game will be stopped when only one player is on the arena (because others left).
-# If false game will it will continue even if there is only one player on it.
+# If set to true, a game will be stopped when only one player is on the arena (because others left).
+# If set to false, a game it will continue even if there is only one player on it.
 stop-game-one-player: true
 
 # Date format in plugin messages.
-# If you don't know how to create proper date format check this page: https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html
+# If you don't know how to create a proper date format, check this page: https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html
 # (Scroll down to "Patterns for Formatting and Parsing" section)
 date-format: "dd/MM/yyyy"
+
+# Time format in plugin messages.
+# If you don't know how to create a proper date format, check this page: https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html
+# (Scroll down to "Patterns for Formatting and Parsing" section)
+time-format: "mm:ss"
+
+# The Maximum number of sheep a player can pick up at once
+max-sheep-carried: 3
+
+# Choose if teams should be balanced, so that players are unable to all join one team or be distributed unevenly across teams.
+# If this is enabled, players will be unable to join team in which: (number of players) >= [(number of players on arena)/(number of teams)]
+# Keep in mind that disabling this will allow players to all join one team, and win the game without any effort, which can harm the server economy.
+balance-teams: true
+
+# Set how far away from spawn sheep will be able to wander-off.
+# After they exceed this distance, their pathfinding will kick-in, and they will return to the spawn point [block]
+sheep-spawn-size: 10
 
 # Set how often the tip in waiting lobby will change. [seconds]
 tip-rate: 5
@@ -156,20 +157,29 @@ tip-rate: 5
 join-sheep-color: MAGENTA
 
 # Item types and slots.
-# type - item name. Full item list on https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html [item name]
+# 
+# Basic fields which need to be set:
+# material - item name. Full item list on https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html [item name]
 # slot - slot number. Available slot numbers are 0-8.
+#
+# Other (optional) fields used for item customization are available: https://github.com/CryptoMorin/XSeries/wiki/XItemStack
+# Name and lore are not set here, but in the messages.yml file
 items:
   team-choose-item:
-    type: CHEST
+    material: CHEST
     slot: 0
+  menu-arenas-quickjoin:
+    material: SLIME_BALL
+  menu-arenas-close:
+    material: ARROW
   kit-choose-item:
-    type: STONE_SWORD
+    material: STONE_SWORD
     slot: 1
   leave-item:
-    type: CLOCK
+    material: CLOCK
     slot: 8
   sheep-item:
-    type: SADDLE
+    material: SADDLE
 
 # Settings connected to in-game effects. You can enable or disable each of them [true/false]
 effects:
@@ -177,7 +187,13 @@ effects:
   kill-blindness: true
   kill-slowness: true
 
-# All sounds that are played during game.
+# Should bossabr showing selected kit be enabled? [true/false]
+kit-bossbar: true
+
+# Should bossabr showing selected team be enabled? [true/false]
+team-bossbar: true
+
+# All sounds that are played during the game.
 #
 # Full sound list available here: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html [sound]
 #
@@ -296,9 +312,7 @@ sounds:
 
 # All particles that appear in game.
 #
-# Full particle list for versions from 1.9 up to the latest available here: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Particle.html
-# Full particle list for version 1.8 available here: https://hastebin.com/uyebofosen.less
-# WARNING! Remember to use proper particle list while editing this section!!!
+# Full particle list available here: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Particle.html
 #
 # How to configure:
 # name: - particle name, do not change it
@@ -391,7 +405,7 @@ particles:
   enable-blood: true
 
 
-# If true, blocks behind signs will be changed depending on game state. [true/false]
+# If set to true, blocks behind signs will be changed depending on game state. [true/false]
 color-signs: true
 # Types of blocks behind signs.
 # Full item list on https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html [item name]
@@ -400,12 +414,12 @@ sign-colors:
   inactive: BLACK_STAINED_GLASS
   waiting: LIME_STAINED_GLASS
   starting: CYAN_STAINED_GLASS
-  ingame: RED_STAINED_GLASS
+  game: RED_STAINED_GLASS
   ending: PURPLE_STAINED_GLASS
 
 # Configure which commands will be available in game and put them in the command-blocker-list section below.
-# Set to WHITELIST to allow players to use only commands from command-blocker-list section.
-# Set to BLACKLIST to allow players to use all commands except these from command-blocker-list section. [BLACKLIST/WHITELIST]
+# Set to WHITELIST to allow players to use only commands from the command-blocker-list section.
+# Set to BLACKLIST to allow players to use all commands except these from the command-blocker-list section. [BLACKLIST/WHITELIST]
 command-blocker: BLACKLIST
 
 # List of all commands allowed/blocked in game (without "/").
@@ -414,11 +428,11 @@ command-blocker-list:
   - me
   - spawn
 
-# If true, when the game ends for each player (depends on which place player took) will be executed right command. [true/false]
+# If set to true, when the game ends for each player (depends on which place the player took) will be executed right command. [true/false]
 win-rewards: true
 
 # Rewards list.
-# If you don't want to execute commands for some place leave it blank.
+# If you don't want to execute commands for some place, leave it blank.
 # You can use "%player%" placeholder - it will be changed to player name.
 # Section 1 is for first place, 2 for second etc. [command]
 rewards:
@@ -442,11 +456,13 @@ kits:
     # Should this kit be enabled? [true/false]
     enabled: true
 
-    # Item that represents this kit in kits menu [item name]
-    menu-icon: IRON_SWORD
+    # Item that represents this kit in the kits' menu [item name]
+    menu-icon:
+      material: IRON_SWORD
 
     # Primary weapon for this kit. [item name]
-    primary-weapon: IRON_SWORD
+    primary-weapon:
+      material: IRON_SWORD
 
     # Secondary weapon for this kit
     # By default it's disabled (null) in standard kit [item name]
@@ -475,22 +491,26 @@ kits:
     # Should this kit be enabled? [true/false]
     enabled: true
 
-    # Item that represents this kit in kits menu [item name]
-    menu-icon: BOW
+    # Item that represents this kit in the kit menu [item name]
+    menu-icon:
+      material: BOW
 
     # Primary weapon for this kit. [item name]
-    primary-weapon: WOODEN_SWORD
+    primary-weapon:
+      material: WOODEN_SWORD
 
     # Secondary weapon for this kit
     # You can choose bow or crossbow in archer kit. [item name]
-    secondary-weapon: BOW
+    secondary-weapon:
+      material: BOW
 
     # Should players with this kit receive shields? [true/false]
     shield: false
 
     # Arrow type for this kit.
     # You can choose between arrows, spectral arrows and tipped arrows. [item name]
-    arrow-type: ARROW
+    arrow:
+      material: ARROW
 
     # Number of seconds every which player will receive an arrow. [seconds]
     arrow-interval: 5
@@ -501,34 +521,37 @@ kits:
     # Should this kit be enabled? [true/false]
     enabled: true
 
-    # Item that represents this kit in kits menu [item name]
-    menu-icon: FEATHER
+    # Item that represents this kit in the kit menu [item name]
+    menu-icon:
+      material: FEATHER
 
     # Primary weapon for this kit. [item name]
-    primary-weapon: WOODEN_AXE
+    primary-weapon:
+      material: WOODEN_AXE
 
     # Secondary weapon for this kit
     # It's an item which is used for launch other players up. [item name]
-    secondary-weapon: FEATHER
+    secondary-weapon:
+      material: FEATHER
 
     # Should players with this kit receive shields? [true/false]
     shield: false
 
-    # Should ability to throw sheep be enabled for this kit? [true/false]
+    # Should the ability to throw sheep be enabled for this kit? [true/false]
     throw-sheep: true
 
     # Sheep throw power
     # The higher this number is, the further sheep will be launched. [float]
     throw-sheep-power: 1.2
 
-    # Sheep throw power in Y axis
+    # Sheep throw power in Y axis.
     # The higher this number is, the higher sheep will be launched. [float]
     throw-sheep-power-y: 0.4
 
     # Damage that thrown sheep causes. [float]
-    throw-sheep-damage: 4
+    throw-sheep-damage: 6
 
-    # Should ability to launch nearby players be enabled for this kit? [true/false]
+    # Should the ability to launch nearby players be enabled for this kit? [true/false]
     launch-players: true
 
     # Range in which item for launching players will work.
@@ -538,47 +561,42 @@ kits:
     # The higher this number is, the further players will be launched. [float]
     launch-players-power: 1.6
 
-    # Players launch power in Y axis
+    # Players launch power in Y axis.
     # The higher this number is, the higher players will be launched. [float]
     launch-players-power-y: 0.8
 
     # Damage that nearby players will receive when launched.
-    launch-players-damage: 5
+    launch-players-damage: 7
 
     # Cooldown for launching nearby players up.
     launch-players-cooldown: 10
 
 
-# All special game events' settings
-special-events:
+# Bonus sheep settings
+bonus-sheep:
 
-  # Should special game events be enabled? [true/false]
+  # Should it be enabled? [true/false]
   enabled: true
 
-  # How often should special game event perform?
-  # For example if set to 40-60, special game event will perform every random amount of time between 40 and 60 seconds. [minSeconds-maxSeconds]
+  # How often should bonus sheep spawn?
+  # For example, if set to 40-60, bonus sheep will spawn every random amount of time between 40 and 60 seconds. [minSeconds-maxSeconds]
   rate: 40-60
 
-  # Bonus sheep settings
-  bonus-sheep:
+  # Bonus entity type. List of entity types: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/entity/EntityType.html [entity type]
+  entity-type: SHEEP
 
-    # Should it be enabled? [true/false]
-    enabled: true
+  # Bonus sheep color.
+  # List of colors: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/DyeColor.html [color]
+  # It will affect an entity only when it's a sheep.
+  # WARNING! Do not use a color of a team added to the arena to avoid bugs!
+  color: MAGENTA
 
-    # Bonus entity type. List of entity types: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/entity/EntityType.html [entity type]
-    entity-type: SHEEP
+  # Bonus sheep speed. [float]
+  speed: 2.5
 
-    # Bonus sheep color. List of colors: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/DyeColor.html [color]
-    # It's also the bonus entity firework color.
-    # Obviously will affect entity only when it's a sheep.
-    color: MAGENTA
-
-    # Bonus sheep speed. [float]
-    speed: 3.0
-
-    # Bonus sheep points [number]
-    points: 3
+  # Bonus sheep points [number]
+  points: 3
 
 
 # Config version - DO NOT CHANGE IT!
-config-version: 1.9
+config-version: 2.1

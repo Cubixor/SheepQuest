@@ -4,693 +4,683 @@
 #
 # Remember NOT to edit placeholders (marked with "%" character).
 #
-# You can use /sq reload command to reload modified files without restarting server.
 # 插件汉化 by Light²(www.mcbbs.net内用户)
 # Translated by Light² (from www.mcbbs.net)
 
-prefix: "&8&l| &9&l抢羊乱战 &8&l|&r"
+bungee:
+  not-on-server: '%prefix% &cYou have to be on the same server as arena to do this!'
+  arena-offline: '%prefix% &cArena &e%arena% &cis offline!'
+  kick-message: '%prefix% &cYou cannot join this arena right now'
+  leave-message: '%prefix% &7Left the minigame'
+  motd: "&9&lMGAPI &7&l» %?vip?%&d&l%arena% \n&7&l│ %state% &7&l│ &7&l» &e&l%count%&7/&e&l%max% "
+kits:
+  already-selected: '%prefix% &cYou have this kit already selected!'
+  choose-success: '%prefix% &7You have selected kit %kit%!'
+  cooldown: '%prefix% &7You need to wait before using this again!'
+  bossbar-kit: '&7Kit: %kit%'
+  standard: '&e&lStandard'
+  archer: '&e&lArcher'
+  athlete: '&e&lAthlete'
+  menu-name: '&d&lChoose kit'
+  item-name: '&d&lChoose kit'
+  item-lore:
+    - '&7Click to open menu in which '
+    - '&7you can choose your kit!'
+  standard-name: '&e&lStandard kit'
+  standard-lore:
+    - '&7Free, basic kit'
+    - ''
+    - '&7Contains:'
+    - '&7- Iron sword'
+    - '&7- Dash (double jump)'
+    - '&7  (3 second cooldown)'
+    - ''
+    - '&aClick to select'
+  archer-name: '&e&lArcher kit'
+  archer-lore:
+    - '&7Kit for those who prefer'
+    - '&7distance fighting.'
+    - ''
+    - '&7Contains:'
+    - '&7- Wooden sword'
+    - '&7- Bow'
+    - '&7- Arrows'
+    - '&7  (you get one every 5 seconds)'
+    - ''
+    - '&aClick to select'
+  athlete-name: '&e&lAthlete kit'
+  athlete-lore:
+    - '&7Kit for those who would like to'
+    - '&7scatter everything.'
+    - ''
+    - '&7Contains:'
+    - '&7- Wooden axe'
+    - '&7- Ability to throw carried sheep'
+    - '&7  and deal damage.'
+    - '&7  Ability to push other players'
+    - '&7  away with big power and deal damage.'
+    - '&7  (10 second cooldown)'
+    - ''
+    - '&aClick to select'
+  standard-primary-weapon-name: '&7&lIron sword'
+  standard-primary-weapon-lore:
+    - '&7Use this item to defend'
+    - '&7your pen and kill'
+    - '&7the enemies!'
+    - ''
+    - '&eDouble jump to use dash.'
+  standard-secondary-weapon-name: '&7&lYour item'
+  standard-secondary-weapon-lore:
+    - '&7Disabled by default'
+  archer-primary-weapon-name: '&7&lWooden sword'
+  archer-primary-weapon-lore:
+    - '&7Use this item to defend'
+    - '&7your pen and kill'
+    - '&7the enemies!'
+  archer-secondary-weapon-name: '&7&lBow'
+  archer-secondary-weapon-lore:
+    - '&7Use this item to defend'
+    - '&7your pen and shoot'
+    - '&7the enemies!'
+    - ''
+    - '&e(you receive arrow every 5 seconds)'
+  athlete-primary-weapon-name: '&7&lWooden axe'
+  athlete-primary-weapon-lore:
+    - '&7Use this item to defend'
+    - '&7your pen and kill'
+    - '&7the enemies!'
+  athlete-secondary-weapon-name: '&7&lDetonator'
+  athlete-secondary-weapon-lore:
+    - '&7Use this item push other'
+    - '&7players away and'
+    - '&7deal damage!'
+    - ''
+    - '&e(10 second cooldown)'
+    - '&eRight click'
+  shield-name: '&7&lShield'
+  shield-lore:
+    - '&7Use this item to defend yourself!'
+  arrow-name: '&7&lArrow'
+  arrow-lore:
+    - '&7You will receive an arrow'
+    - '&7every 5 seconds.'
+stats-menu:
+  command-usage: '%prefix% &cWrong use! &7Type: &e/sq statsmenu &a[player]'
+  name: '&3&l%player% &8stats'
+  wins: '&eWins: &7%wins%'
+  looses: '&eLooses: &7%looses%'
+  games-played: '&eGames played: &7%games%'
+  kills: '&eKills: &7%kills%'
+  deaths: '&eDeaths: &7%deaths%'
+  sheep-taken: '&eSheep taken: &7%sheep%'
+  bonus-sheep-taken: '&eBonus sheep taken: &7%bonus-sheep%'
+  playtime: '&ePlaytime: &7%playtime%'
+  back-item-name: '&eExit'
+  back-item-lore:
+    - '&7Go back to arenas menu.'
+prefix: '&8&l| &9&l抢羊乱战 &8&l|&r'
 
 general:
-  arena-invalid: "%prefix% &c竞技场不存在！"
-  must-be-player: "%prefix% &c只有玩家才能使用该指令！"
-  no-permission: "%prefix% &c你没有权限这样做！"
-  reload-success: "%prefix% &a插件重载成功！"
-  unknown-command: "%prefix% &c未知指令，输入&e/sq help &c查看帮助"
-  team-red: "&c&l红队"
-  team-green: "&a&l绿队"
-  team-blue: "&9&l蓝队"
-  team-yellow: "&e&l黄队"
-  team-orange: "&6&lOrange"
-  team-dark_green: "&2&lDark green"
-  team-cyan: "&3&lCyan"
-  team-light_blue: "&b&lLight blue"
-  team-pink: "&d&lPink"
-  team-purple: "&5&lPurple"
-  team-gray: "&8&lGray"
-  team-black: "&0&lBlack"
-  team-none: "&8&l随机"
-  state-inactive: "&8&l停止使用"
-  state-waiting: "&a&l等待中"
-  state-starting: "&3&l即将开始"
-  state-game: "&c&l游戏中"
-  state-ending: "&5&l已结束"
-  state-offline: "&4&lOFFLINE"
-  vip-prefix: "&7[&6&lVIP&7] "
-  too-fast: "%prefix% &cToo fast!"
-  no-one: "&8No one"
-  invalid-player: "%prefix% &cThis player has never played SheepQuest before!"
-  version-not-supported: "%prefix% &cThis feature is not available on spigot 1.8! Upgrade to the newer version to use it!"
+  team-orange: '&6&lOrange'
+  team-dark_green: '&2&lDark green'
+  team-cyan: '&3&lCyan'
+  team-light_blue: '&b&lLight blue'
+  team-pink: '&d&lPink'
+  team-purple: '&5&lPurple'
+  team-gray: '&8&lGray'
+  team-black: '&0&lBlack'
+  state-offline: '&4&lOFFLINE'
+  vip-prefix: '&7[&6&lVIP&7] '
+  too-fast: '%prefix% &cToo fast!'
+  invalid-player: '%prefix% &cThis player has never played SheepQuest before!'
+  arena-invalid: '%prefix% &c竞技场不存在！'
+  must-be-player: '%prefix% &c只有玩家才能使用该指令！'
+  no-permission: '%prefix% &c你没有权限这样做！'
+  reload-success: '%prefix% &a插件重载成功！'
+  unknown-command: '%prefix% &c未知指令，输入&e/sq help &c查看帮助'
+  team-red: '&c&l红队'
+  team-green: '&a&l绿队'
+  team-blue: '&9&l蓝队'
+  team-yellow: '&e&l黄队'
+  team-none: '&8&l随机'
+  state-inactive: '&8&l停止使用'
+  state-waiting: '&a&l等待中'
+  state-starting: '&3&l即将开始'
+  state-game: '&c&l游戏中'
+  state-ending: '&5&l已结束'
 other:
-  stats-command-usage: "%prefix% &cWrong use! &7Type: /sheepquest stats [player]"
+  stats-command-usage: '%prefix% &cWrong use! &7Type: &e/sq stats &a[player]'
+  stats-playtime-hours: 'h'
+  stats-playtime-minutes: 'min'
+  stats-playtime-seconds: 'sec'
+  sign-quickjoin-first-line: '&9&lSheepQuest'
+  sign-quickjoin-second-line: '&7&l» &b&lQUICKJOIN &7&l«'
+  sign-quickjoin-third-line: '&3&lArenas: &e&l%count%'
+  sign-quickjoin-fourth-line: '&a&lClick to join'
   stats:
-    - "&m---------------------------------------------------"
-    - "&9&l抢羊乱战 &7统计数据"
-    - "  &a胜场: &e%wins%"
-    - "  &a败局: &e%looses%"
-    - "  &a游玩次数: &e%games%"
-    - "  &a击杀: &e%kills%"
-    - "  &a死亡: &e%deaths%"
-    - "  &a抢羊总数: &e%sheep%只"
-    - "  &aBonus sheep taken: &e%bonus-sheep%"
-    - "  &aPlaytime: &e%playtime%"
-    - "&m---------------------------------------------------"
-  stats-playtime-hours: "h"
-  stats-playtime-minutes: "min"
-  stats-playtime-seconds: "sec"
-  sign-first-line: "&9&l抢羊乱战"
-  sign-second-line: "&7&l» %?vip?%&d&l%arena% &7&l«"
-  sign-third-line: "&e&l%count%&7/&e&l%max%"
-  sign-fourth-line: "&7&l│ %state% &7&l│"
-  sign-quickjoin-first-line: "&9&lSheepQuest"
-  sign-quickjoin-second-line: "&7&l» &b&lQUICKJOIN &7&l«"
-  sign-quickjoin-third-line: "&3&lArenas: &e&l%count%"
-  sign-quickjoin-fourth-line: "&a&lClick to join"
+    - '&m---------------------------------------------------'
+    - '&9&l抢羊乱战 &7统计数据'
+    - '  &a胜场: &e%wins%'
+    - '  &a败局: &e%looses%'
+    - '  &a游玩次数: &e%games%'
+    - '  &a击杀: &e%kills%'
+    - '  &a死亡: &e%deaths%'
+    - '  &a抢羊总数: &e%sheep%只'
+    - '  &aBonus sheep taken: &e%bonus_sheep%'
+    - '  &aPlaytime: &e%playtime%'
+    - '&m---------------------------------------------------'
+  sign-first-line: '&9&l抢羊乱战'
+  sign-second-line: '&7&l» %?vip?%&d&l%arena% &7&l«'
+  sign-third-line: '&e&l%count%&7/&e&l%max%'
+  sign-fourth-line: '&7&l│ %state% &7&l│'
   list-header:
-    - "&m---------------------------------------------------"
-    - "&9&l抢羊乱战 &7竞技场列表"
+    - '&m---------------------------------------------------'
+    - '&9&l抢羊乱战 &7竞技场列表'
   list-footer:
-    - "&m---------------------------------------------------"
-  list-empty: "&c没有竞技场在比赛!"
-  list-arena: "  %?vip?%&d&l%arena% &7|&e&l%count%&7/&e&l%max%&7| &7|%state%&7|"
-  list-hover: "&a点击以加入"
-  tip-prefix: "&7[&e提示&7]&r"
+    - '&m---------------------------------------------------'
+  list-empty: '&c没有竞技场在比赛!'
+  list-arena: '  %?vip?%&d&l%arena% &7|&e&l%count%&7/&e&l%max%&7| &7|%state%&7|'
+  list-hover: '&a点击以加入'
+  tip-prefix: '&7[&e提示&7]&r'
   tips:
-    - "%tip-prefix% &e你可以从其他队伍中抢羊！"
-    - "%tip-prefix% &e身上的羊越多，走的就越慢"
-    - "%tip-prefix% &e你可以攻击对手以让他头上的羊掉下来"
-    - "%tip-prefix% &e你可以在抢到羊时开启第三人称视角以获取更好的视觉体验"
-    - "%tip-prefix% &e一次最多可以抢三只羊"
-    - "%tip-prefix% &e你只需要在信息前输入/t 即可使用团队频道聊天，"
-    - "%tip-prefix% &e你可以使用/sq stats 指令查看自己关于抢羊乱战的各种信息"
+    - '%tip-prefix% &e你可以从其他队伍中抢羊！'
+    - '%tip-prefix% &e身上的羊越多，走的就越慢'
+    - '%tip-prefix% &e你可以攻击对手以让他头上的羊掉下来'
+    - '%tip-prefix% &e你可以在抢到羊时开启第三人称视角以获取更好的视觉体验'
+    - '%tip-prefix% &e一次最多可以抢三只羊'
+    - '%tip-prefix% &e你只需要在信息前输入/t 即可使用团队频道聊天，'
+    - '%tip-prefix% &e你可以使用/sq stats 指令查看自己关于抢羊乱战的各种信息'
 
 help:
   general-help:
-    - "&m---------------------------------------------------"
-    - "&9&l抢羊乱战 &7帮助"
-    - "  &a/sq join &e<竞技场> &7- 进入竞技场"
-    - "  &a/sq leave &7- 离开竞技场"
-    - "  &a/sq quickjoin &7- 进入最多玩家的竞技场"
-    - "  &a/sq list &7- 查看竞技场列表"
-    - "  &a/sq stats &7- 查看游戏信息"
-    - "  &a/sq statsmenu &7- Show your game stats in menu"
-    - "  &a/sq arenasmenu &7- Open arenas menu"
-    - "  &a/t &e<message> &7- Use team chat in game"
-    - "  &a/sq help &7- 显示此帮助页面"
-    - "  &a/sq staff &7- 显示管理员帮助页面"
-    - "  &a/sq admin &7- 显示服主帮助页面"
-    - "&m---------------------------------------------------"
+    - '&m---------------------------------------------------'
+    - '&9&l抢羊乱战 &7帮助'
+    - '  &a/sq join &e<竞技场> &7- 进入竞技场'
+    - '  &a/sq leave &7- 离开竞技场'
+    - '  &a/sq quickjoin &7- 进入最多玩家的竞技场'
+    - '  &a/sq list &7- 查看竞技场列表'
+    - '  &a/sq stats &7- 查看游戏信息'
+    - '  &a/sq statsmenu &7- Show your game stats in menu'
+    - '  &a/sq arenasmenu &7- Open arenas menu'
+    - '  &a/t &e<message> &7- Use team chat in game'
+    - '  &a/sq help &7- 显示此帮助页面'
+    - '  &a/sq staff &7- 显示管理员帮助页面'
+    - '  &a/sq admin &7- 显示服主帮助页面'
+    - '&m---------------------------------------------------'
   staff-help:
-    - "&m---------------------------------------------------"
-    - "&9&l抢羊乱战 &7帮助 &c(管理员)"
-    - "  &a/sq forcestart &e<竞技场> &7- 强制一个竞技场开启游戏"
-    - "  &a/sq forcestop &e<竞技场> &7- 强制一个竞技场停止游戏"
-    - "  &a/sq active &e<竞技场> <true/false> &7- 将竞技场状态设置为停止使用"
-    - "  &a/sq kick &e<player> &7- Kick player from arena."
-    - "  &a/sq stats &e<player> &7- Show player stats"
-    - "  &a/sq statsmenu &e<player> &7- Show player stats in menu"
-    - "  &a/sq staffmenu &e<arena> &7- Open arena staff menu"
-    - "  &a/sq playersmenu &e<arena> &7- Open arena players menu"
-    - "  &a/sq help &7- 显示此帮助页面"
-    - "  &a/sq admin &7- 显示服主帮助页面"
-    - "&m---------------------------------------------------"
+    - '&m---------------------------------------------------'
+    - '&9&l抢羊乱战 &7帮助 &c(管理员)'
+    - '  &a/sq forcestart &e<竞技场> &7- 强制一个竞技场开启游戏'
+    - '  &a/sq forcestop &e<竞技场> &7- 强制一个竞技场停止游戏'
+    - '  &a/sq setactive &e<竞技场> <true/false> &7- 将竞技场状态设置为停止使用'
+    - '  &a/sq kick &e<player> &7- Kick player from arena.'
+    - '  &a/sq stats &e<player> &7- Show player stats'
+    - '  &a/sq statsmenu &e<player> &7- Show player stats in menu'
+    - '  &a/sq staffmenu &e<arena> &7- Open arena staff menu'
+    - '  &a/sq playersmenu &e<arena> &7- Open arena players menu'
+    - '  &a/sq help &7- 显示此帮助页面'
+    - '  &a/sq admin &7- 显示服主帮助页面'
+    - '&m---------------------------------------------------'
   admin-help:
-    - "&m---------------------------------------------------"
-    - "&9&l抢羊乱战 &7帮助 &c(服主)"
-    - "  &a/sq reload &7- 重载插件"
-    - "  &a/sq create &e<竞技场> &7- 创建竞技场"
-    - "  &a/sq delete &e<竞技场> &7- 删除竞技场"
-    - "  &a/sq addteam &e<arena> &7- Add team to the arena"
-    - "  &a/sq removeteam &e<arena> &7- Remove team from the arena"
-    - "  &a/sq listteams &e<arena> &7- Display teams added to the arena"
-    - "  &a/sq setminplayers &e<竞技场> <min-players> &7- 设置竞技场最少需要多少玩家以开启游戏"
-    - "  &a/sq setmaxplayers &e<竞技场> <max-players> &7- 设置竞技场最多容纳多少玩家"
-    - "  &a/sq setvip &e<arena> <true/false> &7- Set arena as vip or not"
-    - "  &a/sq setmainlobby &e<竞技场> &7- 设置团队"
-    - "  &a/sq setwaitinglobby &e<竞技场> &7- 设置竞技场等待大厅"
-    - "  &a/sq setspawn &e<竞技场> <团队> &7- 设置某团队出生点"
-    - "  &a/sq setteamarea &e<竞技场> <团队> &7- 设置某团队范围"
-    - "  &a/sq setsheepspawn &e<竞技场> &7- 设置羊的出生点"
-    - "  &a/sq wand &7- Get selection wand"
-    - "  &a/sq spawnjoinsheep &7- Spawn quick join sheep npc"
-    - "  &a/sq removejoinsheep &7- Remove quick join sheep npc"
-    - "  &a/sq check &e<arena> &7- Check is arena fully configured"
-    - "  &a/sq setupmenu &e<arena> &7- Open arena setup menu"
-    - "  &a/sq help &7- 显示帮助页面"
-    - "  &a/sq staff &7- 显示管理员帮助页面"
-    - "&m---------------------------------------------------"
-bungee:
-  not-on-server: "%prefix% &cYou have to be on the same server as arena to do this!"
-  arena-offline: "%prefix% &cArena &e%arena% &cis offline!"
+    - '&m---------------------------------------------------'
+    - '&9&l抢羊乱战 &7帮助 &c(服主)'
+    - '  &a/sq reload &7- 重载插件'
+    - '  &a/sq create &e<竞技场> &7- 创建竞技场'
+    - '  &a/sq delete &e<竞技场> &7- 删除竞技场'
+    - '  &a/sq addteam &e<arena> &7- Add team to the arena'
+    - '  &a/sq removeteam &e<arena> &7- Remove team from the arena'
+    - '  &a/sq listteams &e<arena> &7- Display teams added to the arena'
+    - '  &a/sq setminplayers &e<竞技场> <min-players> &7- 设置竞技场最少需要多少玩家以开启游戏'
+    - '  &a/sq setmaxplayers &e<竞技场> <max-players> &7- 设置竞技场最多容纳多少玩家'
+    - '  &a/sq setvip &e<arena> <true/false> &7- Set arena as vip or not'
+    - '  &a/sq setmainlobby &e<竞技场> &7- 设置团队'
+    - '  &a/sq setwaitinglobby &e<竞技场> &7- 设置竞技场等待大厅'
+    - '  &a/sq setspawn &e<竞技场> <团队> &7- 设置某团队出生点'
+    - '  &a/sq setteamarea &e<竞技场> <团队> &7- 设置某团队范围'
+    - '  &a/sq setsheepspawn &e<竞技场> &7- 设置羊的出生点'
+    - '  &a/sq wand &7- Get selection wand'
+    - '  &a/sq check &e<arena> &7- Check is arena fully configured'
+    - '  &a/sq setupmenu &e<arena> &7- Open arena setup menu'
+    - '  &a/sq help &7- 显示帮助页面'
+    - '  &a/sq staff &7- 显示管理员帮助页面'
+    - '&m---------------------------------------------------'
 game:
-  arena-join-vip: "%prefix% &c这是VIP专属的竞技场！"
-  arena-join-usage: "%prefix% &c指令错误！7正确用法: /sheepquest join &e<竞技场>"
-  arena-join-already-in-game: "%prefix% &c你已经在游戏了！"
-  arena-join-arena-in-game: "%prefix% &c竞技场&e%arena% &c已经开始游戏了！"
-  arena-join-arena-full: "%prefix% &c竞技场 &e%arena% &c满人了"
-  arena-join-not-active: "%prefix% &c竞技场 &e%arena% &c停止使用中！"
-  arena-join-success: "%prefix% &7玩家 &e%player% &7加入了游戏 &7(&e&l&o%count%/%max%&7)"
-  arena-leave-not-in-game: "%prefix% &c你不在游戏！"
-  arena-leave-success: "%prefix% &7玩家 &e%player% &7退出了游戏！&7(&e&l&o%count%/%max%&7)"
-  quick-join-no-games-found: "%prefix% &c目前没有可加入的游戏！"
-  countdown-started: "%prefix% &7游戏即将开始，正在倒计时..."
-  full-countdown: "%prefix% &7竞技场已满人！等待时间减少至 &e%time% 秒&7."
-  countdown-60s-title: "&a&l离开始还有60秒"
-  countdown-60s-subtitle: "&7等待更多玩家..."
-  countdown-30s-title: "&a&l离开始还有30秒"
-  countdown-30s-subtitle: "&7等待更多玩家..."
-  countdown-10s-title: "&a&l离开始还有10秒"
-  countdown-10s-subtitle: "&7准备游戏！"
-  countdown-5s-title: "&a&l离开始还有5秒"
-  countdown-5s-subtitle: "&7从竞技场中间收集小羊们！"
-  countdown-4s-title: "&a&l4"
-  countdown-4s-subtitle: "&7保护好你的笔"
-  countdown-3s-title: "&a&l3"
-  countdown-3s-subtitle: "&7你可以击杀玩家以争夺他们头上的羊"
-  countdown-2s-title: "&a&l2"
-  countdown-2s-subtitle: "&7与你的团队合作"
-  countdown-1s-title: "&a&l1"
-  countdown-1s-subtitle: "&7&l玩的开心！"
-  countdown-chat: "%prefix% &7Starting in: &e%time%"
-  start-title: "&d&l游戏开始！"
-  start-subtitle: "&7你被分配至 %team%"
-  start-chat: "%prefix% &7The game has started!"
-  time-left: "&7还有&d&l%time%秒！"
-  team-join-success: "%prefix% &7你成功加入了 %team%&7!"
-  team-join-random: "%prefix% &7游戏开始，你被加入了随机的队伍！"
-  already-in-this-team: "%prefix% &c你已经在%team%&c了!"
-  bossbar-team: "&7队伍: %team%"
-  team-full: "%prefix% &c队伍 %team% &c满人了！"
-  team-menu-team-red: "&c&l红队"
-  team-menu-team-green: "&a&l绿队"
-  team-menu-team-blue: "&9&l蓝队"
-  team-menu-team-yellow: "&e&l黄队"
-  team-menu-team-orange: "&6&lTeam orange"
-  team-menu-team-dark_green: "&2&lTeam dark green"
-  team-menu-team-cyan: "&3&lTeam cyan"
-  team-menu-team-light_blue: "&b&lTeam light blue"
-  team-menu-team-pink: "&d&lTeam pink"
-  team-menu-team-purple: "&5&lTeam purple"
-  team-menu-team-gray: "&8&lTeam gray"
-  team-menu-team-black: "&0&lTeam black"
-  team-menu-team-random: "&7&l随机队伍"
+  stopped-one-player: '%prefix% &cThe game was stopped because everyone except you
+    left!'
+  countdown-chat: '%prefix% &7Starting in: &e%time%'
+  start-chat: '%prefix% &7The game has started!'
+  no-win-subtitle: '&7Nobody won the game'
+  scoreboard-waiting:
+    - ''
+    - '&7Arena: &e%arena%'
+    - ' '
+    - '&7Team: &e%team%'
+    - '&7Kit: &e%kit%'
+    - '  '
+    - '&7Players: &e%players%'
+    - '   '
+    - '&7Waiting...'
+    - '     '
+    - '&7%date%'
+  scoreboard-starting:
+    - ''
+    - '&7Arena: &e%arena%'
+    - ' '
+    - '&7Team: &e%team%'
+    - '&7Kit: &e%kit%'
+    - '  '
+    - '&7Players: &e%players%'
+    - '    '
+    - '&7Starting in: &e%time-short%'
+    - '     '
+    - '&7%date%'
+  scoreboard-game:
+    - ''
+    - '%teams%'
+    - ' '
+    - '&e&lNext sheep:'
+    - '&f%time-sheep% seconds'
+    - '  '
+    - '&e&lTime left:'
+    - '&f%time-left%'
+  scoreboard-ending:
+    - ''
+    - '%teams%'
+    - ' '
+    - '&e&lEnding in:'
+    - '&f%time-long%'
+  arena-join-vip: '%prefix% &c这是VIP专属的竞技场！'
+  arena-join-usage: '%prefix% &c指令错误！7正确用法: /sheepquest join &e<竞技场>'
+  arena-join-already-in-game: '%prefix% &c你已经在游戏了！'
+  arena-join-arena-in-game: '%prefix% &c竞技场&e%arena% &c已经开始游戏了！'
+  arena-join-arena-full: '%prefix% &c竞技场 &e%arena% &c满人了'
+  arena-join-not-active: '%prefix% &c竞技场 &e%arena% &c停止使用中！'
+  arena-join-success: '%prefix% &7玩家 &e%player% &7加入了游戏 &7(&e&l&o%count%/%max%&7)'
+  arena-leave-not-in-game: '%prefix% &c你不在游戏！'
+  arena-leave-success: '%prefix% &7玩家 &e%player% &7退出了游戏！&7(&e&l&o%count%/%max%&7)'
+  quick-join-no-games-found: '%prefix% &c目前没有可加入的游戏！'
+  countdown-started: '%prefix% &7游戏即将开始，正在倒计时...'
+  full-countdown: '%prefix% &7竞技场已满人！等待时间减少至 &e%time% 秒&7.'
+  countdown-60s-title: '&a&l离开始还有60秒'
+  countdown-60s-subtitle: '&7等待更多玩家...'
+  countdown-30s-title: '&a&l离开始还有30秒'
+  countdown-30s-subtitle: '&7等待更多玩家...'
+  countdown-10s-title: '&a&l离开始还有10秒'
+  countdown-10s-subtitle: '&7准备游戏！'
+  countdown-5s-title: '&a&l离开始还有5秒'
+  countdown-5s-subtitle: '&7从竞技场中间收集小羊们！'
+  countdown-4s-title: '&a&l4'
+  countdown-4s-subtitle: '&7保护好你的笔'
+  countdown-3s-title: '&a&l3'
+  countdown-3s-subtitle: '&7你可以击杀玩家以争夺他们头上的羊'
+  countdown-2s-title: '&a&l2'
+  countdown-2s-subtitle: '&7与你的团队合作'
+  countdown-1s-title: '&a&l1'
+  countdown-1s-subtitle: '&7&l玩的开心！'
+  start-title: '&d&l游戏开始！'
+  start-subtitle: '&7你被分配至 %team%'
+  time-left: '&7还有&d&l%time%秒！'
+  team-join-success: '%prefix% &7你成功加入了 %team%&7!'
+  team-join-random: '%prefix% &7游戏开始，你被加入了随机的队伍！'
+  already-in-this-team: '%prefix% &c你已经在%team%&c了!'
+  bossbar-team: '&7队伍: %team%'
+  team-full: '%prefix% &c队伍 %team% &c满人了！'
+  team-menu-team-red: '&c&l红队'
+  team-menu-team-green: '&a&l绿队'
+  team-menu-team-blue: '&9&l蓝队'
+  team-menu-team-yellow: '&e&l黄队'
+  team-menu-team-random: '&7&l随机队伍'
   team-menu-team-random-lore:
-    - "&7点击以加入随机队伍"
-    - "&7游戏开始后，你会随机加入一个队伍！"
-  start-cancelled: "%prefix% &7玩家不够，取消倒计时!"
+    - '&7点击以加入随机队伍'
+    - '&7游戏开始后，你会随机加入一个队伍！'
+  start-cancelled: '%prefix% &7玩家不够，取消倒计时!'
   team-menu-players:
-    - "&7玩家:"
-  team-menu-players-format: "&7- %player%"
+    - '&7玩家:'
+  team-menu-players-format: '&7- %player%'
   team-menu-no-players:
-    - "&7这个队伍还没有人！!"
-  team-menu-name: "&6&l选择队伍"
-  team-item-name: "&6&l选择队伍"
+    - '&7这个队伍还没有人！!'
+  team-menu-name: '&6&l选择队伍'
+  team-item-name: '&6&l选择队伍'
   team-item-lore:
-    - "&7点击以选择你的队伍"
-  sheep-item-name: "&9&l抢羊"
+    - '&7点击以选择你的队伍'
+  sheep-item-name: '&9&l抢羊'
   sheep-item-lore:
-    - "&7接近羊以捕捉它！"
-  weapon-item-name: "&7&l保护你的基地"
+    - '&7接近羊以捕捉它！'
+  weapon-item-name: '&7&l保护你的基地'
   weapon-item-lore:
-    - "&7杀死那些想偷羊的家伙吧！"
-  leave-item-name: "&c&l离开竞技场"
+    - '&7杀死那些想偷羊的家伙吧！'
+  leave-item-name: '&c&l离开竞技场'
   leave-item-lore:
-    - "&7点击以返回大厅"
-  kill: "%prefix% &7玩家 [%killerTeam%]%killer% &7杀死了 [%playerTeam%]%player%&7!"
-  kill-subtitle: "&7你杀死了 %team-color%%player%"
-  respawn-in-title: "&7击杀者: %team-color%%player%"
-  respawn-in-subtitle: "&d&l%time%&7秒后重生"
-  respawned-title: "&a&l已重生"
-  respawned-subtitle: "&a&l返回竞技场！"
-  win-title: "&a&l胜利"
-  defeat-title: "&c&l失败"
-  win-defeat-subtitle: "&7%team%队 &7赢得了这场游戏！"
-  no-win-subtitle: "&7Nobody won the game"
-  chat-format: "%color%%player% &8&l» &r%message%"
-  team-chat-format: "&7[&d&l团队&7] %color%%player% &8&l» &r%message%"
-  team-chat-usage: "%prefix% &c错误！! &7正确用法: /t &e<信息>"
-  chat-not-in-game: "%prefix% &c你只能在游戏时使用团队频道！"
-  team-chat-game: "%prefix% &c你只能在游戏时使用团队频道！"
-  command-blocked: "%prefix% &c你不能在游戏时使用该指令！"
-  scoreboard-new-waiting:
-    - ""
-    - "&7Arena: &e%arena%"
-    - " "
-    - "&7Players: &e%players%"
-    - "   "
-    - "&7Team: %team%"
-    - "&7Kit: %kit%"
-    - "    "
-    - "&7Waiting..."
-    - "     "
-    - "&7%date%"
-  scoreboard-new-starting:
-    - ""
-    - "&7Arena: &e%arena%"
-    - " "
-    - "&7Players: &e%players%"
-    - "   "
-    - "&7Team: %team%"
-    - "&7Kit: %kit%"
-    - "    "
-    - "&7Starting in: &e%time-short%"
-    - "     "
-    - "&7%date%"
-  scoreboard-new-game:
-    - ""
-    - "%teams%"
-    - " "
-    - "&e&lNext sheep:"
-    - "&f%sheep-long% "
-    - "  "
-    - "&e&lTime left:"
-    - "&f%time-long%"
-  scoreboard-new-ending:
-    - ""
-    - "%teams%"
-    - " "
-    - "&e&lEnding in:"
-    - "&f%time-long%"
-  scoreboard-team: "&f%points% %team%"
-  scoreboard-title: "   &9&lSheepQuest   "
-  scoreboard-seconds: "&f%count% &fseconds"
-  scoreboard-second: "&f%count% &fsecond"
-  scoreboard-minutes: "&f%count% &fminutes"
-  scoreboard-minute: "&f%count% &fminute"
+    - '&7点击以返回大厅'
+  kill: '%prefix% &7玩家 [%killerTeam%]%killer% &7杀死了 [%playerTeam%]%player%&7!'
+  kill-subtitle: '&7你杀死了 %team-color%%player%'
+  respawn-in-title: '&7击杀者: %team-color%%player%'
+  respawn-in-subtitle: '&d&l%time%&7秒后重生'
+  respawned-title: '&a&l已重生'
+  respawned-subtitle: '&a&l返回竞技场！'
+  win-title: '&a&l胜利'
+  defeat-title: '&c&l失败'
+  win-defeat-subtitle: '&7%team%队 &7赢得了这场游戏！'
+  chat-format: '%color%%player% &8&l» &r%message%'
+  team-chat-format: '&7[&d&l团队&7] %color%%player% &8&l» &r%message%'
+  team-chat-usage: '%prefix% &c错误！! &7正确用法: /t &e<信息>'
+  chat-not-in-game: '%prefix% &c你只能在游戏时使用团队频道！'
+  team-chat-game: '%prefix% &c你只能在游戏时使用团队频道！'
+  command-blocked: '%prefix% &c你不能在游戏时使用该指令！'
+  scoreboard-team: '&f%points% %team%'
+  scoreboard-title: '   &9&lSheepQuest   '
   summary:
-    - "&m---------------------------------------------------"
-    - " %teams%"
-    - ""
-    - "   &e游戏数据:"
-    - "   &7击杀: &e%kills%"
-    - "   &7死亡: &e%deaths%"
-    - "   &7抢得羊数: &e%sheep%"
-    - ""
-    - "&d&lThanks for playing!"
-    - "&m---------------------------------------------------"
-  summary-points: "&7&l| %team%&7: %points% &7&l| "
-  stopped-one-player: "%prefix% &cThe game was stopped because everyone except you left!"
-kits:
-  already-selected: "%prefix% &cYou have this kit already selected!"
-  choose-success: "%prefix% &7You have selected kit %kit%!"
-  bossbar-kit: "&7Kit: %kit%"
-  standard: "&e&lStandard"
-  archer: "&e&lArcher"
-  athlete: "&e&lAthlete"
-  menu-name: "&d&lChoose kit"
-  item-name: "&d&lChoose kit"
-  item-lore:
-    - "&7Click to open menu in which "
-    - "&7you can choose your kit!"
-  standard-name: "&e&lStandard kit"
-  standard-lore:
-    - "&7Free, basic kit"
-    - ""
-    - "&7Contains:"
-    - "&7- Iron sword"
-    - "&7- Dash (double jump)"
-    - "&7  (3 second cooldown)"
-    - ""
-    - "&aClick to select"
-  archer-name: "&e&lArcher kit"
-  archer-lore:
-    - "&7Kit for those who prefer"
-    - "&7distance fighting."
-    - ""
-    - "&7Contains:"
-    - "&7- Wooden sword"
-    - "&7- Bow"
-    - "&7- Arrows"
-    - "&7  (you get one every 5 seconds)"
-    - ""
-    - "&aClick to select"
-  athlete-name: "&e&lAthlete kit"
-  athlete-lore:
-    - "&7Kit for those who would like to"
-    - "&7scatter everything."
-    - ""
-    - "&7Contains:"
-    - "&7- Wooden axe"
-    - "&7- Ability to throw carried sheep"
-    - "&7  and deal damage."
-    - "&7  Ability to push other players"
-    - "&7  away with big power and deal damage."
-    - "&7  (10 second cooldown)"
-    - ""
-    - "&aClick to select"
-  standard-primary-weapon-name: "&7&lIron sword"
-  standard-primary-weapon-lore:
-    - "&7Use this item to defend"
-    - "&7your pen and kill"
-    - "&7the enemies!"
-    - ""
-    - "&eDouble jump to use dash."
-  standard-secondary-weapon-name: "&7&lYour item"
-  standard-secondary-weapon-lore:
-    - "&7Disabled by default"
-  archer-primary-weapon-name: "&7&lWooden sword"
-  archer-primary-weapon-lore:
-    - "&7Use this item to defend"
-    - "&7your pen and kill"
-    - "&7the enemies!"
-  archer-secondary-weapon-name: "&7&lBow"
-  archer-secondary-weapon-lore:
-    - "&7Use this item to defend"
-    - "&7your pen and shoot"
-    - "&7the enemies!"
-    - ""
-    - "&e(you receive arrow every 5 seconds)"
-  athlete-primary-weapon-name: "&7&lWooden axe"
-  athlete-primary-weapon-lore:
-    - "&7Use this item to defend"
-    - "&7your pen and kill"
-    - "&7the enemies!"
-  athlete-secondary-weapon-name: "&7&lDetonator"
-  athlete-secondary-weapon-lore:
-    - "&7Use this item push other"
-    - "&7players away and"
-    - "&7deal damage!"
-    - ""
-    - "&e(10 second cooldown)"
-    - "&eRight click"
-  shield-name: "&7&lShield"
-  shield-lore:
-    - "&7Use this item to defend yourself!"
-  arrow-name: "&7&lArrow"
-  arrow-lore:
-    - "&7You will receive an arrow"
-    - "&7every 5 seconds."
-special-events:
-  bonus-sheep-name: "&d&l%points% &f&l分"
-  bonus-sheep-spawn: "%prefix% &d&l额外的绵羊 &7出生了！"
+    - '&m---------------------------------------------------'
+    - ' %teams%'
+    - ''
+    - '   &e游戏数据:'
+    - '   &7击杀: &e%kills%'
+    - '   &7死亡: &e%deaths%'
+    - '   &7抢得羊数: &e%sheep%'
+    - ''
+    - '&d&lThanks for playing!'
+    - '&m---------------------------------------------------'
+  summary-points: '&7&l| %team%&7: %points% &7&l| '
+  bonus-sheep-name: '&d&l%points% &f&l分'
+  bonus-sheep-spawn: '%prefix% &d&l额外的绵羊 &7出生了！'
 arena-moderate:
-  force-start-usage: "%prefix% &c指令错误! &7正确用法: /sheepquest forcestart &e<竞技场>"
-  force-start-already-started: "%prefix% &c竞技场 &e%arena% &c已经开始了！"
-  force-start-no-players: "%prefix% &c竞技场 &e%arena% 内&c没有任何玩家，无法开启游戏！"
-  force-start-success: "%prefix% &7玩家 &e%player% &7强制开始了游戏！"
-  force-stop-usage: "%prefix% &c指令错误！! &7正确用法: /sheepquest forcestop &e<竞技场>"
-  force-stop-not-started: "%prefix% &c竞技场 &e%arena% &c还没开始游戏！"
-  force-stop-success: "%prefix% &c玩家 &e%player% &c强制停止了游戏！"
-  kick-usage: "%prefix% &c指令错误! &7正确用法: /sheepquest kick &e<玩家>"
-  kick-player-not-playing: "%prefix% &c玩家 &e%player% &c并不在游戏中！"
-  kick-success: "%prefix% &c玩家 &e%player% &c被踢出竞技场 &e%arena%&c!"
-  kick-player: "%prefix% &c你被&e%kicker%&c踢出了游戏!"
-  kick-players: "%prefix% &c玩家 &e%player% &c被 &e%kicker%&c踢出了竞技场!"
-  active-usage: "%prefix% &c指令错误! &7正确用法: /sheepquest active &e<竞技场> <true/false>"
-  active-arena-active: "%prefix% &c竞技场 &e%arena% &c已经在启用状态了！"
-  active-arena-not-active: "%prefix% &c竞技场 &e%arena% &c已经在停用状态了！"
-  active-activate: "%prefix% &7竞技场 &e%arena% &7更改为&a&l启用&7状态，玩家可以加入该竞技场了！"
-  active-deactivate: "%prefix% &7竞技场 &e%arena% &7更改为&c&l停用&7状态，玩家不再可以加入该竞技场！"
-  active-players: "%prefix% &7竞技场已停用，你被踢出了！"
-  active-not-ready: "%prefix%&e%arena% &c竞技场还没准备启用！"
+  force-start-usage: '%prefix% &c指令错误! &7正确用法: /sheepquest forcestart &e<竞技场>'
+  force-start-already-started: '%prefix% &c竞技场 &e%arena% &c已经开始了！'
+  force-start-no-players: '%prefix% &c竞技场 &e%arena% 内&c没有任何玩家，无法开启游戏！'
+  force-start-success: '%prefix% &7玩家 &e%player% &7强制开始了游戏！'
+  force-stop-usage: '%prefix% &c指令错误！! &7正确用法: /sheepquest forcestop &e<竞技场>'
+  force-stop-not-started: '%prefix% &c竞技场 &e%arena% &c还没开始游戏！'
+  force-stop-success: '%prefix% &c玩家 &e%player% &c强制停止了游戏！'
+  kick-usage: '%prefix% &c指令错误! &7正确用法: /sheepquest kick &e<玩家>'
+  kick-player-not-playing: '%prefix% &c玩家 &e%player% &c并不在游戏中！'
+  kick-success: '%prefix% &c玩家 &e%player% &c被踢出竞技场 &e%arena%&c!'
+  kick-player: '%prefix% &c你被&e%kicker%&c踢出了游戏!'
+  kick-players: '%prefix% &c玩家 &e%player% &c被 &e%kicker%&c踢出了竞技场!'
+  active-usage: '%prefix% &c指令错误! &7正确用法: /sheepquest active &e<竞技场> <true/false>'
+  active-arena-active: '%prefix% &c竞技场 &e%arena% &c已经在启用状态了！'
+  active-arena-not-active: '%prefix% &c竞技场 &e%arena% &c已经在停用状态了！'
+  active-activate: '%prefix% &7竞技场 &e%arena% &7更改为&a&l启用&7状态，玩家可以加入该竞技场了！'
+  active-deactivate: '%prefix% &7竞技场 &e%arena% &7更改为&c&l停用&7状态，玩家不再可以加入该竞技场！'
+  active-players: '%prefix% &7竞技场已停用，你被踢出了！'
+  active-not-ready: '%prefix%&e%arena% &c竞技场还没准备启用！'
 arena-setup:
-  active-block: "%prefix% &cThis arena is active so you cannot modify it's settings! &7Deactivate it using staff menu or &e/sq active %arena% false &7command."
-  wand-item-name: "&6&l设置工具"
+  active-block: '%prefix% &cThis arena is active so you cannot modify it''s settings!
+    &7Deactivate it using staff menu or &e/sq active %arena% false &7command.'
+  set-vip-usage: '%prefix% &cWrong use! &7Type: &e/sq setvip &d<arena> <true/false>'
+  set-vip-arena-vip: '%prefix% &cArena &e%arena% &cis already vip arena!'
+  set-vip-arena-not-vip: '%prefix% &cArena &e%arena% &cis already regular arena!'
+  set-vip-success-vip: '%prefix% &7Arena &e%arena% &7is now &a&lVIP &7and only vips
+    can join it.'
+  set-vip-success-not-vip: '%prefix% &7Arena &e%arena% &7is now &c&lNOT VIP &7and
+    everyone can join it.'
+  add-team-usage: '%prefix% &cWrong use! &7Type &e/sq addteam &d<arena> <team>&7.'
+  add-team-invalid-team: '%prefix% &cWrong team! &7Type &e/sq teams &d<arena> &7to
+    view list of available teams.'
+  add-team-already-added: '%prefix% &cThis team is already added to this arena!'
+  add-team-success: '%prefix% &7Team %team% &7was successfully added to arena &e%arena%&7!'
+  remove-team-usage: '%prefix% &cWrong use! &7Type &e/sq removeteam &d<arena> <team>&7.'
+  remove-team-invalid-team: '%prefix% &cWrong team! &7Type &e/sq teams &d<arena> &7to
+    view list of available teams.'
+  remove-team-success: '%prefix% &7Team %team% &7was successfully removed from arena
+    &e%arena%&7!'
+  team-not-added: '%prefix% &cThis team is not added to this arena!'
+  list-teams-usage: '%prefix% &cWrong use! &7Type &e/sq teams &d<arena>'
+  list-teams-success:
+    - '&9&lSheepQuest &7- &e%arena% &7arena teams'
+    - '   &7Teams added: %teams-added%'
+    - '   &7Other available teams: %teams-available%'
+  check-set: '&aSet!'
+  check-notset: '&cNot set!'
+  check-usage: '%prefix% &cWrong use! &7Type &e/sq check &d<arena>'
+  check-ready: '&a&lArena is configured and it is ready to use!'
+  check-not-ready: '&c&lArena is not ready to play yet!'
+  check-active: '&aArena is active and players can join it!'
+  check-not-active: '&cArena is not active and players cannot join it!'
+  wand-item-name: '&6&l设置工具'
   wand-item-lore:
-    - "&7左键选择第一个点"
-    - "&7右键选择第二个点"
-  wand-item-recive: "%prefix% &7设置工具已送达！选择四个团队区域吧！"
-  selection-empty: "%prefix% &c未选择地点！&7你需要先使用设置工具分别选择两个点"
-  wand-select-min: "%prefix% &7你选择了第一个点！右键选择第二个点吧！"
-  wand-select-max: "%prefix% &7两个点选择完毕，你现在可以设置团队区域了！"
-  wand-selection-world: "%prefix% &7你的选择点必须要在同一个世界！"
-  invalid-team: "%prefix% &7未知队伍！可选队伍有: &c&l红队(red) &a&l绿队(green) &9&l蓝队(blue) &e&l黄队(yellow)"
-  create-success: "%prefix% &7竞技场 &e%arena% &7创建成功!你现在可以编辑他了！"
-  create-usage: "%prefix% &c指令错误! &7正确用法: /sheepquest create &e<竞技场>"
-  create-already-exists: "%prefix% &c竞技场 e%arena% &c已存在！"
-  delete-success: "%prefix% &7竞技场 &e%arena% &7成功删除！"
-  delete-confirm: "%prefix% &c你确定要删除竞技场 &e%arena% &c？ &7在20秒内输入&e/sq confirm &7以确认. &c&l该操作不能被取消！！"
-  delete-confirm-none: "%prefix% &c你没有什么可以确认的"
-  delete-usage: "%prefix% &c指令错误! &7正确用法: /sheepquest delete &e<竞技场>"
-  delete-not-exists: "%prefix% &c竞技场 &e%arena% &c不存在！"
-  set-main-lobby-usage: "%prefix% &c指令错误! &7正确用法: /sheepquest setmainlobby &e<竞技场>"
-  set-main-lobby-success: "%prefix% &e%arena% &7大厅成功设置！"
-  set-waiting-lobby-usage: "%prefix% &c指令错误! &7正确用法: /sheepquest setwaitinglobby &e<竞技场>"
-  set-waiting-lobby-success: "%prefix% &e%arena% &7等待大厅成功设置！"
-  set-spawn-usage: "%prefix% &c指令错误! &7正确用法: /sheepquest setspawn &e<竞技场> &e<团队>"
-  set-spawn-success: "%prefix% &7%team% &7在 &e%arena% &7竞技场的出生点已设置！"
-  set-sheep-spawn-usage: "%prefix% &c指令错误! &7正确用法: /sheepquest setsheepspawn &e<竞技场>"
-  set-sheep-spawn-success: "%prefix% &7羊在 &e%arena% &7竞技场的出生点已设置！"
-  set-teams-area-usage: "%prefix% &c指令错误! &7正确用法: /sheepquest setteamsarea &e<竞技场> <团队>"
-  set-teams-area-success: "%prefix% &7%team% &7在 &e%arena% &7竞技场的领地已设置！"
-  set-teams-area-no-selection: "%prefix% &c你需要先选择一个区域！输入/sq setupwand 以获取选择工具"
-  set-min-players-usage: "%prefix% &c指令错误! &7正确用法: /sheepquest setminplayers &e<竞技场> <数量>"
-  set-min-players-success: "%prefix% &e%arena% &7竞技场内最少玩家数已设置！"
-  set-min-players-too-small: "%prefix% &c这个数字必须大于1！"
-  set-min-players-invalid-count: "%prefix% &c这个值必须为数字！"
-  set-max-players-usage: "%prefix% &c指令错误! &7正确用法: /sheepquest setmaxplayers &e<竞技场> <数量>"
-  set-max-players-success: "%prefix% &e%arena% &7竞技场内最多容纳玩家数已设置！"
-  set-max-players-invalid-count: "%prefix% &c这个值必须为数字！"
-  set-vip-usage: "%prefix% &cWrong use! &7Type: &e/sq setvip &d<arena> <true/false>"
-  set-vip-arena-vip: "%prefix% &cArena &e%arena% &cis already vip arena!"
-  set-vip-arena-not-vip: "%prefix% &cArena &e%arena% &cis already regular arena!"
-  set-vip-success-vip: "%prefix% &7Arena &e%arena% &7is now &a&lVIP &7and only vips can join it."
-  set-vip-success-not-vip: "%prefix% &7Arena &e%arena% &7is now &c&lNOT VIP &7and everyone can join it."
-  add-team-usage: "%prefix% &cWrong use! &7Type &e/sq addteam &d<arena> <team>&7."
-  add-team-invalid-team: "%prefix% &cWrong team! &7Type &e/sq teams &d<arena> &7to view list of available teams."
-  add-team-already-added: "%prefix% &cThis team is already added to this arena!"
-  add-team-success: "%prefix% &7The team was successfully added to arena &e%arena%&7!"
-  remove-team-usage: "%prefix% &cWrong use! &7Type &e/sq removeteam &d<arena> <team>&7."
-  remove-team-invalid-team: "%prefix% &cWrong team! &7Type &e/sq teams &d<arena> &7to view list of available teams."
-  remove-team-not-added: "%prefix% &cThis team is not added to this arena!"
-  remove-team-success: "%prefix% &7The team was successfully removed from arena &e%arena%&7!"
-  list-teams-usage: "%prefix% &cWrong use! &7Type &e/sq teams &d<arena>"
-  list-teams-success: "%prefix% &7Teams added to arena &e%arena%&7: %teams%"
-  list-teams-success2: "%prefix% &7Other available teams: %teams%"
-  check-set: "&aSet!"
-  check-notset: "&cNot set!"
-  check-yes: "&aYes!"
-  check-no: "&cNo!"
-  check-usage: "%prefix% &cWrong use! &7Type &e/sq check &d<arena>"
-  check-ready: "&a&lArena is configured and it is ready to use!"
-  check-not-ready: "&c&lArena is not ready to play yet!"
-  check-active: "&aArena is active and players can join it!"
-  check-not-active: "&cArena is not active and players cannot join it!"
-  check-page-new:
-    - "&m---------------------------------------------------"
-    - "&e&l%arena% &7竞技场设置信息:"
-    - "  &7最少开启玩家: %min-players%"
-    - "  &7最大容纳玩家: %max-players%"
-    - "  &7Added teams: &e%team%"
-    - "  &7大厅: %main-lobby%"
-    - "  &7等待大厅: %waiting-lobby%"
-    - "  &7羊 出生点: %sheep-spawn%"
-    - "  &7Spawns: %spawn%"
-    - "  &7Areas: %area%"
-    - "%active%"
-    - "%ready%"
-    - "&m---------------------------------------------------"
-  spawn-join-sheep: "%prefix% &7Quick join sheep has been spawned!"
-  remove-join-sheep-no-sheep: "%prefix% &cThere are no quick join sheep nearby!"
-  remove-join-sheep-success: "%prefix% &7Quick join sheep has been removed!"
+    - '&7左键选择第一个点'
+    - '&7右键选择第二个点'
+  wand-item-receive: '%prefix% &7设置工具已送达！选择四个团队区域吧！'
+  selection-empty: '%prefix% &c未选择地点！&7你需要先使用设置工具分别选择两个点'
+  wand-select-min: '%prefix% &7你选择了第一个点！右键选择第二个点吧！'
+  wand-select-max: '%prefix% &7两个点选择完毕，你现在可以设置团队区域了！'
+  wand-selection-world: '%prefix% &7你的选择点必须要在同一个世界！'
+  invalid-team: '%prefix% &7未知队伍！可选队伍有: &c&l红队(red) &a&l绿队(green) &9&l蓝队(blue) &e&l黄队(yellow)'
+  create-success: '%prefix% &7竞技场 &e%arena% &7创建成功!你现在可以编辑他了！'
+  create-usage: '%prefix% &c指令错误! &7正确用法: /sheepquest create &e<竞技场>'
+  create-already-exists: '%prefix% &c竞技场 e%arena% &c已存在！'
+  delete-success: '%prefix% &7竞技场 &e%arena% &7成功删除！'
+  delete-confirm: '%prefix% &c你确定要删除竞技场 &e%arena% &c？ &7在20秒内输入&e/sq confirm &7以确认. &c&l该操作不能被取消！！'
+  delete-usage: '%prefix% &c指令错误! &7正确用法: /sheepquest delete &e<竞技场>'
+  delete-not-exists: '%prefix% &c竞技场 &e%arena% &c不存在！'
+  set-main-lobby-usage: '%prefix% &c指令错误! &7正确用法: /sheepquest setmainlobby &e<竞技场>'
+  set-main-lobby-success: '%prefix% &e%arena% &7大厅成功设置！'
+  set-waiting-lobby-usage: '%prefix% &c指令错误! &7正确用法: /sheepquest setwaitinglobby &e<竞技场>'
+  set-waiting-lobby-success: '%prefix% &e%arena% &7等待大厅成功设置！'
+  set-spawn-usage: '%prefix% &c指令错误! &7正确用法: /sheepquest setspawn &e<竞技场> &e<团队>'
+  set-spawn-success: '%prefix% &7%team% &7在 &e%arena% &7竞技场的出生点已设置！'
+  set-sheep-spawn-usage: '%prefix% &c指令错误! &7正确用法: /sheepquest setsheepspawn &e<竞技场>'
+  set-sheep-spawn-success: '%prefix% &7羊在 &e%arena% &7竞技场的出生点已设置！'
+  set-teams-area-usage: '%prefix% &c指令错误! &7正确用法: /sheepquest setteamsarea &e<竞技场> <团队>'
+  set-teams-area-success: '%prefix% &7%team% &7在 &e%arena% &7竞技场的领地已设置！'
+  set-teams-area-no-selection: '%prefix% &c你需要先选择一个区域！输入/sq setupwand 以获取选择工具'
+  set-min-players-usage: '%prefix% &c指令错误! &7正确用法: /sheepquest setminplayers &e<竞技场> <数量>'
+  set-min-players-success: '%prefix% &e%arena% &7竞技场内最少玩家数已设置！'
+  set-min-players-too-small: '%prefix% &c这个数字必须大于1！'
+  set-min-players-invalid-count: '%prefix% &c这个值必须为数字！'
+  set-max-players-usage: '%prefix% &c指令错误! &7正确用法: /sheepquest setmaxplayers &e<竞技场> <数量>'
+  set-max-players-success: '%prefix% &e%arena% &7竞技场内最多容纳玩家数已设置！'
+  set-max-players-invalid-count: '%prefix% &c这个值必须为数字！'
+  check-page:
+    - '&m---------------------------------------------------'
+    - '&e&l%arena% &7竞技场设置信息:'
+    - '  &7最少开启玩家: %min-players%'
+    - '  &7最大容纳玩家: %max-players%'
+    - "  &7Teams: %teams%"
+    - '  &7大厅: %main-lobby%'
+    - '  &7等待大厅: %waiting-lobby%'
+    - '  &7羊 出生点: %sheep-spawn%'
+    - '  &7Spawns: %spawn%'
+    - '  &7Areas: %area%'
+    - '%active%'
+    - '%ready%'
+    - '&m---------------------------------------------------'
 arenas-menu:
-  command-usage: "%prefix% &c指令错误! &7正确用法: /sheepquest arenasmenu"
-  name: "&9&l抢羊乱战 &7&l| &8小游戏"
-  advanced-menu-name: "&3&l%arena% &8进阶设定"
-  arena-item-name: "%?vip?%&e%arena%"
+  command-usage: '%prefix% &c指令错误! &7正确用法: /sheepquest arenasmenu'
+  name: '&9&l抢羊乱战 &7&l| &8小游戏'
+  advanced-menu-name: '&3&l%arena% &8进阶设定'
+  arena-item-name: '%?vip?%&e%arena%'
   arena-item-lore:
-    - "&7玩家: &e%count%/&e%max%"
-    - "&7当前状态: %state%"
-    - ""
-    - "&e右键 &7查看进阶设定"
-    - "&a左键 &7加入竞技场"
-  quickjoin-item-name: "&e快速加入"
+    - '&7玩家: &e%count%/&e%max%'
+    - '&7当前状态: %state%'
+    - ''
+    - '&a左键 &7加入竞技场'
+  quickjoin-item-name: '&e快速加入'
   quickjoin-item-lore:
-    - "&7点击以加入一个随机的即将开始的竞技场！"
-  stats-item-name: "&e统计数据"
+    - '&7点击以加入一个随机的即将开始的竞技场！'
+  stats-item-name: '&e统计数据'
   stats-item-lore:
-    - "&7将你的统计数据展示在公屏"
-  close-item-name: "&e关闭"
+    - '&7将你的统计数据展示在公屏'
+  close-item-name: '&e关闭'
   close-item-lore:
-    - "&7关闭菜单"
-  play-item-name: "&e加入竞技场 &3&l%arena%"
+    - '&7关闭菜单'
+  play-item-name: '&e加入竞技场 &3&l%arena%'
   play-item-lore:
-    - "&7玩家数: &e%count%/&e%max%"
-    - "&7当前状态: %state%"
-    - ""
-    - "&a&l点击以进入游玩！"
-  staff-item-name: "&e管理 选项"
+    - '&7玩家数: &e%count%/&e%max%'
+    - '&7当前状态: %state%'
+    - ''
+    - '&a&l点击以进入游玩！'
+  staff-item-name: '&e管理 选项'
   staff-item-lore:
-    - "&7管理员专属"
-    - "点击以进入设置"
-  setup-item-name: "&e服主 设置"
+    - '&7管理员专属'
+    - '点击以进入设置'
+  setup-item-name: '&e服主 设置'
   setup-item-lore:
-    - "&7服主专属"
-    - "点击以进入设置"
-  options-menu-back-item-name: "&e返回"
+    - '&7服主专属'
+    - '点击以进入设置'
+  options-menu-back-item-name: '&e返回'
   options-menu-back-item-lore:
-    - "&7返回默认竞技场菜单"
-stats-menu:
-  command-usage: "%prefix% &cWrong use! &7Type: /sheepquest statsmenu [player]"
-  name: "&3&l%player% &8stats"
-  wins: "&eWins: &7%wins%"
-  looses: "&eLooses: &7%looses%"
-  games-played: "&eGames played: &7%games%"
-  kills: "&eKills: &7%kills%"
-  deaths: "&eDeaths: &7%deaths%"
-  sheep-taken: "&eSheep taken: &7%sheep%"
-  bonus-sheep-taken: "&eBonus sheep taken: &7%bonus-sheep%"
-  playtime: "&ePlaytime: &7%playtime%"
-  back-item-name: "&eExit"
-  back-item-lore:
-    - "&7Go back to arenas menu."
+    - '&7返回默认竞技场菜单'
 setup-menu:
-  command-usage: "%prefix% &c指令错误! &7正确用法: /sheepquest setupmenu <竞技场>"
-  name: "&3&l%arena% &8setup"
-  arena-vip: "&c&lVIPS"
-  arena-not-vip: "&a&lEVERYONE"
-  team-spawn-menu-name: "&3&l%arena% &8设置 &7&l| 团队出生点"
-  team-area-menu-name: "&3&l%arena% &8设置 &7&l| 团队领地"
-  teams-add-remove-menu-name: "&3&l%arena% &8setup &7&l| teams"
-  min-players-message: "%prefix% &7请输入数量."
-  max-players-message: "%prefix% &7请输入数量."
-  cancelled: "%prefix% &7取消."
-  check-item-name: "&c&l检查设置"
+  command-usage: '%prefix% &c指令错误! &7正确用法: /sheepquest setupmenu <竞技场>'
+  name: '&3&l%arena% &8setup'
+  arena-vip: '&c&lVIPS'
+  arena-not-vip: '&a&lEVERYONE'
+  team-spawn-menu-name: '&3&l%arena% &8设置 &7&l| 团队出生点'
+  team-area-menu-name: '&3&l%arena% &8设置 &7&l| 团队领地'
+  teams-add-remove-menu-name: '&3&l%arena% &8setup &7&l| teams'
+  min-players-message: '%prefix% &7请输入数量.'
+  max-players-message: '%prefix% &7请输入数量.'
+  cancelled: '%prefix% &7取消.'
+  check-item-name: '&c&l检查设置'
   check-item-lore:
-    - "&7在公屏上展示竞技场设置状态"
-    - "&7状态: %ready%"
-  delete-item-name: "&c&l删除竞技场"
+    - '&7在公屏上展示竞技场设置状态'
+    - '&7状态: %ready%'
+  delete-item-name: '&c&l删除竞技场'
   delete-item-lore:
-    - "&7点击以永久删除竞技场"
-    - "&c&l警告！ &7该操作不能撤销！"
-  vip-item-name: "&eVip"
+    - '&7点击以永久删除竞技场'
+    - '&c&l警告！ &7该操作不能撤销！'
+  vip-item-name: '&eVip'
   vip-item-lore:
-    - "&7Set arena available only for vips"
-    - "&7or for everyone."
-    - ""
-    - "&7Only players with sheepquest.vip"
-    - "&7permission can join vip arenas."
-    - ""
-    - "&7Arena accessibility: &e%vip%"
-  min-players-item-name: "&e设置最少玩家"
+    - '&7Set arena available only for vips'
+    - '&7or for everyone.'
+    - ''
+    - '&7Only players with sheepquest.vip'
+    - '&7permission can join vip arenas.'
+    - ''
+    - '&7Arena accessibility: &e%vip%'
+  min-players-item-name: '&e设置最少玩家'
   min-players-item-lore:
-    - "&7点击以设置竞技场最少玩家"
-    - "&7竞技场只会在人数达到最少玩家数以上时开始游戏"
-    - " %set%"
-  max-players-item-name: "&e设置最大玩家"
+    - '&7点击以设置竞技场最少玩家'
+    - '&7竞技场只会在人数达到最少玩家数以上时开始游戏'
+    - ' %set%'
+  max-players-item-name: '&e设置最大玩家'
   max-players-item-lore:
-    - "&7点击设置竞技场最多容纳玩家数"
-    - "%set%"
-  main-lobby-item-name: "&e设置大厅"
+    - '&7点击设置竞技场最多容纳玩家数'
+    - '%set%'
+  main-lobby-item-name: '&e设置大厅'
   main-lobby-item-lore:
-    - "&7点击以将当前坐标设置为大厅"
-    - "&7玩家会在游戏结束后传送回大厅"
-    - "%set%"
-  waiting-lobby-item-name: "&e设置等待大厅"
+    - '&7点击以将当前坐标设置为大厅'
+    - '&7玩家会在游戏结束后传送回大厅'
+    - '%set%'
+  waiting-lobby-item-name: '&e设置等待大厅'
   waiting-lobby-item-lore:
-    - "&7点击以将当前坐标设置为等待大厅"
-    - "&7玩家会在此处等待游戏开始"
-    - "%set%"
-  sheep-spawn-item-name: "&e设置羊出生点"
+    - '&7点击以将当前坐标设置为等待大厅'
+    - '&7玩家会在此处等待游戏开始'
+    - '%set%'
+  sheep-spawn-item-name: '&e设置羊出生点'
   sheep-spawn-item-lore:
-    - "&7点击以将当前坐标设置为羊出生点"
-    - "&7游戏开始后羊群会在此处生成"
-    - "%set%"
-  team-spawn-item-name: "&e设置团队重生点"
+    - '&7点击以将当前坐标设置为羊出生点'
+    - '&7游戏开始后羊群会在此处生成'
+    - '%set%'
+  team-spawn-item-name: '&e设置团队重生点'
   team-spawn-item-lore:
-    - "&7点击以设置各团队重生点"
-    - "&7每个团队都有独立的出生点"
-    - "%set%"
-  team-area-item-name: "&e设置团队领地"
+    - '&7点击以设置各团队重生点'
+    - '&7每个团队都有独立的出生点'
+    - '%set%'
+  team-area-item-name: '&e设置团队领地'
   team-area-item-lore:
-    - "&7点击以设置各团队领地"
-    - "&7各团队需要将羊夺回自己的领地以得分"
-    - "%set%"
-  specific-team-spawn-item-name: "&eSet %team% spawn"
+    - '&7点击以设置各团队领地'
+    - '&7各团队需要将羊夺回自己的领地以得分'
+    - '%set%'
+  specific-team-spawn-item-name: '&eSet %team% spawn'
   specific-team-spawn-item-lore:
-    - "&7Click to set %team% team spawn"
-    - "&7in your location."
-    - ""
-    - "&7It will be a respawn point for"
-    - "&7all players from the %team% team."
-    - ""
-    - "&7Set? %set%"
-  team-spawn-menu-back-item-name: "&e返回"
+    - '&7Click to set %team% team spawn'
+    - '&7in your location.'
+    - ''
+    - '&7It will be a respawn point for'
+    - '&7all players from the %team% team.'
+    - ''
+    - '&7Set? %set%'
+  team-spawn-menu-back-item-name: '&e返回'
   team-spawn-menu-back-item-lore:
-    - "&7返回竞技场设置菜单"
-  specific-team-area-item-name: "&eSet %team% area"
+    - '&7返回竞技场设置菜单'
+  specific-team-area-item-name: '&eSet %team% area'
   specific-team-area-item-lore:
-    - "&7Click to set %team% team area"
-    - "&7in your location."
-    - ""
-    - "&7Players from %team% team"
-    - "&7will have to bring sheep there."
-    - ""
-    - "&7Set? %set%"
-  wand-item-name: "&e选择工具"
+    - '&7Click to set %team% team area'
+    - '&7in your location.'
+    - ''
+    - '&7Players from %team% team'
+    - '&7will have to bring sheep there.'
+    - ''
+    - '&7Set? %set%'
+  wand-item-name: '&e选择工具'
   wand-item-lore:
-    - "&7使用该工具选择团队领地"
-  team-area-menu-back-item-name: "&e返回"
+    - '&7使用该工具选择团队领地'
+  team-area-menu-back-item-name: '&e返回'
   team-area-menu-back-item-lore:
-    - "&7返回竞技场设置菜单"
-  teams-add-remove-item-name: "&eAdd or remove teams"
+    - '&7返回竞技场设置菜单'
+  teams-add-remove-item-name: '&eAdd or remove teams'
   teams-add-remove-item-lore:
-    - "&7Click to open menu"
-    - "&7in which you can add or remove"
-    - "&7teams from the arena."
-    - ""
-    - "&7Added teams: &e&l%count%"
-  specific-team-add-item-name: "&eAdd %team% team"
+    - '&7Click to open menu'
+    - '&7in which you can add or remove'
+    - '&7teams from the arena.'
+    - ''
+    - '&7Added teams: &e&l%count%'
+  specific-team-add-item-name: '&eAdd %team% team'
   specific-team-add-item-lore:
-    - "&7Click to add %team% &7team"
-    - "&7to the arena."
-    - ""
-    - "&7You can have from 2 up to"
-    - "&712 teams in one arena."
-    - ""
-    - "&aClick to add"
-  specific-team-remove-item-name: "&eRemove %team% team"
+    - '&7Click to add %team% &7team'
+    - '&7to the arena.'
+    - ''
+    - '&7You can have from 2 up to'
+    - '&712 teams in one arena.'
+    - ''
+    - '&aClick to add'
+  specific-team-remove-item-name: '&eRemove %team% team'
   specific-team-remove-item-lore:
-    - "&7Click to remove %team% team"
-    - "&7from the arena."
-    - ""
-    - "&7You can have from 2 up to"
-    - "&712 teams in one arena."
-    - ""
-    - "&cClick to remove"
-  teams-add-remove-menu-back-item-name: "&eBack"
+    - '&7Click to remove %team% team'
+    - '&7from the arena.'
+    - ''
+    - '&7You can have from 2 up to'
+    - '&712 teams in one arena.'
+    - ''
+    - '&cClick to remove'
+  teams-add-remove-menu-back-item-name: '&eBack'
   teams-add-remove-menu-back-item-lore:
-    - "&7Go back to arena setup menu."
-  back-item-name: "&e返回"
+    - '&7Go back to arena setup menu.'
+  back-item-name: '&e返回'
   back-item-lore:
-    - "&7返回竞技场菜单"
+    - '&7返回竞技场菜单'
 staff-menu:
-  command-usage: "%prefix% &c指令错误! &7正确用法: /sheepquest staffmenu <竞技场>"
-  players-command-usage: "%prefix% &cWrong use! &7Type: &e/sq playersmenu &d<arena>"
-  name: "&3&l%arena% &8管理员菜单"
-  players-menu-name: "&3&l%arena% &8玩家"
-  state-active: "&a&l启用"
-  state-not-active: "&c&l停用"
-  active-item-name: "&e启用/停用"
+  command-usage: '%prefix% &c指令错误! &7正确用法: /sheepquest staffmenu <竞技场>'
+  players-command-usage: '%prefix% &cWrong use! &7Type: &e/sq playersmenu &d<arena>'
+  name: '&3&l%arena% &8管理员菜单'
+  players-menu-name: '&3&l%arena% &8玩家'
+  state-active: '&a&l启用'
+  state-not-active: '&c&l停用'
+  active-item-name: '&e启用/停用'
   active-item-lore:
-    - "&7将竞技场设置为启用/停用状态"
-    - "&7玩家不能加入停用的竞技场"
-    - "&7当前状态: &e%active%"
-  start-item-name: "&e强制开始游戏"
+    - '&7将竞技场设置为启用/停用状态'
+    - '&7玩家不能加入停用的竞技场'
+    - '&7当前状态: &e%active%'
+  start-item-name: '&e强制开始游戏'
   start-item-lore:
-    - "&7强制使竞技场进入游戏状态"
-    - "&7当前状态: &e%state%"
-  stop-item-name: "&e强制停止"
+    - '&7强制使竞技场进入游戏状态'
+    - '&7当前状态: &e%state%'
+  stop-item-name: '&e强制停止'
   stop-item-lore:
-    - "&7将正在游戏/结算中的竞技场强制关闭"
-    - "&7当前状态: &e%state%"
-  players-item-name: "&e游戏中玩家"
+    - '&7将正在游戏/结算中的竞技场强制关闭'
+    - '&7当前状态: &e%state%'
+  players-item-name: '&e游戏中玩家'
   players-item-lore:
-    - "&7查看所有在该竞技场游玩的玩家"
-    - "&7你可以选择踢出或者旁观他们"
-    - "&7竞技场玩家: &e%players%"
-  player-item-name: "<&e%nick%&r>"
+    - '&7查看所有在该竞技场游玩的玩家'
+    - '&7你可以选择踢出或者旁观他们'
+    - '&7竞技场玩家: &e%players%'
+  player-item-name: '<&e%nick%&r>'
   player-item-lore:
-    - "&7当前局内信息:"
-    - "&7团队: %team%"
-    - "&7已抢羊数: %sheep%"
-    - "&7击杀数: %kills%"
-    - "&7死亡数: %deaths%"
-    - ""
-    - "&e左键&7传送至该玩家"
-    - "&e右键&7将玩家踢出游戏"
-  players-menu-back-item-name: "&e返回"
+    - '&7当前局内信息:'
+    - '&7团队: %team%'
+    - '&7已抢羊数: %sheep%'
+    - '&7击杀数: %kills%'
+    - '&7死亡数: %deaths%'
+    - ''
+    - '&e左键&7传送至该玩家'
+    - '&e右键&7将玩家踢出游戏'
+  players-menu-back-item-name: '&e返回'
   players-menu-back-item-lore:
-    - "&7返回管理员菜单"
-  back-item-name: "&e返回"
+    - '&7返回管理员菜单'
+  back-item-name: '&e返回'
   back-item-lore:
-    - "&7返回竞技场菜单"
+    - '&7返回竞技场菜单'
+
+config-version: 2.0

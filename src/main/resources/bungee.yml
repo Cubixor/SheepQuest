@@ -1,4 +1,4 @@
-name: SheepQuest
-main: me.cubixor.sheepquest.bungee.SheepQuestBungee
+name: ${project.name}
+main: me.cubixor.sheepquest.minigamesapi.proxy.bungee.MinigamesAPIBungee
 version: ${project.version}
 author: Cubixor

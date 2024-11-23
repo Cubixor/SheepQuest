@@ -1,16 +1,7 @@
 # SheepQuest
 
-SheepQuest is a minigame plugin for spigot servers.
-Download at: https://www.spigotmc.org/resources/83005/
+SheepQuest is a minigame plugin for spigot servers. Download and more info at: https://www.spigotmc.org/resources/83005/
 
-## Used libraries/apis
+Tutorials, config explanations, commands and permissions available on GitHub wiki: https://github.com/Cubixor/SheepQuest/wiki
 
-#### XSeries (for cross-version support): https://github.com/CryptoMorin/XSeries
-
-#### bStats (for collecting usage data): https://github.com/Bastian/bStats
-
-#### PlaceholderAPI (for placeholder support): https://github.com/PlaceholderAPI/PlaceholderAPI
-
-#### BossbarAPI (for 1.8 bossbar support): https://github.com/InventivetalentDev/BossBarAPI
-
-#### ParticleAPI (for 1.8 particle support): https://github.com/InventivetalentDev/ParticleAPI
+Support available on discord: https://discord.com/invite/AQhUVfm
