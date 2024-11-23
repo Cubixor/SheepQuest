@@ -90,7 +90,7 @@ public class Main extends JavaPlugin {
         LeaveCommand leaveCommand = new LeaveCommand();
 
         SheepPathfinder sheepPathfinder = new SheepPathfinder();
-        SheepPickupHandler sheepPickupHandler = new SheepPickupHandler(arenasRegistry, itemsRegistry, sheepPathfinder);
+        SheepPickupHandler sheepPickupHandler = new SheepPickupHandler(arenasManager, itemsRegistry, sheepPathfinder);
         KitManager kitManager = new KitManager(arenasRegistry, itemsRegistry, sheepPickupHandler);
 
         GameJoinLeaveHandler gameJoinLeaveHandler = new GameJoinLeaveHandler(itemsRegistry, bossBarManager);

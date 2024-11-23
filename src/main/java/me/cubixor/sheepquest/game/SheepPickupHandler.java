@@ -1,12 +1,15 @@
 package me.cubixor.sheepquest.game;
 
 import me.cubixor.minigamesapi.spigot.MinigamesAPI;
+import me.cubixor.minigamesapi.spigot.config.arenas.ArenasConfigManager;
+import me.cubixor.minigamesapi.spigot.game.ArenasManager;
 import me.cubixor.minigamesapi.spigot.game.ArenasRegistry;
 import me.cubixor.minigamesapi.spigot.game.arena.GameState;
 import me.cubixor.minigamesapi.spigot.utils.Particles;
 import me.cubixor.minigamesapi.spigot.utils.Sounds;
 import me.cubixor.sheepquest.arena.SQArena;
 import me.cubixor.sheepquest.arena.Team;
+import me.cubixor.sheepquest.config.SQConfigField;
 import me.cubixor.sheepquest.game.kits.KitType;
 import me.cubixor.sheepquest.items.SQItemsRegistry;
 import me.cubixor.sheepquest.utils.PassengerFix;
@@ -29,6 +32,7 @@ import java.util.Set;
 
 public class SheepPickupHandler implements Listener {
 
+    private final ArenasConfigManager arenasConfigManager;
     private final ArenasRegistry arenasRegistry;
     private final SQItemsRegistry itemsRegistry;
 
@@ -40,8 +44,9 @@ public class SheepPickupHandler implements Listener {
     private final SheepPathfinder sheepPathfinder;
     private PassengerFix passengerFix;
 
-    public SheepPickupHandler(ArenasRegistry arenasRegistry, SQItemsRegistry itemsRegistry, SheepPathfinder sheepPathfinder) {
-        this.arenasRegistry = arenasRegistry;
+    public SheepPickupHandler(ArenasManager arenasManager, SQItemsRegistry itemsRegistry, SheepPathfinder sheepPathfinder) {
+        this.arenasConfigManager = arenasManager.getConfigManager();
+        this.arenasRegistry = arenasManager.getRegistry();
         this.itemsRegistry = itemsRegistry;
         this.sheepPathfinder = sheepPathfinder;
         this.maxPassengers = MinigamesAPI.getPlugin().getConfig().getInt("max-sheep-carried");
@@ -66,6 +71,12 @@ public class SheepPickupHandler implements Listener {
             return;
         }
 
+        Team team = arena.getPlayerTeam().get(player);
+
+        if (evt.getTo().getBlockY() < -64) {
+            player.teleport(arenasConfigManager.getLocation(arena.getName(), SQConfigField.SPAWN, team.toString()));
+        }
+
         if (arena.getRespawnTimer().containsKey(evt.getPlayer())) {
             return;
         }
@@ -78,12 +89,9 @@ public class SheepPickupHandler implements Listener {
             return;
         }
 
-        Team team = arena.getPlayerTeam().get(player);
-
         if (player.getPassenger() != null && arena.getTeamRegions().get(team).isInRegion(player)) {
             regionEnter(player, arena);
         }
-
 
         for (Entity e : evt.getPlayer().getNearbyEntities(1, 1, 1)) {
             tryPickup(player, e, arena);
