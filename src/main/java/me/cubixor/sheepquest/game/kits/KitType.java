@@ -21,15 +21,6 @@ public enum KitType {
         return null;
     }
 
-    public static KitType getFirstEnabled() {
-        for (KitType kitType : KitType.values()) {
-            if (kitType.isEnabled()) {
-                return kitType;
-            }
-        }
-        return null;
-    }
-
     public int getId() {
         return id;
     }
@@ -44,6 +35,15 @@ public enum KitType {
 
     public boolean isEnabled() {
         return MinigamesAPI.getPlugin().getConfig().getBoolean("kits." + this + ".enabled");
+    }
+
+    public static KitType getFirstEnabled() {
+        for (KitType kitType : KitType.values()) {
+            if (kitType.isEnabled()) {
+                return kitType;
+            }
+        }
+        return null;
     }
 
     @Override
