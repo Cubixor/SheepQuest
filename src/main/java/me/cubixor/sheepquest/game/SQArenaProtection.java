@@ -9,6 +9,8 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.SheepDyeWoolEvent;
@@ -38,6 +40,18 @@ public class SQArenaProtection extends ArenaProtection {
             return;
         }
         cancelForEntity(evt.getEntity(), evt);
+    }
+
+    @Override
+    @EventHandler
+    public void onBreak(BlockBreakEvent evt) {
+        cancelInArena(evt.getPlayer(), evt);
+    }
+
+    @Override
+    @EventHandler
+    public void onPlace(BlockPlaceEvent evt) {
+        cancelInArena(evt.getPlayer(), evt);
     }
 
     @Override
