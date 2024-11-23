@@ -17,7 +17,7 @@ import java.util.logging.Level;
 public class SheepPathfinder {
 
     private boolean nmsPathfindingSupported = true;
-    private final Pathfinding pathfinding;
+    private Pathfinding pathfinding;
 
     public SheepPathfinder() {
         try {
