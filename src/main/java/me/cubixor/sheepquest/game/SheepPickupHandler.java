@@ -25,6 +25,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -125,13 +126,23 @@ public class SheepPickupHandler implements Listener {
         Entity currPass = player;
         for (int i = 0; i < maxPassengers; i++) {
             if (currPass.getPassenger() == null) {
-                if (currPass.setPassenger(e)) {
+                if (currPass.setPassenger(e) || invokeAddPassenger(currPass, e)) {
                     pickupSheep(player, arena, i, isBonusSheep);
                 }
                 break;
             }
 
             currPass = currPass.getPassenger();
+        }
+    }
+
+    private boolean invokeAddPassenger(Entity entity, Entity passenger) {
+        try {
+            Class<?> entityClass = Entity.class;
+            Method addPassengerMethod = entityClass.getDeclaredMethod("addPassenger", entityClass);
+            return (boolean) addPassengerMethod.invoke(entity, passenger);
+        } catch (Exception e) {
+            return false;
         }
     }
 
