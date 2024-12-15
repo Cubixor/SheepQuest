@@ -112,9 +112,8 @@ public class Main extends JavaPlugin {
         pluginManager.registerEvents(damageHandler, this);
         pluginManager.registerEvents(chatManager, this);
 
-        MinigamesAPI.registerPAPI(arenasRegistry, configManager.getStatsManager());
         PlaceholderManager placeholderManager = new PlaceholderManager(arenasRegistry);
-        pluginManager.registerEvents(placeholderManager, this);
+        MinigamesAPI.registerPAPI(arenasRegistry, configManager.getStatsManager(), placeholderManager);
 
         Telemetry telemetry = new Telemetry();
         telemetry.runMetrics(arenasRegistry, 9022);

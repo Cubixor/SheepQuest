@@ -2,13 +2,12 @@ package me.cubixor.sheepquest.game.events;
 
 import me.cubixor.minigamesapi.spigot.game.ArenasRegistry;
 import me.cubixor.minigamesapi.spigot.integrations.PlaceholderParseEvent;
+import me.cubixor.minigamesapi.spigot.integrations.PlaceholderParser;
 import me.cubixor.sheepquest.arena.SQArena;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 
-public class PlaceholderManager implements Listener {
+public class PlaceholderManager implements PlaceholderParser {
 
     private final ArenasRegistry arenasRegistry;
 
@@ -16,7 +15,6 @@ public class PlaceholderManager implements Listener {
         this.arenasRegistry = arenasRegistry;
     }
 
-    @EventHandler
     public void onPlaceholderParse(PlaceholderParseEvent evt) {
         if (!(evt.getPlayer() instanceof Player)) return;
         Player player = (Player) evt.getPlayer();
