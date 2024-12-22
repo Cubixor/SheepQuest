@@ -12,6 +12,7 @@ import me.cubixor.minigamesapi.spigot.game.inventories.GlobalMenuRegistry;
 import me.cubixor.minigamesapi.spigot.game.inventories.MenuHandler;
 import me.cubixor.minigamesapi.spigot.game.items.ItemHandler;
 import me.cubixor.minigamesapi.spigot.integrations.Telemetry;
+import me.cubixor.minigamesapi.spigot.integrations.Updater;
 import me.cubixor.minigamesapi.spigot.sockets.PacketManagerSpigot;
 import me.cubixor.minigamesapi.spigot.sockets.PacketSenderSpigot;
 import me.cubixor.sheepquest.arena.SQArenaFactory;
@@ -27,7 +28,6 @@ import me.cubixor.sheepquest.game.events.*;
 import me.cubixor.sheepquest.game.kits.KitManager;
 import me.cubixor.sheepquest.items.SQItemsRegistry;
 import me.cubixor.sheepquest.utils.ConfigUpdater;
-import me.cubixor.sheepquest.utils.Updater;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
