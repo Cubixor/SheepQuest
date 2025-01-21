@@ -34,11 +34,11 @@ public class BossBarManager {
         }
 
         if (kitBossBarEnabled) {
-            for (KitType kitType : KitType.values()) {
+            KitType.getEnabled().forEach(kitType -> {
                 BossBar bossBar = Bukkit.createBossBar(Messages.get("kits.bossbar-kit", "%kit%", kitType.getName()), BarColor.WHITE, BarStyle.SOLID);
                 bossBar.setProgress(0);
                 kitBossBars.put(kitType, bossBar);
-            }
+            });
         }
     }
 

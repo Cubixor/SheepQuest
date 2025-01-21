@@ -3,27 +3,11 @@ package me.cubixor.sheepquest.game.kits;
 import me.cubixor.minigamesapi.spigot.MinigamesAPI;
 import me.cubixor.minigamesapi.spigot.utils.Messages;
 
+import java.util.Arrays;
+import java.util.stream.Stream;
+
 public enum KitType {
-    STANDARD(0), ARCHER(1), ATHLETE(2);
-
-    private final int id;
-
-    KitType(int id) {
-        this.id = id;
-    }
-
-    public static KitType getById(int id) {
-        for (KitType kitType : KitType.values()) {
-            if (kitType.getId() == id) {
-                return kitType;
-            }
-        }
-        return null;
-    }
-
-    public int getId() {
-        return id;
-    }
+    STANDARD, ARCHER, ATHLETE;
 
     public String getName() {
         return Messages.get("kits." + this);
@@ -38,12 +22,11 @@ public enum KitType {
     }
 
     public static KitType getFirstEnabled() {
-        for (KitType kitType : KitType.values()) {
-            if (kitType.isEnabled()) {
-                return kitType;
-            }
-        }
-        return null;
+        return KitType.getEnabled().findFirst().orElse(null);
+    }
+
+    public static Stream<KitType> getEnabled() {
+        return Arrays.stream(KitType.values()).filter(KitType::isEnabled);
     }
 
     @Override

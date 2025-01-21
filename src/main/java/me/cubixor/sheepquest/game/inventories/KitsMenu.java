@@ -14,10 +14,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 public class KitsMenu extends Menu {
 
     private final SQArena sqArena;
     private final BossBarManager bossBarManager;
+    private final Map<KitType, Integer> kitSlots = new HashMap<>();
 
     protected KitsMenu(LocalArena arena, BossBarManager bossBarManager) {
         super(arena);
@@ -28,9 +33,13 @@ public class KitsMenu extends Menu {
     @Override
     public Inventory create() {
         Inventory kitsInventory = Bukkit.createInventory(null, 9, Messages.get("kits.menu-name"));
-        for (KitType kitType : KitType.values()) {
+        int slot = 0;
+        for (KitType kitType : KitType.getEnabled().collect(Collectors.toList())) {
             GameItem kitItem = new GameItem("kits." + kitType + ".menu-icon", "kits." + kitType + "-name", "kits." + kitType + "-lore");
-            kitsInventory.setItem(kitType.getId(), kitItem.getItem());
+
+            kitsInventory.setItem(slot, kitItem.getItem());
+            kitSlots.put(kitType, slot);
+            slot++;
         }
 
         return kitsInventory;
@@ -42,7 +51,7 @@ public class KitsMenu extends Menu {
 
     @Override
     public void handleClick(InventoryClickEvent evt, Player player) {
-        KitType kitType = KitType.getById(evt.getSlot());
+        KitType kitType = getKitTypeBySlot(evt.getSlot());
         if (kitType == null) return;
 
         if (sqArena.getPlayerKit().get(player).equals(kitType)) {
@@ -62,5 +71,15 @@ public class KitsMenu extends Menu {
         Messages.send(player, "kits.choose-success", "%kit%", kitType.getName());
 
         sqArena.getScoreboardManager().updateScoreboard();
+    }
+
+    private KitType getKitTypeBySlot(int slot) {
+        return kitSlots
+                .entrySet()
+                .stream()
+                .filter(entry -> entry.getValue() == slot)
+                .map(Map.Entry::getKey)
+                .findFirst()
+                .orElse(null);
     }
 }

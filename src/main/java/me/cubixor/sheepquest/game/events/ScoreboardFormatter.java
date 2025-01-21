@@ -24,7 +24,7 @@ public class ScoreboardFormatter implements Listener {
         evt.addReplacement("%time-left%", MessageUtils.formatTime(arena.getTimeLeft(), "time-format"));
         evt.addReplacement("%time-sheep%", timeSheep);
         evt.addReplacement("%team%", arena.getPlayerTeam().getOrDefault(evt.getPlayer(), Team.NONE).getName());
-        evt.addReplacement("%kit%", arena.getPlayerKit().getOrDefault(evt.getPlayer(), KitType.STANDARD).getName());
+        evt.addReplacement("%kit%", arena.getPlayerKit().getOrDefault(evt.getPlayer(), KitType.getFirstEnabled()).getName());
         evt.addMultiLineReplacement("%teams%", getTeamScoreboard(arena));
     }
 

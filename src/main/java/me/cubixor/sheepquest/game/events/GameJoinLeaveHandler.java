@@ -30,13 +30,15 @@ public class GameJoinLeaveHandler implements Listener {
         arena.getPlayerTeam().put(player, Team.NONE);
         arena.getPlayerKit().put(player, KitType.getFirstEnabled());
         bossBarManager.addTeamBossBar(player, Team.NONE);
-        bossBarManager.addKitBossBar(player, KitType.STANDARD);
+        bossBarManager.addKitBossBar(player, KitType.getFirstEnabled());
 
         if (MinigamesAPI.getPlugin().getConfig().getBoolean("allow-team-choosing")) {
             itemsRegistry.getTeamItem().give(player);
         }
 
-        itemsRegistry.getKitsItem().give(player);
+        if (KitType.getEnabled().count() > 1) {
+            itemsRegistry.getKitsItem().give(player);
+        }
     }
 
     @EventHandler
