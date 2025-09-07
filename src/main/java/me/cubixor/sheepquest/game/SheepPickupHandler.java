@@ -290,7 +290,7 @@ public class SheepPickupHandler implements Listener {
         player.eject();
 
 
-        if (((SQArena) arenasRegistry.getPlayerLocalArena(player)).getPlayerKit().get(player).equals(KitType.STANDARD)) {
+        if (!carried.isEmpty() && ((SQArena) arenasRegistry.getPlayerLocalArena(player)).getPlayerKit().get(player).equals(KitType.STANDARD)) {
             player.setAllowFlight(true);
         }
 
