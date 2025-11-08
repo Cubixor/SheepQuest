@@ -348,7 +348,7 @@ particles:
     speed: 0.1
   death:
     enabled: true
-    particle: SPELL_INSTANT
+    particle: END_ROD
     count: 50
     offset: 0.1
     speed: 0.1
